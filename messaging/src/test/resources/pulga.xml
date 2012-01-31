@@ -1,0 +1,8 @@
+<pulga>
+
+	<component	role= "br.com.ibnetwork.xingu.messaging.MessageDispatcher"
+  	     		class="br.com.ibnetwork.xingu.messaging.impl.MessageDispatcherImpl">	
+		<smtpServer address="local" port="25" charset="ISO-8859-1" debug="true"/>  	     
+	</component>
+
+</pulga>

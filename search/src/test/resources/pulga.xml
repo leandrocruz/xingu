@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<pulga>
+	<component	role="br.com.ibnetwork.xingu.search.SearchEngine"
+				class="br.com.ibnetwork.xingu.search.impl.LuceneSearchEngine">
+		<index 	reset="true"
+				defaultField="text">
+			<directory 	dir="index" 
+						type="FSDirectory"/>
+		</index>
+	</component>
+</pulga>

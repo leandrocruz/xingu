@@ -1,0 +1,9 @@
+<attributeList id="2">
+  <attributes>
+    <attribute type="NAME" value="myName"/>
+    <attribute type="GENDER" value="f"/>
+	<attribute type="MALE" value="false"/>
+	<attribute type="BIRTH" value="10000000"/>
+  </attributes>
+</attributeList>
+

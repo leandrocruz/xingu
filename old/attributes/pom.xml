@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+    	    <groupId>xingu</groupId>
+	    <artifactId>xingu</artifactId>
+    	    <version>1.3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>xingu-attributes</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Attributes</name>
+	<url>http://xingu.sf.net</url>
+	<dependencies>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-ibatis</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-idgenerator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>	
+	<build>
+    	<plugins>
+      		<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-plugin</artifactId>
+        		<configuration>
+          			<includes>
+						<!--
+            			<include>**/AttributeTypeManagerTest.java</include>
+						<include>**/AttributeListManagerXMLTest.java</include>
+						<include>**/AttributeListXMLTest.java</include>
+						<include>**/AttributeListDBTest.java</include>
+						-->
+						<include>**/AttributeListManagerDBTest.java</include>
+          			</includes>
+        		</configuration>
+      		</plugin>
+    	</plugins>
+	</build>
+</project>

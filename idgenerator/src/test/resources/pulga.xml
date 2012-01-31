@@ -1,0 +1,13 @@
+<pulga>
+	<component	role= "br.com.ibnetwork.xingu.idgenerator.IdGenerator"
+       			class="br.com.ibnetwork.xingu.idgenerator.impl.IdGeneratorImpl">
+		<generators>
+			<generator	id="memLong" 
+						class="br.com.ibnetwork.xingu.idgenerator.impl.InMemoryLongGenerator" 
+						grabSize="10" />
+			<generator	id="storedLong" 
+						class="br.com.ibnetwork.xingu.idgenerator.impl.LongGenerator" 
+						grabSize="5" />
+		</generators>
+	</component>
+</pulga>

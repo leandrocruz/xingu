@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<pulga>
+	<component	key="prevayler"
+				role="br.com.ibnetwork.xingu.store.ObjectStore"
+				class="br.com.ibnetwork.xingu.store.impl.prevayler.PrevaylerObjectStore">
+		<prevayler	prevalenceDirectory="${pom.build.testOutputDirectory}/prevayler"
+					clearPrevalenceDirectory="true"/>
+	</component>
+	
+	<component	key="db4o"
+				role="br.com.ibnetwork.xingu.store.ObjectStore"
+				class="br.com.ibnetwork.xingu.store.impl.db4o.Db4oObjectStore">
+		<db4o file="${pom.build.testOutputDirectory}/db4o/database"/>
+	</component>
+
+    <component  key="memory"
+                role="br.com.ibnetwork.xingu.store.ObjectStore"
+                class="br.com.ibnetwork.xingu.store.impl.memory.InMemoryObjectStore"/>
+</pulga>

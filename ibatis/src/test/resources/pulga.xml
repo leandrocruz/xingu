@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<pulga>
+	<component	role="br.com.ibnetwork.xingu.ibatis.Ibatis"
+							class="br.com.ibnetwork.xingu.ibatis.impl.IbatisImpl">
+		<ibatis file="sqlMap.xml"/> <!-- default conf -->
+	</component>						
+</pulga>

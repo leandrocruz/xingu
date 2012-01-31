@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap 
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sample">
+	<select 	id="getAll" 
+					resultClass="br.com.ibnetwork.xingu.ibatis.test.Sample">
+		SELECT
+			id		as id,
+			text	as text
+		FROM 
+			sample
+	</select>
+
+	<select 	id="getById" 
+					parameterClass="long" 
+					resultClass="br.com.ibnetwork.xingu.ibatis.test.Sample">
+		SELECT
+			id		as id,
+			text	as text
+		FROM 
+			sample
+		WHERE 
+			id = #value#
+	</select>
+	
+	<insert 	id="insert" 
+					parameterClass="br.com.ibnetwork.xingu.ibatis.test.Sample">
+		INSERT INTO 
+			sample (id, text)
+		VALUES 
+			(#id#,#text#)
+	</insert>
+     
+	<update	id="update" 
+					parameterClass="br.com.ibnetwork.xingu.ibatis.test.Sample">
+		UPDATE 
+			sample
+		SET	
+			text = #text#
+		WHERE 
+			id = #id#
+	</update>
+     
+	<delete 	id="delete"  
+					parameterClass="long" >
+		DELETE FROM 
+			sample
+		WHERE 
+			id = #value#
+	</delete>
+</sqlMap>

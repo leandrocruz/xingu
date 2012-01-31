@@ -1,0 +1,79 @@
+body {
+	background: black;
+}
+
+.head{
+	padding:3px;
+	font-family: sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight:bold;
+	background: #479539;
+}
+
+.title {
+	font-family: sans-serif;
+	font-size: 18px;
+	font-style:italic;	
+	color: white;
+}
+
+.wwFormTable {
+	width:100%;
+	padding: 2px;
+}
+
+.tdLabel{
+	font-family: sans-serif;
+	font-size: 14px;
+	font-style:italic;
+	font-weight:bold;
+	color: white;
+	background: #479539;
+	padding: 2px;
+	width: 30%;
+}
+
+td{
+	font-family: sans-serif;
+	font-size: 14px;
+	font-style:italic;
+	font-weight:bold;
+	color: white;
+	background: #479539;
+	width: 70%;
+}
+
+.label {
+	font-style:italic; 
+}
+
+.errorLabel {
+	font-style:italic; 
+	color:black; 
+}
+
+.errorMessage {
+	font-weight:bold; 
+	text-align: center; 
+	color:black; 
+	width: 100%; 
+	padding: 10px;
+}
+
+.checkboxErrorLabel {
+	color:black; 
+}
+
+.required {
+	color:black;
+}
+
+.line{
+	padding:3px;
+	font-family: sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	background: white;
+	color: black;
+}

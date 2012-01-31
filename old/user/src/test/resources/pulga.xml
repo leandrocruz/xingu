@@ -1,0 +1,59 @@
+<pulga>
+	<component	role="br.com.ibnetwork.xingu.dao.DaoManager"
+				class="br.com.ibnetwork.xingu.dao.impl.DaoManagerImpl">
+		<daoConfig>
+			<dao	class="br.com.ibnetwork.xingu.user.User"
+					daoClass="br.com.ibnetwork.xingu.user.dao.IBatisUserDao"/>
+			<dao	class="br.com.ibnetwork.xingu.user.impl.UserImpl"
+					daoClass="br.com.ibnetwork.xingu.user.dao.IBatisUserDao"/>
+		</daoConfig>
+	</component>
+	<component 	role= "br.com.ibnetwork.xingu.attributes.AttributeTypeManager"
+				class="br.com.ibnetwork.xingu.attributes.impl.AttributeTypeManagerImpl">
+    	<attributeTypes>
+		  	<attributeType name="ID" type="Long"/>
+	      	<attributeType name="GENDER" type="Character"/>
+    	  	<attributeType name="BIRTHDATE" type="Date"/>
+    	</attributeTypes>
+	</component>
+
+	<component 	role= "br.com.ibnetwork.xingu.attributes.AttributeListManager"
+							class="br.com.ibnetwork.xingu.attributes.impl.IbatisAttributeListManager"/>
+
+	<component	role= "br.com.ibnetwork.xingu.idgenerator.IdGeneratorBroker"
+				class="br.com.ibnetwork.xingu.idgenerator.impl.IdGeneratorBrokerImpl">
+		<factories>
+			<factory	id="jdbc"
+						generatorClass="br.com.ibnetwork.xingu.idgenerator.impl.JDBCLongGenerator">
+				<configuration grabSize="1">
+					<database	username="sa" 
+								passwd="" 
+								table="ID_TABLE"
+								driverClassName="org.hsqldb.jdbcDriver"
+								url="jdbc:hsqldb:${pom.build.testOutputDirectory}/database"
+								maxIdle="8"
+								maxWait="5000"
+								maxActive="8"/>
+				</configuration>
+			</factory>
+			
+		</factories>
+		<generators>
+			<generator id="default" factoryId="jdbc"/>
+			<generator id="attribute-list" factoryId="jdbc">
+				<configuration>
+					<initialize tableName="attribute-list" updateWhenInsane="true"/>
+				</configuration>
+			</generator>
+			<generator id="user" factoryId="jdbc">
+				<configuration>
+					<initialize tableName="user" updateWhenInsane="true"/>
+				</configuration>
+			</generator>
+			
+		</generators>
+	</component>
+
+</pulga>
+
+        

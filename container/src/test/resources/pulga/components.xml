@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<root>
+	<!-- same key used on pulga.xml -->
+	<configuration key="some-key">
+		<some key="value"/>
+	</configuration>
+	<configuration key="br.com.ibnetwork.xingu.container.components.Component">
+		<some key="default"/>
+	</configuration>
+	<configuration key="br.com.ibnetwork.xingu.container.components.DefaultExternalConf">
+		<some key="defaultExternalConf"/>
+	</configuration>
+</root>

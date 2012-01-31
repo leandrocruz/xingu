@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+	  	<artifactId>xingu</artifactId>
+		<version>1.4.19-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>xingu-creator</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Creator</name>
+	<url>http://xingu.sf.net</url>
+	<dependencies>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-container</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+    	<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/TestCreator.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
+</project>

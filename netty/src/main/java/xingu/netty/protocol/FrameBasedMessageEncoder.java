@@ -1,0 +1,58 @@
+package xingu.netty.protocol;
+
+import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelDownstreamHandler;
+import org.jboss.netty.channel.ChannelEvent;
+import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.MessageEvent;
+
+
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+
+public class FrameBasedMessageEncoder
+    implements ChannelDownstreamHandler 
+{
+    @Override
+    public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
+        throws Exception
+    {
+        if (e instanceof MessageEvent) 
+        {
+            Object obj = ((MessageEvent) e).getMessage();
+            int type = typeFrom(obj);
+            byte[] data = toByteArray(e.getChannel(), obj, type);
+            ChannelBuffer buffer = pack(ctx, e, data, type);
+            Channels.write(ctx, e.getFuture(), buffer);
+        }
+        else
+        {
+            //System.out.println("FrameBasedMessageEncoder: ignoring event " + e);
+            ctx.sendDownstream(e);
+        }
+    }
+
+	protected ChannelBuffer pack(ChannelHandlerContext ctx, ChannelEvent e, byte[] data, int type)
+		throws Exception
+	{
+		return FramedMessageUtils.pack(data, type);
+	}
+
+	protected byte[] toByteArray(Channel channel, Object obj, int type)
+        throws Exception
+    {
+        if(obj instanceof String)
+        {
+            String s = (String) obj;
+            return s.getBytes();
+        }
+        throw new NotImplementedYet("Object type is not suported: "+ obj);
+    }
+
+    protected int typeFrom(Object obj)
+        throws Exception
+    {
+        return 0;
+    }
+}

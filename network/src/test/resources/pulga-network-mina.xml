@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pulga>
+	<component	role="br.com.ibnetwork.xingu.network.Network"
+				class="br.com.ibnetwork.xingu.network.impl.mina.MinaNetwork">
+		<connectors>
+			<server 	alias="default"
+						transport="tcp"
+						interface="127.0.0.1" 
+						port="9000" 
+						_pipeHandler="br.com.ibnetwork.xingu.network.Reverser"
+						reuseAddress="true"
+						logEnabled="false"
+						protocolCodecFactory="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory"
+						_useTextLineCodec="true"
+						_useSSL="true"/>
+
+			<client		alias="default"
+						transport="tcp"
+						address="127.0.0.1" 
+						port="9000" 
+						protocolCodecFactory="org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory" 
+						_useTextLineCodec="true"
+						_useSSL="true"/>
+						
+		</connectors>
+	</component>
+</pulga>

@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+		<artifactId>xingu</artifactId>
+		<version>1.4.19-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>xingu-ibatis</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu iBatis</name>
+	<dependencies>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.7.2.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ibatis</groupId>
+			<artifactId>ibatis-common</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ibatis</groupId>
+			<artifactId>ibatis-sqlmap</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-creator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

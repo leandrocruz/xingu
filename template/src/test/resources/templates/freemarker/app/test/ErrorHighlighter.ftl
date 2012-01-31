@@ -1,0 +1,1 @@
+${highlightError(rawText,exception,1)}

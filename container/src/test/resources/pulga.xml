@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<pulga>
+	<component 	_key="ignored"
+				_default="true"
+				role="br.com.ibnetwork.xingu.container.components.Simple"
+				class="br.com.ibnetwork.xingu.container.components.SimpleImpl">
+		<some key="value"/>
+	</component>
+	
+	<component 	key="alternative"
+				role="br.com.ibnetwork.xingu.container.components.Simple"
+				class="br.com.ibnetwork.xingu.container.components.Alternative">
+		<some key="alternative"/>				
+	</component>
+	
+	<component 	role="br.com.ibnetwork.xingu.container.components.UsesSimple"
+				class="br.com.ibnetwork.xingu.container.components.UsesSimpleImpl">
+		<some key="simple"/>				
+	</component>
+
+	<component 	role="br.com.ibnetwork.xingu.container.components.DefaultExternalConf"
+				class="br.com.ibnetwork.xingu.container.components.impl.ComponentImpl">
+		<some key="defaultExternalConf"/>
+	</component>
+	
+</pulga>

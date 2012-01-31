@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pulga>
+	<component	role="br.com.ibnetwork.xingu.template.TemplateEngine"
+				class="br.com.ibnetwork.xingu.template.impl.freemarker.FreemarkerTemplateEngine"/>
+				
+	<component	role="xingu.email.EmailManager"
+				class="xingu.email.impl.aws.AmazonSESEmailManager">
+		<addresses bounce="bounces@kidux.com.br" />
+		<credentials keyId="" 
+					 secret="" />
+	</component>
+</pulga>

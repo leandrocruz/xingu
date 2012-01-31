@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap 
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pojo">
+
+	<resultMap	id="pojoResult" 
+				class="br.com.ibnetwork.xingu.store.Pojo">
+		<result property="id" column="ID" jdbcType="BIGINT"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<parameterMap 	id="pojoParam" 
+					class="br.com.ibnetwork.xingu.store.Pojo">
+		<parameter property="id" jdbcType="BIGINT"/>
+		<parameter property="name" jdbcType="VARCHAR"/>
+	</parameterMap>
+	
+	<select id="getById" 
+			parameterClass="long" 
+			resultMap="pojoResult">
+		SELECT * FROM pojo WHERE id = #value#
+	</select>
+
+	<select id="getAll"
+			resultMap="pojoResult">
+		SELECT * FROM pojo
+	</select>
+
+	<insert id="insert"
+			parameterMap="pojoParam">
+		<selectKey keyProperty="id"  resultClass="long">
+			SELECT TOP 1 NEXT VALUE FOR pojo_id_seq AS value FROM pojo
+		</selectKey>
+		INSERT INTO 
+			pojo (ID,NAME)
+		VALUES 
+			(?,?)
+	</insert>
+
+	<update id="update"
+			parameterClass="br.com.ibnetwork.xingu.store.Pojo">
+		UPDATE 
+			pojo 
+		SET
+			NAME = #name#
+		WHERE 
+			id = #id#
+	</update>	
+	
+	<delete id="delete"
+			parameterClass="long">
+		DELETE FROM pojo WHERE id = #value#
+	</delete>
+
+</sqlMap>

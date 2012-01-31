@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+		<artifactId>xingu</artifactId>
+		<version>1.4.19-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>store</artifactId>
+	<packaging>pom</packaging>
+	<name>Xingu Object Store</name>
+	<dependencies>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-creator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>api</module>
+		<module>prevayler</module>
+		<module>mybatis</module>
+		<!--
+		<module>ibatis</module>
+		<module>db4o</module>
+		-->
+	</modules>
+</project>
+
+<!--
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+		<artifactId>xingu</artifactId>
+		<version>1.4.11-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>xingu-store</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Object Store</name>
+	<dependencies>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.7.2.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>prevayler</groupId>
+			<artifactId>prevayler</artifactId>
+			<version>2.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+			<version>1.1.3.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-dao</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.db4o</groupId>
+			<artifactId>db4o</artifactId>
+			<version>7.8.80.12541</version>
+			<classifier>core-java5</classifier>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
+-->

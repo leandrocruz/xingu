@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<pulga>
+	<component	role="xingu.store.ObjectStore"
+				class="xingu.store.impl.prevayler.PrevaylerObjectStore">
+		<prevayler	prevalenceDirectory="${pom.build.testOutputDirectory}/prevayler"
+					clearPrevalenceDirectory="true"
+					takeSnapshotOnStart="false"/>
+	</component>
+</pulga>
