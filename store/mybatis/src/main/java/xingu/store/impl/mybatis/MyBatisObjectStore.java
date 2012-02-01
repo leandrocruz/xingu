@@ -252,6 +252,15 @@ public class MyBatisObjectStore
         }
     }
 
+    @Override
+    public <POJO extends PersistentBean> List<POJO> getAll(Class<POJO> clazz)
+        throws StoreException
+    {
+        String namespace = clazz.getName();
+        String statement = namespace + ".getAll";
+        return selectList(statement);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> List<POJO> selectList(String statement)
@@ -308,30 +317,5 @@ public class MyBatisObjectStore
         throws StoreException
     {
         throw new NotImplementedYet("TODO");
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <POJO extends PersistentBean> List<POJO> getAll(Class<POJO> clazz)
-        throws StoreException
-    {
-        String namespace = clazz.getName();
-        SqlSession session = openSession();
-        String statement = namespace + ".getAll";
-        
-        try
-        {
-            return session.selectList(statement);
-        }
-        catch(Throwable t)
-        {
-            String msg = "Error executing sql statement " + statement;
-            logger.error(msg, t);
-            throw new StoreException(msg, t);
-        }
-        finally
-        {
-            session.close();
-        }
     }
 }
