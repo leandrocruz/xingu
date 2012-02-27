@@ -7,6 +7,12 @@ import java.util.UUID;
 public class FileUtils
 {
 	public static File createTempDir()
+			throws IOException
+	{
+		return createTempDir(null);
+	}
+	
+	public static File createTempDir(String prefix)
 		throws IOException
 	{
 		final File temp = new File(System.getProperty("java.io.tmpdir"));
@@ -20,7 +26,8 @@ public class FileUtils
 			{
 				throw new IOException("The highly improbable has occurred! Failed to create a unique temporary directory after " + maxAttempts + " attempts.");
 			}
-			String dirName = UUID.randomUUID().toString();
+			String rnd = UUID.randomUUID().toString();
+			String dirName = prefix == null ? rnd : prefix + rnd; 
 			dir = new File(temp, dirName);
 		}
 		while(dir.exists());
