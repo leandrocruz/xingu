@@ -1,4 +1,4 @@
-package br.com.ibnetwork.xingu.utils;
+package br.com.ibnetwork.xingu.utils.io;
 
 import java.io.File;
 import java.io.IOException;
