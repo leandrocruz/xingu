@@ -1,6 +1,7 @@
 package br.com.ibnetwork.xingu.utils.io;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,17 +13,29 @@ import org.apache.commons.io.IOUtils;
 
 public class CopyDirectory
 {
+	private boolean debug = false;
+	
+	private FileFilter filter;
+
+	public CopyDirectory()
+	{}
+
+	public CopyDirectory(FileFilter filter)
+	{
+		this.filter = filter;
+	}
+
 	public void copyTree(File from, File to)
 		throws IOException
 	{
-		File[] files = from.listFiles();
+		File[] files = from.listFiles(filter);
 		for (File file : files)
 		{
 			File sibling = new File(to, file.getName());
 			if(file.isDirectory())
 			{
 				//create sibling directory
-				System.out.println("\n[D] from: " + file + "\n[D] to: " + sibling);
+				debug("\n[D] from: " + file + "\n[D] to: " + sibling);
 				if(!sibling.exists())
 				{
 					sibling.mkdirs();
@@ -32,11 +45,19 @@ public class CopyDirectory
 			else
 			{
 				//copy file
-				System.out.println("\n[F] from: " + file + "\n[F] to: " + sibling);
+				debug("\n[F] from: " + file + "\n[F] to: " + sibling);
 				int result = copyFile(file, sibling);
 				String msg = result > 0 ? FileUtils.byteCountToDisplaySize(result) + " copied" : "error"; 
-				System.out.println("[F] " + msg);
+				debug("[F] " + msg);
 			}
+		}
+	}
+
+	private void debug(String msg)
+	{
+		if(debug)
+		{
+			System.out.println(msg);
 		}
 	}
 
