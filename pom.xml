@@ -8,8 +8,8 @@
 	<description>Xingu, a repository of Java components</description>
 	<url>http://xingu.ibcorp.com.br</url>
 	<scm>
-	    <connection>scm:svn:http://svn.ibcorp.com.br/svn/public/xingu/tags/xingu-1.2</connection>
-	    <developerConnection>scm:svn:https://svn.ibcorp.com.br/svn/public/xingu/tags/xingu-1.2</developerConnection>
+	    <connection>scm:git:https://kixbuild@github.com/leandrocruz/Xingu.git</connection>
+	    <developerConnection>scm:git:https://kixbuild@github.com/leandrocruz/Xingu.git</developerConnection>
 	</scm>
 	<licenses>
 		<license>
