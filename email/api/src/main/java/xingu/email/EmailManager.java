@@ -6,4 +6,6 @@ public interface EmailManager
         throws Exception;
 
     boolean isEmailSent(String type, String to);
+
+    Email findLastEmailSent(String to, String typeLike);
 }

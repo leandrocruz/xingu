@@ -142,6 +142,18 @@ public abstract class EmailManagerSupport
         return false;
     }
 
+    @Override
+    public Email findLastEmailSent(String to, String typeLike) {
+        String namespace = Email.class.getName() + ".getLastEmailSentTo";
+        FindEmailParameters parameters = new FindEmailParameters(to, typeLike);
+        List<Email> emails = store.selectList(namespace, parameters);
+        if(emails.isEmpty())
+        {
+            return null;
+        }
+        return emails.get(0);
+    }
+
     protected abstract boolean send(Email email)
         throws Exception;
 

@@ -23,4 +23,9 @@ public class NullEmailManager
     {
         return false;
     }
+
+    @Override
+    public Email findLastEmailSent(String to, String typeLike) {
+        return null;
+    }
 }
