@@ -97,7 +97,7 @@ public class Pulga
         while(!stack.empty())
         {
             Object component = stack.pop();
-            log.debug("Stopping component '{}'", component.getClass().getName());
+            log.info("Stopping component '{}'", component.getClass().getName());
             try
             {
                 stopLifecycle(component);
@@ -213,7 +213,7 @@ public class Pulga
                 log.info(msg, e);
                 throw new ContainerException(msg, e);
             }
-            log.info("Binding ["+role.getSimpleName()+":"+key+"] to ["+impl+"] is ready");
+            log.debug("Binding ["+role.getSimpleName()+":"+key+"] to ["+impl+"] is ready");
             binding.isReady(true);
             stack.push(impl);
         }
