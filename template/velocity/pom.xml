@@ -3,24 +3,24 @@
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>xingu</groupId>
-		<artifactId>xingu</artifactId>
+		<artifactId>template</artifactId>
 		<version>1.4.21-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>template</artifactId>
-	<packaging>pom</packaging>
-	<name>Xingu Template</name>
+	<artifactId>template-velocity</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Template Velocity</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
+			<artifactId>template-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	</dependencies>
-	<modules>
-		<module>api</module>
-		<module>freemarker</module>
-		<module>velocity</module>
-	</modules>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>	
 </project>

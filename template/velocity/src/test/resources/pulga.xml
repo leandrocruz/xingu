@@ -1,0 +1,10 @@
+<pulga>
+	<component	role="xingu.template.TemplateEngine"
+				class="xingu.template.impl.velocity.VelocityTemplateEngine">
+		<!-- loaded from classpath -->
+		<templates extension=".vm"/>
+		<encoding name="ISO-8859-1"/>
+		<file name="velocity.properties"/>
+	</component>
+
+</pulga>
