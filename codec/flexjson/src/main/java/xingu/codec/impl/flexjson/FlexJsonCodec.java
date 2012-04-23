@@ -13,23 +13,24 @@ import xingu.codec.Codec;
 public class FlexJsonCodec
 	implements Codec, Initializable
 {
-	private JSONDeserializer<Map<String, Object>> toObject;
+	private JSONDeserializer<Map<String, Object>> decoder;
 	
-	private JSONSerializer toJson;
+	private JSONSerializer encoder;
 
 	@Override
 	public void initialize()
 		throws Exception
 	{
-		toObject = new JSONDeserializer<Map<String, Object>>();
-		toJson = new JSONSerializer();
-		toJson.transform(new DateTransformer("dd/MM/yyyy HH:mm:ss Z"), Date.class); //used on Fortius ClientHandler
+		decoder = new JSONDeserializer<Map<String, Object>>();
+		encoder = new JSONSerializer();
+		encoder.transform(new DateTransformer("dd/MM/yyyy HH:mm:ss Z"), Date.class); //used on Fortius ClientHandler
+		encoder.prettyPrint(true);
 	}
 
 	@Override
 	public Object decode(String text)
 	{
-		Object obj = toObject.deserialize(text);
+		Object obj = decoder.deserialize(text);
 		return obj;
 	}
 
@@ -43,7 +44,7 @@ public class FlexJsonCodec
 	@Override
 	public String encode(Object object)
 	{
-		String text = toJson.deepSerialize(object);
+		String text = encoder.deepSerialize(object);
 		return text;
 	}
 }
