@@ -19,12 +19,12 @@ import org.slf4j.LoggerFactory;
 import xingu.email.Email;
 import xingu.email.EmailManager;
 import xingu.store.ObjectStore;
+import xingu.template.Context;
+import xingu.template.TemplateEngine;
 import xingu.time.Instant;
 import xingu.time.Time;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.Sys;
-import br.com.ibnetwork.xingu.template.Context;
-import br.com.ibnetwork.xingu.template.TemplateEngine;
 import br.com.ibnetwork.xingu.utils.StringUtils;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 

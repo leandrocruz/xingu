@@ -22,7 +22,7 @@
 		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-template</artifactId>
+			<artifactId>template-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

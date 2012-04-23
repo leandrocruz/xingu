@@ -3,23 +3,24 @@
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>xingu</groupId>
-		<artifactId>xingu</artifactId>
+		<artifactId>template</artifactId>
 		<version>1.4.21-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>template</artifactId>
-	<packaging>pom</packaging>
-	<name>Xingu Template</name>
+	<artifactId>template-freemarker</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Template Freemarker</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
+			<artifactId>template-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	</dependencies>
-	<modules>
-		<module>api</module>
-		<module>freemarker</module>
-	</modules>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.19</version>
+		</dependency>
+	</dependencies>	
 </project>

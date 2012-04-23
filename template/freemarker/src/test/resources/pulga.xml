@@ -1,0 +1,9 @@
+<pulga>
+	<component 	role="xingu.template.TemplateEngine"
+				class="xingu.template.impl.freemarker.FreemarkerTemplateEngine">
+		<!-- loaded from classpath -->
+		<templates extension=".ftl"/>
+		<encoding name="ISO-8859-1"/>
+		<file name="freemarker.properties"/>
+	</component>
+</pulga>
