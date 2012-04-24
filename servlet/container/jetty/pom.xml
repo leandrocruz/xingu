@@ -1,0 +1,36 @@
+<project	xmlns="http://maven.apache.org/POM/4.0.0"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+		<artifactId>servlet-container</artifactId>
+		<version>1.4.21-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>servlet-container-jetty</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Servlet Container Jetty</name>
+	<dependencies>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>servlet-container-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.1.19</version>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>8.0.1.v20110908</version>
+		</dependency>
+		-->
+	</dependencies>
+	<properties>
+		<jetty.version>8.0.1.v20110908</jetty.version> <!-- Same Version as Run-Jetty-Run Eclipse plugin -->
+	</properties>
+</project>
