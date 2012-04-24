@@ -1,0 +1,12 @@
+<pulga>
+	<component	key="groovy"
+				role="xingu.template.TemplateEngine"
+				class="xingu.template.impl.groovy.GroovyTemplateEngine">
+		<!-- loaded from classpath -->
+		<templates extension=".gtl">
+			<root>${pom.build.testOutputDirectory}/templates/groovy/app</root>
+			<onError template="screens.Error"/>
+		</templates>
+		<encoding name="ISO-8859-1"/>
+	</component>
+</pulga>
