@@ -12,12 +12,10 @@
 	<packaging>jar</packaging>
 	<name>Xingu Servlet Container API</name>
 	<dependencies>
-		<!-- 
 		<dependency>
-			<groupId></groupId>
-			<artifactId></artifactId>
-			<version></version>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-creator</artifactId>
+			<version>${project.version}</version>
 		</dependency>
-		-->
 	</dependencies>
 </project>
