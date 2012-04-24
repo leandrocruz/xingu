@@ -1,7 +1,10 @@
 package br.com.ibnetwork.xingu.container.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -51,7 +54,19 @@ public class SimpleBinder
         return binding;
     }
 
- 
+	@Override
+	public List<Class<?>> getRoles()
+	{
+		List<Class<?>> result = new ArrayList<Class<?>>();
+		Set<String> keys = map.keySet();
+		for (String key : keys)
+		{
+			Binding<?> binding = map.get(key);
+			Class<?> clazz = binding.role();
+			result.add(clazz);
+		}
+		return result;
+	}
 }
 
 class SimpleBinding<T>
