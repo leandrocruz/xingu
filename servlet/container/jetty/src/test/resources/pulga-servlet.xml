@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pulga>
+	<component role="xingu.servlet.container.ServletContainer"
+			   class="xingu.servlet.container.impl.jetty.JettyServletContainer">
+		<server>
+			<http port="9192"/>
+			<handler class="xingu.servlet.container.impl.jetty.War"
+					 displayName="Test"
+					 war="src/test/resources/webapps/test"
+					 context="/test"
+					 useParentClassLoader="false">
+			</handler>
+		</server>
+	</component>
+</pulga>
