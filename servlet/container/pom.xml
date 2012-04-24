@@ -12,12 +12,21 @@
 	<packaging>jar</packaging>
 	<name>Xingu Servlet Container</name>
 	<dependencies>
-		<!--
 		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>codec-api</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>6.1.19</version>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>8.0.1.v20110908</version>
 		</dependency>
 		-->
 	</dependencies>
+	<properties>
+		<jetty.version>8.0.1.v20110908</jetty.version> <!-- Same Version as Run-Jetty-Run Eclipse plugin -->
+		<kiduxce.version>${project.version}</kiduxce.version>        
+	</properties>
 </project>
