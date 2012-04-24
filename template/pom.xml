@@ -22,5 +22,6 @@
 		<module>api</module>
 		<module>freemarker</module>
 		<module>velocity</module>
+		<module>groovy</module>
 	</modules>
 </project>

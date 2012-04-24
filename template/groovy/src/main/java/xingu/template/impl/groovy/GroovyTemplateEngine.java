@@ -1,21 +1,21 @@
- package br.com.ibnetwork.xingu.template.impl.groovy;
+ package xingu.template.impl.groovy;
 
 import groovy.lang.Writable;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 
-import java.io.Writer;
 import java.io.File;
+import java.io.Writer;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
-import br.com.ibnetwork.xingu.template.Context;
-import br.com.ibnetwork.xingu.template.TemplateEngine;
-import br.com.ibnetwork.xingu.template.TemplateEngineException;
-import br.com.ibnetwork.xingu.template.impl.TemplateEngineSupport;
+import xingu.template.Context;
+import xingu.template.TemplateEngine;
+import xingu.template.TemplateEngineException;
+import xingu.template.impl.TemplateEngineSupport;
 import br.com.ibnetwork.xingu.utils.FSUtils;
 
 public class GroovyTemplateEngine

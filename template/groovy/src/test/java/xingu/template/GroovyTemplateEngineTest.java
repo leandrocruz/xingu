@@ -1,4 +1,4 @@
-package br.com.ibnetwork.xingu.template;
+package xingu.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,13 +8,13 @@ import java.io.StringWriter;
 
 import org.junit.Test;
 
+import xingu.template.Context;
+import xingu.template.TemplateEngine;
+
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 
-/**
- * @author leandro
- */
 public class GroovyTemplateEngineTest
     extends XinguTestCase
 {
