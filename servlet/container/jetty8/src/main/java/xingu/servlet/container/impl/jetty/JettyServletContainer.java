@@ -64,6 +64,7 @@ public class JettyServletContainer
     public void stop()
         throws Exception
     {
+        logger.info("Stopping Jetty");
         if(server != null)
         {
             server.stop();
