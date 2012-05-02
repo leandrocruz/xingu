@@ -45,8 +45,13 @@ public class DeployServlet
     public Handler createHandler()
         throws Exception
     {
-        logger.info("deploying servlet '{}'", contextPath);
-        ServletHandler servletHandler = new ServletHandler();
+        logger.info("Deploying servlet '{}'", contextPath);
+
+        SessionHandler sessionHandler = sessionBroker.handlerFor(null);
+        ServletContextHandler context = new ServletContextHandler();
+        context.setContextPath(contextPath);
+        context.setSessionHandler(sessionHandler);
+
         for(Configuration mapping : servlets)
         {
             String className = mapping.getAttribute("class");
@@ -55,19 +60,10 @@ public class DeployServlet
 
             Servlet servlet = (Servlet) factory.create(className /*, servletConf */ );
             ServletHolder holder = new ServletHolder(servlet);
-            servletHandler.addServletWithMapping(holder, path);
+            context.addServlet(holder, path);
         }
-        SessionHandler sessionHandler = sessionBroker.handlerFor(null);
-        ServletContextHandler ctx = new ServletContextHandler();
-        ctx.setContextPath(contextPath);
-        ctx.setSessionHandler(sessionHandler);
-        ctx.setHandler(servletHandler);
-        return ctx;
+
+        return context;
     }
 
-    private static void printStackTrace(StackTraceElement[] stackTrace) {
-        for(StackTraceElement e : stackTrace) {
-            System.out.println(e.toString());
-        }
-    }
 }
