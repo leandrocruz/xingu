@@ -20,6 +20,8 @@ import xingu.template.impl.TemplateEngineSupport;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import freemarker.cache.TemplateLoader;
+
+import freemarker.log.Logger;
 import freemarker.core.InvalidReferenceException;
 import freemarker.core.ParseException;
 import freemarker.template.Template;
@@ -70,7 +72,16 @@ public class FreemarkerTemplateEngine
 	public void configure(Configuration conf)
     	throws ConfigurationException
     {
-        super.configure(conf);
+		super.configure(conf);
+        try
+		{
+			Logger.selectLoggerLibrary(Logger.LIBRARY_SLF4J);
+		}
+		catch (ClassNotFoundException e)
+		{
+			throw new ConfigurationException("Error loading loger library", e);
+		}
+        
         wrapper = (FreemarkerConfiguration) factory.create(FreemarkerConfiguration.class);
         cfg = new freemarker.template.Configuration();
         try
