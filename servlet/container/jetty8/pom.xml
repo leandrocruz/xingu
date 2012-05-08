@@ -24,7 +24,6 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
-            <classifier>sources</classifier>
 		</dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
