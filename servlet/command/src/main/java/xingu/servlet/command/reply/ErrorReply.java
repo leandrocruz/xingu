@@ -12,11 +12,11 @@ public class ErrorReply
     
     public ErrorReply(String reason)
     {
-        this.result = ERROR;
-        this.reason = reason;
+    	setOk(false);
+    	this.reason = reason;
     }
     
-    public String reason()
+    public String getReason()
     {
         return reason;
     }

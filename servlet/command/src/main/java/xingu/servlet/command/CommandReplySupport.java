@@ -4,25 +4,16 @@ package xingu.servlet.command;
 public class CommandReplySupport
     implements CommandReply
 {
-    protected String result = OK; /* used in json serialziation. Do not remove */
-	
     private long id;
     
-    @Override
-    public String result()
-    {
-        return result;
-    }
+    private boolean ok = true;
+    
+    private Throwable error;
 
-	@Override
-	public void setId(long id)
-	{
-		this.id = id;
-	}
-
-	@Override
-	public long getId()
-	{
-		return id;
-	}
+	@Override public void setId(long id) {this.id = id;}
+	@Override public long getId() {return id;}
+	@Override public boolean isOk() {return ok;}
+	@Override public void setOk(boolean ok) {this.ok = ok;}
+	@Override public Throwable getError() {return error;}
+	@Override public void setError(Throwable error){this.error = error;}
 }

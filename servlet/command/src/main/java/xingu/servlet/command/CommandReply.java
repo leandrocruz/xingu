@@ -7,9 +7,9 @@ import br.com.ibnetwork.xingu.lang.WithId;
 public interface CommandReply
     extends Serializable, WithId
 {
-    String OK = "OK";
+    boolean isOk();
+    void setOk(boolean ok);
     
-    String ERROR = "ERROR";
-    
-    String result();
+    Throwable getError();
+    void setError(Throwable error);
 }
