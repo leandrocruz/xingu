@@ -6,120 +6,117 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class TimeUtils
 {
-    public enum Unit {
-        DAY,
-        WEEK,
-        MONTH,
-        YEAR
-    }
+	public enum Unit {
+		DAY, WEEK, MONTH, YEAR
+	}
 
-    public static long toMillis(String value)
-    {
-        if(StringUtils.isEmpty(value))
-        {
-            return -1;
-        }
+	public static long toMillis(String value)
+	{
+		if (StringUtils.isEmpty(value))
+		{
+			return -1;
+		}
 
-        long factor = 0;
-        String number = number(value);
-        if(value.endsWith("ms"))
-        {
-            factor = 1;
-        }
-        else if(value.endsWith("s"))
-        {
-            factor = 1000;
-        }
-        else if(value.endsWith("m"))
-        {
-            factor = 1000 * 60;
-        }
-        else if(value.endsWith("h"))
-        {
-            factor = 1000 * 60 * 60;
-        }
-        else if(value.endsWith("d"))
-        {
-            factor = 1000 * 60 * 60 * 30;            
-        }
-        long v = Long.parseLong(number);
-        return v * factor;
-    }
-    
-    private static String number(String value)
-    {
-        if(value.endsWith("ms"))
-        {
-            return value.substring(0, value.length() - 2);
-        }
-        else
-        {
-            return value.substring(0, value.length() - 1);
-        }
-    }
-    
-    public static String toSeconds(long millis)
-    {
-        return toString(millis, "s");
-    }
+		long factor = 0;
+		String number = number(value);
+		if (value.endsWith("ms"))
+		{
+			factor = 1;
+		}
+		else if (value.endsWith("s"))
+		{
+			factor = 1000;
+		}
+		else if (value.endsWith("m"))
+		{
+			factor = 1000 * 60;
+		}
+		else if (value.endsWith("h"))
+		{
+			factor = 1000 * 60 * 60;
+		}
+		else if (value.endsWith("d"))
+		{
+			factor = 1000 * 60 * 60 * 30;
+		}
+		long v = Long.parseLong(number);
+		return v * factor;
+	}
 
-    public static String toMinutes(long millis)
-    {
-        return toString(millis, "m");
-    }
+	private static String number(String value)
+	{
+		if (value.endsWith("ms"))
+		{
+			return value.substring(0, value.length() - 2);
+		}
+		else
+		{
+			return value.substring(0, value.length() - 1);
+		}
+	}
 
-    public static String toHours(long millis)
-    {
-        return toString(millis, "h");
-    }
+	public static String toSeconds(long millis)
+	{
+		return toString(millis, "s");
+	}
 
-    public static String toDays(long millis)
-    {
-        return toString(millis, "d");
-    }
+	public static String toMinutes(long millis)
+	{
+		return toString(millis, "m");
+	}
 
-    public static String toString(long millis, String unit)
-    {
-        double factor = 0;
-        if(unit.endsWith("ms"))
-        {
-            return millis + "ms";
-        }
-        else if(unit.endsWith("s"))
-        {
-            factor = 1000.0;
-        }
-        else if(unit.endsWith("m"))
-        {
-            factor = 1000.0 * 60;
-        }
-        else if(unit.endsWith("h"))
-        {
-            factor = 1000.0 * 60 * 60;
-        }
-        else if(unit.endsWith("d"))
-        {
-            factor = 1000.0 * 60 * 60 * 30;            
-        }
-        return ((double)millis)/factor + unit;
-    }
+	public static String toHours(long millis)
+	{
+		return toString(millis, "h");
+	}
 
-    public static Calendar date(int year, int month, int day)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
-    }
+	public static String toDays(long millis)
+	{
+		return toString(millis, "d");
+	}
+
+	public static String toString(long millis, String unit)
+	{
+		double factor = 0;
+		if (unit.endsWith("ms"))
+		{
+			return millis + "ms";
+		}
+		else if (unit.endsWith("s"))
+		{
+			factor = 1000.0;
+		}
+		else if (unit.endsWith("m"))
+		{
+			factor = 1000.0 * 60;
+		}
+		else if (unit.endsWith("h"))
+		{
+			factor = 1000.0 * 60 * 60;
+		}
+		else if (unit.endsWith("d"))
+		{
+			factor = 1000.0 * 60 * 60 * 24;
+		}
+		return ((double) millis) / factor + unit;
+	}
+
+	public static Calendar date(int year, int month, int day)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, day);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
 
 	public static String monthName(int i)
 	{
-		switch(i)
+		switch (i)
 		{
 			case 0:
 				return "JANUARY";
@@ -149,5 +146,4 @@ public class TimeUtils
 				throw new NotImplementedYet();
 		}
 	}
-
 }
