@@ -17,8 +17,15 @@ public class TimeUtils
 			return -1;
 		}
 
-		long factor = 0;
 		String number = number(value);
+		long factor = getFactor(value);
+		long v = Long.parseLong(number);
+		return v * factor;
+	}
+
+	private static long getFactor(String value)
+	{
+		long factor = 0;
 		if (value.endsWith("ms"))
 		{
 			factor = 1;
@@ -37,10 +44,9 @@ public class TimeUtils
 		}
 		else if (value.endsWith("d"))
 		{
-			factor = 1000 * 60 * 60 * 30;
+			factor = 1000 * 60 * 60 * 24;
 		}
-		long v = Long.parseLong(number);
-		return v * factor;
+		return factor;
 	}
 
 	private static String number(String value)
@@ -77,27 +83,7 @@ public class TimeUtils
 
 	public static String toString(long millis, String unit)
 	{
-		double factor = 0;
-		if (unit.endsWith("ms"))
-		{
-			return millis + "ms";
-		}
-		else if (unit.endsWith("s"))
-		{
-			factor = 1000.0;
-		}
-		else if (unit.endsWith("m"))
-		{
-			factor = 1000.0 * 60;
-		}
-		else if (unit.endsWith("h"))
-		{
-			factor = 1000.0 * 60 * 60;
-		}
-		else if (unit.endsWith("d"))
-		{
-			factor = 1000.0 * 60 * 60 * 24;
-		}
+		double factor = getFactor(unit);
 		return ((double) millis) / factor + unit;
 	}
 
