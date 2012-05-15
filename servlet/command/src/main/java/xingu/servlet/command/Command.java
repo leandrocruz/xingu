@@ -12,6 +12,6 @@ import br.com.ibnetwork.xingu.lang.WithId;
 public interface Command
     extends Serializable, WithId
 {
-	String getStamp();
-	void setStamp(String stamp);
+	String getChannel();
+	void setChannel(String channel);
 }

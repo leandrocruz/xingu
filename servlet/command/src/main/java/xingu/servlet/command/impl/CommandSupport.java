@@ -11,6 +11,6 @@ public class CommandSupport
 	
 	@Override public long getId() {return id;}
 	@Override public void setId(long id) {this.id = id;}
-	@Override public String getStamp() {return stamp;}
-	@Override public void setStamp(String stamp) {this.stamp = stamp;}
+	@Override public String getChannel() {return stamp;}
+	@Override public void setChannel(String stamp) {this.stamp = stamp;}
 }
