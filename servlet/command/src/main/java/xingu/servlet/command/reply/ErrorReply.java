@@ -18,6 +18,7 @@ public class ErrorReply
 
 	public ErrorReply(Throwable t, String message)
 	{
+		setOk(false);
 		this.message = message;
 		this.errorClass = t.getClass().getName();
 		this.errorMessage = t.getMessage();
