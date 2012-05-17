@@ -1,7 +1,5 @@
 package xingu.servlet.command.reply;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import xingu.servlet.command.CommandReplySupport;
 
 public class ErrorReply
@@ -16,13 +14,13 @@ public class ErrorReply
 	private String stackTrace;
 	
 
-	public ErrorReply(Throwable t, String message)
+	public ErrorReply(Throwable t, String message, String trace)
 	{
 		setOk(false);
 		this.message = message;
 		this.errorClass = t.getClass().getName();
 		this.errorMessage = t.getMessage();
-		this.stackTrace = ExceptionUtils.getFullStackTrace(t);
+		this.stackTrace = trace;
 	}
 
 
