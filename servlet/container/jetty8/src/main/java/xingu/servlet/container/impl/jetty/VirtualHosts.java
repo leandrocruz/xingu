@@ -2,7 +2,6 @@ package xingu.servlet.container.impl.jetty;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.eclipse.jetty.server.handler.ContextHandler.Context;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 public class VirtualHosts

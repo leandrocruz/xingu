@@ -88,7 +88,6 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int delete(POJO pojo)
         throws StoreException
     {
-        @SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return delete(clazz, pojo);
     }
@@ -131,7 +130,6 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int store(POJO pojo)
         throws StoreException
     {
-        @SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return store(clazz, pojo);
     }
@@ -178,7 +176,6 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int insertWithId(POJO pojo)
         throws StoreException
     {
-        @SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return insertWithId(clazz, pojo);
     }
@@ -208,7 +205,6 @@ public class MyBatisObjectStore
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> POJO selectOne(String statement)
         throws StoreException
@@ -230,7 +226,6 @@ public class MyBatisObjectStore
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> POJO selectOne(String statement, Object param)
         throws StoreException
@@ -261,7 +256,6 @@ public class MyBatisObjectStore
         return selectList(statement);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> List<POJO> selectList(String statement)
         throws StoreException
@@ -283,7 +277,6 @@ public class MyBatisObjectStore
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> List<POJO> selectList(String statement, Object param)
         throws StoreException

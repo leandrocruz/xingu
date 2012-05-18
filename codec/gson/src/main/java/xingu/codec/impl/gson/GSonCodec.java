@@ -60,7 +60,6 @@ public class GSonCodec
         gson = builder.create();
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public Object decode(String json)
     {

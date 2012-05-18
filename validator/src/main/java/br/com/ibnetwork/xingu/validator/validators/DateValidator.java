@@ -21,7 +21,6 @@ public class DateValidator
 		_ann = ann;
 	}
 	
-	@SuppressWarnings("unchecked")
     @Override
     public boolean apply(Object bean, Object value)
     {

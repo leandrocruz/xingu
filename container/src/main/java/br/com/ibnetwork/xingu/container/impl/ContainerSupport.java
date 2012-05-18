@@ -68,7 +68,6 @@ public abstract class ContainerSupport
         return binder().get(ConfigurationManager.class).impl();
     }
     
-    @SuppressWarnings("unchecked")
     protected <T> Binding<T> binding(String roleName, String key, String implName) 
         throws ConfigurationException
     {
@@ -88,7 +87,6 @@ public abstract class ContainerSupport
         return binding;
     }
 
-    @SuppressWarnings("unchecked")
     protected <T> T tryDefaults(Class<T> clazz) 
         throws ContainerException
     {

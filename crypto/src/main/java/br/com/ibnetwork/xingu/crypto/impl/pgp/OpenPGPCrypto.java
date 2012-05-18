@@ -64,7 +64,6 @@ public class OpenPGPCrypto
         return new PGPPrivateKeyWrapper(privateKey);
     }
 
-    @SuppressWarnings("unchecked")
     private PGPSecretKey pgpSecretKey(InputStream is, long id)
         throws Exception
     {
@@ -94,7 +93,6 @@ public class OpenPGPCrypto
         return readPublicKey(is);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public PubKey readPublicKey(InputStream is)
         throws Exception
@@ -157,7 +155,6 @@ public class OpenPGPCrypto
 	/**
      * Decrypts the message from InputStream to OutputStrem using the PGPPrivateKey
      */
-    @SuppressWarnings("unchecked")
     @Override
     public byte[] decrypt(InputStream is, Key key)
         throws Exception

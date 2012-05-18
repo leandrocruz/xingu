@@ -6,7 +6,6 @@ import java.util.Properties;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 
 import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.factory.FactoryException;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class XinguObjectFactory

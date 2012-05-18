@@ -22,7 +22,6 @@ public class IdGeneratorTest
 	    binder.bind(ObjectStore.class).to(InMemoryObjectStore.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testInMemoryLongGenerator()
 		throws Exception
@@ -31,7 +30,6 @@ public class IdGeneratorTest
 	    testGenerator(generator);
 	}
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testPersistantLongGenerator()
         throws Exception

@@ -34,13 +34,11 @@ public class FactoryImpl
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected <T> Class<T> mappingFor(Class<T> clazz)
     {
         return (Class<T>) map.get(clazz.getName());
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T create(Class<? extends T> clazz, Configuration conf, Object... params) 
         throws FactoryException

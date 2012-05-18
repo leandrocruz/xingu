@@ -20,7 +20,6 @@ public class InMemoryObjectStore
     public <POJO extends PersistentBean> int store(POJO pojo)
             throws StoreException
     {
-        @SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return store(clazz, pojo);
     }
@@ -49,7 +48,6 @@ public class InMemoryObjectStore
     public <POJO extends PersistentBean> int delete(POJO pojo)
         throws StoreException
     {
-        @SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return delete(clazz, pojo);
     }

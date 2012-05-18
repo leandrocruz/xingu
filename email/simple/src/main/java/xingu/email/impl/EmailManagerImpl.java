@@ -7,9 +7,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
 import xingu.email.Email;
-
 import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.messaging.MessageDispatcher;
 
 public class EmailManagerImpl

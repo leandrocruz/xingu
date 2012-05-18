@@ -50,7 +50,6 @@ public abstract class IbatisDaoSupport<ID,T>
 		return queryList("getAll", null);
 	}
 
-	@SuppressWarnings("unchecked")
     protected T queryObject(String stmtId, Object param)
 		throws DaoException
 	{
@@ -70,7 +69,6 @@ public abstract class IbatisDaoSupport<ID,T>
         }
 	}
 
-    @SuppressWarnings("unchecked")
     protected List<T> queryList(String stmtId, Object param)
 		throws DaoException
 	{
