@@ -5,7 +5,6 @@ import xingu.servlet.command.CommandReplySupport;
 
 public class SuccessReply
     extends CommandReplySupport
-    implements CommandReply
 {
     public static final SuccessReply INSTANCE = new SuccessReply();
     
