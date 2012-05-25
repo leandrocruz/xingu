@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 
 public class Sys 
 {
+	@Deprecated
 	public static void acquire(Semaphore sem)
 	{
         try 
@@ -16,6 +17,7 @@ public class Sys
 	}
 	
     @SuppressWarnings("static-access")
+    @Deprecated
 	public static void sleepWithoutInterruptions(long millis) 
     {
 		try 
@@ -26,6 +28,7 @@ public class Sys
 		{}
 	}
 
+    @Deprecated
 	public static void waitWithoutInterruptions(Object lock, long millis)
 	{
 		try 
@@ -36,6 +39,7 @@ public class Sys
 		{}
 	}
 
+    @Deprecated
 	public static void waitWithoutInterruptions(Object lock)
 	{
 		try
