@@ -1,5 +1,6 @@
 package br.com.ibnetwork.xingu.utils.clone.impl;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -94,7 +95,21 @@ public class ClonerSupport
 	@SuppressWarnings("unchecked")
 	protected <T> T tryFastClone(T t, Cloner cloner)
 	{
-		FastCloner<T> fast = (FastCloner<T>) fastClonerByTargetType.get(t.getClass());
+		Class<?> clazz = t.getClass();
+		if(clazz.isArray())
+		{
+			int length = Array.getLength(t);
+            T newInstance = (T) Array.newInstance(clazz.getComponentType(), length);
+            for (int i = 0; i < length; i++)
+            {
+                    Object item = Array.get(t, i);
+                    Object clone = cloner.deepClone(item);
+                    Array.set(newInstance, i, clone);
+            }
+            return newInstance;
+		}
+
+		FastCloner<T> fast = (FastCloner<T>) fastClonerByTargetType.get(clazz);
 		if(fast == null)
 		{
 			return null;

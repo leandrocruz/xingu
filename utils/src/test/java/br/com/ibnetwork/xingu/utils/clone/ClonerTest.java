@@ -90,4 +90,33 @@ public class ClonerTest
 			assertEquals(s1, s2);
 		}
 	}
+
+	@Test
+	public void testCloneObjectWithArray()
+		throws Exception
+	{
+		Cloner cloner = new SimpleCloner();
+
+		SimpleObject[] a1 = new SimpleObject[] {
+				new SimpleObject(1, "One"),
+				new SimpleObject(2, "Two")
+		};
+		
+		WithArray o1 = new WithArray(a1);
+		WithArray o2 = cloner.deepClone(o1);
+		assertNotSame(o1, o2);
+		
+		SimpleObject[] a2 = o2.array();
+		assertNotSame(a1, a2);
+		assertEquals(a1.length, a2.length);
+		
+		int size = a1.length;
+		for (int i = 0; i < size; i++)
+		{
+			SimpleObject s1 = a1[i];
+			SimpleObject s2 = a2[i];
+			assertNotSame(s1, s2);
+			assertEquals(s1, s2);
+		}
+	}
 }
