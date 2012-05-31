@@ -10,7 +10,16 @@ public class CloningContext
 	private int level = 0;
 	
 	private Map<Object, Object> cache = new IdentityHashMap<Object, Object>();
+
+	private String name;
+
+	private final boolean pretty;
 	
+	public CloningContext(boolean pretty)
+	{
+		this.pretty = pretty;
+	}
+
 	public <T> void addReference(T original, T clone)
 	{
 		Object cached = cache.get(original);
@@ -37,9 +46,62 @@ public class CloningContext
 		level -= 1;
 	}
 
-	public String level()
+	public CloningContext setName(String name)
 	{
-		return StringUtils.leftPad(String.valueOf(level + 1), level * 4, "") + ": ";
+		this.name = name;
+		return this;
 	}
 
+	public CloningContext clearName()
+	{
+		this.name = null;
+		return this;
+	}
+
+	public void print(Object original)
+	{
+		if(!pretty)
+		{
+			return;
+		}
+
+		String ident = StringUtils.leftPad("", level * 4);
+		String className;
+		Class<?> clazz = original.getClass();
+		if(StringUtils.isNotEmpty(name))
+		{
+			className = name + ":" + clazz.getSimpleName();
+		}
+		else
+		{
+			className = clazz.getSimpleName();
+		}
+		
+		String value = original.toString();
+		if(clazz.isArray())
+		{
+			value = "ARRAY";
+		}
+		
+		System.out.println(ident + className + " = " + value);
+	}
+
+	public void start()
+	{
+		if(!pretty)
+		{
+			return;
+		}
+		System.out.println("-");
+	}
+
+	public void end()
+	{
+		if(!pretty)
+		{
+			return;
+		}
+		System.out.println(".");
+
+	}
 }

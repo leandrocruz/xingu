@@ -72,7 +72,11 @@ public class ClonerSupport
 	public <T> T deepClone(T original)
 		throws CloneException
 	{
-		return deepCloneWithContext(new CloningContext(), original);
+		CloningContext ctx = new CloningContext(pretty);
+		ctx.start();
+		T t = deepCloneWithContext(ctx, original);
+		ctx.end();
+		return t;
 	}
 	
 	@Override
@@ -81,15 +85,13 @@ public class ClonerSupport
 	{
 		@SuppressWarnings("unchecked")
 		Class<T> clazz = (Class<T>) original.getClass();
-
-		if(pretty) System.out.print(ctx.level() + clazz.getSimpleName() + ": " + original);
+		ctx.print(original);
+		
 		T clone = ctx.getReference(original);
 		if(clone != null)
 		{
-			if(pretty) System.out.println(" *");
 			return clone;
 		}
-		if(pretty) System.out.println("");
 		
 		clone = isImmutable(ctx, original);
 		if(clone != null)
@@ -176,9 +178,10 @@ public class ClonerSupport
 		else
 		{
 			Object value = FieldUtils.valueFrom(field, original);
-			Object clonedValueForField = value == null ? null : deepCloneWithContext(ctx, value);
+			Object clonedValueForField = value == null ? null : deepCloneWithContext(ctx.setName(field.getName()), value);
 			FieldUtils.set(field, clone, clonedValueForField);
 		}
+		ctx.clearName();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -204,6 +207,7 @@ public class ClonerSupport
 		for (int i = 0; i < length; i++)
 		{
 		        Object item = Array.get(t, i);
+		        ctx.setName("["+i+"]");
 		        Object clone = deepCloneWithContext(ctx, item);
 		        Array.set(newInstance, i, clone);
 		}

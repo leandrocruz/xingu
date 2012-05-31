@@ -12,6 +12,7 @@ public class HashSetFastCloner
 	@Override
 	public HashSet<Object> clone(CloningContext ctx, HashSet<Object> original, Cloner cloner)
 	{
+		ctx.clearName();
 		ctx.increment();
 		HashSet<Object> result = new HashSet<Object>();
 		for(Object item : original)
@@ -20,6 +21,7 @@ public class HashSetFastCloner
 			result.add(clone);
 		}
 		ctx.decrement();
+		ctx.clearName();
 		return result;
 	}
 }

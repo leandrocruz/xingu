@@ -13,6 +13,7 @@ public class ArrayListFastCloner
 	@Override
 	public ArrayList<?> clone(CloningContext ctx, ArrayList<?> original, Cloner cloner)
 	{
+		ctx.clearName();
 		ctx.increment();
 		int size = original.size();
 		ArrayList<Object> result = new ArrayList<Object>(size);
@@ -20,10 +21,12 @@ public class ArrayListFastCloner
 		for (int i = 0; i < size; i++)
 		{
 			Object item = original.get(i);
+			ctx.setName("["+i+"]");
 			Object clone = cloner.deepCloneWithContext(ctx, item);
 			result.add(i, clone);
 		}
 		ctx.decrement();
+		ctx.clearName();
 		return result;
 	}
 }
