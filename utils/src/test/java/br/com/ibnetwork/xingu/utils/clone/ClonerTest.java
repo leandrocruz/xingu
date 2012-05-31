@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -310,5 +311,15 @@ public class ClonerTest
 		assertNotSame(copy[0].w(), copy[1].w());
 		assertEquals(copy[0].w(), copy[1].w());
 		assertEquals(copy[0].i() + 1, copy[1].i());
+	}
+	
+	@Test
+	public void testDate()
+		throws Exception
+	{
+		Date o1 = new Date(1000);
+		Date o2 = new SimpleCloner().deepClone(o1);
+		assertNotSame(o1, o2);
+		assertEquals(o1, o2);
 	}
 }
