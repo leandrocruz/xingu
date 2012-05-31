@@ -21,4 +21,10 @@ public class SimpleObject
 		SimpleObject other = (SimpleObject) obj;
 		return i == other.i && s.equals(other.s);
 	}
+
+	@Override
+	public String toString()
+	{
+		return "'" + i + " - " + s + "'";
+	}
 }

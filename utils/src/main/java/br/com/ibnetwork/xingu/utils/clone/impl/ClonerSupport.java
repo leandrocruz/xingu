@@ -19,6 +19,7 @@ import br.com.ibnetwork.xingu.utils.clone.impl.fast.ByteFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.CharFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.DoubleFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.FloatFastCloner;
+import br.com.ibnetwork.xingu.utils.clone.impl.fast.HashMapFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.IntegerFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.LongFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ShortFastCloner;
@@ -43,6 +44,7 @@ public class ClonerSupport
 		fastClonerByTargetType.put(Character.class, new CharFastCloner());
 		fastClonerByTargetType.put(String.class, new StringFastCloner());
 		fastClonerByTargetType.put(ArrayList.class, new ArrayListFastCloner());
+		fastClonerByTargetType.put(HashMap.class, new HashMapFastCloner());
 	}
 	
 	@Override

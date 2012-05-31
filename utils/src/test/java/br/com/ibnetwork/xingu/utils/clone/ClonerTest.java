@@ -1,11 +1,16 @@
 package br.com.ibnetwork.xingu.utils.clone;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -90,6 +95,37 @@ public class ClonerTest
 			assertNotSame(s1, s2);
 			assertEquals(s1, s2);
 		}
+	}
+
+	@Test
+	public void testCloneObjectWithMap()
+		throws Exception
+	{
+		Map<String, SimpleObject> map1 = new HashMap<String, SimpleObject>();
+		map1.put("key 1", new SimpleObject(1, "k1"));
+		map1.put("key 2", new SimpleObject(2, "k2"));
+		
+		WithMap o1 = new WithMap(map1);
+		WithMap o2 = new SimpleCloner().deepClone(o1);
+		assertNotSame(o1, o2);
+		
+		Map<String, SimpleObject> map2 = o2.map();
+		assertNotSame(map1, map2);
+		assertEquals(map1, map2);
+		
+		Set<String> k1 = map1.keySet();
+		Set<String> k2 = map2.keySet();
+		assertNotSame(k1, k2);
+		assertEquals(k1, k2);
+
+		Collection<SimpleObject> v1 = map1.values();
+		Collection<SimpleObject> v2 = map2.values();
+		assertNotSame(v1, v2);
+		//assertEquals(v1, v2); Fails!
+		Object[] va1 = v1.toArray();
+		Object[] va2 = v2.toArray();
+		assertNotSame(va1, va2);
+		assertArrayEquals(va1, va2);
 	}
 
 	@Test
