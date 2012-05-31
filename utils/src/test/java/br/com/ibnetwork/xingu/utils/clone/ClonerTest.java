@@ -148,4 +148,30 @@ public class ClonerTest
 		
 		assertTrue(if2 instanceof IFaceImpl2);
 	}
+
+	@Test
+	public void testCloneArray()
+		throws Exception
+	{
+		String[] array = new String[]{"a", "b", "c"};
+		String[] copy = new SimpleCloner().deepClone(array);
+		assertNotSame(array, copy);
+		for (int i = 0; i < array.length; i++)
+		{
+			String item1 = array[i];
+			String item2 = copy[i];
+			assertNotSame(item1, item2);
+			assertEquals(item1, item2);
+		}
+	}
+
+	@Test
+	public void testNullIsEnforced()
+		throws Exception
+	{
+		Salvation o1 = new Salvation(null);
+		Salvation o2 = new SimpleCloner().deepClone(o1);
+		assertEquals(null, o2.is());
+		
+	}
 }

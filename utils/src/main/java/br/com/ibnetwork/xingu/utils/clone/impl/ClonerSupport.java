@@ -108,7 +108,7 @@ public class ClonerSupport
 		else
 		{
 			Object value = FieldUtils.valueFrom(field, original);
-			Object clonedValueForField = deepClone(value);
+			Object clonedValueForField = value == null ? null : deepClone(value);
 			FieldUtils.set(field, clone, clonedValueForField);
 		}
 	}
