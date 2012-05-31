@@ -119,4 +119,30 @@ public class ClonerTest
 			assertEquals(s1, s2);
 		}
 	}
+
+	@Test
+	public void testCloneObjectWithHandler()
+		throws Exception
+	{
+		Cloner cloner = new SimpleCloner();
+		cloner.addHandler(IFaceImpl1.class, new ReferenceHandler(){
+
+			@Override
+			public Object handle(Object reference)
+			{
+				return new IFaceImpl2();
+			}
+		});
+		
+		WithInterface o1 = new WithInterface(new IFaceImpl1());
+		WithInterface o2 = cloner.deepClone(o1);
+		assertNotSame(o1, o2);
+		
+		IFace if1 = o1.iFace();
+		IFace if2 = o2.iFace();
+		assertNotSame(if1, if2);
+		
+		assertEquals(10, o1.iFace().value());
+		assertEquals(20, o2.iFace().value());
+	}
 }

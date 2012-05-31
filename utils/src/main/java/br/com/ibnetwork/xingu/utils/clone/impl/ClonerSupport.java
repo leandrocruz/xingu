@@ -12,6 +12,7 @@ import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.clone.CloneException;
 import br.com.ibnetwork.xingu.utils.clone.Cloner;
 import br.com.ibnetwork.xingu.utils.clone.FastCloner;
+import br.com.ibnetwork.xingu.utils.clone.ReferenceHandler;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ArrayListFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.BooleanFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ByteFastCloner;
@@ -27,6 +28,8 @@ public class ClonerSupport
 	implements Cloner
 {
 	protected Map<Class<?>, FastCloner<?>> fastClonerByTargetType = new HashMap<Class<?>, FastCloner<?>>();
+	
+	protected Map<Class<?>, ReferenceHandler> handlerByType = new HashMap<Class<?>, ReferenceHandler>();
 	
 	public ClonerSupport()
 	{
@@ -46,7 +49,13 @@ public class ClonerSupport
 	public <T> T deepClone(T original)
 		throws CloneException
 	{
-		T clone = tryFastClone(original, this);
+		T clone = handle(original);
+		if(clone != null)
+		{
+			return clone;
+		}
+		
+		clone = tryFastClone(original, this);
 		if(clone != null)
 		{
 			return clone;
@@ -63,6 +72,18 @@ public class ClonerSupport
 		}
 		
 		return clone;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> T handle(T original)
+	{
+		Class<T> clazz = (Class<T>) original.getClass();
+		ReferenceHandler handler = handlerByType.get(clazz);
+		if(handler == null)
+		{
+			return null;
+		}
+		return (T) handler.handle(original);
 	}
 
 	protected <T> void cloneField(Field field, T original, T clone)
@@ -91,7 +112,7 @@ public class ClonerSupport
 			FieldUtils.set(field, clone, clonedValueForField);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected <T> T tryFastClone(T t, Cloner cloner)
 	{
@@ -129,5 +150,11 @@ public class ClonerSupport
 		{
 			throw new CloneException("Error creating new instance of '" + clazz + "'", t);
 		}
+	}
+
+	@Override
+	public void addHandler(Class<?> clazz, ReferenceHandler handler)
+	{
+		handlerByType.put(clazz, handler);
 	}
 }
