@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils.clone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,5 +145,7 @@ public class ClonerTest
 		
 		assertEquals(10, o1.iFace().value());
 		assertEquals(20, o2.iFace().value());
+		
+		assertTrue(if2 instanceof IFaceImpl2);
 	}
 }
