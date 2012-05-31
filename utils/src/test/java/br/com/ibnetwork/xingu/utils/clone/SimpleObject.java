@@ -17,7 +17,7 @@ public class SimpleObject
 		this.s = s;
 		this.w = w;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -31,20 +31,9 @@ public class SimpleObject
 		return getClass().getSimpleName() + ": '" + i + " - " + s + "/" + w + "'";
 	}
 
-	public String s()
-	{
-		return s;
-	}
-
-	public String w()
-	{
-		return w;
-	}
-
-	public int i()
-	{
-		return i;
-	}
+	public String s() {return s;}
+	public String w() {return w;}
+	public int i() {return i;}
 
 	
 }
