@@ -55,7 +55,7 @@ public class ClonerSupport
 			return clone;
 		}
 		
-		clone = tryFastClone(original, this);
+		clone = tryFastClone(original);
 		if(clone != null)
 		{
 			return clone;
@@ -114,20 +114,12 @@ public class ClonerSupport
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T> T tryFastClone(T t, Cloner cloner)
+	protected <T> T tryFastClone(T t)
 	{
 		Class<?> clazz = t.getClass();
 		if(clazz.isArray())
 		{
-			int length = Array.getLength(t);
-            T newInstance = (T) Array.newInstance(clazz.getComponentType(), length);
-            for (int i = 0; i < length; i++)
-            {
-                    Object item = Array.get(t, i);
-                    Object clone = cloner.deepClone(item);
-                    Array.set(newInstance, i, clone);
-            }
-            return newInstance;
+			return cloneArray(t);
 		}
 
 		FastCloner<T> fast = (FastCloner<T>) fastClonerByTargetType.get(clazz);
@@ -136,7 +128,22 @@ public class ClonerSupport
 			return null;
 		}
 		
-		return fast.clone(t, cloner);
+		return fast.clone(t, this);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T cloneArray(T t)
+	{
+		Class<?> clazz = t.getClass();
+		int length = Array.getLength(t);
+		T newInstance = (T) Array.newInstance(clazz.getComponentType(), length);
+		for (int i = 0; i < length; i++)
+		{
+		        Object item = Array.get(t, i);
+		        Object clone = deepClone(item);
+		        Array.set(newInstance, i, clone);
+		}
+		return newInstance;
 	}
 	
 	protected <T> T newInstanceOf(Class<T> clazz)
