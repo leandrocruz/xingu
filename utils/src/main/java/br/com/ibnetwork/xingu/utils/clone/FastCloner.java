@@ -2,5 +2,5 @@ package br.com.ibnetwork.xingu.utils.clone;
 
 public interface FastCloner<T>
 {
-	T clone(T original, Cloner cloner);
+	T clone(CloningContext ctx, T original, Cloner cloner);
 }

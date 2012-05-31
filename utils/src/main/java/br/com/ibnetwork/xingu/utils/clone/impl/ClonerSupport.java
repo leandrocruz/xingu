@@ -5,12 +5,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
+import br.com.ibnetwork.xingu.lang.SilentObjectCreator;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.clone.CloneException;
 import br.com.ibnetwork.xingu.utils.clone.Cloner;
+import br.com.ibnetwork.xingu.utils.clone.CloningContext;
 import br.com.ibnetwork.xingu.utils.clone.FastCloner;
 import br.com.ibnetwork.xingu.utils.clone.ReferenceHandler;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ArrayListFastCloner;
@@ -20,11 +24,13 @@ import br.com.ibnetwork.xingu.utils.clone.impl.fast.CharFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.DoubleFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.FloatFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.HashMapFastCloner;
+import br.com.ibnetwork.xingu.utils.clone.impl.fast.HashSetFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.IntegerFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.LongFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ObjectFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.ShortFastCloner;
 import br.com.ibnetwork.xingu.utils.clone.impl.fast.StringFastCloner;
+import br.com.ibnetwork.xingu.utils.clone.impl.fast.TreeSetFastCloner;
 
 public class ClonerSupport
 	implements Cloner
@@ -33,8 +39,16 @@ public class ClonerSupport
 	
 	protected Map<Class<?>, ReferenceHandler> handlerByType = new HashMap<Class<?>, ReferenceHandler>();
 	
+	protected boolean pretty = false;
+	
 	public ClonerSupport()
 	{
+		this(false);
+	}
+	
+	public ClonerSupport(boolean pretty)
+	{
+		this.pretty = pretty;
 		fastClonerByTargetType.put(Object.class, new ObjectFastCloner());
 		fastClonerByTargetType.put(Byte.class, new ByteFastCloner());
 		fastClonerByTargetType.put(Boolean.class, new BooleanFastCloner());
@@ -47,6 +61,8 @@ public class ClonerSupport
 		fastClonerByTargetType.put(String.class, new StringFastCloner());
 		fastClonerByTargetType.put(ArrayList.class, new ArrayListFastCloner());
 		fastClonerByTargetType.put(HashMap.class, new HashMapFastCloner());
+		fastClonerByTargetType.put(TreeSet.class, new TreeSetFastCloner());
+		fastClonerByTargetType.put(HashSet.class, new HashSetFastCloner());
 	}
 
 	@Override
@@ -56,33 +72,41 @@ public class ClonerSupport
 		return deepCloneWithContext(new CloningContext(), original);
 	}
 	
-	protected final <T> T deepCloneWithContext(CloningContext ctx, T original)
+	@Override
+	public <T> T deepCloneWithContext(CloningContext ctx, T original)
 		throws CloneException
 	{
-		System.out.print(original);
-		T clone = ctx.get(original);
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) original.getClass();
+
+		if(pretty) System.out.print(ctx.level() + clazz.getSimpleName() + ": " + original);
+		T clone = ctx.getReference(original);
 		if(clone != null)
 		{
-			System.out.println(" *");
+			if(pretty) System.out.println(" *");
 			return clone;
 		}
-		System.out.println("");
+		if(pretty) System.out.println("");
+		
+		clone = isImmutable(ctx, original);
+		if(clone != null)
+		{
+			return clone;
+		}
 		
 		clone = handle(ctx, original);
 		if(clone != null)
 		{
-			ctx.add(original, clone);
+			ctx.addReference(original, clone);
 			return clone;
 		}
 		
-		@SuppressWarnings("unchecked")
-		Class<T> clazz = (Class<T>) original.getClass();
 		if(clazz.isArray())
 		{
 			clone = cloneArray(ctx, original);
 			if(clone != null)
 			{
-				ctx.add(original, clone);
+				ctx.addReference(original, clone);
 				return clone;
 			}
 		}
@@ -90,19 +114,32 @@ public class ClonerSupport
 		clone = tryFastClone(ctx, original);
 		if(clone != null)
 		{
-			ctx.add(original, clone);
+			ctx.addReference(original, clone);
 			return clone;
 		}
 		
 		clone = newInstanceOf(clazz);
 		List<Field> fields = FieldUtils.getAllFields(clazz);
+		
+		ctx.increment();
 		for (Field field : fields)
 		{
 			cloneField(ctx, field, original, clone);
 		}
+		ctx.decrement();
 
-		ctx.add(original, clone);
+		ctx.addReference(original, clone);
 		return clone;
+	}
+	
+	protected <T> T isImmutable(CloningContext ctx, T t)
+	{
+		Class<?> clazz = t.getClass();
+		if(clazz.isEnum())
+		{
+			return t;
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -127,9 +164,6 @@ public class ClonerSupport
 			return;
 		}
 		
-		//TODO: add Annotation handler
-		//TODO: add Type handler
-
 		boolean isPrimitive = field.getType().isPrimitive();
 		boolean tryPrimitives = false;
 		if(isPrimitive && tryPrimitives)
@@ -154,12 +188,13 @@ public class ClonerSupport
 			return null;
 		}
 		
-		return fast.clone(original, this);
+		return fast.clone(ctx, original, this);
 	}
 
 	@SuppressWarnings("unchecked")
 	private <T> T cloneArray(CloningContext ctx, T t)
 	{
+		ctx.increment();
 		Class<?> clazz = t.getClass();
 		int length = Array.getLength(t);
 		T newInstance = (T) Array.newInstance(clazz.getComponentType(), length);
@@ -169,20 +204,22 @@ public class ClonerSupport
 		        Object clone = deepCloneWithContext(ctx, item);
 		        Array.set(newInstance, i, clone);
 		}
+		ctx.decrement();
 		return newInstance;
 	}
 	
 	protected <T> T newInstanceOf(Class<T> clazz)
 		throws CloneException
 	{
-		try
-		{
-			return clazz.newInstance();
-		}
-		catch (Throwable t)
-		{
-			throw new CloneException("Error creating new instance of '" + clazz + "'", t);
-		}
+		return SilentObjectCreator.create(clazz);
+//		try
+//		{
+//			return clazz.newInstance();
+//		}
+//		catch (Throwable t)
+//		{
+//			throw new CloneException("Error creating new instance of '" + clazz + "'", t);
+//		}
 	}
 
 	@Override

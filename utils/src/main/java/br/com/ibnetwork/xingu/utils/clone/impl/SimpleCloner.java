@@ -6,5 +6,13 @@ public class SimpleCloner
 	extends ClonerSupport
 	implements Cloner
 {
+	public SimpleCloner()
+	{
+		super();
+	}
 
+	public SimpleCloner(boolean pretty)
+	{
+		super(pretty);
+	}
 }
