@@ -19,6 +19,16 @@ import br.com.ibnetwork.xingu.utils.clone.impl.SimpleCloner;
 public class ClonerTest
 {
 	@Test
+	public void testCloneObject()
+		throws Exception
+	{
+		Object o1 = new Object();
+		Object o2 = new SimpleCloner().deepClone(o1);
+		assertNotSame(o1, o2);
+		//assertEquals(o1, o2); fails for objects
+	}
+
+	@Test
 	public void testCloneString()
 		throws Exception
 	{
