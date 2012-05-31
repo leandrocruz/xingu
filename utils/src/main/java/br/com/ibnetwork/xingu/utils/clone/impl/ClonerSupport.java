@@ -48,38 +48,65 @@ public class ClonerSupport
 		fastClonerByTargetType.put(ArrayList.class, new ArrayListFastCloner());
 		fastClonerByTargetType.put(HashMap.class, new HashMapFastCloner());
 	}
-	
+
 	@Override
 	public <T> T deepClone(T original)
 		throws CloneException
 	{
-		T clone = handle(original);
+		return deepCloneWithContext(new CloningContext(), original);
+	}
+	
+	protected final <T> T deepCloneWithContext(CloningContext ctx, T original)
+		throws CloneException
+	{
+		System.out.print(original);
+		T clone = ctx.get(original);
 		if(clone != null)
 		{
+			System.out.println(" *");
 			return clone;
 		}
+		System.out.println("");
 		
-		clone = tryFastClone(original);
+		clone = handle(ctx, original);
 		if(clone != null)
 		{
+			ctx.add(original, clone);
 			return clone;
 		}
 		
 		@SuppressWarnings("unchecked")
 		Class<T> clazz = (Class<T>) original.getClass();
+		if(clazz.isArray())
+		{
+			clone = cloneArray(ctx, original);
+			if(clone != null)
+			{
+				ctx.add(original, clone);
+				return clone;
+			}
+		}
+		
+		clone = tryFastClone(ctx, original);
+		if(clone != null)
+		{
+			ctx.add(original, clone);
+			return clone;
+		}
 		
 		clone = newInstanceOf(clazz);
 		List<Field> fields = FieldUtils.getAllFields(clazz);
 		for (Field field : fields)
 		{
-			cloneField(field, original, clone);
+			cloneField(ctx, field, original, clone);
 		}
-		
+
+		ctx.add(original, clone);
 		return clone;
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> T handle(T original)
+	protected <T> T handle(CloningContext ctx, T original)
 	{
 		Class<T> clazz = (Class<T>) original.getClass();
 		ReferenceHandler handler = handlerByType.get(clazz);
@@ -90,7 +117,7 @@ public class ClonerSupport
 		return (T) handler.handle(original);
 	}
 
-	protected <T> void cloneField(Field field, T original, T clone)
+	protected <T> void cloneField(CloningContext ctx, Field field, T original, T clone)
 	{
 		int modifiers = field.getModifiers();
 		boolean isTransient = Modifier.isTransient(modifiers);
@@ -112,31 +139,26 @@ public class ClonerSupport
 		else
 		{
 			Object value = FieldUtils.valueFrom(field, original);
-			Object clonedValueForField = value == null ? null : deepClone(value);
+			Object clonedValueForField = value == null ? null : deepCloneWithContext(ctx, value);
 			FieldUtils.set(field, clone, clonedValueForField);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T> T tryFastClone(T t)
+	protected <T> T tryFastClone(CloningContext ctx, T original)
 	{
-		Class<?> clazz = t.getClass();
-		if(clazz.isArray())
-		{
-			return cloneArray(t);
-		}
-
+		Class<T> clazz = (Class<T>) original.getClass();
 		FastCloner<T> fast = (FastCloner<T>) fastClonerByTargetType.get(clazz);
 		if(fast == null)
 		{
 			return null;
 		}
 		
-		return fast.clone(t, this);
+		return fast.clone(original, this);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T cloneArray(T t)
+	private <T> T cloneArray(CloningContext ctx, T t)
 	{
 		Class<?> clazz = t.getClass();
 		int length = Array.getLength(t);
@@ -144,7 +166,7 @@ public class ClonerSupport
 		for (int i = 0; i < length; i++)
 		{
 		        Object item = Array.get(t, i);
-		        Object clone = deepClone(item);
+		        Object clone = deepCloneWithContext(ctx, item);
 		        Array.set(newInstance, i, clone);
 		}
 		return newInstance;

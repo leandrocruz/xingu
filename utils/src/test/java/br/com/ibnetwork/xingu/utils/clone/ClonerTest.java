@@ -3,6 +3,7 @@ package br.com.ibnetwork.xingu.utils.clone;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ClonerTest
 		throws Exception
 	{
 		Cloner cloner = new SimpleCloner();
-		SimpleObject o1 = new SimpleObject(10, "Isaiah 61");
+		SimpleObject o1 = new SimpleObject(10, "Isaiah 61", "Luke 4");
 		SimpleObject o2 = cloner.deepClone(o1);
 		assertNotSame(o1, o2);
 		assertEquals(o1, o2);
@@ -55,7 +56,7 @@ public class ClonerTest
 		throws Exception
 	{
 		Cloner cloner = new SimpleCloner();
-		SimpleObject f1 = new SimpleObject(10, "John 3:16");
+		SimpleObject f1 = new SimpleObject(10, "John 3:16", "Indeed");
 		Nested o1 = new Nested(99, f1);
 		Nested o2 = cloner.deepClone(o1);
 		assertNotSame(o1, o2);
@@ -86,8 +87,8 @@ public class ClonerTest
 		Cloner cloner = new SimpleCloner();
 
 		List<SimpleObject> l1 = new ArrayList<SimpleObject>();
-		l1.add(new SimpleObject(1, "One"));
-		l1.add(new SimpleObject(2, "Two"));
+		l1.add(new SimpleObject(1, "One", "Eins"));
+		l1.add(new SimpleObject(2, "Two", "Zwei"));
 		
 		WithCollection o1 = new WithCollection(l1);
 		WithCollection o2 = cloner.deepClone(o1);
@@ -112,8 +113,8 @@ public class ClonerTest
 		throws Exception
 	{
 		Map<String, SimpleObject> map1 = new HashMap<String, SimpleObject>();
-		map1.put("key 1", new SimpleObject(1, "k1"));
-		map1.put("key 2", new SimpleObject(2, "k2"));
+		map1.put("key 1", new SimpleObject(1, "s1", "w1"));
+		map1.put("key 2", new SimpleObject(2, "s2", "w2"));
 		
 		WithMap o1 = new WithMap(map1);
 		WithMap o2 = new SimpleCloner().deepClone(o1);
@@ -145,8 +146,8 @@ public class ClonerTest
 		Cloner cloner = new SimpleCloner();
 
 		SimpleObject[] a1 = new SimpleObject[] {
-				new SimpleObject(1, "One"),
-				new SimpleObject(2, "Two")
+				new SimpleObject(1, "One", "Eins"),
+				new SimpleObject(2, "Two", "Zwei")
 		};
 		
 		WithArray o1 = new WithArray(a1);
@@ -218,6 +219,83 @@ public class ClonerTest
 		Salvation o1 = new Salvation(null);
 		Salvation o2 = new SimpleCloner().deepClone(o1);
 		assertEquals(null, o2.is());
+	}
+
+	@Test
+	public void testReferencesAreNotDuplicatedOnStringArray()
+		throws Exception
+	{
+		String item = "a";
+		String[] array = new String[]{item, item};
+		String[] copy = new SimpleCloner().deepClone(array);
+		assertNotSame(array, copy);
+		for (int i = 0; i < array.length; i++)
+		{
+			String item1 = array[i];
+			String item2 = copy[i];
+			assertNotSame(item1, item2);
+			assertEquals(item1, item2);
+		}
 		
+		assertSame(array[0], array[1]);
+		assertSame(copy[0], copy[1]);
+	}
+
+	@Test
+	public void testReferencesAreNotDuplicatedOnArray()
+		throws Exception
+	{
+		SimpleObject simple = new SimpleObject(1, "Romans 3:10-12", "You are not just at all");
+		
+		SimpleObject[] array = new SimpleObject[]{
+				simple,
+				simple
+		};
+		
+		SimpleObject[] copy = new SimpleCloner().deepClone(array);
+		assertNotSame(array, copy);
+		
+		for (int i = 0; i < array.length; i++)
+		{
+			SimpleObject item1 = array[i];
+			SimpleObject item2 = copy[i];
+			assertNotSame(item1, item2);
+			assertEquals(item1, item2);
+		}
+		
+		assertSame(array[0], array[1]);
+		assertSame(copy[0], copy[1]);
+	}
+
+	@Test
+	public void testReferencesOfReferencesAreNotDuplicatedOnArray()
+		throws Exception
+	{
+		String s = "Genesis 3";
+		SimpleObject[] array = new SimpleObject[]{
+				new SimpleObject(1, s, new String("w1")),
+				new SimpleObject(2, s, new String("w1"))
+		};
+		
+		SimpleObject[] copy = new SimpleCloner().deepClone(array);
+		assertNotSame(array, copy);
+		
+		for (int i = 0; i < array.length; i++)
+		{
+			SimpleObject item1 = array[i];
+			SimpleObject item2 = copy[i];
+			assertNotSame(item1, item2);
+			assertEquals(item1, item2);
+		}
+		
+		assertSame(array[0].s(), array[1].s());
+		assertNotSame(array[0].w(), array[1].w());
+		assertEquals(array[0].w(), array[1].w());
+		assertEquals(array[0].i() + 1, array[1].i());
+
+		assertSame(copy[0].s(), copy[1].s());
+		assertNotSame(copy[0].w(), copy[1].w());
+		assertEquals(copy[0].w(), copy[1].w());
+		assertEquals(copy[0].i() + 1, copy[1].i());
 	}
 }
