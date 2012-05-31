@@ -9,9 +9,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -19,6 +21,22 @@ import br.com.ibnetwork.xingu.utils.clone.impl.SimpleCloner;
 
 public class ClonerTest
 {
+	private void compareArrays(Object[] a1, Object[] a2)
+	{
+		assertEquals(a1.length, a2.length);
+		assertNotSame(a1, a2);
+		assertArrayEquals(a1, a2);
+
+		int size = a1.length;
+		for (int i = 0; i < size; i++)
+		{
+			Object item1 = a1[i];
+			Object item2 = a2[i];
+			assertNotSame(item1, item2);
+			assertEquals(item1, item2);
+		}
+	}
+
 	@Test
 	public void testCloneObject()
 		throws Exception
@@ -133,10 +151,8 @@ public class ClonerTest
 		Collection<SimpleObject> v2 = map2.values();
 		assertNotSame(v1, v2);
 		//assertEquals(v1, v2); Fails!
-		Object[] va1 = v1.toArray();
-		Object[] va2 = v2.toArray();
-		assertNotSame(va1, va2);
-		assertArrayEquals(va1, va2);
+		
+		compareArrays(v1.toArray(), v2.toArray());
 	}
 
 	@Test
@@ -154,18 +170,7 @@ public class ClonerTest
 		WithArray o2 = cloner.deepClone(o1);
 		assertNotSame(o1, o2);
 		
-		SimpleObject[] a2 = o2.array();
-		assertNotSame(a1, a2);
-		assertEquals(a1.length, a2.length);
-		
-		int size = a1.length;
-		for (int i = 0; i < size; i++)
-		{
-			SimpleObject s1 = a1[i];
-			SimpleObject s2 = a2[i];
-			assertNotSame(s1, s2);
-			assertEquals(s1, s2);
-		}
+		compareArrays(a1, o2.array());
 	}
 
 	@Test
@@ -192,7 +197,6 @@ public class ClonerTest
 		
 		assertEquals(10, o1.iFace().value());
 		assertEquals(20, o2.iFace().value());
-		
 		assertTrue(if2 instanceof IFaceImpl2);
 	}
 
@@ -202,14 +206,45 @@ public class ClonerTest
 	{
 		String[] array = new String[]{"a", "b", "c"};
 		String[] copy = new SimpleCloner().deepClone(array);
-		assertNotSame(array, copy);
-		for (int i = 0; i < array.length; i++)
-		{
-			String item1 = array[i];
-			String item2 = copy[i];
-			assertNotSame(item1, item2);
-			assertEquals(item1, item2);
-		}
+		compareArrays(array, copy);
+	}
+
+	@Test
+	public void testCloneTreeSet()
+		throws Exception
+	{
+		Set<SimpleObject> s1 = new TreeSet<SimpleObject>(new SimpleObjectComparator());
+		s1.add(new SimpleObject(1, "one", "eins"));
+		s1.add(new SimpleObject(2, "two", "zwein"));
+		
+		WithSet<SimpleObject> o1 = new WithSet<SimpleObject>(s1);
+		WithSet<SimpleObject> o2 = new SimpleCloner().deepClone(o1);
+		
+		assertNotSame(o1, o2);
+		
+		Set<SimpleObject> s2 = o2.set();
+		assertNotSame(s1, s2);
+		
+		compareArrays(s1.toArray(), s2.toArray());
+	}
+
+	@Test
+	public void testCloneHashSet()
+		throws Exception
+	{
+		Set<SimpleObject> s1 = new HashSet<SimpleObject>();
+		s1.add(new SimpleObject(1, "one", "eins"));
+		s1.add(new SimpleObject(2, "two", "zwein"));
+		
+		WithSet<SimpleObject> o1 = new WithSet<SimpleObject>(s1);
+		WithSet<SimpleObject> o2 = new SimpleCloner().deepClone(o1);
+		
+		assertNotSame(o1, o2);
+		
+		Set<SimpleObject> s2 = o2.set();
+		assertNotSame(s1, s2);
+		
+		//compareArrays(s1.toArray(), s2.toArray()); // The order may change, which breaks the test
 	}
 
 	@Test
@@ -228,17 +263,11 @@ public class ClonerTest
 		String item = "a";
 		String[] array = new String[]{item, item};
 		String[] copy = new SimpleCloner().deepClone(array);
-		assertNotSame(array, copy);
-		for (int i = 0; i < array.length; i++)
-		{
-			String item1 = array[i];
-			String item2 = copy[i];
-			assertNotSame(item1, item2);
-			assertEquals(item1, item2);
-		}
-		
+
 		assertSame(array[0], array[1]);
 		assertSame(copy[0], copy[1]);
+
+		compareArrays(array, copy);
 	}
 
 	@Test
@@ -246,25 +275,17 @@ public class ClonerTest
 		throws Exception
 	{
 		SimpleObject simple = new SimpleObject(1, "Romans 3:10-12", "You are not just at all");
-		
 		SimpleObject[] array = new SimpleObject[]{
 				simple,
 				simple
 		};
 		
 		SimpleObject[] copy = new SimpleCloner().deepClone(array);
-		assertNotSame(array, copy);
-		
-		for (int i = 0; i < array.length; i++)
-		{
-			SimpleObject item1 = array[i];
-			SimpleObject item2 = copy[i];
-			assertNotSame(item1, item2);
-			assertEquals(item1, item2);
-		}
-		
+
 		assertSame(array[0], array[1]);
 		assertSame(copy[0], copy[1]);
+		
+		compareArrays(array, copy);
 	}
 
 	@Test
@@ -278,15 +299,7 @@ public class ClonerTest
 		};
 		
 		SimpleObject[] copy = new SimpleCloner().deepClone(array);
-		assertNotSame(array, copy);
-		
-		for (int i = 0; i < array.length; i++)
-		{
-			SimpleObject item1 = array[i];
-			SimpleObject item2 = copy[i];
-			assertNotSame(item1, item2);
-			assertEquals(item1, item2);
-		}
+		compareArrays(array, copy);
 		
 		assertSame(array[0].s(), array[1].s());
 		assertNotSame(array[0].w(), array[1].w());
