@@ -3,6 +3,7 @@ package br.com.ibnetwork.xingu.utils.clone.impl;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,13 +80,21 @@ public class ClonerSupport
 		return t;
 	}
 	
-	@Override
-	public <T> T deepCloneWithContext(CloningContext ctx, T original)
-		throws CloneException
+	protected <T> T handleExceptions(CloningContext ctx, T original)
 	{
 		@SuppressWarnings("unchecked")
 		Class<T> clazz = (Class<T>) original.getClass();
-		ctx.print(original);
+
+		if(Proxy.isProxyClass(clazz))
+		{
+			return original;
+		}
+		
+		boolean isMock = isMock(original);
+		if(isMock)
+		{
+			return original;
+		}
 		
 		T clone = ctx.getReference(original);
 		if(clone != null)
@@ -99,13 +108,38 @@ public class ClonerSupport
 			return clone;
 		}
 		
-		clone = handle(ctx, original);
+		clone = tryHandler(ctx, original);
 		if(clone != null)
 		{
 			ctx.addReference(original, clone);
 			return clone;
 		}
 		
+		clone = tryFastClone(ctx, original);
+		if(clone != null)
+		{
+			ctx.addReference(original, clone);
+			return clone;
+		}
+
+		return null;
+
+		
+	}
+	@Override
+	public <T> T deepCloneWithContext(CloningContext ctx, T original)
+		throws CloneException
+	{
+		ctx.print(original);
+
+		T clone = handleExceptions(ctx, original);
+		if(clone != null)
+		{
+			return clone;
+		}
+
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) original.getClass();
 		if(clazz.isArray())
 		{
 			clone = cloneArray(ctx, original);
@@ -114,13 +148,6 @@ public class ClonerSupport
 				ctx.addReference(original, clone);
 				return clone;
 			}
-		}
-		
-		clone = tryFastClone(ctx, original);
-		if(clone != null)
-		{
-			ctx.addReference(original, clone);
-			return clone;
 		}
 		
 		clone = newInstanceOf(clazz);
@@ -137,6 +164,11 @@ public class ClonerSupport
 		return clone;
 	}
 	
+	protected boolean isMock(Object object)
+	{
+		return false;
+	}
+	
 	protected <T> T isImmutable(CloningContext ctx, T t)
 	{
 		Class<?> clazz = t.getClass();
@@ -148,7 +180,7 @@ public class ClonerSupport
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> T handle(CloningContext ctx, T original)
+	protected <T> T tryHandler(CloningContext ctx, T original)
 	{
 		Class<T> clazz = (Class<T>) original.getClass();
 		ReferenceHandler handler = handlerByType.get(clazz);
