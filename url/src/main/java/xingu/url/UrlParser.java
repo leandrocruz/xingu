@@ -317,10 +317,6 @@ public class UrlParser
 					case '@':
 						return false;
 				}
-				if (!Character.isDigit(c))
-				{
-					return false;
-				}
 			}
 			else
 			{
