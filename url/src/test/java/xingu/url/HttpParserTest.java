@@ -67,7 +67,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals("a=1&b=2", url.getQuery());
         assertEquals("home", url.getFragment());
 
@@ -88,7 +88,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals("home", url.getFragment());
 
@@ -143,7 +143,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals(null, url.getFragment());
 
@@ -185,7 +185,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals("home", url.getFragment());
 
@@ -206,7 +206,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals("a=1&b=2", url.getQuery());
         assertEquals(null, url.getFragment());
     
@@ -311,7 +311,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals(null, url.getFragment());
         
@@ -319,7 +319,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals(null, url.getFragment());
 
@@ -335,7 +335,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals(null, url.getFragment());
         
@@ -365,7 +365,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals("?a=1", url.getFragment());
 
@@ -373,7 +373,7 @@ public class HttpParserTest
         assertEquals("http", url.getScheme());
         assertEquals("kidux.com.br", url.getHost());
         assertEquals(-1, url.getPort());
-        assertEquals("/", url.getPath());
+        assertEquals(null, url.getPath());
         assertEquals(null, url.getQuery());
         assertEquals("?a=1", url.getFragment());
         
@@ -428,7 +428,7 @@ public class HttpParserTest
     	throws Exception
     {
     	Url url = UrlParser.parse("about:blank");
-    	url = UrlParser.parse("about:config");
     	url = UrlParser.parse("localhost");
+    	url = UrlParser.parse("about:config");
     }
 }

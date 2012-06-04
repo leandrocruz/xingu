@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import br.com.ibnetwork.xingu.lang.BadParameter;
+
 public class UrlValidationTest
 {
     @Test
@@ -45,7 +47,7 @@ public class UrlValidationTest
         assertFalse(isValid("http:/www.kidux.net"));
     }
     
-    @Test
+    @Test(expected=BadParameter.class)
     public void testMalformedUrl2()
     {
         assertFalse(isValid("http:www.kidux.net"));
@@ -69,13 +71,13 @@ public class UrlValidationTest
         assertFalse(isValid("http://www.cartoons.br:/"));
     }
     
-    @Test
+    @Test(expected=BadParameter.class)
     public void testMalformedUrl6()
     {
         assertFalse(isValid("http://some invalid hostname"));
     }
     
-    @Test
+    @Test(expected=BadParameter.class)
     public void testMalformedUrl7()
     {
         assertFalse(isValid("http://www:movies.org"));

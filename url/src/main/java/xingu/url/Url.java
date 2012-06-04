@@ -5,8 +5,6 @@ import java.io.Serializable;
 public interface Url
     extends Serializable
 {
-    boolean isValid();
-
     String getScheme();
 
     String getHost();
@@ -33,4 +31,16 @@ public interface Url
     boolean isFavIcon();
     
     boolean isIp();
+
+	int pathLevel();
+
+	int domainLevel();
+
+	String getDomainAndPath();
+
+	boolean isSameDomainAndPath(Url other);
+
+	boolean appliesTo(Url url);
+
+	boolean isValid();
 }

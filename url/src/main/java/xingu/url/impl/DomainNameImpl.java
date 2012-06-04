@@ -5,7 +5,7 @@ import xingu.url.DomainName;
 public class DomainNameImpl
     implements DomainName
 {
-    private static final String GENERIC_TOP_LEVEL_DOMAINS = "|aero|arpa|asia|biz|cat|com|coop|edu|gov|imb|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|";
+    private static final String GENERIC_TOP_LEVEL_DOMAINS = "|aero|arpa|asia|biz|cat|com|coop|edu|gov|imb|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|xxx|";
     
     private String fullName;
 
