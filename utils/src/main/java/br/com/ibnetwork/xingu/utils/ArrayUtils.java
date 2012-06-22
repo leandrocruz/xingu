@@ -1,14 +1,12 @@
 package br.com.ibnetwork.xingu.utils;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
- *
- */
 public class ArrayUtils
 {
 	public static String[] toStringArray(Object[] array)
@@ -134,5 +132,16 @@ public class ArrayUtils
             }
         }
         return array;
+    }
+
+    
+    public static List<String> toList(String... array)
+    {
+    	List<String> result = new ArrayList<String>(array.length);
+    	for(String s : array)
+    	{
+    		result.add(s);
+    	}
+    	return result;
     }
 }
