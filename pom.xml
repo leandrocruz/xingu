@@ -3,7 +3,7 @@
 	<groupId>xingu</groupId>
 	<artifactId>xingu</artifactId>
 	<packaging>pom</packaging>
-	<version>1.4.22-SNAPSHOT</version>
+	<version>1.4.23-SNAPSHOT</version>
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>http://xingu.ibcorp.com.br</url>
