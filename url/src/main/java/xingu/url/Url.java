@@ -43,4 +43,6 @@ public interface Url
 	boolean appliesTo(Url url);
 
 	boolean isValid();
+
+	String getExtension();
 }

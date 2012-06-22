@@ -1,5 +1,8 @@
 package xingu.url.impl;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import xingu.url.DomainName;
 import xingu.url.QueryString;
 import xingu.url.Url;
@@ -115,6 +118,24 @@ public class SimpleUrl
 	public String getPath()
 	{
 		return path;
+	}
+
+	@Override
+	public String getExtension()
+	{
+		String path = getPath();
+		if (path == null)
+		{
+			return null;
+		}
+
+		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$");
+		Matcher matcher = pattern.matcher(path);
+		if (matcher.matches())
+		{
+			return matcher.group(1);
+		}
+		return null;
 	}
 
 	@Override
