@@ -36,6 +36,6 @@ public class IpUrlTest
     @Test
     public void testIsValid()
     {
-        assertTrue(url.isValid());
+        assertTrue(url.isIp());
     }
 }

@@ -142,14 +142,7 @@ public class HttpUrlTest
         assertNull(hostAndQuery.getFragment());
         assertNull(hostPortAndQuery.getFragment());
     }
-    
-    @Test
-    @Ignore
-    public void testIsValid()
-    {
-        assertTrue(completeUrl.isValid());
-    }
-    
+
     @Test
     public void testIsFavIcon()
     {
@@ -160,6 +153,5 @@ public class HttpUrlTest
         assertFalse(UrlParser.parse("http://x.com/y/favicon.ico").isFavIcon());
         assertFalse(UrlParser.parse("http://x.com/#anchor/favicon.ico").isFavIcon());
         assertFalse(UrlParser.parse("http://x.com/secretPath?favicon.ico").isFavIcon());
-        
     }
 }

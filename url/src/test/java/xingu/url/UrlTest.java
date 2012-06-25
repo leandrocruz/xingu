@@ -1,23 +1,11 @@
 package xingu.url;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class UrlTest
 {
-    
-    @Test
-    public void testUrl()
-    {
-        Url url = urlFrom("asas");
-        assertFalse(url.isValid());
-    }
-    
     private Url urlFrom(String url)
     {
         return UrlParser.parse(url);
@@ -150,8 +138,15 @@ public class UrlTest
     @Test
     public void testInvalidUrl()
     {
-        Url url = urlFrom("http://kidux net");
-        assertFalse(url.isValid());
+		try
+		{
+			String urlStr = "http://kidux net";
+			Url url = urlFrom(urlStr);
+			fail("Url (" + urlStr + ") not detected.");
+		}
+		catch (Exception e)
+		{
+		}
     }
     
     @Test
