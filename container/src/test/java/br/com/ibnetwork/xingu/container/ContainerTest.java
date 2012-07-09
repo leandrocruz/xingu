@@ -43,7 +43,7 @@ public class ContainerTest
     public void tearDown()
     	throws Exception
     {
-        pulga.stop();
+    	ContainerUtils.reset();
         pulga = null;
     }
 
@@ -64,7 +64,7 @@ public class ContainerTest
     {
         UsesSimple uses = pulga.lookup(UsesSimple.class);
         Simple simple = pulga.lookup(Simple.class);
-        assertSame(uses.getSimple(),simple);
+        assertSame(simple, uses.getSimple());
     }
 
     @Test
