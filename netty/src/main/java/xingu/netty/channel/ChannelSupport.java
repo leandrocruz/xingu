@@ -180,4 +180,16 @@ public class ChannelSupport
     {
         throw new NotImplementedYet();
     }
+
+	@Override
+	public Object getAttachment()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public void setAttachment(Object attachment)
+	{
+		throw new NotImplementedYet();
+	}
 }

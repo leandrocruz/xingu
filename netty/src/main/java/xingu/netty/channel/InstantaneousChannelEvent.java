@@ -123,4 +123,24 @@ public class InstantaneousChannelEvent
     {
         throw new NotImplementedYet();
     }
+
+	@Override
+	public ChannelFuture rethrowIfFailed()
+		throws Exception
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public ChannelFuture sync()
+		throws InterruptedException
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public ChannelFuture syncUninterruptibly()
+	{
+		throw new NotImplementedYet();
+	}
 }
