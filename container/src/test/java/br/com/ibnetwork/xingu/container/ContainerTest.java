@@ -43,6 +43,7 @@ public class ContainerTest
     public void tearDown()
     	throws Exception
     {
+    	//pulga.stop();
     	ContainerUtils.reset();
         pulga = null;
     }
