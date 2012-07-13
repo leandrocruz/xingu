@@ -1,15 +1,62 @@
 package br.com.ibnetwork.xingu.utils.io;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
+import br.com.ibnetwork.xingu.utils.StringUtils;
+
 public class FileUtils
 {
-    public static String findRealName(String name)
+	public static final String COMMENT_LINE = "#"; 
+
+	public static Map<String, String> toMap(InputStream is)
+		throws IOException
+	{
+		return toMap(is, "=");
+	}
+	
+	public static Map<String, String> toMap(InputStream is, String separator)
+		throws IOException
+	{
+		Map<String, String> result = new HashMap<String, String>();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		String line = null;
+		while((line = reader.readLine()) != null)
+		{
+			boolean bypass = line.startsWith(COMMENT_LINE);
+			if(bypass)
+			{
+				continue;
+			}
+			
+			int idx = line.indexOf(separator);
+			if(idx < 0)
+			{
+				continue;
+			}
+			
+			String key = trim(line.substring(0, idx)); 
+			String value = trim(line.substring(idx + 1));
+			result.put(key, value);
+		}
+		return result;
+	}
+	
+    private static String trim(String s)
+	{
+    	return StringUtils.trimToNull(s);
+	}
+
+	public static String findRealName(String name)
     {
         int idx = name.indexOf("*");
         if(idx < 0 )
