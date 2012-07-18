@@ -181,13 +181,13 @@ public class ChannelSupport
         throw new NotImplementedYet();
     }
 
-	@Override
+	//@Override
 	public Object getAttachment()
 	{
 		throw new NotImplementedYet();
 	}
 
-	@Override
+	//@Override
 	public void setAttachment(Object attachment)
 	{
 		throw new NotImplementedYet();
