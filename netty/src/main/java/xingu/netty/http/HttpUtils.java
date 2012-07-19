@@ -2,7 +2,6 @@ package xingu.netty.http;
 
 import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static xingu.utils.NettyUtils.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,8 +38,8 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 
 import xingu.netty.Deflater;
 import xingu.utils.NettyUtils;
-
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.CharUtils;
 
 public class HttpUtils
 {
@@ -330,8 +329,8 @@ public class HttpUtils
         encodeInitialLine(response, header);
         encodeHeaders(response, header);
         
-        header.writeByte(CR);
-        header.writeByte(LF);
+        header.writeByte(CharUtils.CR);
+        header.writeByte(CharUtils.LF);
 
         boolean chunked = isTransferEncodingChunked(response);
         ChannelBuffer content = response.getContent();
@@ -372,12 +371,12 @@ public class HttpUtils
 		throws Exception
 	{
         buffer.writeBytes(response.getProtocolVersion().toString().getBytes("ASCII"));
-        buffer.writeByte(SP);
+        buffer.writeByte(CharUtils.SP);
         buffer.writeBytes(String.valueOf(response.getStatus().getCode()).getBytes("ASCII"));
-        buffer.writeByte(SP);
+        buffer.writeByte(CharUtils.SP);
         buffer.writeBytes(String.valueOf(response.getStatus().getReasonPhrase()).getBytes("ASCII"));
-        buffer.writeByte(CR);
-        buffer.writeByte(LF);
+        buffer.writeByte(CharUtils.CR);
+        buffer.writeByte(CharUtils.LF);
 	}
 
 	private static void encodeHeaders(HttpMessage message, ChannelBuffer header)
@@ -393,10 +392,10 @@ public class HttpUtils
 		throws Exception
 	{
 		buffer.writeBytes(headerName.getBytes("ASCII"));
-		buffer.writeByte(COLON);
-		buffer.writeByte(SP);
+		buffer.writeByte(CharUtils.COLON);
+		buffer.writeByte(CharUtils.SP);
 		buffer.writeBytes(value.getBytes("ASCII"));
-		buffer.writeByte(CR);
-		buffer.writeByte(LF);
+		buffer.writeByte(CharUtils.CR);
+		buffer.writeByte(CharUtils.LF);
 	}
 }
