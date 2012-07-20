@@ -154,4 +154,14 @@ public class ChannelSupport
 	{
 		return null;
 	}
+
+	//@Override
+	public Object getAttachment()
+	{
+		return null;
+	}
+
+	//@Override
+	public void setAttachment(Object attachment)
+	{}
 }
