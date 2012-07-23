@@ -178,4 +178,13 @@ public class UrlTest
         Url url = urlFrom(spec);
         assertEquals("video.globo.com", url.getHost());
     }
+
+    @Test
+    public void testFilenameAndExtension()
+    {
+        String spec = "http://user:pass@www.kidux.com.br:1234/path/to/file.html?a=AAA&x=XXX#anchor/1";
+        Url url = urlFrom(spec);
+        assertEquals("file.html", url.getFilename());
+        assertEquals("html", url.getExtension());
+    }
 }

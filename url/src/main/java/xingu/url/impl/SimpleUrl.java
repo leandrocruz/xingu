@@ -1,5 +1,6 @@
 package xingu.url.impl;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,16 +122,27 @@ public class SimpleUrl
 	}
 
 	@Override
-	public String getExtension()
+	public String getFilename()
 	{
 		String path = getPath();
 		if (path == null)
 		{
 			return null;
 		}
+		return new File(path).getName();
+	}
 
-		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$");
-		Matcher matcher = pattern.matcher(path);
+	@Override
+	public String getExtension()
+	{
+		String fileName = getFilename();
+		if (fileName == null)
+		{
+			return null;
+		}
+
+		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(fileName);
 		if (matcher.matches())
 		{
 			return matcher.group(1);
