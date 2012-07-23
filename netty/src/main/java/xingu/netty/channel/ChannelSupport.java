@@ -2,194 +2,166 @@ package xingu.netty.channel;
 
 import java.net.SocketAddress;
 
-
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelConfig;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
 
-
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-
 public class ChannelSupport
-    implements Channel
+	implements Channel
 {
-    protected Object lastWrite = null;
-    
-    private Channel delegate;
-    
-    public ChannelSupport()
-    {}
-
-    public ChannelSupport(Channel delegate)
-    {
-        this.delegate = delegate;
-    }
-
-    public Object waitForWrite()
-    {
-        return lastWrite;
-    }
-
-    @Override
-    public ChannelFuture write(Object obj) 
-    {
-        lastWrite = obj;
-        return InstantaneousChannelEvent.instance();
-    }
-
-    @Override
-    public ChannelFuture close()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public SocketAddress getRemoteAddress()
-    {
-        if(delegate != null)
-        {
-            return delegate.getRemoteAddress();
-        }
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture bind(SocketAddress localAddress)
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture connect(SocketAddress remoteAddress)
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture disconnect()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture getCloseFuture()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelConfig getConfig()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFactory getFactory()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public Integer getId()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public int getInterestOps()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public SocketAddress getLocalAddress()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public Channel getParent()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelPipeline getPipeline()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public boolean isBound()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public boolean isConnected()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public boolean isOpen()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public boolean isReadable()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public boolean isWritable()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture setInterestOps(int interestOps)
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture setReadable(boolean readable)
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture unbind()
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public ChannelFuture write(Object message, SocketAddress remoteAddress)
-    {
-        throw new NotImplementedYet();
-    }
-
-    @Override
-    public int compareTo(Channel o)
-    {
-        throw new NotImplementedYet();
-    }
+	@Override
+	public int compareTo(Channel o)
+	{
+		return 0;
+	}
 
 	@Override
+	public Integer getId()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFactory getFactory()
+	{
+		return null;
+	}
+
+	@Override
+	public Channel getParent()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelConfig getConfig()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelPipeline getPipeline()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean isOpen()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isBound()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isConnected()
+	{
+		return false;
+	}
+
+	@Override
+	public SocketAddress getLocalAddress()
+	{
+		return null;
+	}
+
+	@Override
+	public SocketAddress getRemoteAddress()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture write(Object message)
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture write(Object message, SocketAddress remoteAddress)
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture bind(SocketAddress localAddress)
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture connect(SocketAddress remoteAddress)
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture disconnect()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture unbind()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture close()
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture getCloseFuture()
+	{
+		return null;
+	}
+
+	@Override
+	public int getInterestOps()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isReadable()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isWritable()
+	{
+		return false;
+	}
+
+	@Override
+	public ChannelFuture setInterestOps(int interestOps)
+	{
+		return null;
+	}
+
+	@Override
+	public ChannelFuture setReadable(boolean readable)
+	{
+		return null;
+	}
+
+	//@Override
 	public Object getAttachment()
 	{
-		throw new NotImplementedYet();
+		return null;
 	}
 
-	@Override
+	//@Override
 	public void setAttachment(Object attachment)
-	{
-		throw new NotImplementedYet();
-	}
+	{}
 }
