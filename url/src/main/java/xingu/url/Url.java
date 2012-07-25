@@ -45,4 +45,6 @@ public interface Url
 	boolean isValid();
 
 	String getExtension();
+
+	String getFilename();
 }
