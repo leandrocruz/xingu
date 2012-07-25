@@ -46,12 +46,17 @@ public class NettyUtils
             }
         }
     }
-
+    
     public static void closeOnFlush(Channel channel) 
+    {
+    	closeOnFlush(channel, ChannelFutureListener.CLOSE);
+    }
+    
+    public static void closeOnFlush(Channel channel, ChannelFutureListener listener) 
     {
         if (channel != null && channel.isConnected()) 
         {
-            channel.write(ChannelBuffers.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+            channel.write(ChannelBuffers.EMPTY_BUFFER).addListener(listener);
         }
     }
 
