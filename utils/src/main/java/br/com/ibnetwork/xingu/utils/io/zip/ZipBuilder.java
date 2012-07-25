@@ -16,12 +16,22 @@ public class ZipBuilder
 	
 	private int rootPathSize;
 
-	public ZipBuilder(File root)
+	private final boolean includeRoot;
+	
+	public ZipBuilder(File root, boolean includeRoot)
 	{
 		this.root = root;
+		this.includeRoot = includeRoot;
 		if(root.isDirectory())
 		{
-			this.rootPathSize = root.getAbsoluteFile().getParent().length() + 1;
+			if(includeRoot)
+			{
+				this.rootPathSize = root.getAbsoluteFile().getParent().length() + 1;
+			}
+			else
+			{
+				this.rootPathSize = root.getAbsolutePath().length() + 1;
+			}
 		}
 		else
 		{
@@ -40,7 +50,10 @@ public class ZipBuilder
 	private void process(ZipOutputStream zos, File file)
 		throws IOException
 	{
-		add(zos, file);
+		if(!file.equals(root) || includeRoot)
+		{
+			add(zos, file);
+		}
 		if (file.isDirectory())
 		{
 			File[] files = file.listFiles();

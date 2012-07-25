@@ -8,15 +8,16 @@ import br.com.ibnetwork.xingu.utils.io.filter.DirectoryOnly;
 
 public class TreeWalker
 {
-	private final String name = "build.d";
-	
 	private final File root;
 	
 	private List<File> result = new ArrayList<File>();
 
-	public TreeWalker(File root)
+	private final String wanted;
+
+	public TreeWalker(File root, String wanted)
 	{
 		this.root = root;
+		this.wanted = wanted;
 	}
 
 	public List<File> walk()
@@ -29,7 +30,7 @@ public class TreeWalker
 		File[] files = start.listFiles(new DirectoryOnly());
 		for (File file : files)
 		{
-			if(name.equals(file.getName()))
+			if(wanted.equals(file.getName()))
 			{
 				result.add(file);
 			}

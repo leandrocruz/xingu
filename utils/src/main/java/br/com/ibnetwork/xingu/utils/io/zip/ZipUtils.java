@@ -40,9 +40,9 @@ public class ZipUtils
 		zipFile.close();
 	}
 
-	public static void zip(File fileOrDirectory, File to)
+	public static void zip(File fileOrDirectory, boolean includeRoot, File to)
 		throws Exception
 	{
-		new ZipBuilder(fileOrDirectory).zipTo(to);
+		new ZipBuilder(fileOrDirectory, includeRoot).zipTo(to);
 	}
 }

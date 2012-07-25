@@ -6,9 +6,11 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
@@ -16,6 +18,9 @@ import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public class FileUtils
 {
+	
+	public static final DateFormat df = new SimpleDateFormat("yyyyMMdd.HHmmss");
+	
 	public static final String COMMENT_LINE = "#"; 
 
 	public static Map<String, String> toMap(InputStream is)
@@ -97,7 +102,7 @@ public class FileUtils
 			{
 				throw new IOException("The highly improbable has occurred! Failed to create a unique temporary directory after " + maxAttempts + " attempts.");
 			}
-			String rnd = UUID.randomUUID().toString();
+			String rnd = df.format(new Date());
 			String dirName = prefix == null ? rnd : prefix + rnd; 
 			dir = new File(temp, dirName);
 		}
