@@ -129,7 +129,14 @@ public class SimpleUrl
 		{
 			return null;
 		}
-		return new File(path).getName();
+		
+		Pattern pattern = Pattern.compile("^(.*/)([^/]*)$");
+		Matcher matcher = pattern.matcher(path);
+		if (matcher.matches())
+		{
+			return matcher.group(2);
+		}
+		return null;
 	}
 
 	@Override
@@ -141,7 +148,7 @@ public class SimpleUrl
 			return null;
 		}
 
-		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$");
 		Matcher matcher = pattern.matcher(fileName);
 		if (matcher.matches())
 		{
