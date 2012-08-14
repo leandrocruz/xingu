@@ -186,5 +186,11 @@ public class UrlTest
         Url url = urlFrom(spec);
         assertEquals("file.html", url.getFilename());
         assertEquals("html", url.getExtension());
+
+        Url url2 = urlFrom("http://www.kernel.org/pub/linux/kernel/v3.0/testing/xxxxxxxxxxx");
+        assertNull(url2.getExtension());
+        
+        Url url3 = urlFrom("http://widgets.digg.com/buttons/count?url=http%3A//www.pavablog.com/2012/08/06/marido-se-nega-a-lavar-a-louca-e-e-preso-no-banheiro-pela-mulher-diz-pm/");
+        assertNull(url3.getExtension());
     }
 }
