@@ -9,4 +9,8 @@ public interface Task
 		throws InterruptedException;
 
 	boolean isFinished();
+
+	boolean abortOnError(Throwable t);
+
+	void beforeExit();
 }

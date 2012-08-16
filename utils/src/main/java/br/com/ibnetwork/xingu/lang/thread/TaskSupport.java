@@ -17,4 +17,14 @@ public abstract class TaskSupport
 	{
 		Thread.sleep(time);
 	}
+
+	@Override
+	public boolean abortOnError(Throwable t)
+	{
+		return true;
+	}
+
+	@Override
+	public void beforeExit()
+	{}
 }

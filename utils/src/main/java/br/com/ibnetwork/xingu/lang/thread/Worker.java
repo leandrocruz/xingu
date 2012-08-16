@@ -30,7 +30,7 @@ public class Worker
 				task.execute();
 				if(task.isFinished())
 				{
-					return;
+					break;
 				}
 				task.pause(step);
 			}
@@ -39,10 +39,10 @@ public class Worker
 				/*
 				 * Any error, including InterruptedException, will abort execution
 				 */
-				return;
+				shouldRun = !task.abortOnError(t); 
 			}
 		}
-		//System.out.println("Worker is done. Finished? " + task.isFinished());
+		task.beforeExit();
 	}
 	
 	public void finish()
