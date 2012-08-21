@@ -87,7 +87,12 @@ public class HttpResponseBuilder
 
     public HttpResponseBuilder withLocation(String location)
     {
-        return withLocation(location, HttpResponseStatus.TEMPORARY_REDIRECT);
+    	HttpResponseStatus status = response.getStatus();
+    	if(status == null)
+    	{
+    		status = HttpResponseStatus.TEMPORARY_REDIRECT;
+    	}
+        return withLocation(location, status);
     }
     
     public HttpResponseBuilder withLocation(String location, HttpResponseStatus status)
