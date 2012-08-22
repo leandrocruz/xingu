@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -219,6 +220,19 @@ public class ContainerTest
 
         Alternative other = (Alternative) pulga.lookup(Simple.class);
         assertSame(simple, other);
+    }
+
+    @Test
+    public void testBindWithConfiguration()
+        throws Exception
+    {
+    	Binder binder = pulga.binder();
+        binder.bind(Simple.class).to(Alternative.class).with(new DefaultConfiguration("sample"));
+        Alternative simple = (Alternative) pulga.lookup(Simple.class);
+        assertTrue(simple.isConfigured());
+        assertTrue(simple.isInitialized());
+        assertTrue(simple.isStarted());
+        assertEquals("sample", simple.getConfiguration().getName());
     }
 
     @Test

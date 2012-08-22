@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 
 import br.com.ibnetwork.xingu.container.Binder;
@@ -81,6 +82,8 @@ class SimpleBinding<T>
 
     private Class<? extends T> implClass;
 
+	private Configuration conf;
+
     public SimpleBinding(Class<T> role)
     {
         this.role = role;
@@ -111,9 +114,10 @@ class SimpleBinding<T>
     }
 
     @Override
-    public <E extends T> void to(E impl)
+    public <E extends T> Binding<T> to(E impl)
     {
         this.impl = impl;
+        return this;
     }
 
     @Override
@@ -130,9 +134,10 @@ class SimpleBinding<T>
     }
 
     @Override
-    public <E extends T> void to(Class<E> implClass)
+    public <E extends T> Binding<T> to(Class<E> implClass)
     {
         this.implClass = implClass;
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -141,4 +146,17 @@ class SimpleBinding<T>
     {
         return (Class<E>) implClass;
     }
+
+	@Override
+	public Binding<T> with(Configuration conf)
+	{
+		this.conf = conf;
+		return this;
+	}
+
+	@Override
+	public Configuration configuration()
+	{
+		return conf;
+	}
 }

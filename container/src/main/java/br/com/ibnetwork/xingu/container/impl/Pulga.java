@@ -204,7 +204,11 @@ public class Pulga
         {
             try
             {
-                Configuration conf = configurationManager().configurationFor(role, key);
+            	Configuration conf = binding.configuration();
+            	if(conf == null)
+            	{
+            		conf = configurationManager().configurationFor(role, key);
+            	}
                 startLifecycle(impl, conf);
             }
             catch (Exception e)
