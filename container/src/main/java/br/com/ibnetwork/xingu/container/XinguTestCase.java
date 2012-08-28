@@ -1,13 +1,17 @@
 package br.com.ibnetwork.xingu.container;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.mockito.internal.util.MockUtil;
-import static org.mockito.Mockito.reset;
 
 import br.com.ibnetwork.xingu.utils.FSUtils;
 
@@ -61,6 +65,16 @@ public class XinguTestCase
 	    injectDependencies();
 	    resetAllMocks();
 	}
+	
+    @AfterClass
+    public static void shutdown()
+    {
+        if(container != null)
+        {
+            container.stop();
+            container = null;
+        }
+    }
     
 	protected void rebind(Binder binder)
     {}
@@ -97,14 +111,24 @@ public class XinguTestCase
 		}
 	}
 
-    
-    @AfterClass
-    public static void shutdown()
-    {
-        if(container != null)
-        {
-            container.stop();
-            container = null;
-        }
-    }
+	protected Configuration builfFrom(String xml)
+	{
+		DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
+		InputStream is = null;
+		
+		try
+		{
+			is = IOUtils.toInputStream(xml);
+			return builder.build(is);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			IOUtils.closeQuietly(is);
+		}
+		return null;
+	}
 }
