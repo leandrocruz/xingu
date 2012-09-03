@@ -90,7 +90,6 @@
 		<module>servlet</module>
 		<module>exception</module>		
 		<module>crypto</module>
-		<module>network</module>
 		<module>creator</module>
 		<module>queue</module>
 		<module>search</module>
