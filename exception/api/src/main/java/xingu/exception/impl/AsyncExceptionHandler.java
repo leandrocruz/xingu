@@ -128,7 +128,14 @@ public abstract class AsyncExceptionHandler
                 item = queue.poll();
                 if(item == null)
                 {
-                    Sys.waitWithoutInterruptions(queue);
+                	try
+        			{
+                		queue.wait();
+        			}
+        			catch (InterruptedException e)
+        			{
+        				return;
+        			}
                     continue;
                 }
             }

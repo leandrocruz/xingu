@@ -5,51 +5,6 @@ import java.util.concurrent.Semaphore;
 
 public class Sys 
 {
-	@Deprecated
-	public static void acquire(Semaphore sem)
-	{
-        try 
-    	{
-			sem.acquire();
-		}
-    	catch (InterruptedException e) 
-    	{}
-	}
-	
-    @SuppressWarnings("static-access")
-    @Deprecated
-	public static void sleepWithoutInterruptions(long millis) 
-    {
-		try 
-		{
-			Thread.currentThread().sleep(millis);
-		}
-		catch (InterruptedException e)
-		{}
-	}
-
-    @Deprecated
-	public static void waitWithoutInterruptions(Object lock, long millis)
-	{
-		try 
-		{
-			lock.wait(millis);
-		}
-		catch (InterruptedException e)
-		{}
-	}
-
-    @Deprecated
-	public static void waitWithoutInterruptions(Object lock)
-	{
-		try
-		{
-			lock.wait();
-		}
-		catch (InterruptedException e) 
-		{}
-	}
-
 	public static Thread startDaemon(Runnable runnable) 
 	{
 	    return startDaemon(runnable, null);

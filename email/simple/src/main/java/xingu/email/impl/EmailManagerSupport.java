@@ -94,7 +94,14 @@ public abstract class EmailManagerSupport
                     	{
                     		logger.info("Sleeping for '{}' before sending the next message. Increase your send rate quota!", TimeUtils.toSeconds(waitFor));
                     	}
-                    	Sys.sleepWithoutInterruptions(waitFor);
+                    	try
+						{
+							Thread.sleep(waitFor);
+						}
+						catch (InterruptedException e)
+						{
+							logger.warn("Thread '{}' interrupted", Thread.currentThread().getName());
+						}
                     }
                     try
                     {
@@ -115,7 +122,14 @@ public abstract class EmailManagerSupport
                 }
                 else
                 {
-                    Sys.waitWithoutInterruptions(queue);
+                	try
+        			{
+                		queue.wait();
+        			}
+        			catch (InterruptedException e)
+        			{
+        				return;
+        			}
                 }
             }
         }
