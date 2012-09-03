@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -39,19 +40,20 @@ public class LuceneSearchEngineTest
     public void testSimpleSearch()
         throws Exception
     {
-        Query query = index.newQuery("_value_");
+    	String term = RandomStringUtils.randomAlphabetic(8);
+        Query query = index.newQuery(term);
         List<Document> hits = index.search(query);
         assertEquals(0,hits.size());
         
         //index doc
-        indexDoc("text","this is some _value_ text");
+        indexDoc("text","this is some " + term + " text");
         
         //search
-        query = index.newQuery("_value_");
+        query = index.newQuery(term);
         hits = index.search(query);
         assertEquals(1,hits.size());
 
-        query = index.newQuery("text: _value_");
+        query = index.newQuery("text: " + term);
         hits = index.search(query);
         assertEquals(1,hits.size());
     }
@@ -60,17 +62,18 @@ public class LuceneSearchEngineTest
     public void testStoreMultipleDocuments()
     	throws Exception
     {
-        Query query = index.newQuery("_other_value_");
+    	String term = RandomStringUtils.randomAlphabetic(8);
+    	Query query = index.newQuery(term);
         List<Document> hits = index.search(query);
         assertEquals(0,hits.size());
         
-        indexDoc("text","this is some _other_value_ text");
-        query = index.newQuery("_other_value_");
+        indexDoc("text","this is some " + term + " text");
+        query = index.newQuery(term);
         hits = index.search(query);
         assertEquals(1,hits.size());
         
-        indexDoc("text","_other_value_ on other text");
-        query = index.newQuery("_other_value_");
+        indexDoc("text", term + " on other text");
+        query = index.newQuery(term);
         hits = index.search(query);
         assertEquals(2,hits.size());
     }
@@ -78,13 +81,14 @@ public class LuceneSearchEngineTest
     @Test
     public void testDeleteIndex()
     {
-    	Query query = index.newQuery("_delete_");
+    	String term = RandomStringUtils.randomAlphabetic(8);
+    	Query query = index.newQuery(term);
     	List<Document> hits = index.search(query);
         assertEquals(0,hits.size());
         
         //add to index
-        int id = indexDoc("text","_delete_");
-        query = index.newQuery("_delete_");
+        int id = indexDoc("text", term);
+        query = index.newQuery(term);
         hits = index.search(query);
         assertEquals(1,hits.size());
         
