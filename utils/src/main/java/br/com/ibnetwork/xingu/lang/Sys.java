@@ -1,10 +1,17 @@
 package br.com.ibnetwork.xingu.lang;
 
 import java.io.File;
-import java.util.concurrent.Semaphore;
 
 public class Sys 
 {
+	public static void interrupt(Thread t)
+	{
+		if(t != null)
+		{
+			t.interrupt();
+		}
+	}
+	
 	public static Thread startDaemon(Runnable runnable) 
 	{
 	    return startDaemon(runnable, null);
