@@ -2,14 +2,18 @@ package xingu.store.impl.mybatis;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.avalon.framework.activity.Startable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -41,13 +45,25 @@ public class MyBatisObjectStore
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private String environment;
-    
+
+    Properties properties = new Properties();
+
     @Override
     public void configure(Configuration conf)
         throws ConfigurationException
     {
-        configurationFile = conf.getChild("mybatis").getAttribute("conf", "mybatis.xml");
-        environment = conf.getChild("mybatis").getAttribute("environment", null);
+    	Configuration mybatisConfig = conf.getChild("mybatis");
+        configurationFile = mybatisConfig.getAttribute("conf", "mybatis.xml");
+        environment = mybatisConfig.getAttribute("environment", null);
+
+        
+        Configuration dataSourceConfig[] = mybatisConfig.getChildren();
+        for (Configuration configuration : dataSourceConfig)
+		{
+			String name = configuration.getAttribute("name");
+			String value = configuration.getAttribute("value");
+			properties.setProperty(name, value);
+		}
     }
     
 	@Override
@@ -58,11 +74,11 @@ public class MyBatisObjectStore
 	    Reader reader = new FileReader(new File(url.getFile()));
 	    if(StringUtils.isNotEmpty(environment))
 	    {
-	        sessionFactory = new SqlSessionFactoryBuilder().build(reader, environment);
+	        sessionFactory = new SqlSessionFactoryBuilder().build(reader, environment, properties);
 	    }
 	    else
 	    {
-	        sessionFactory = new SqlSessionFactoryBuilder().build(reader);
+	        sessionFactory = new SqlSessionFactoryBuilder().build(reader, properties);
 	    }
         org.apache.ibatis.session.Configuration conf = sessionFactory.getConfiguration();
         conf.setObjectFactory(new XinguObjectFactory(factory));
