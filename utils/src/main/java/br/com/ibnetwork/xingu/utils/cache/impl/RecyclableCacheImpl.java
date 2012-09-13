@@ -3,6 +3,7 @@ package br.com.ibnetwork.xingu.utils.cache.impl;
 import java.util.Arrays;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.cache.CacheStatus;
 import br.com.ibnetwork.xingu.utils.cache.RecyclableCache;
 import br.com.ibnetwork.xingu.utils.cache.Recyclable;
 
@@ -80,11 +81,80 @@ public class RecyclableCacheImpl<T extends Recyclable>
             capacity = size;
         }
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void dispose()
+	{
+		for (int i = 0; i < capacity; i++)
+		{
+			Pointer p = array[i];
+			if(p != null)
+			{
+				dispose((T) p.item);
+			}
+		}
+	}
+
+	protected void dispose(T t)
+	{}
+
+	@Override
+	public CacheStatus status()
+	{
+		int inCache = 0;
+		int taken = 0;
+		
+		return new CacheStatusImpl(capacity, ic, inCache, taken);
+	}
+}
+
+class CacheStatusImpl
+	implements CacheStatus
+{
+	private final int capacity;
+	
+	private final int size;
+	
+	private final int inCache;
+	
+	private final int taken;
+
+	public CacheStatusImpl(int capacity, int size, int inCache, int taken)
+	{
+		this.capacity = capacity;
+		this.size = size;
+		this.inCache = inCache;
+		this.taken = taken;
+	}
+
+	@Override
+	public int cached()
+	{
+		return inCache;
+	}
+
+	@Override
+	public int taken()
+	{
+		return taken;
+	}
+
+	@Override
+	public int size()
+	{
+		return size;
+	}
+
+	@Override
+	public int capacity()
+	{
+		return capacity;
+	}
 }
 
 class Pointer
 {
-
 	boolean available;
 	
 	final Object item;

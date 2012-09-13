@@ -7,5 +7,8 @@ public interface RecyclableCache<T extends Recyclable>
 	void returnItem(T t);
 
 	void using(T t);
-	
+
+	void dispose();
+
+	CacheStatus status();
 }
