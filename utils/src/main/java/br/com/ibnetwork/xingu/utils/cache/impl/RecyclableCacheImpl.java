@@ -2,6 +2,9 @@ package br.com.ibnetwork.xingu.utils.cache.impl;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.cache.CacheStatus;
 import br.com.ibnetwork.xingu.utils.cache.RecyclableCache;
@@ -15,6 +18,8 @@ public class RecyclableCacheImpl<T extends Recyclable>
 	private int ic; // items count
 	
 	private Pointer[] array;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public RecyclableCacheImpl()
 	{
@@ -46,7 +51,7 @@ public class RecyclableCacheImpl<T extends Recyclable>
 	}
 	
 	@Override
-	public void returnItem(T t)
+	public synchronized void returnItem(T t)
 	{
 		for (int i = 0; i < capacity; i++)
 		{
@@ -62,7 +67,7 @@ public class RecyclableCacheImpl<T extends Recyclable>
 	}
 
 	@Override
-	public void using(T t)
+	public synchronized void using(T t)
 	{
 		ensureCapacity(ic + 1);
 		array[ic] = new Pointer(t);
@@ -91,12 +96,20 @@ public class RecyclableCacheImpl<T extends Recyclable>
 			Pointer p = array[i];
 			if(p != null)
 			{
-				dispose((T) p.item);
+				try
+				{
+					dispose((T) p.item);
+				}
+				catch (Exception e)
+				{
+					logger.warn("Error disposed cached item", e);
+				}
 			}
 		}
 	}
 
 	protected void dispose(T t)
+		throws Exception
 	{}
 
 	@Override
@@ -104,6 +117,23 @@ public class RecyclableCacheImpl<T extends Recyclable>
 	{
 		int inCache = 0;
 		int taken = 0;
+		
+		for (int i = 0; i < capacity; i++)
+		{
+			Pointer p = array[i];
+			if(p == null)
+			{
+				continue;
+			}
+			if(p.available)
+			{
+				inCache++;
+			}
+			else
+			{
+				taken++;
+			}
+		}
 		
 		return new CacheStatusImpl(capacity, ic, inCache, taken);
 	}
@@ -150,6 +180,12 @@ class CacheStatusImpl
 	public int capacity()
 	{
 		return capacity;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "capacity: '"+capacity+"', size: '"+size+"', cached: '"+inCache+"', taken: '"+taken+"'";
 	}
 }
 
