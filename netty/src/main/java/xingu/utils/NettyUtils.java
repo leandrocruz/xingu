@@ -143,4 +143,18 @@ public class NettyUtils
         }
         return channelFactory;
     }
+
+	public static void closeQuietly(Channel channel)
+	{
+		if(channel == null)
+		{
+			return;
+		}
+		try
+		{
+			channel.close().await();
+		}
+		catch (InterruptedException e)
+		{}
+	}
 }
