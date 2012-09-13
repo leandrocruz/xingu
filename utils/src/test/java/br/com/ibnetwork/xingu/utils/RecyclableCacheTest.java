@@ -1,11 +1,14 @@
 package br.com.ibnetwork.xingu.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.utils.cache.Recyclable;
 import br.com.ibnetwork.xingu.utils.cache.RecyclableCache;
+import br.com.ibnetwork.xingu.utils.cache.impl.RecyclableCacheImpl;
 
 public class RecyclableCacheTest
 {
@@ -13,7 +16,7 @@ public class RecyclableCacheTest
 	public void testCache()
 		throws Exception
 	{
-		RecyclableCache<X> cache = new RecyclableCache<X>(3);
+		RecyclableCache<X> cache = new RecyclableCacheImpl<X>(3);
 		X x = cache.next();
 		assertNull(x);
 		
@@ -37,7 +40,7 @@ public class RecyclableCacheTest
 	public void testEnlargement()
 		throws Exception
 	{
-		RecyclableCache<X> cache = new RecyclableCache<X>(1);
+		RecyclableCache<X> cache = new RecyclableCacheImpl<X>(1);
 		X x1 = new X();
 		X x2 = new X();
 		X x3 = new X();
