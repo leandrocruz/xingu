@@ -77,7 +77,7 @@ public class DaemonThreadFactory
         {
             try
             {
-            	System.out.println("Interrupting " + t.getId() + " '" + t.getState() + "'");
+            	//System.out.println("Interrupting " + t.getId() + " '" + t.getState() + "'");
                 t.interrupt();
             }
             catch(Throwable error)
