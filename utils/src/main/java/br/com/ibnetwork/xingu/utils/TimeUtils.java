@@ -1,6 +1,7 @@
 package br.com.ibnetwork.xingu.utils;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
@@ -87,6 +88,18 @@ public class TimeUtils
 		return ((double) millis) / factor + unit;
 	}
 
+	public static Date toDateNoTime(Date now)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+
+	
 	public static Calendar date(int year, int month, int day)
 	{
 		Calendar calendar = Calendar.getInstance();
