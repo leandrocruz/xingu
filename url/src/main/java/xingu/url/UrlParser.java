@@ -66,7 +66,7 @@ public class UrlParser
 		{
 			if (!Character.isLetterOrDigit(c) && c != '-' && c != '.' && c != '_')
 			{
-				throw new BadParameter("Invalid character in host/domain name.");
+				throw new BadParameter("Invalid character in host/domain name: " + host);
 			}
 		}
 		return host;
@@ -348,7 +348,7 @@ public class UrlParser
 
 		if (!Character.isLetterOrDigit(c) && c != '-' && c != '.' && c != '_' && c != ':' && c != '/')
 		{
-			throw new BadParameter("Invalid character in host/domain name.");
+			throw new BadParameter("Invalid character in host/domain name: " + array.toString());
 		}
 
 		boolean isLast = isLastElement(array, i);
