@@ -22,7 +22,7 @@ public class DaemonThreadFactoryTest
 		
 		ThreadMXBean mgn = ManagementFactory.getThreadMXBean();
 		int count = mgn.getDaemonThreadCount();
-		System.out.println("START: " + count);
+		//System.out.println("START: " + count);
 
 		int threads = 50;
 		int calls = 100;
@@ -77,15 +77,15 @@ public class DaemonThreadFactoryTest
 
 		//barrier.await(); //should last around 'interval * calls' ms
 		
-		System.out.println("Done with: '" + total + "' calls after '" + (System.currentTimeMillis() - start) + "' ms");
+		//System.out.println("Done with: '" + total + "' calls after '" + (System.currentTimeMillis() - start) + "' ms");
 		for (int i = 0; i < threads; i++)
 		{
 			Thread t = array[i];
-			System.out.println("Done " + t.getId() + " '" + t.getState() + "' " + t.isInterrupted() + "/" + t.isAlive());
+			//System.out.println("Done " + t.getId() + " '" + t.getState() + "' " + t.isInterrupted() + "/" + t.isAlive());
 		}
 		
-		System.out.println("DONE: " + mgn.getDaemonThreadCount());
-		System.out.println("DONE: " + mgn.getDaemonThreadCount());
+		//System.out.println("DONE: " + mgn.getDaemonThreadCount());
+		//System.out.println("DONE: " + mgn.getDaemonThreadCount());
 		
 		//assertEquals(threads * calls, total.get());
 		
