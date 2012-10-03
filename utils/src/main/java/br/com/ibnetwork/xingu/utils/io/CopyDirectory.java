@@ -20,9 +20,20 @@ public class CopyDirectory
 	public CopyDirectory()
 	{}
 
+	public CopyDirectory(boolean debug)
+	{
+		this.debug = debug;
+	}
+
 	public CopyDirectory(FileFilter filter)
 	{
 		this.filter = filter;
+	}
+
+	public CopyDirectory(boolean debug, FileFilter filter)
+	{
+		this.filter = filter;
+		this.debug = debug;
 	}
 
 	public void copyTree(File from, File to)
