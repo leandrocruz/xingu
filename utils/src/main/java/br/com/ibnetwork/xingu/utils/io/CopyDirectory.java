@@ -46,7 +46,7 @@ public class CopyDirectory
 			if(file.isDirectory())
 			{
 				//create sibling directory
-				debug("\n[D] from: " + file + "\n[D] to: " + sibling);
+				debug("\n[D] from: " + file.getCanonicalPath() + "\n[D] to: " + sibling.getCanonicalPath());
 				if(!sibling.exists())
 				{
 					sibling.mkdirs();
@@ -56,7 +56,7 @@ public class CopyDirectory
 			else
 			{
 				//copy file
-				debug("\n[F] from: " + file + "\n[F] to: " + sibling);
+				debug("\n[F] from: " + file.getCanonicalPath() + "\n[F] to: " + sibling.getCanonicalPath());
 				int result = copyFile(file, sibling);
 				String msg = result > 0 ? FileUtils.byteCountToDisplaySize(result) + " copied" : "error"; 
 				debug("[F] " + msg);
