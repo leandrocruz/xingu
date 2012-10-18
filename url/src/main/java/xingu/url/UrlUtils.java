@@ -1,5 +1,8 @@
 package xingu.url;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -169,4 +172,29 @@ public class UrlUtils
         }
         return url;
     }
+    
+    public static String encode(String spec)
+    {
+		try
+		{
+			return URLEncoder.encode(spec, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			return "EncodeError: " + spec;
+		}
+    }
+
+    public static String decode(String spec)
+    {
+		try
+		{
+			return URLDecoder.decode(spec, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			return "DecodeError: " + spec;
+		}
+    }
+
 }
