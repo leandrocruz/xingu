@@ -141,6 +141,11 @@ public class IPUtils
 
 		return octets == 8 || doubleColonFound;
 	}
+	
+	public static boolean isLocalHost(String ipAddress)
+    {
+    	return "localhost".equalsIgnoreCase(ipAddress) || "127.0.0.1".equals(ipAddress);
+    }
 
 	public static IPAddress buildIPv6From(String address)
 	{
