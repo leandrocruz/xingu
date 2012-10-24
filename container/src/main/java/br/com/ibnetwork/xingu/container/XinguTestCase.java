@@ -77,6 +77,7 @@ public class XinguTestCase
     }
     
 	protected void rebind(Binder binder)
+		throws Exception
     {}
 
     public void injectDependencies()
