@@ -12,7 +12,12 @@ public class ErrorReply
 	private final String message;
 
 	private String stackTrace;
-	
+
+	public ErrorReply(String message)
+	{
+		setOk(false);
+		this.message = message;
+	}
 
 	public ErrorReply(Throwable t, String message, String trace)
 	{
