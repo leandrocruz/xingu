@@ -16,5 +16,5 @@ public interface QueryString
 
     String getDecoded(String name);
 
-    //String getDecoded(String name, String encoding);
+    String getDecoded(String name, String encoding);
 }

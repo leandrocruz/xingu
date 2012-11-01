@@ -48,8 +48,8 @@ public class QueryStringImpl
         return getDecoded(name, DEFAULT_HTTP_CHARSET_NAME);
     }
 
-    //@Override
-    private String getDecoded(String name, String enc)
+    @Override
+    public String getDecoded(String name, String enc)
     {
         String value = map().get(name);
         String result = decode(value, enc);
@@ -73,7 +73,6 @@ public class QueryStringImpl
             return null;
         }
     }
-
 
     @Override
     public int size()
