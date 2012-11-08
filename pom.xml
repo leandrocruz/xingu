@@ -5,7 +5,7 @@
 	<groupId>xingu</groupId>
 	<artifactId>xingu</artifactId>
 	<packaging>pom</packaging>
-	<version>1.4.24</version>
+	<version>1.4.25-SNAPSHOT</version>
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>https://github.com/leandrocruz/Xingu</url>
