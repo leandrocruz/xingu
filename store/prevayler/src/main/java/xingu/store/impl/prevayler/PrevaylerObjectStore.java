@@ -37,11 +37,13 @@ import xingu.store.ObjectStore;
 import xingu.store.PersistentBean;
 import xingu.store.SnapshotListener;
 import xingu.store.StoreException;
+import xingu.store.impl.BadObjectStore;
 import xingu.store.impl.prevayler.snapshot.SimpleSnapshooter;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class PrevaylerObjectStore
-    implements ObjectStore, SnapshotListener, Configurable, Startable
+	extends BadObjectStore
+    implements SnapshotListener, Configurable, Startable
 {
     @Inject
     private Environment env; 
@@ -369,35 +371,6 @@ public class PrevaylerObjectStore
     {
         this.busyTakingSnapshot = false;
     }
-    
-    @Override
-    public <POJO extends PersistentBean> POJO selectOne(String statement)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> POJO selectOne(String statement, Object param)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> List<POJO> selectList(String statement)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> List<POJO> selectList(String statement, Object param)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-    
 }
 
 class Cache<POJO>

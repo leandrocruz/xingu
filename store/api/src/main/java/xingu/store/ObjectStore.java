@@ -22,6 +22,9 @@ public interface ObjectStore
 	<POJO extends PersistentBean> int delete(Class<POJO> pojoClass, POJO pojo)
 	    throws StoreException;
 
+	<POJO extends PersistentBean> int delete(Class<POJO> pojoClass, long id)
+		    throws StoreException;
+	
 	<POJO extends PersistentBean> POJO selectOne(String statement)
 	    throws StoreException;
 

@@ -2,10 +2,8 @@ package xingu.store.impl.mybatis;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
 
@@ -13,7 +11,6 @@ import org.apache.avalon.framework.activity.Startable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -22,15 +19,15 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xingu.store.ObjectStore;
 import xingu.store.PersistentBean;
 import xingu.store.StoreException;
+import xingu.store.impl.BadObjectStore;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class MyBatisObjectStore
-	implements ObjectStore, Configurable, Startable
+	extends BadObjectStore
+	implements Configurable, Startable
 {
 	@Inject
 	private Factory factory;
@@ -104,7 +101,8 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int delete(POJO pojo)
         throws StoreException
     {
-        Class<POJO> clazz = (Class<POJO>) pojo.getClass();
+        @SuppressWarnings("unchecked")
+		Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return delete(clazz, pojo);
     }
 
@@ -112,11 +110,17 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int delete(Class<POJO> clazz, POJO pojo)
         throws StoreException
     {
+    	return delete(clazz, pojo.getId());
+    }
+    
+	@Override
+	public <POJO extends PersistentBean> int delete(Class<POJO> clazz, long id)
+		throws StoreException
+	{
         /*
          * Each thread should have its own instance of SqlSession
          */
         String namespace = clazz.getName();
-        long id = pojo.getId();
         SqlSession session = openSession();
         String statement = namespace + ".del";
 
@@ -134,7 +138,8 @@ public class MyBatisObjectStore
         {
             session.close();
         }
-    }
+	}
+
 
     private SqlSession openSession()
     {
@@ -146,6 +151,7 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int store(POJO pojo)
         throws StoreException
     {
+    	@SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return store(clazz, pojo);
     }
@@ -192,6 +198,7 @@ public class MyBatisObjectStore
     public <POJO extends PersistentBean> int insertWithId(POJO pojo)
         throws StoreException
     {
+    	@SuppressWarnings("unchecked")
         Class<POJO> clazz = (Class<POJO>) pojo.getClass();
         return insertWithId(clazz, pojo);
     }
@@ -312,19 +319,5 @@ public class MyBatisObjectStore
         {
             session.close();
         }
-    }
-
-    @Override
-    public void clear()
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public void takeSnapshot()
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
     }
 }

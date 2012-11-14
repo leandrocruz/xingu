@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import xingu.store.ObjectStore;
 import xingu.store.PersistentBean;
 import xingu.store.StoreException;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.store.impl.BadObjectStore;
 
 public class InMemoryObjectStore
-    implements ObjectStore
+	extends BadObjectStore
 {
     private HashMap<String, List<PersistentBean>> hashListsPojos = new HashMap<String, List<PersistentBean>>();
 
@@ -130,40 +129,4 @@ public class InMemoryObjectStore
         hashListsPojos = new HashMap<String, List<PersistentBean>>();
         lastIds = new HashMap<String, Integer>();
     }
-
-    @Override
-    public void takeSnapshot()
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> POJO selectOne(String statement)
-            throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> POJO selectOne(String statement, Object param)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> List<POJO> selectList(String statement)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
-    @Override
-    public <POJO extends PersistentBean> List<POJO> selectList(String statement, Object param)
-        throws StoreException
-    {
-        throw new NotImplementedYet("TODO");
-    }
-
 }
