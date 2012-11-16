@@ -112,7 +112,7 @@ public class XinguTestCase
 		}
 	}
 
-	protected Configuration builfFrom(String xml)
+	protected Configuration buildFrom(String xml)
 	{
 		DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
 		InputStream is = null;
