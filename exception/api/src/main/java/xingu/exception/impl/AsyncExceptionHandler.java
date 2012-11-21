@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.exception.ExceptionHandler;
-import br.com.ibnetwork.xingu.lang.Sys;
 
 public abstract class AsyncExceptionHandler
     implements ExceptionHandler, Runnable, Configurable, Startable

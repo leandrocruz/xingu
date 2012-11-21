@@ -9,13 +9,15 @@ public class InvisibleConstructors
     private InvisibleConstructors()
     {}
 
-    InvisibleConstructors(String s)
+    InvisibleConstructors(String s) 
     {
+        this();
         this.s = s;
     }
 
     protected InvisibleConstructors(Integer i)
     {
+        this();
         this.i = i;
     }
 }
