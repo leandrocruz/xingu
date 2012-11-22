@@ -67,6 +67,13 @@ public class BadObjectStore
 	{
 		throw new NotImplementedYet();
 	}
+	
+	@Override
+    public int run(String statement, Object param)
+        throws StoreException
+    {
+        throw new NotImplementedYet();
+    }
 
 	@Override
 	public <POJO extends PersistentBean> List<POJO> selectList(String statement)

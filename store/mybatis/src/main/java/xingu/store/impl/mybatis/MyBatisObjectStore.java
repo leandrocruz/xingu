@@ -320,4 +320,25 @@ public class MyBatisObjectStore
             session.close();
         }
     }
+    
+    @Override
+    public int run(String statement, Object param)
+        throws StoreException
+    {
+        SqlSession session = openSession();
+        try
+        {
+            return session.insert(statement, param);
+        }
+        catch(Throwable t)
+        {
+            String msg = "Error executing sql statement " + statement + " param: " + param;
+            logger.error(msg, t);
+            throw new StoreException(msg, t);
+        }
+        finally
+        {
+            session.close();
+        }
+    }
 }

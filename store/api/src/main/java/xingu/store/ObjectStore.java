@@ -36,6 +36,9 @@ public interface ObjectStore
 
 	<POJO extends PersistentBean> List<POJO> selectList(String statement, Object param)
 	    throws StoreException;
+	
+	int run(String statement, Object param)
+	        throws StoreException;
 
 	void clear()
 	    throws StoreException;
