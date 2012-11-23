@@ -197,6 +197,7 @@ public class PrevaylerObjectStore
 		factory.configureSnapshotSerializer(serializer);
 		factory.configurePrevalentSystem((Serializable) new Cache());
 		factory.configurePrevalenceDirectory(prevalenceDirectory);
+		System.out.println(prevalenceDirectory);
 		factory.configureJournalFileSizeThreshold(journalFileSizeThreshold);
 		factory.configureTransactionFiltering(enableFoodTaster);
 		return factory.create();

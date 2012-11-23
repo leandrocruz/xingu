@@ -7,15 +7,20 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 
+import xingu.store.impl.prevayler.PrevaylerObjectStore;
+import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class PrevaylerTest
     extends XinguTestCase
@@ -26,6 +31,23 @@ public class PrevaylerTest
 	@Inject
 	private Factory factory;
 
+    @Override
+    protected String getContainerFile()
+    {
+        return "pulga-empty.xml";
+    }
+
+    @Override
+    protected void rebind(Binder binder)
+    	throws Exception
+    {
+    	File prevaylerDir = FileUtils.createTempDir("prevayler-");
+    	String xml = "<component> <prevayler	prevalenceDirectory=\""+prevaylerDir+"\" clearPrevalenceDirectory=\"true\" takeSnapshotOnStart=\"false\"/> </component>";
+    	Configuration conf = buildFrom(xml);
+    	binder.bind(ObjectStore.class).to(PrevaylerObjectStore.class).with(conf);
+    }
+
+	
     @Test
 	public void testAddWithId()
 		throws Exception
@@ -242,7 +264,6 @@ public class PrevaylerTest
 	    
 	    assertEquals(300, X.id);
 	}
-	
 }
 
 class X implements Runnable
