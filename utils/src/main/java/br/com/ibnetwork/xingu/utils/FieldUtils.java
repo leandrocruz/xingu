@@ -6,6 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ibnetwork.xingu.utils.clone.CloneException;
+import br.com.ibnetwork.xingu.utils.reflect.FieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.BooleanFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.ByteFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.CharacterFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.DoubleFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.FloatFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.IntegerFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.LongFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.MissingFieldHandler;
+import br.com.ibnetwork.xingu.utils.reflect.impl.ShortFieldHandler;
 
 public class FieldUtils
 {
@@ -93,6 +103,12 @@ public class FieldUtils
 		}
 	}
 
+	public static void copyValue(Field field, Object source, Object copy)
+	{
+		Object value = valueFrom(field, source);
+		set(field, copy, value);
+	}
+
 	public static void copyPrimitive(Field field, Object src, Object copy)
 	{
 		boolean accessible = field.isAccessible();
@@ -100,47 +116,7 @@ public class FieldUtils
 
 		try
 		{
-			Type type = field.getType();
-			if (Boolean.TYPE.equals(type))
-			{
-				boolean b = field.getBoolean(src);
-				field.setBoolean(copy, b);
-			}
-			else if (Byte.TYPE.equals(type))
-			{
-				byte b = field.getByte(src);
-				field.setByte(copy, b);
-			}
-			else if (Character.TYPE.equals(type))
-			{
-				char c = field.getChar(src);
-				field.setChar(copy, c);
-			}
-			else if (Short.TYPE.equals(type))
-			{
-				short s = field.getShort(src);
-				field.setShort(copy, s);
-			}
-			else if (Integer.TYPE.equals(type))
-			{
-				int i = field.getInt(src);
-				field.setInt(copy, i);
-			}
-			else if (Long.TYPE.equals(type))
-			{
-				long l = field.getLong(src);
-				field.setLong(copy, l);
-			}
-			else if (Float.TYPE.equals(type))
-			{
-				float f = field.getFloat(src);
-				field.setFloat(copy, f);
-			}
-			else if (Double.TYPE.equals(type))
-			{
-				double d = field.getDouble(src);
-				field.setDouble(copy, d);
-			}
+			handlerFor(field).transferValue(field, src, copy);
 		}
 		catch (Exception e)
 		{
@@ -151,5 +127,43 @@ public class FieldUtils
 			field.setAccessible(accessible);
 		}
 	}
-
+	
+	public static FieldHandler handlerFor(Field field)
+	{
+		Type type = field.getType();
+		if (Boolean.TYPE.equals(type))
+		{
+			return BooleanFieldHandler.instance();
+		}
+		else if (Byte.TYPE.equals(type))
+		{
+			return ByteFieldHandler.instance();
+		}
+		else if (Character.TYPE.equals(type))
+		{
+			return CharacterFieldHandler.instance();
+		}
+		else if (Short.TYPE.equals(type))
+		{
+			return ShortFieldHandler.instance();
+		}
+		else if (Integer.TYPE.equals(type))
+		{
+			return IntegerFieldHandler.instance();
+		}
+		else if (Long.TYPE.equals(type))
+		{
+			return LongFieldHandler.instance();
+		}
+		else if (Float.TYPE.equals(type))
+		{
+			return FloatFieldHandler.instance();
+		}
+		else if (Double.TYPE.equals(type))
+		{
+			return DoubleFieldHandler.instance();
+		}
+		
+		return MissingFieldHandler.instance();
+	}
 }
