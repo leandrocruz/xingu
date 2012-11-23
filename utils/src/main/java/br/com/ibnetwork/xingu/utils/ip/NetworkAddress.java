@@ -4,29 +4,31 @@ import java.net.InetSocketAddress;
 
 public class NetworkAddress
 {
-	private String hardwareAddress;
+	private String mac;
 
 	private String host;
 	
 	private int port;
 
+	public NetworkAddress()
+	{}
+	
 	public NetworkAddress(InetSocketAddress address, String mac)
 	{
 		host = address.getAddress().getHostAddress();
 		port = address.getPort();
-		hardwareAddress = mac;
+		this.mac = mac;
 	}
 
 	
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " (" + host + ":" + port + ") #" + hardwareAddress;
+		return getClass().getSimpleName() + " (" + host + ":" + port + ") #" + mac;
 	}
 
-
-	public String getHardwareAddress() {return hardwareAddress;}
-	public void setHardwareAddress(String hardwareAddress) {this.hardwareAddress = hardwareAddress;}
+	public String getMac() {return mac;}
+	public void setMac(String mac) {this.mac = mac;}
 	public String getHost() {return host;}
 	public void setHost(String host) {this.host = host;}
 	public int getPort() {return port;}

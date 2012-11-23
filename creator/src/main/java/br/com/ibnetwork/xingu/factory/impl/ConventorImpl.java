@@ -13,7 +13,7 @@ public class ConventorImpl
 	private Factory factory;
 	
 	@Override
-	public Object apply(Class<?> base, String suffix, Object... params)
+	public Object apply(Class<?> base, String suffix)
 		throws FactoryException
 	{
         String name = base.getName() + suffix;
@@ -30,7 +30,7 @@ public class ConventorImpl
         {
         	return null;
         }
-        return factory.create(clazz, params);
+        return factory.create(clazz);
 	}
 
 }
