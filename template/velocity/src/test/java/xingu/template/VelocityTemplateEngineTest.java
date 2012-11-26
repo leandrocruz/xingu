@@ -6,10 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
-
-import xingu.template.Context;
-import xingu.template.TemplateEngine;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
@@ -40,7 +38,7 @@ public class VelocityTemplateEngineTest
         ctx.put("myName","Leandro R�drigo Saad Cruz");
         ctx.put("email","leandro@ibnetwork.com.br");
         engine.merge("test/Sample",ctx,sw);
-        String expected = "Name: Leandro R�drigo Saad Cruz\nEmail: leandro@ibnetwork.com.br\n$unknown";
+        String expected = "Name: Leandro R�drigo Saad Cruz" + SystemUtils.LINE_SEPARATOR +  "Email: leandro@ibnetwork.com.br" + SystemUtils.LINE_SEPARATOR +  "$unknown";
         assertEquals(expected,sw.toString());
     }
     

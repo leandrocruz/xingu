@@ -93,15 +93,18 @@
 		<module>creator</module>
 		<module>queue</module>
 		<module>search</module>
+		<module>clone</module>
 		<module>store</module>
 		<module>idgenerator</module>
 		<module>messaging</module>
 		<module>template</module>
 		<module>validator</module>
-		<module>l10n</module>
 		<module>email</module>
 		<module>netty</module>		
+		<module>l10n</module>
 		<!--
+		<module>ibatis</module>
+		<module>dao</module>
 		<module>attributes</module>
 		<module>user</module>
 		-->

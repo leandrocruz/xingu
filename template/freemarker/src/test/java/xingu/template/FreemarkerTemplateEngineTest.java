@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
 import xingu.template.impl.freemarker.FreemarkerTemplateEngine;
@@ -39,7 +40,7 @@ public class FreemarkerTemplateEngineTest
         ctx.put("myName","Leandro Rodrigo Saad Cruz");
         ctx.put("email","leandro@ibnetwork.com.br");
         engine.merge("test/Sample",ctx,sw);
-        String expected = "Name: Leandro Rodrigo Saad Cruz\nEmail: leandro@ibnetwork.com.br\n$unknown";
+        String expected = "Name: Leandro Rodrigo Saad Cruz" + SystemUtils.LINE_SEPARATOR +  "Email: leandro@ibnetwork.com.br" + SystemUtils.LINE_SEPARATOR +  "$unknown";
         sw.toString();
         assertEquals(expected,sw.toString());
     }
@@ -59,7 +60,7 @@ public class FreemarkerTemplateEngineTest
         Context ctx = engine.createContext();
         ctx.put("var","Leandro");
         engine.merge("test/AutoImport",ctx,sw);
-        String expected = "sampleMacro 1: Leandro\nsampleMacro 2: Leandro\n";
+        String expected = "sampleMacro 1: Leandro" + SystemUtils.LINE_SEPARATOR +  "sampleMacro 2: Leandro" + SystemUtils.LINE_SEPARATOR;
         sw.toString();
         assertEquals(expected,sw.toString());
     }
