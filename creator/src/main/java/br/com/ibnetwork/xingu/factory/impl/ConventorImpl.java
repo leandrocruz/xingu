@@ -16,6 +16,13 @@ public class ConventorImpl
 	public Object apply(Class<?> base, String suffix)
 		throws FactoryException
 	{
+		return apply(base, suffix, (Object[]) null);
+	}
+
+	@Override
+	public Object apply(Class<?> base, String suffix, Object... params)
+		throws FactoryException
+	{
         String name = base.getName() + suffix;
         Class<?> clazz = null;
         
@@ -30,7 +37,14 @@ public class ConventorImpl
         {
         	return null;
         }
-        return factory.create(clazz);
+        if(params != null)
+        {
+        	return factory.create(clazz, params);
+        }
+        else
+        {
+        	return factory.create(clazz);
+        }
 	}
 
 }
