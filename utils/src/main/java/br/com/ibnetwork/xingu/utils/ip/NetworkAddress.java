@@ -12,6 +12,12 @@ public class NetworkAddress
 
 	public NetworkAddress()
 	{}
+
+	public NetworkAddress(String host, int port)
+	{
+		this.host = host;
+		this.port = port;
+	}
 	
 	public NetworkAddress(InetSocketAddress address, String mac)
 	{
@@ -25,6 +31,26 @@ public class NetworkAddress
 	public String toString()
 	{
 		return getClass().getSimpleName() + " (" + host + ":" + port + ") #" + mac;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (host != null ? host.hashCode() : 0) + port + (mac != null ? mac.hashCode() : 0); 
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof NetworkAddress))
+		{
+			return false;
+		}
+		
+		NetworkAddress other = (NetworkAddress) obj;
+		return this.host == null ? other.host == null : host.equals(other.host)
+				&& this.port == other.port
+				&& this.mac == null ? other.mac == null : mac.equals(other.mac);
 	}
 
 	public String getMac() {return mac;}
