@@ -93,8 +93,6 @@
 		<module>creator</module>
 		<module>queue</module>
 		<module>search</module>
-		<module>ibatis</module>
-		<module>dao</module>
 		<module>store</module>
 		<module>idgenerator</module>
 		<module>messaging</module>

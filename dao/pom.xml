@@ -9,11 +9,4 @@
 	<artifactId>xingu-dao</artifactId>
 	<packaging>jar</packaging>
 	<name>Xingu DAO Manager</name>
-	<dependencies>
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-ibatis</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
 </project>
