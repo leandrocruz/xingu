@@ -38,7 +38,7 @@ public interface ObjectStore
 	    throws StoreException;
 	
 	int run(String statement, Object param)
-	        throws StoreException;
+		throws StoreException;
 
 	void clear()
 	    throws StoreException;
