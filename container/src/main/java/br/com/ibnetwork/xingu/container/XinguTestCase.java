@@ -86,7 +86,13 @@ public class XinguTestCase
 	    Injector injector = container.lookup(Injector.class);
 	    injector.injectDependencies(this);
 	}
-    
+
+    protected <T> void withMock(String key, Class<T> clazz)
+	{
+    	T impl = mock(clazz);
+    	binder.bind(clazz, key).to(impl);
+	}
+
     protected <T> void withMock(Class<T> clazz)
 	{
     	T impl = mock(clazz);
