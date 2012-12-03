@@ -16,8 +16,6 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import xingu.store.PersistentBean;
 import xingu.store.StoreException;
@@ -39,8 +37,6 @@ public class MyBatisObjectStore
 
 	private String configurationFile;
 	
-    protected Logger logger = LoggerFactory.getLogger(getClass());
-
     private String environment;
 
     Properties properties = new Properties();
@@ -131,7 +127,6 @@ public class MyBatisObjectStore
         catch(Throwable t)
         {
             String msg = "Error executing sql statement " + statement + ", id=" + id;
-            logger.error(msg, t);
             throw new StoreException(msg, t);
         }
         finally 
@@ -185,8 +180,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement + ", id=" + id;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "', id=" + id;
             throw new StoreException(msg, t);
         }
         finally 
@@ -218,8 +212,7 @@ public class MyBatisObjectStore
         }
         catch (Throwable t)
         {
-            String msg = "Error executing sql statement " + statement + ", id=" + pojo.getId();
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "', id=" + pojo.getId();
             throw new StoreException(msg, t);
         }
         finally
@@ -228,7 +221,8 @@ public class MyBatisObjectStore
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <POJO extends PersistentBean> POJO selectOne(String statement)
         throws StoreException
     {
@@ -239,8 +233,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "'";
             throw new StoreException(msg, t);
         }
         finally
@@ -249,6 +242,7 @@ public class MyBatisObjectStore
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> POJO selectOne(String statement, Object param)
         throws StoreException
@@ -260,8 +254,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement + " param: " + param;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "' param: " + param;
             throw new StoreException(msg, t);
         }
         finally
@@ -279,6 +272,7 @@ public class MyBatisObjectStore
         return selectList(statement);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> List<POJO> selectList(String statement)
         throws StoreException
@@ -290,8 +284,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "'";
             throw new StoreException(msg, t);
         }
         finally
@@ -300,6 +293,7 @@ public class MyBatisObjectStore
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <POJO extends PersistentBean> List<POJO> selectList(String statement, Object param)
         throws StoreException
@@ -311,8 +305,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement + " param: " + param;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "' param: " + param;
             throw new StoreException(msg, t);
         }
         finally
@@ -332,8 +325,7 @@ public class MyBatisObjectStore
         }
         catch(Throwable t)
         {
-            String msg = "Error executing sql statement " + statement + " param: " + param;
-            logger.error(msg, t);
+            String msg = "Error executing sql statement '" + statement + "' param: " + param;
             throw new StoreException(msg, t);
         }
         finally
