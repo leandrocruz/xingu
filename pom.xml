@@ -102,6 +102,7 @@
 		<module>email</module>
 		<module>netty</module>		
 		<module>l10n</module>
+		<module>process</module>
 		<!--
 		<module>ibatis</module>
 		<module>dao</module>
