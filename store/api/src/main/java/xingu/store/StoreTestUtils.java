@@ -14,7 +14,10 @@ public class StoreTestUtils
 		{
 			Object[] args = invocation.getArguments();
 			PersistentBean bean = (PersistentBean) args[1];
-			bean.setId(id++);
+			if(bean.getId() <= 0)
+			{
+				bean.setId(id++);
+			}
 			return null;
 		}
 	};
