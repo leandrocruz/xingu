@@ -4,6 +4,12 @@ import java.io.File;
 
 public class Sys 
 {
+	public static ClassLoader getContextClassLoader()
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		return cl;
+	}
+	
 	public static void interrupt(Thread t)
 	{
 		if(t != null)
