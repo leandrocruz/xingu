@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 
@@ -28,7 +28,7 @@ public class ServletError
     {
         if(t != null)
         {
-            stackTrace = ExceptionUtils.getFullStackTrace(t);
+            stackTrace = ExceptionUtils.getStackTrace(t);
         }
     }
     
@@ -38,7 +38,7 @@ public class ServletError
     	if(t != null)
     	{
     	    reason = t.getMessage();
-    	    stackTrace = ExceptionUtils.getFullStackTrace(t);
+    	    stackTrace = ExceptionUtils.getStackTrace(t);
     	}
     }
 

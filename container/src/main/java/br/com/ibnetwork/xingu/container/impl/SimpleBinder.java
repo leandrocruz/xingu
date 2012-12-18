@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Binding;

@@ -1,6 +1,6 @@
 package br.com.ibnetwork.xingu.validator.validators.br;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import br.com.ibnetwork.xingu.utils.br.Rg;
 import br.com.ibnetwork.xingu.validator.ann.br.ValidateRg;
 import br.com.ibnetwork.xingu.validator.validators.ValidatorSupport;

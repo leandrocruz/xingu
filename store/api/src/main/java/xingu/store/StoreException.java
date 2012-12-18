@@ -1,9 +1,7 @@
 package xingu.store;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 public class StoreException
-    extends NestableRuntimeException
+    extends RuntimeException
 {
 
 	public StoreException() {

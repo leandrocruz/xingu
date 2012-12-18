@@ -8,7 +8,7 @@ import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
 import xingu.template.impl.freemarker.FreemarkerTemplateEngine;

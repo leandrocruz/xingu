@@ -4,8 +4,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ArrayUtils
 {
@@ -94,7 +94,7 @@ public class ArrayUtils
 		String result = buffer.toString();
 		if(result.endsWith(separator))
 		{
-			result = StringUtils.chompLast(result,separator);
+			result = StringUtils.removeEnd(result,separator);
 		}
 		return result;
 	}

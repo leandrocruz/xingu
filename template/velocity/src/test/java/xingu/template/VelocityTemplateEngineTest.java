@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.container.Inject;

@@ -1,9 +1,7 @@
 package br.com.ibnetwork.xingu.messaging;
 
-import org.apache.commons.lang.exception.NestableException;
-
 public class MessageDispatcherException 
-	extends NestableException
+	extends RuntimeException
 {
 	public MessageDispatcherException()
 	{

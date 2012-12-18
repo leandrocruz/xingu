@@ -5,7 +5,7 @@ import java.lang.management.ThreadMXBean;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;

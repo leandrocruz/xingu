@@ -6,19 +6,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 public class ObjectUtils
 {
 	public static Class<?> loadClass(String className)
-		throws NestableRuntimeException
+		throws RuntimeException
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();	
 		return loadClass(className, cl);
 	}
 	
 	public static Class<?> loadClass(String className, ClassLoader cl)
-		throws NestableRuntimeException
+		throws RuntimeException
 	{
 		Class<?> clazz;
         try
@@ -27,20 +25,20 @@ public class ObjectUtils
         }
         catch (ClassNotFoundException e)
         {
-        	throw new NestableRuntimeException("Error loading class ["+className+"]",e);
+        	throw new RuntimeException("Error loading class ["+className+"]",e);
         }
 		return clazz;
 	}
 	
     public static Object getInstance(String className)
-		throws NestableRuntimeException
+		throws RuntimeException
 	{
     	ClassLoader cl = Thread.currentThread().getContextClassLoader();
     	return getInstance(className, cl);
 	}
 
     public static Object getInstance(String className, ClassLoader cl)
-		throws NestableRuntimeException
+		throws RuntimeException
 	{
     	try
         {
@@ -50,12 +48,12 @@ public class ObjectUtils
         }
         catch (Exception e)
         {
-            throw new NestableRuntimeException("Error creating object of class ["+className+"]",e);
+            throw new RuntimeException("Error creating object of class ["+className+"]",e);
         }
 	}
 
     public static Object getInstance(Class<?> clazz)
-    	throws NestableRuntimeException
+    	throws RuntimeException
     {
         try
         {
@@ -63,7 +61,7 @@ public class ObjectUtils
         }
         catch (Exception e)
         {
-            throw new NestableRuntimeException("Error creating object of class ["+clazz.getName()+"]",e);
+            throw new RuntimeException("Error creating object of class ["+clazz.getName()+"]",e);
         }
     }
 

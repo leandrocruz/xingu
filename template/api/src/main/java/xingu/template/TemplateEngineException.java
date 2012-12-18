@@ -1,12 +1,7 @@
 package xingu.template;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
-/**
- * @author <a href="mailto:leandro@ibnetwork.com.br">leandro</a>
- */
 public class TemplateEngineException
-        extends NestableRuntimeException
+        extends RuntimeException
 {
 	private String templateName;
 	

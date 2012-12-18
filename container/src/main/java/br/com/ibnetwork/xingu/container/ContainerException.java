@@ -1,9 +1,7 @@
 package br.com.ibnetwork.xingu.container;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 public class ContainerException
-        extends NestableRuntimeException
+        extends RuntimeException
 {
     private static final long serialVersionUID = 1L;
 

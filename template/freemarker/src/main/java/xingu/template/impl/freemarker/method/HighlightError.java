@@ -2,7 +2,7 @@ package xingu.template.impl.freemarker.method;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import xingu.template.TemplateEngineException;
 
@@ -59,7 +59,7 @@ public class HighlightError
         		continue;
         	}
         		
-        	line = StringEscapeUtils.escapeHtml(line);
+        	line = StringEscapeUtils.escapeHtml4(line);
     		if(lineCount == lineNumber)
     		{
     			line = line.replace("${"+expression+"}", "<b>${"+expression+"}</b>");

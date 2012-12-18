@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import br.com.ibnetwork.xingu.container.Environment;
 

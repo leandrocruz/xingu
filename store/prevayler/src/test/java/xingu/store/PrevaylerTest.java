@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 
 import xingu.store.impl.prevayler.PrevaylerObjectStore;
@@ -31,6 +30,7 @@ public class PrevaylerTest
 	@Inject
 	private Factory factory;
 
+	private Random rnd = new Random(System.currentTimeMillis());
     @Override
     protected String getContainerFile()
     {
@@ -68,7 +68,7 @@ public class PrevaylerTest
         long id;
         do
         {
-            id = RandomUtils.nextLong(new Random(System.currentTimeMillis()));
+            id = rnd.nextLong();
             if(id <=0)
             {
                 pojo = store.getById(Pojo.class,id);

@@ -2,8 +2,8 @@ package br.com.ibnetwork.xingu.lang;
 
 import java.lang.reflect.Constructor;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 public class Constructors
 {

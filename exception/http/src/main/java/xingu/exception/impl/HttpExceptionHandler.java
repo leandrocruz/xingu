@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -89,7 +89,7 @@ public class HttpExceptionHandler
     {
         Throwable error = item.throwable;
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("stackTrace", ExceptionUtils.getFullStackTrace(error)));
+        params.add(new BasicNameValuePair("stackTrace", ExceptionUtils.getStackTrace(error)));
         params.add(new BasicNameValuePair("throwable", error.getClass().getName()));
         params.add(new BasicNameValuePair("time", String.valueOf(time.now().time())));
         addParamsTo(params);
