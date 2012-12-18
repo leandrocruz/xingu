@@ -12,11 +12,12 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
+import br.com.ibnetwork.xingu.utils.FSUtils;
+
 import xingu.template.Context;
 import xingu.template.TemplateEngine;
 import xingu.template.TemplateEngineException;
 import xingu.template.impl.TemplateEngineSupport;
-import br.com.ibnetwork.xingu.utils.FSUtils;
 
 public class GroovyTemplateEngine
 	extends TemplateEngineSupport
