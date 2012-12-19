@@ -385,4 +385,12 @@ public class StringUtils
         return result + "%";
     }
 
+	public static String replaceOn(String replaceMe, String src, String replacement)
+	{
+		int start = src.indexOf(replaceMe);
+		int end = start + replaceMe.length();
+		String result = src.substring(0, start) + replacement + src.substring(end);
+		return result;
+	}
+
 }
