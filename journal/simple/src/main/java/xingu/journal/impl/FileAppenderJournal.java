@@ -13,6 +13,8 @@ public class FileAppenderJournal
 {
 	private FileWriter writer;
 	
+	private boolean open = true;
+	
 	@Override
 	public void start()
 		throws Exception
@@ -31,6 +33,7 @@ public class FileAppenderJournal
 	public void stop()
 		throws Exception
 	{
+		open = false;
 		writer.close();
 	}
 
@@ -45,6 +48,11 @@ public class FileAppenderJournal
 	public synchronized void append(String string, boolean withSeparator)
 		throws Exception
 	{
+		if(!open)
+		{
+			return;
+		}
+		
 		if(withSeparator)
 		{
 			writer.append(string);
