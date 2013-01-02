@@ -1,5 +1,6 @@
 package xingu.netty.channel.logger;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelDownstreamHandler;
 import org.jboss.netty.channel.ChannelEvent;
@@ -47,7 +48,8 @@ public abstract class ChannelLoggerSupport
 		if(msg instanceof ChannelBuffer)
         {
 			ChannelBuffer buffer = (ChannelBuffer) msg;
-			return HexDump.toHex(buffer);
+			String originalToString = ObjectUtils.identityToString(msg);
+			return originalToString + "\n" + HexDump.toHex(buffer);
         }
 		else
 		{

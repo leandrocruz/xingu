@@ -1,6 +1,5 @@
 package xingu.journal;
 
-
 public interface Journal
 {
 	void append(String string)
