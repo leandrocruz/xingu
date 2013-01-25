@@ -124,7 +124,15 @@ public class CollectionUtils
 		return result;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/**
+	 * Returns the asymmetric difference between two collections. Example:
+	 * For:
+	 * <ul>
+	 * 		<li>if a: 1, 2, 3 and b: 2, 3, 4 -> onA: 1 - intersection: 2, 3 - onB: 4</li>
+	 * 		<li>if a: 1, 2, 3 and b: 4, 5, 6 -> onA: 1, 2, 3 - intersection: EMPTY - onB: 4, 5, 6</li>
+	 * 		<li>if a: 1, 2, 3 and b: 3 -> onA: 1, 2 - intersection: 3 - onB: EMPTY</li>
+	 * </ul>
+	 */
 	public static <T> CollectionDifference<T> asymmetricDifference(Collection<T> a, Collection<T> b)
 	{
 		Collection<T> inter = CollectionUtils.intersection(a, b);
@@ -133,6 +141,6 @@ public class CollectionUtils
 			a = subtract(a, inter);
 			b = subtract(b, inter);
 		}
-		return new CollectionDifference(inter, a, b);
+		return new CollectionDifference<T>(inter, a, b);
 	}
 }
