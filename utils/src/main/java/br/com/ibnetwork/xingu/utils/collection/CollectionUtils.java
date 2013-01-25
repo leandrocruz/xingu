@@ -128,7 +128,7 @@ public class CollectionUtils
 	public static <T> CollectionDifference<T> asymmetricDifference(Collection<T> a, Collection<T> b)
 	{
 		Collection<T> inter = CollectionUtils.intersection(a, b);
-		if(inter != null)
+		if(inter != null && inter.size() > 0)
 		{
 			a = subtract(a, inter);
 			b = subtract(b, inter);
