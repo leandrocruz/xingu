@@ -20,11 +20,11 @@ public class ArrayUtils
         }
         return result;
 	}
-	
+
     public static Object resizeArray(Object oldArray, int newSize)
     {
         int oldSize = Array.getLength(oldArray);
-        Class elementType = oldArray.getClass().getComponentType();
+        Class<?> elementType = oldArray.getClass().getComponentType();
         Object newArray = Array.newInstance(elementType, newSize);
         int preserveLength = Math.min(oldSize, newSize);
         if (preserveLength > 0)
@@ -49,7 +49,7 @@ public class ArrayUtils
 	{
 		return toString(array,separator,null,false,null,false);
 	}
-	
+
 	public static String toString(Object[] array, String separator,String valueIfNull, String printNull, String valueIfEmpty, String printEmpty)
 	{
 		boolean printWhenNull = BooleanUtils.toBoolean(printNull);
@@ -72,7 +72,7 @@ public class ArrayUtils
 				if(StringUtils.isNotEmpty(string))
 				{
 					buffer.append(obj.toString());
-					appended = true;	
+					appended = true;
 				}
 				else if(printWhenEmpty)
 				{
@@ -85,7 +85,7 @@ public class ArrayUtils
 				buffer.append(valueIfNull);
 				appended = true;
 			}
-            
+
 			if(i < size - 1 && appended)
 			{
 				buffer.append(separator);
@@ -106,7 +106,7 @@ public class ArrayUtils
 			return 0;
 		}
 		int nullCount = 0;
-		for (int i = 0; i < array.length; i++) 
+		for (int i = 0; i < array.length; i++)
 		{
 			Object object = array[i];
 			if(object == null)
@@ -116,7 +116,7 @@ public class ArrayUtils
 		}
 		return nullCount;
 	}
-    
+
     public static Object[] replaceNulls(Object[] array, Object replacement)
     {
         if(array == null)
@@ -134,7 +134,7 @@ public class ArrayUtils
         return array;
     }
 
-    
+
     public static List<String> toList(String... array)
     {
     	List<String> result = new ArrayList<String>(array.length);
@@ -144,4 +144,15 @@ public class ArrayUtils
     	}
     	return result;
     }
+
+    public static List<Integer> toList(Integer... array)
+    {
+    	List<Integer> result = new ArrayList<Integer>(array.length);
+    	for(Integer i : array)
+    	{
+    		result.add(i);
+    	}
+    	return result;
+    }
+
 }
