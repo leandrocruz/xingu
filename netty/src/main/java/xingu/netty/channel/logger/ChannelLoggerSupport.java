@@ -17,7 +17,7 @@ public abstract class ChannelLoggerSupport
 	public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
 		throws Exception
 	{
-		log(">", e);
+		log(">>", e);
 		ctx.sendDownstream(e);
 	}
 
@@ -25,7 +25,7 @@ public abstract class ChannelLoggerSupport
 	public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e)
 		throws Exception
 	{
-		log("<", e);
+		log("<<", e);
 		ctx.sendUpstream(e);
 	}
 
@@ -49,7 +49,7 @@ public abstract class ChannelLoggerSupport
         {
 			ChannelBuffer buffer = (ChannelBuffer) msg;
 			String originalToString = ObjectUtils.identityToString(msg);
-			return originalToString + "\n" + HexDump.toHex(buffer);
+			return originalToString + "\n" + HexDump.toHex(buffer) + "\n";
         }
 		else
 		{
