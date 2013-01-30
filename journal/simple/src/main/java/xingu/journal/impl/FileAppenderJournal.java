@@ -3,12 +3,13 @@ package xingu.journal.impl;
 import java.io.File;
 import java.io.FileWriter;
 
+import xingu.journal.Journal;
+
 import org.apache.avalon.framework.activity.Startable;
 import org.apache.commons.lang3.SystemUtils;
 
-import xingu.journal.Journal;
-
 public class FileAppenderJournal
+	extends JournalSupport
 	implements Journal, Startable
 {
 	private FileWriter writer;
@@ -25,10 +26,11 @@ public class FileAppenderJournal
 		{
 			dir.mkdirs();
 		}
-		File file = File.createTempFile("http-journal_", ".txt", dir);
+		File file = File.createTempFile("http-journal-", ".txt", dir);
 		System.err.println(file);
 		writer = new FileWriter(file, true);
 	}
+	
 	@Override
 	public void stop()
 		throws Exception
@@ -38,14 +40,7 @@ public class FileAppenderJournal
 	}
 
 	@Override
-	public synchronized void append(String string)
-		throws Exception
-	{
-		append(string, true);
-	}
-
-	@Override
-	public synchronized void append(String string, boolean withSeparator)
+	public synchronized void append(Level level, String string)
 		throws Exception
 	{
 		if(!open)
@@ -53,15 +48,7 @@ public class FileAppenderJournal
 			return;
 		}
 		
-		if(withSeparator)
-		{
-			writer.append(string);
-			writer.append("\n-----------------------------------------------------------------------------\n");
-		}
-		else
-		{
-			writer.append(string + "\n");
-		}
+		writer.append(level + " " + string + "\n");
 		writer.flush();
 	}
 }
