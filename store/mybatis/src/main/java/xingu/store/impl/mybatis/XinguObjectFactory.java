@@ -1,5 +1,6 @@
 package xingu.store.impl.mybatis;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,6 +41,6 @@ public class XinguObjectFactory
 	@Override
 	public <T> boolean isCollection(Class<T> type)
 	{
-		return false;
+		return Collection.class.isAssignableFrom(type);
 	}
 }
