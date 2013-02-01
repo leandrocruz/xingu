@@ -18,22 +18,28 @@ public class XinguObjectFactory
         this.factory = factory;
     }
 
-    @Override
-    public Object create(Class clazz)
-    {
-        return factory.create(clazz);
-    }
+	@Override
+	public void setProperties(Properties properties)
+	{
+		throw new NotImplementedYet();
+	}
 
-    @Override
-    public Object create(Class clazz, List<Class> arg1, List<Object> arg2)
-    {
-        Object object = factory.create(clazz, arg2.toArray());
-        return object;
-    }
+	@Override
+	public <T> T create(Class<T> type)
+	{
+		return factory.create(type);
+	}
 
-    @Override
-    public void setProperties(Properties props)
-    {
-        throw new NotImplementedYet();
-    }
+	@Override
+	public <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs)
+	{
+        return factory.create(type, constructorArgs.toArray());
+
+	}
+
+	@Override
+	public <T> boolean isCollection(Class<T> type)
+	{
+		return false;
+	}
 }
