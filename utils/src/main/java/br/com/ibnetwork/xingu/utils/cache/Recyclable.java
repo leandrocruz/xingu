@@ -4,8 +4,6 @@ public interface Recyclable
 {
 	void reclycle();
 	
-	boolean isReclycled();
-	
 	void markTaken();
 }
 

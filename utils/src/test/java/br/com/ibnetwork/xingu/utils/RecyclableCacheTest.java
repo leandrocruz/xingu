@@ -21,16 +21,10 @@ public class RecyclableCacheTest
 		assertNull(x);
 		
 		x = new X();
-		assertEquals(false, x.isReclycled());
-		
 		cache.using(x);
-		assertEquals(false, x.isReclycled());
-		
 		X x1 = cache.next();
 		assertNull(x1);
-		
 		cache.returnItem(x);
-		assertEquals(true, x.isReclycled());
 
 		X x2 = cache.next();
 		assertEquals(x, x2);
@@ -79,9 +73,7 @@ public class RecyclableCacheTest
 
 	private void returnItem(RecyclableCache<X> cache, X item)
 	{
-		assertEquals(false, item.isReclycled());
 		cache.returnItem(item);
-		assertEquals(true, item.isReclycled());
 		X cached = cache.next();
 		assertSame(item, cached);
 	}
@@ -96,12 +88,6 @@ class X
 	public void reclycle()
 	{
 		recycled = true;
-	}
-
-	@Override
-	public boolean isReclycled()
-	{
-		return recycled;
 	}
 
 	@Override
