@@ -1,6 +1,7 @@
 package br.com.ibnetwork.xingu.utils.cache.impl;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,6 +137,12 @@ public class RecyclableCacheImpl<T extends Recyclable>
 		}
 		
 		return new CacheStatusImpl(capacity, ic, inCache, taken);
+	}
+
+	@Override
+	public Iterator<T> iterator()
+	{
+		throw new NotImplementedYet();
 	}
 }
 

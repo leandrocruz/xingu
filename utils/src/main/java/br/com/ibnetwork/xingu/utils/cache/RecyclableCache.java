@@ -1,5 +1,7 @@
 package br.com.ibnetwork.xingu.utils.cache;
 
+import java.util.Iterator;
+
 public interface RecyclableCache<T extends Recyclable>
 {
 	T next();
@@ -11,4 +13,6 @@ public interface RecyclableCache<T extends Recyclable>
 	void dispose();
 
 	CacheStatus status();
+
+	Iterator<T> iterator();
 }
