@@ -44,12 +44,12 @@ import br.com.ibnetwork.xingu.utils.CharUtils;
 public class HttpUtils
 {
     public static final String HTTP = "http://";
-    
-    public static Pattern pattern = Pattern.compile(".*< *meta http-equiv *= *[\"'] *Content\\-Type *[\"'] *content *= *[\"'] *([a-zA-Z0-9 \\-=;/]+) *[\"'].*", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+    public static Pattern pattern = Pattern.compile("< *meta http-equiv *= *[\"'] *Content\\-Type *[\"'] *content *= *[\"'] *([a-zA-Z0-9 \\-=;/]+) *[\"']", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
     /* http://www.w3.org/Protocols/rfc2616/rfc2616.txt */
     public static String DEFAULT_HTTP_CHARSET_NAME = "ISO-8859-1";
-    
+
     public static Charset DEFAULT_HTTP_CHARSET = Charset.forName(DEFAULT_HTTP_CHARSET_NAME);
 
     public static String urlFrom(HttpRequest request)
@@ -58,7 +58,7 @@ public class HttpUtils
         {
             return null;
         }
-            
+
         String path = request.getUri();
         if(path.startsWith(HTTP))
         {
@@ -67,7 +67,7 @@ public class HttpUtils
         String host = request.getHeader(HttpHeaders.Names.HOST);
         return HTTP+host+path;
     }
-    
+
     public static String charset(String type, String defaultCharset)
     {
         if(type == null)
@@ -88,8 +88,8 @@ public class HttpUtils
         }
         return defaultCharset;
     }
-    
-    public static String toString(Object obj, Encoding encoding, String charset) 
+
+    public static String toString(Object obj, Encoding encoding, String charset)
         throws IOException
     {
         ChannelBuffer buffer = NettyUtils.bufferFrom(obj);
@@ -99,7 +99,7 @@ public class HttpUtils
     }
 
 
-    public static InputStream toInputStream(ChannelBuffer buffer, Encoding encoding) 
+    public static InputStream toInputStream(ChannelBuffer buffer, Encoding encoding)
         throws IOException
     {
         if(buffer == null)
@@ -119,8 +119,8 @@ public class HttpUtils
         }
         return is;
     }
-    
-    public static ChannelBuffer toChannelBuffer(String content, String contentType, Encoding encoding, String charset) 
+
+    public static ChannelBuffer toChannelBuffer(String content, String contentType, Encoding encoding, String charset)
         throws IOException
     {
         PipedInputStream pipeIn = new PipedInputStream();
@@ -128,7 +128,7 @@ public class HttpUtils
         switch (encoding)
         {
             case GZIP:
-                os = new GZIPOutputStream(new PipedOutputStream(pipeIn));    
+                os = new GZIPOutputStream(new PipedOutputStream(pipeIn));
                 break;
             case ZIP:
                 os = new ZipOutputStream(new PipedOutputStream(pipeIn));
@@ -144,21 +144,21 @@ public class HttpUtils
         }
         else
         {
-            byte[] array  = charset == null ? content.getBytes() : content.getBytes(charset);  
+            byte[] array  = charset == null ? content.getBytes() : content.getBytes(charset);
             IOUtils.write(array, os);
             os.flush();
             os.close();
             data = IOUtils.toByteArray(pipeIn);
             pipeIn.close();
         }
-        ChannelBuffer result = ChannelBuffers.wrappedBuffer(data);        
+        ChannelBuffer result = ChannelBuffers.wrappedBuffer(data);
         return result;
     }
 
     public static String charsetFrom(String text)
     {
-        Matcher m = pattern.matcher(text); 
-        if(!m.matches())
+        Matcher m = pattern.matcher(text);
+        if(!m.find())
         {
             return null;
         }
@@ -172,28 +172,28 @@ public class HttpUtils
         String values[] = null;
         StringBuffer sb = new StringBuffer();
         StringTokenizer st = new StringTokenizer(input, "&");
-        while (st.hasMoreTokens()) 
+        while (st.hasMoreTokens())
         {
-            String pair = (String)st.nextToken();
+            String pair = st.nextToken();
             int pos = pair.indexOf('=');
-            if (pos < -1) 
+            if (pos < -1)
             {
                 result.put(pair, null);
                 continue;
             }
             String key = parseName(pair.substring(0, pos), sb);
             String val = parseName(pair.substring(pos+1, pair.length()), sb);
-            if (result.containsKey(key)) 
+            if (result.containsKey(key))
             {
-                String oldVals[] = (String []) result.get(key);
+                String oldVals[] = result.get(key);
                 values = new String[oldVals.length + 1];
                 for (int i = 0; i < oldVals.length; i++)
                 {
                     values[i] = oldVals[i];
                 }
                 values[oldVals.length] = val;
-            } 
-            else 
+            }
+            else
             {
                 values = new String[1];
                 values[0] = val;
@@ -218,22 +218,22 @@ public class HttpUtils
                     int lenght;
                     char type = s.charAt(i + 1);
                     String input;
-                    
+
                     // Not supporting Unicode yet
                     if(type == 'u')
-                    {   
+                    {
                         input = "20";
-                        lenght = 5; 
+                        lenght = 5;
                     }
                     else
                     {
                         input = s.substring(i + 1, i + 3);
-                        lenght = 2; 
+                        lenght = 2;
                     }
-                    
+
                     try
                     {
-                        sb.append((char) Integer.parseInt(input, 16)); 
+                        sb.append((char) Integer.parseInt(input, 16));
                         i += lenght;
                     }
                     catch (NumberFormatException e)
@@ -279,7 +279,7 @@ public class HttpUtils
             throw new NotImplementedYet();
         }
     }
-    
+
     public static Deflater deflater(Encoding encoding)
     {
         switch (encoding)
@@ -292,7 +292,7 @@ public class HttpUtils
                 return new EmbeddedDeflater(ZlibWrapper.NONE);
         }
         return null;
-    }    
+    }
 
     public static String removeValueFromHeader(HttpRequest request, String header, String value)
     {
@@ -314,7 +314,7 @@ public class HttpUtils
                 parts[i] = null;
             }
         }
-        
+
         if(foundHeader)
         {
             result = br.com.ibnetwork.xingu.utils.StringUtils.joinIgnoringNulls(parts, ",");
@@ -328,7 +328,7 @@ public class HttpUtils
         ChannelBuffer header = ChannelBuffers.dynamicBuffer(factory);
         encodeInitialLine(response, header);
         encodeHeaders(response, header);
-        
+
         header.writeByte(CharUtils.CR);
         header.writeByte(CharUtils.LF);
 
@@ -337,29 +337,29 @@ public class HttpUtils
         if (!content.readable())
         {
         	// no content
-            return header; 
+            return header;
         }
-        else if (chunked) 
+        else if (chunked)
         {
             throw new IllegalArgumentException("HttpMessage content must be empty if Transfer-Encoding is chunked.");
-        } 
-        else 
+        }
+        else
         {
             return wrappedBuffer(header, content);
         }
     }
-    
+
 	public static boolean isTransferEncodingChunked(HttpMessage message)
 	{
         List<String> headers = message.getHeaders(HttpHeaders.Names.TRANSFER_ENCODING);
-        if (headers.isEmpty()) 
+        if (headers.isEmpty())
         {
             return false;
         }
 
-        for (String header: headers) 
+        for (String header: headers)
         {
-            if (HttpHeaders.Values.CHUNKED.equalsIgnoreCase(header)) 
+            if (HttpHeaders.Values.CHUNKED.equalsIgnoreCase(header))
             {
                 return true;
             }
@@ -382,7 +382,7 @@ public class HttpUtils
 	private static void encodeHeaders(HttpMessage message, ChannelBuffer header)
 		throws Exception
 	{
-        for (Map.Entry<String, String> h: message.getHeaders()) 
+        for (Map.Entry<String, String> h: message.getHeaders())
         {
         	encodeHeader(header, h.getKey(), h.getValue());
         }
