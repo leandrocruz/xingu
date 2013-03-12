@@ -69,6 +69,7 @@
 	<modules>
 		<module>utils</module>
 		<module>url</module>
+		<module>inhaka</module>
 		<module>container</module>
 		<module>time</module>
 		<module>codec</module>
