@@ -2,6 +2,11 @@ package xingu.utils;
 
 import java.util.concurrent.Executor;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.CharUtils;
+
+import xingu.netty.IoModel;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -14,38 +19,105 @@ import org.jboss.netty.channel.socket.oio.OioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.http.HttpChunk;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
-import xingu.netty.IoModel;
-
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.CharUtils;
-
 public class NettyUtils
 {
+	public static String readLine(ChannelBuffer buffer, int max)
+	{
+		StringBuilder sb = new StringBuilder(64);
+		int len = 0;
+		while(len < max)
+		{
+			len++;
+			byte nextByte = buffer.readByte();
+			if(nextByte == CharUtils.CR)
+			{
+				nextByte = buffer.readByte();
+				len++;
+				if(nextByte == CharUtils.LF)
+				{
+					return sb.toString();
+				}
+			}
+			else if(nextByte == CharUtils.LF)
+			{
+				return sb.toString();
+			}
+			else
+			{
+				sb.append((char) nextByte);
+			}
+		}
+		return sb.toString();
+	}
+
     public static String readLine(ChannelBuffer buffer) 
     {
-        StringBuilder sb = new StringBuilder(64);
-        
-        while (true) 
-        {
-            byte nextByte = buffer.readByte();
-            if (nextByte == CharUtils.CR) 
-            {
-                nextByte = buffer.readByte();
-                if (nextByte == CharUtils.LF) 
-                {
-                    return sb.toString();
-                }
-            }
-            else if (nextByte == CharUtils.LF) 
-            {
-                return sb.toString();
-            }
-            else 
-            {
-                sb.append((char) nextByte);
-            }
-        }
+    	return readLine(buffer, buffer.capacity());
     }
+    
+	public static String[] splitInitialLine(String sb)
+	{
+		int aStart;
+		int aEnd;
+		int bStart;
+		int bEnd;
+		int cStart;
+		int cEnd;
+
+		aStart = findNonWhitespace(sb, 0);
+		aEnd = findWhitespace(sb, aStart);
+
+		bStart = findNonWhitespace(sb, aEnd);
+		bEnd = findWhitespace(sb, bStart);
+
+		cStart = findNonWhitespace(sb, bEnd);
+		cEnd = findEndOfString(sb);
+
+		return new String[] {
+				sb.substring(aStart, aEnd), 
+				sb.substring(bStart, bEnd), 
+				cStart < cEnd ? sb.substring(cStart, cEnd) : ""
+		};
+	}
+
+	private static int findNonWhitespace(String sb, int offset)
+	{
+		int result;
+		for(result = offset; result < sb.length(); result++)
+		{
+			if(!Character.isWhitespace(sb.charAt(result)))
+			{
+				break;
+			}
+		}
+		return result;
+	}
+
+	private static int findWhitespace(String sb, int offset)
+	{
+		int result;
+		for(result = offset; result < sb.length(); result++)
+		{
+			if(Character.isWhitespace(sb.charAt(result)))
+			{
+				break;
+			}
+		}
+		return result;
+	}
+
+	private static int findEndOfString(String sb)
+	{
+		int result;
+		for(result = sb.length(); result > 0; result--)
+		{
+			if(!Character.isWhitespace(sb.charAt(result - 1)))
+			{
+				break;
+			}
+		}
+		return result;
+	}
     
     public static void closeOnFlush(Channel channel) 
     {
