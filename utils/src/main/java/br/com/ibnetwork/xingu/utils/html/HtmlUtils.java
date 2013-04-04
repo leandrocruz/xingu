@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class HtmlUtils
 {
     /*
@@ -35,6 +37,11 @@ public class HtmlUtils
 
     public static boolean isHtml(String content)
     {
+    	boolean empty = StringUtils.isEmpty(content);
+		if(empty || content.indexOf("<") < 0 || content.indexOf(">") < 0)
+		{
+			return false;
+		}
         List<ExtractedTag> tags = extractTags(content);
         for (ExtractedTag tag : tags)
         {
