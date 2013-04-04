@@ -12,6 +12,8 @@ import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelFutureListener;
+import org.jboss.netty.channel.ChannelHandler;
+import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.oio.OioClientSocketChannelFactory;
@@ -118,7 +120,7 @@ public class NettyUtils
 		}
 		return result;
 	}
-    
+
     public static void closeOnFlush(Channel channel) 
     {
     	closeOnFlush(channel, ChannelFutureListener.CLOSE);
@@ -229,4 +231,25 @@ public class NettyUtils
 		catch (InterruptedException e)
 		{}
 	}
+
+	public static final boolean removeOnce(ChannelPipeline pipeline, String name)
+	{
+		if(pipeline.get(name) != null)
+		{
+			pipeline.remove(name);
+			return true;
+		}
+		return false;
+	}
+	
+	public static final boolean addOnce(ChannelPipeline pipeline, String name, ChannelHandler handler)
+	{
+		if(pipeline.get(name) == null)
+		{
+			pipeline.addFirst(name, handler);
+			return true;
+		}
+		return false;
+	}
+
 }
