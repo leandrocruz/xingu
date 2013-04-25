@@ -56,4 +56,18 @@ public class HtmlUtils
         return false;
     }
 
+	public static String[] splitTag(String in, String tag)
+	{
+		int start = StringUtils.indexOfIgnoreCase(in, tag);
+		if(start < 0)
+		{
+			return null;
+		}
+		String[] result = new String[2];
+		int end = in.indexOf(">", start + tag.length());
+		result[0] = in.substring(start, end + 1);
+		result[1] = in.substring(0, start) + in.substring(end + 1);
+		return result;
+	}
+
 }
