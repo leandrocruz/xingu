@@ -11,15 +11,24 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 public class InstantaneousChannelEvent
     implements ChannelFuture
 {
-    private static final InstantaneousChannelEvent INSTANCE = new InstantaneousChannelEvent();
+    private static final InstantaneousChannelEvent INSTANCE = new InstantaneousChannelEvent(null);
     
-    private InstantaneousChannelEvent()
-    {}
+    private Channel channel;
+    
+    private InstantaneousChannelEvent(Channel channel)
+    {
+    	this.channel = channel;
+    }
     
     public static InstantaneousChannelEvent instance()
     {
         return INSTANCE;
     }
+
+	public static ChannelFuture instance(Channel channel)
+	{
+		return new InstantaneousChannelEvent(channel);
+	}
 
     @Override
     public boolean isDone()
@@ -29,7 +38,16 @@ public class InstantaneousChannelEvent
 
     @Override
     public void addListener(ChannelFutureListener listener)
-    {}
+    {
+    	try
+		{
+			listener.operationComplete(this);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+    }
 
     @Override
     public ChannelFuture await() 
@@ -85,7 +103,7 @@ public class InstantaneousChannelEvent
     @Override
     public Channel getChannel()
     {
-        throw new NotImplementedYet();
+        return channel;
     }
 
     @Override
