@@ -1,6 +1,6 @@
 package xingu.node.server.impl;
 
-import static org.jboss.netty.channel.ChannelState.CONNECTED;
+import static org.jboss.netty.channel.Channels.pipeline;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
@@ -13,45 +13,48 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelEvent;
-import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.ChannelStateEvent;
-import org.jboss.netty.channel.ChannelUpstreamHandler;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.node.commons.protocol.handshake.HandshakeManager;
+import xingu.node.server.Node;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
-import xingu.node.server.Node;
 
-public abstract class ServerNodeSupport
+public class ServerNodeSupport
 	implements Node, Configurable, Startable
 {
 	@Inject
-	protected Factory		factory;
+	protected Factory			factory;
 
-	private String			name;
+	@Inject
+	protected HandshakeManager	handshakeManager;
 
-	private String			address;
+	private String				name;
 
-	private int				port;
+	private String				address;
 
-	private ServerBootstrap	bootstrap;
+	private int					port;
 
-	private Executor		workerExecutor;
+	private ServerBootstrap		bootstrap;
 
-	private Executor		bossExecutor;
+	private Executor			workerExecutor;
 
-	protected ChannelGroup	channels	= new DefaultChannelGroup("main");
+	private Executor			bossExecutor;
 
-	protected Logger		logger		= LoggerFactory.getLogger(getClass());
+	protected ChannelGroup		mainChannelGroup	= new DefaultChannelGroup("main");
+
+	protected AddChannelTo		channelCollector	= new AddChannelTo(mainChannelGroup);
+
+	protected Logger			logger				= LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void configure(Configuration conf)
@@ -79,41 +82,33 @@ public abstract class ServerNodeSupport
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("reuseAddress", 	true);
 		Channel channel = bootstrap.bind(new InetSocketAddress(address, port));
-		addChannelToMainGroup(channel);
+		mainChannelGroup.add(channel);
 
 		logger.info("Node '{}' started at {}:{}", new Object[] { name, address, port });
 	}
-
-	private void addChannelToMainGroup(Channel channel)
+	
+	/*
+	 * Called only once
+	 */
+	protected ChannelPipelineFactory getChannelPipelineFactory()
 	{
-		/*
-		 * add this channel to channels so we can shut it down latter
-		 */
-		channels.add(channel);
-	}
-
-	protected void addChannelCollector(ChannelPipeline pipeline)
-	{
-		pipeline.addLast("channel-collector", new ChannelUpstreamHandler()
+		return new ChannelPipelineFactory()
 		{
+			/*
+			 * Called every time a new connection is made
+			 */
 			@Override
-			public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e)
+			public ChannelPipeline getPipeline()
 				throws Exception
 			{
-				if(e instanceof ChannelStateEvent)
-				{
-					ChannelStateEvent evt = (ChannelStateEvent) e;
-					Object value = evt.getValue();
-					if(evt.getState() == CONNECTED && value != null)
-					{
-						addChannelToMainGroup(evt.getChannel());
-					}
-				}
+		        ChannelPipeline pipeline = pipeline();
+		        ChannelHandler handler = handshakeManager.newHandler();
+		        pipeline.addLast("handshake-handler", handler);
+				pipeline.addLast("channel-collector", channelCollector);
+		        return pipeline;
 			}
-		});
+		};
 	}
-	
-	protected abstract ChannelPipelineFactory getChannelPipelineFactory();
 
 	@Override
 	public void stop()
@@ -123,7 +118,7 @@ public abstract class ServerNodeSupport
 		 * Hack/Ugly. Probably a Netty problem TODO: close all opened channels
 		 */
 
-		channels.close().awaitUninterruptibly();
+		mainChannelGroup.close().awaitUninterruptibly();
 
 		((ExecutorService) workerExecutor).shutdown();
 		((ExecutorService) bossExecutor).shutdown();

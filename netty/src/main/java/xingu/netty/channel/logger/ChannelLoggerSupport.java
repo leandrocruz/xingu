@@ -5,8 +5,11 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelDownstreamHandler;
 import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ChannelUpstreamHandler;
 import org.jboss.netty.channel.MessageEvent;
+
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 import xingu.utils.HexDump;
 
@@ -32,17 +35,36 @@ public abstract class ChannelLoggerSupport
 	protected void log(String marker, ChannelEvent e)
 		throws Exception
 	{
-		if(!(e instanceof MessageEvent))
+		if(e instanceof MessageEvent)
 		{
-			return;
+			whenMessage(marker, e);
 		}
-		
+		else if(e instanceof ChannelStateEvent)
+		{
+			whenEvent(marker, e);
+		}
+		else
+		{
+			throw new NotImplementedYet();
+		}
+	}
+	
+	private void whenEvent(String marker, ChannelEvent e)
+		throws Exception
+	{
+		ChannelStateEvent evt = (ChannelStateEvent) e;
+		write(marker, evt.getState().name() + " (" + evt.getValue() + ")");
+	}
+
+	private void whenMessage(String marker, ChannelEvent e)
+		throws Exception
+	{
 		MessageEvent me = (MessageEvent) e;
 		Object msg = me.getMessage();
 		String txt = toString(msg);
 		write(marker, txt);
 	}
-	
+
 	protected String toString(Object msg)
 	{
 		if(msg instanceof ChannelBuffer)
