@@ -89,7 +89,8 @@
 		<module>template</module>
 		<module>validator</module>
 		<module>email</module>
-		<module>netty</module>		
+		<module>netty</module>
+		<module>node</module>		
 		<module>l10n</module>
 		<module>process</module>
 		<!--
