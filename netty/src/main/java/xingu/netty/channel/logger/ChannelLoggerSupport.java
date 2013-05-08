@@ -9,8 +9,6 @@ import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ChannelUpstreamHandler;
 import org.jboss.netty.channel.MessageEvent;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-
 import xingu.utils.HexDump;
 
 public abstract class ChannelLoggerSupport
@@ -42,10 +40,6 @@ public abstract class ChannelLoggerSupport
 		else if(e instanceof ChannelStateEvent)
 		{
 			whenEvent(marker, e);
-		}
-		else
-		{
-			throw new NotImplementedYet();
 		}
 	}
 	
