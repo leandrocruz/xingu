@@ -1,5 +1,8 @@
 package xingu.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.concurrent.Executor;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
@@ -7,6 +10,7 @@ import br.com.ibnetwork.xingu.utils.CharUtils;
 
 import xingu.netty.IoModel;
 
+import org.apache.commons.io.IOUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -252,4 +256,21 @@ public class NettyUtils
 		return false;
 	}
 
+
+	public static final File dump(ChannelBuffer buffer)
+		throws Exception
+	{
+		File file = File.createTempFile("dump-", ".data");
+		dumpTo(buffer, file);
+		return file;
+	}
+
+	public static final void dumpTo(ChannelBuffer buffer, File file)
+		throws Exception
+	{
+		OutputStream os = new FileOutputStream(file);
+		byte[] array = buffer.toByteBuffer().array();
+		IOUtils.write(array, os);
+		IOUtils.closeQuietly(os);
+	}
 }
