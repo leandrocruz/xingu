@@ -74,7 +74,7 @@ public class HttpResponseBuilder
         return this;
     }
 
-    public HttpResponseBuilder withContentLength(int length)
+    public HttpResponseBuilder withContentLength(long length)
     {
         return withHeader(CONTENT_LENGTH, length);
     }
