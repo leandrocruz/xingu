@@ -1,32 +1,62 @@
 package xingu.journal.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 
 import xingu.journal.Journal;
 
 import org.apache.avalon.framework.activity.Startable;
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.lang3.SystemUtils;
 
 public class FileAppenderJournal
 	extends JournalSupport
-	implements Journal, Startable
+	implements Journal, Configurable, Startable
 {
-	private FileWriter writer;
-	
-	private boolean open = true;
-	
+	private FileWriter	writer;
+
+	private boolean		open		= true;
+
+	private String		output;
+
+	private boolean		truncate	= false;
+
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		conf = conf.getChild("conf");
+		output = conf.getAttribute("output", null);
+		truncate = conf.getAttributeAsBoolean("truncate", false);
+	}
+
 	@Override
 	public void start()
 		throws Exception
 	{
-		File tmp = SystemUtils.getJavaIoTmpDir();
-		File dir = new File(tmp, "journal");
-		if(!dir.exists())
+		File file;
+		if(output == null)
 		{
-			dir.mkdirs();
+			File tmp = SystemUtils.getJavaIoTmpDir();
+			File dir = new File(tmp, "journal");
+			if(!dir.exists())
+			{
+				dir.mkdirs();
+			}
+			file = File.createTempFile("http-journal-", ".txt", dir);
 		}
-		File file = File.createTempFile("http-journal-", ".txt", dir);
+		else
+		{
+			file = new File(output);
+			if(truncate)
+			{
+				new FileOutputStream(file, false).close();
+			}
+		}
+
 		System.err.println(file);
 		writer = new FileWriter(file, true);
 	}
