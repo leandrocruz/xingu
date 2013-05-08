@@ -23,6 +23,12 @@ import java.util.zip.InflaterOutputStream;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.CharUtils;
+
+import xingu.netty.Deflater;
+import xingu.utils.NettyUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -35,11 +41,6 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMessage;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
-
-import xingu.netty.Deflater;
-import xingu.utils.NettyUtils;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.CharUtils;
 
 public class HttpUtils
 {
