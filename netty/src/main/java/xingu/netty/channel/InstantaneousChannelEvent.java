@@ -109,7 +109,7 @@ public class InstantaneousChannelEvent
     @Override
     public boolean isCancelled()
     {
-        throw new NotImplementedYet();
+        return false;
     }
 
     @Override
