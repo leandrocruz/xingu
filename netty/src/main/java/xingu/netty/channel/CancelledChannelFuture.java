@@ -10,6 +10,11 @@ public class CancelledChannelFuture
 {
 	private final Throwable cause;
 
+	public CancelledChannelFuture(Channel channel)
+	{
+		this(channel, null);
+	}
+
 	public CancelledChannelFuture(Channel channel, Throwable cause)
 	{
 		super(channel);
