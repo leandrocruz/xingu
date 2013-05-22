@@ -120,6 +120,20 @@ public class HttpUtils
         }
         return is;
     }
+    
+    public static boolean isWebSocketUpgrade(Object msg)
+	{
+		 if(msg instanceof HttpResponse == false)
+		 {
+			 return false;
+		 }
+
+		 HttpResponse res = (HttpResponse) msg;
+		 String connection = res.getHeader(HttpHeaders.Names.CONNECTION);
+		 String upgrade = res.getHeader(HttpHeaders.Names.UPGRADE);
+		 return HttpHeaders.Values.WEBSOCKET.equalsIgnoreCase(upgrade)
+				 && HttpHeaders.Values.UPGRADE.equalsIgnoreCase(connection);
+	}
 
     public static ChannelBuffer toChannelBuffer(String content, String contentType, Encoding encoding, String charset)
         throws IOException
