@@ -3,6 +3,7 @@ package xingu.utils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
@@ -234,6 +235,15 @@ public class NettyUtils
 		}
 		catch (InterruptedException e)
 		{}
+	}
+
+	public static void removeAll(ChannelPipeline pipeline)
+	{
+		List<String> names = pipeline.getNames();
+		for(String name : names)
+		{
+			pipeline.remove(name);
+		}
 	}
 
 	public static final boolean removeOnce(ChannelPipeline pipeline, String name)
