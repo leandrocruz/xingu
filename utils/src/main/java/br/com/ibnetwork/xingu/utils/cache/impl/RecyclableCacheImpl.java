@@ -129,7 +129,7 @@ public class RecyclableCacheImpl<T extends Recyclable>
 			}
 			else
 			{
-				System.err.println(p.item);
+				//System.err.println(p.item);
 				taken++;
 			}
 		}
