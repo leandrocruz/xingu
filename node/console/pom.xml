@@ -4,25 +4,24 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>xingu</groupId>
-	  	<artifactId>xingu</artifactId>
+		<artifactId>xingu-node</artifactId>
 		<version>1.4.31-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>xingu-node</artifactId>
-	<packaging>pom</packaging>
-	<name>Xingu Node</name>
+	<artifactId>xingu-node-console</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu Node Console</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
+			<artifactId>netty-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-node-server</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-	<modules>
-		<module>commons</module>
-		<module>client</module>
-		<module>server</module>
-		<module>console</module>
-	</modules>
 </project>
