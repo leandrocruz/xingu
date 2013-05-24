@@ -60,9 +60,9 @@ public class BridgeConnectorImpl
 
 	private int[]					ports;
 
-	private int						foundPort	= 0;
+	protected int					foundPort	= 0;
 
-	private Semaphore				sem			= new Semaphore(0);
+	protected Semaphore				sem			= new Semaphore(0);
 
 	protected Logger				logger		= LoggerFactory.getLogger(getClass());
 
@@ -163,7 +163,8 @@ public class BridgeConnectorImpl
 				 * We have a good port/channel that can be used to talk to Broker.
 				 * Now, we must close other channels
 				 */
-				this.bootstrap = bootstrap;
+				logger.info("Server running at " + host + ":" + foundPort);
+				this.bootstrap     = bootstrap;
 				this.threadFactory = threadFactory;
 				return channel;
 			}
