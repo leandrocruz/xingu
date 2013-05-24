@@ -17,7 +17,6 @@ import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
-import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -27,13 +26,13 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.ClientSocketChannelFactory;
 import org.jboss.netty.channel.socket.oio.OioClientSocketChannelFactory;
+import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.commons.protocol.handshake.HandshakeManager;
-import xingu.node.commons.signal.Signal;
-import xingu.node.commons.signal.session.SessionRequired;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
@@ -230,22 +229,28 @@ public class BridgeConnectorImpl
         ClientBootstrap            bootstrap      = new ClientBootstrap(channelFactory);
         bootstrap.setOption("keepAlive", true);
         bootstrap.setOption("tcpNoDelay", useTcpNoDeplay);
-		bootstrap.setPipelineFactory(new ChannelPipelineFactory()
-		{
-			public ChannelPipeline getPipeline()
-					throws Exception
-			{
-				ChannelPipeline pipeline = pipeline();
-				ChannelHandler  handler  = handshakeManager.newHandler();
-				pipeline.addLast("bridge-connector",  BridgeConnectorImpl.this);
-				pipeline.addLast("handshake-handler", handler);
-				return pipeline;
-			}
-		});
+        ChannelPipelineFactory channelPipelineFactory = getChannelPipelineFactory();
+		bootstrap.setPipelineFactory(channelPipelineFactory);
         return bootstrap;
     }
 
-    @Override
+    protected ChannelPipelineFactory getChannelPipelineFactory()
+	{
+    	return new ChannelPipelineFactory()
+		{
+			public ChannelPipeline getPipeline()
+				throws Exception
+			{
+				ChannelPipeline pipeline = pipeline();
+		        pipeline.addLast("encoder", new StringEncoder());
+		        pipeline.addLast("decoder", new StringDecoder());
+				pipeline.addLast("bridge-connector",  BridgeConnectorImpl.this);
+				return pipeline;
+			}
+		};
+	}
+
+	@Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e)
         throws Exception
     {
@@ -284,18 +289,18 @@ public class BridgeConnectorImpl
 		throws Exception
 	{
 		Object msg = e.getMessage();
-		
-		/*
-		 * TODO: release the semaphore when handshake is done
-		 */
-		
-		Signal signal = (Signal) msg;
-        if(signal instanceof SessionRequired)
-        {
-        	InetSocketAddress inet = (InetSocketAddress) e.getChannel().getRemoteAddress();
+		System.err.println("[CONNECTOR] Message Received: " + msg);
+		String s = (String) msg;
+		if(s.startsWith("Hi"))
+		{
+			Channel channel = e.getChannel();
+        	InetSocketAddress inet = (InetSocketAddress) channel.getRemoteAddress();
         	foundPort = inet.getPort();
         	sem.release();
-        }
+        	System.err.println("[CONNECTOR] Found port: " + foundPort);
+        	
+        	channel.write("Ping");
+		}
         ctx.sendUpstream(e);
 	}
 }

@@ -13,17 +13,18 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.netty.protocol.SayHi;
 import xingu.node.commons.Node;
-import xingu.node.commons.protocol.handshake.HandshakeManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
@@ -34,9 +35,6 @@ public class ServerNodeSupport
 {
 	@Inject
 	protected Factory			factory;
-
-	@Inject
-	protected HandshakeManager	handshakeManager;
 
 	private String				name;
 
@@ -61,8 +59,8 @@ public class ServerNodeSupport
 		throws ConfigurationException
 	{
 		address = conf.getAttribute("address", "0.0.0.0");
-		port = conf.getAttributeAsInteger("port", 8899);
-		name = conf.getAttribute("name");
+		port    = conf.getAttributeAsInteger("port", 8899);
+		name    = conf.getAttribute("name");
 	}
 
 	@Override
@@ -74,8 +72,8 @@ public class ServerNodeSupport
 		DaemonThreadFactory bossThreadFactory
 			= new DaemonThreadFactory(new SimpleThreadNamer(name + "Boss"));
 		workerExecutor = Executors.newCachedThreadPool(workerThreadFactory);
-		bossExecutor = Executors.newCachedThreadPool(bossThreadFactory);
-		bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(workerExecutor, bossExecutor));
+		bossExecutor   = Executors.newCachedThreadPool(bossThreadFactory);
+		bootstrap      = new ServerBootstrap(new NioServerSocketChannelFactory(workerExecutor, bossExecutor));
 		ChannelPipelineFactory pipelineFactory = getChannelPipelineFactory();
 		bootstrap.setPipelineFactory(pipelineFactory);
 		bootstrap.setOption("tcpNoDelay",		true);
@@ -102,8 +100,9 @@ public class ServerNodeSupport
 				throws Exception
 			{
 		        ChannelPipeline pipeline = pipeline();
-		        ChannelHandler handler = handshakeManager.newHandler();
-		        pipeline.addLast("handshake-handler", handler);
+		        pipeline.addLast("encoder", new StringEncoder());
+		        pipeline.addLast("decoder", new StringDecoder());
+		        pipeline.addLast("handler", new SayHi());
 				pipeline.addLast("channel-collector", channelCollector);
 		        return pipeline;
 			}
