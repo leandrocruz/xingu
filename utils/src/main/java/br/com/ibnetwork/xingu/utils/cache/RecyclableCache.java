@@ -6,8 +6,6 @@ public interface RecyclableCache<T extends Recyclable>
 {
 	T next();
 
-	void returnItem(T t);
-
 	void using(T t);
 
 	void dispose();
@@ -15,4 +13,6 @@ public interface RecyclableCache<T extends Recyclable>
 	CacheStatus status();
 
 	Iterator<T> iterator();
+
+	void vaccum();
 }

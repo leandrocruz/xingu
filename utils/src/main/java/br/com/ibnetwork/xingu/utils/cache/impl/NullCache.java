@@ -1,6 +1,8 @@
 package br.com.ibnetwork.xingu.utils.cache.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import br.com.ibnetwork.xingu.utils.cache.CacheStatus;
 import br.com.ibnetwork.xingu.utils.cache.Recyclable;
@@ -9,6 +11,8 @@ import br.com.ibnetwork.xingu.utils.cache.RecyclableCache;
 public class NullCache<T extends Recyclable>
 	implements RecyclableCache<T>
 {
+	private List<T> list = new ArrayList<T>();
+	
 	@Override
 	public T next()
 	{
@@ -16,12 +20,10 @@ public class NullCache<T extends Recyclable>
 	}
 
 	@Override
-	public void returnItem(T t)
-	{}
-
-	@Override
 	public void using(T t)
-	{}
+	{
+		list.add(t);
+	}
 
 	@Override
 	public void dispose()
@@ -30,7 +32,7 @@ public class NullCache<T extends Recyclable>
 	@Override
 	public CacheStatus status()
 	{
-		return new NullCacheSatus();
+		return new NullCacheSatus(list);
 	}
 
 	@Override
@@ -38,13 +40,24 @@ public class NullCache<T extends Recyclable>
 	{
 		return null;
 	}
+
+	@Override
+	public void vaccum()
+	{}
 }
 
-class NullCacheSatus
+class NullCacheSatus<T>
 	implements CacheStatus
 {
+	private final List<T>	list;
+
+	public NullCacheSatus(List<T> list)
+	{
+		this.list = list;
+	}
+
 	@Override
-	public int cached()
+	public int available()
 	{
 		return 0;
 	}
@@ -52,18 +65,18 @@ class NullCacheSatus
 	@Override
 	public int taken()
 	{
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public int size()
 	{
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public int capacity()
 	{
-		return 0;
+		return list.size();
 	}
 }

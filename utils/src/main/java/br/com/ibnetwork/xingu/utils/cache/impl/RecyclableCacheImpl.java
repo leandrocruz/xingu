@@ -14,13 +14,13 @@ import br.com.ibnetwork.xingu.utils.cache.Recyclable;
 public class RecyclableCacheImpl<T extends Recyclable>
 	implements RecyclableCache<T>
 {
-	private int capacity;
-	
-	private int ic; // items count
-	
-	private Pointer[] array;
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private int				capacity;
+
+	private int				ic; // items count
+
+	private Pointer<T>[]	array;
+
+	private Logger			logger	= LoggerFactory.getLogger(getClass());
 	
 	public RecyclableCacheImpl()
 	{
@@ -33,49 +33,32 @@ public class RecyclableCacheImpl<T extends Recyclable>
 		array = new Pointer[size];
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized T next()
 	{
 		for (int i = 0; i < capacity; i++)
 		{
-			Pointer p = array[i];
+			Pointer<T> p = array[i];
 			if(p != null && p.available)
 			{
 				p.available = false;
-				T item = (T) p.item;
-				item.markTaken();
+				T item = p.item;
 				return item;
 			}
 		}
 		return null;
-	}
-	
-	@Override
-	public synchronized void returnItem(T t)
-	{
-		for (int i = 0; i < capacity; i++)
-		{
-			Pointer p = array[i];
-			if(p != null && p.item == t)
-			{
-				p.available = true;
-				t.reclycle();
-				return;
-			}
-		}
-		throw new NotImplementedYet("Item '" + t + "' not add to cache");
 	}
 
 	@Override
 	public synchronized void using(T t)
 	{
 		ensureCapacity(ic + 1);
-		array[ic] = new Pointer(t);
+		array[ic] = new Pointer<T>(t);
 		ic++;
 	}
-	
-    private void ensureCapacity(int required) {
+
+    private void ensureCapacity(int required)
+    {
         if (required > capacity)
         {
             int size = (capacity * 3) / 2 + 1;
@@ -88,18 +71,32 @@ public class RecyclableCacheImpl<T extends Recyclable>
         }
     }
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void vaccum()
+	{
+		for (int i = 0; i < capacity; i++)
+		{
+			Pointer<T> p = array[i];
+			if(p != null && !p.available)
+			{
+				T t = p.item;
+				p.available = t.reclycle();
+			}
+		}
+	}
+
+
 	@Override
 	public void dispose()
 	{
 		for (int i = 0; i < capacity; i++)
 		{
-			Pointer p = array[i];
+			Pointer<T> p = array[i];
 			if(p != null)
 			{
 				try
 				{
-					dispose((T) p.item);
+					dispose(p.item);
 				}
 				catch (Exception e)
 				{
@@ -116,59 +113,82 @@ public class RecyclableCacheImpl<T extends Recyclable>
 	@Override
 	public CacheStatus status()
 	{
-		int inCache = 0;
+		int available = 0;
 		int taken = 0;
 		
 		for (int i = 0; i < capacity; i++)
 		{
-			Pointer p = array[i];
+			Pointer<T> p = array[i];
 			if(p == null)
 			{
 				continue;
 			}
 			if(p.available)
 			{
-				inCache++;
+				available++;
 			}
 			else
 			{
+				System.err.println(p.item);
 				taken++;
 			}
 		}
 		
-		return new CacheStatusImpl(capacity, ic, inCache, taken);
+		return new CacheStatusImpl(capacity, ic, available, taken);
 	}
 
 	@Override
 	public Iterator<T> iterator()
 	{
-		throw new NotImplementedYet();
+		return new Iterator<T>(){
+
+			int i = 0;
+			
+			@Override
+			public boolean hasNext()
+			{
+				return i < capacity;
+			}
+
+			@Override
+			public T next()
+			{
+				Pointer<T> pointer = array[i++];
+				return pointer == null ? null : pointer.item;
+			}
+
+			@Override
+			public void remove()
+			{
+				throw new NotImplementedYet();
+			}
+		};
 	}
 }
 
 class CacheStatusImpl
 	implements CacheStatus
 {
-	private final int capacity;
-	
-	private final int size;
-	
-	private final int inCache;
-	
-	private final int taken;
+	private final int	size;
 
-	public CacheStatusImpl(int capacity, int size, int inCache, int taken)
+	private final int	capacity;
+
+	private final int	taken;
+
+	private final int	available;	
+
+	public CacheStatusImpl(int capacity, int size, int available, int taken)
 	{
-		this.capacity = capacity;
-		this.size = size;
-		this.inCache = inCache;
-		this.taken = taken;
+		this.capacity  = capacity;
+		this.size      = size;
+		this.available = available;
+		this.taken     = taken;
 	}
 
 	@Override
-	public int cached()
+	public int available()
 	{
-		return inCache;
+		return available;
 	}
 
 	@Override
@@ -192,17 +212,17 @@ class CacheStatusImpl
 	@Override
 	public String toString()
 	{
-		return "capacity: '"+capacity+"', size: '"+size+"', cached: '"+inCache+"', taken: '"+taken+"'";
+		return "capacity: '"+capacity+"', size: '"+size+"', available: '"+available+"', taken: '"+taken+"'";
 	}
 }
 
-class Pointer
+class Pointer<T>
 {
 	boolean available;
 	
-	final Object item;
+	final T item;
 
-	public Pointer(Object item)
+	public Pointer(T item)
 	{
 		this.item = item;
 	}
