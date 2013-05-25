@@ -8,10 +8,10 @@ import java.util.Map;
 import xingu.node.console.command.Command;
 
 public class ListThreads
-	implements Command
+	implements Command<String>
 {
 	@Override
-	public Object execute(String[] args)
+	public String execute(String[] args)
 		throws Exception
 	{
 		Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();

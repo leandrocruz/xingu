@@ -3,10 +3,10 @@ package xingu.node.console.command.impl;
 import xingu.node.console.command.Command;
 
 public class GarbageCollection
-	implements Command
+	implements Command<Void>
 {
 	@Override
-	public Object execute(String[] args)
+	public Void execute(String[] args)
 		throws Exception
 	{
 		System.gc();

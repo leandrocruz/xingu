@@ -5,10 +5,10 @@ import java.util.Map;
 import xingu.node.console.command.Command;
 
 public class KillThread
-	implements Command
+	implements Command<Void>
 {
 	@Override
-	public Object execute(String[] args)
+	public Void execute(String[] args)
 		throws Exception
 	{
 		long wanted = Long.parseLong(args[0]);

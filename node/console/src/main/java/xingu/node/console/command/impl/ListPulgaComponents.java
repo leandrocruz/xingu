@@ -6,13 +6,13 @@ import br.com.ibnetwork.xingu.container.Inject;
 import xingu.node.console.command.Command;
 
 public class ListPulgaComponents
-	implements Command
+	implements Command<String>
 {
 	@Inject
 	private Container container;
 
 	@Override
-	public Object execute(String[] args)
+	public String execute(String[] args)
 		throws Exception
 	{
 		java.util.List<Class<?>> roles = container.binder().getRoles();

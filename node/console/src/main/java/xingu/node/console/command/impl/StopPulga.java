@@ -8,13 +8,13 @@ import xingu.node.console.command.Command;
 import org.apache.commons.lang3.StringUtils;
 
 public class StopPulga
-	implements Command
+	implements Command<Void>
 {
 	@Inject
 	private Container container;
 
 	@Override
-	public Object execute(String[] args)
+	public Void execute(String[] args)
 		throws Exception
 	{
 		String name = args.length > 0 ? args[0] : null;

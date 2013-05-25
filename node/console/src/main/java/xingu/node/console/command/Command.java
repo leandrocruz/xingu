@@ -1,7 +1,7 @@
 package xingu.node.console.command;
 
-public interface Command
+public interface Command<T>
 {
-	Object execute(String[] args)
+	T execute(String[] args)
 		throws Exception;
 }
