@@ -11,6 +11,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.channel.Channel;
 
 import xingu.node.commons.signal.Signal;
+import xingu.node.commons.signal.impl.SignalTaskImpl;
 import xingu.node.commons.signal.processor.SignalProcessor;
 import xingu.node.commons.signal.processor.SignalTask;
 import br.com.ibnetwork.xingu.container.Inject;
@@ -34,8 +35,15 @@ public abstract class SignalProcessorSupport
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		String taskClass = conf.getChild("task").getAttribute("class");
-		this.taskClass = (Class<? extends SignalTask>) ObjectUtils.loadClass(taskClass);
+		String taskClass = conf.getChild("task").getAttribute("class", null);
+		if(taskClass != null)
+		{
+			this.taskClass = (Class<? extends SignalTask>) ObjectUtils.loadClass(taskClass);
+		}
+		else
+		{
+			this.taskClass = SignalTaskImpl.class;
+		}
 	}
 
 	@Override
