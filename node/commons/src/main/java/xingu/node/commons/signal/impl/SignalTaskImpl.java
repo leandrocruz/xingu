@@ -1,5 +1,6 @@
 package xingu.node.commons.signal.impl;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -58,7 +59,8 @@ public class SignalTaskImpl
 		{
 			logger.error("Error processing signal " + signal, t);
 			signal.setForward(false);
-			reply = new ExceptionSignal(signal, t);
+			String trace = ExceptionUtils.getStackTrace(t);
+			reply        = new ExceptionSignal(signal, trace);
 		}
 		if(reply != null)
 		{
