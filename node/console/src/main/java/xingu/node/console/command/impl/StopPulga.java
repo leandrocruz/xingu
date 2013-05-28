@@ -1,11 +1,11 @@
 package xingu.node.console.command.impl;
 
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 import xingu.node.console.command.Command;
-
-import org.apache.commons.lang3.StringUtils;
+import xingu.node.console.command.Writer;
+import br.com.ibnetwork.xingu.container.Container;
+import br.com.ibnetwork.xingu.container.Inject;
 
 public class StopPulga
 	implements Command<Void>
@@ -14,7 +14,7 @@ public class StopPulga
 	private Container container;
 
 	@Override
-	public Void execute(String[] args)
+	public Void execute(String[] args, Writer writer)
 		throws Exception
 	{
 		String name = args.length > 0 ? args[0] : null;

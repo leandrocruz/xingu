@@ -6,12 +6,13 @@ import java.lang.management.ThreadMXBean;
 import java.util.Map;
 
 import xingu.node.console.command.Command;
+import xingu.node.console.command.Writer;
 
 public class ListThreads
 	implements Command<String>
 {
 	@Override
-	public String execute(String[] args)
+	public String execute(String[] args, Writer writer)
 		throws Exception
 	{
 		Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();

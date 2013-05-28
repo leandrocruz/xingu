@@ -3,12 +3,13 @@ package xingu.node.console.command.impl;
 import java.util.Map;
 
 import xingu.node.console.command.Command;
+import xingu.node.console.command.Writer;
 
 public class KillThread
 	implements Command<Void>
 {
 	@Override
-	public Void execute(String[] args)
+	public Void execute(String[] args, Writer writer)
 		throws Exception
 	{
 		long wanted = Long.parseLong(args[0]);
