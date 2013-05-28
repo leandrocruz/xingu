@@ -1,6 +1,8 @@
 package xingu.node.commons.signal.impl;
 
 import org.jboss.netty.channel.Channel;
+import org.jboss.netty.channel.ChannelFuture;
+import org.jboss.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,21 @@ public class SignalTaskImpl
 
 	protected Logger			logger	= LoggerFactory.getLogger(this.getClass());
 
+	protected ChannelFutureListener onWrite = new ChannelFutureListener()
+	{
+		@Override
+		public void operationComplete(ChannelFuture future)
+			throws Exception
+		{
+			boolean success = future.isSuccess();
+			if(!success)
+			{
+				//TODO: store the result/reply and send it to the server when apropriate
+				logger.error("Error writing Signal reply", future.getCause());
+			}
+		}
+	};
+	
 	public SignalTaskImpl(Signal signal, Channel pipe)
 	{
 		this.signal  = signal;
@@ -47,7 +64,7 @@ public class SignalTaskImpl
 		{
 			long signalId = signal.getSignalId();
 			reply.setSignalId(signalId);
-			channel.write(reply);
+			channel.write(reply).addListener(onWrite);
 		}
 		return reply;
 	}
