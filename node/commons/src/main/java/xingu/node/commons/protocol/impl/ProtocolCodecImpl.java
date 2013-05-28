@@ -9,12 +9,6 @@ import org.apache.commons.io.IOUtils;
 import xingu.node.commons.crypto.KeyManager;
 import xingu.node.commons.crypto.SessionKeyHolder;
 import xingu.node.commons.protocol.ProtocolCodec;
-import xingu.node.commons.signal.session.ClientVersion;
-import xingu.node.commons.signal.session.RetrievePublicKey;
-import xingu.node.commons.signal.session.ServerPublicKey;
-import xingu.node.commons.signal.session.SessionRejected;
-import xingu.node.commons.signal.session.SessionRequired;
-import xingu.node.commons.signal.session.StartClientSession;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.crypto.Crypto;
@@ -112,15 +106,11 @@ public class ProtocolCodecImpl
 	@Override
 	public int typeFrom(Object obj)
 	{
-        if(obj instanceof SessionRequired 
-                || obj instanceof SessionRejected
-                || obj instanceof ClientVersion
-                || obj instanceof RetrievePublicKey
-                || obj instanceof ServerPublicKey)
+        if(usePlainText(obj))
         {
             return PLAIN_TEXT;
         }
-        else if(obj instanceof StartClientSession)
+        else if(useAsymmetricEncryption(obj))
         {
             return ENCRYPTED_WITH_PUBLIC_KEY;
         }
@@ -129,4 +119,15 @@ public class ProtocolCodecImpl
             return ENCRYPTED_WITH_SESSION_KEY;
         }
 	}
+
+	private boolean usePlainText(Object obj)
+	{
+		return true;
+	}
+
+	private boolean useAsymmetricEncryption(Object obj)
+	{
+		return true;
+	}
+
 }
