@@ -32,8 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.node.client.bridge.BridgeConnector;
-import xingu.node.commons.protocol.handshake.HandshakeManager;
-import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
 import br.com.ibnetwork.xingu.utils.StringUtils;
@@ -43,9 +41,6 @@ public class BridgeConnectorImpl
 	extends SimpleChannelHandler
 	implements BridgeConnector, Configurable, Startable
 {
-	@Inject
-	private HandshakeManager		handshakeManager;
-
 	private boolean					useTcpNoDeplay;
 
 	private long					acquirePortTimeout;
