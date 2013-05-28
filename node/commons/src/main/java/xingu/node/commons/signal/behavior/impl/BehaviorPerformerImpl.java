@@ -1,9 +1,9 @@
-package xingu.node.commons.signal.impl;
+package xingu.node.commons.signal.behavior.impl;
 
-import xingu.node.commons.signal.BehaviorPerformer;
-import xingu.node.commons.signal.BehaviorResolver;
 import xingu.node.commons.signal.Signal;
-import xingu.node.commons.signal.SignalBehavior;
+import xingu.node.commons.signal.behavior.BehaviorPerformer;
+import xingu.node.commons.signal.behavior.BehaviorResolver;
+import xingu.node.commons.signal.behavior.SignalBehavior;
 import br.com.ibnetwork.xingu.container.Inject;
 
 public class BehaviorPerformerImpl

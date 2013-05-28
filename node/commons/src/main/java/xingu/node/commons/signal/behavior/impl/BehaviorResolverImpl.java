@@ -1,4 +1,4 @@
-package xingu.node.commons.signal.impl;
+package xingu.node.commons.signal.behavior.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,10 +6,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xingu.node.commons.signal.BehaviorResolver;
-import xingu.node.commons.signal.NullBehavior;
 import xingu.node.commons.signal.Signal;
-import xingu.node.commons.signal.SignalBehavior;
+import xingu.node.commons.signal.behavior.BehaviorResolver;
+import xingu.node.commons.signal.behavior.NullBehavior;
+import xingu.node.commons.signal.behavior.SignalBehavior;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.factory.Conventor;

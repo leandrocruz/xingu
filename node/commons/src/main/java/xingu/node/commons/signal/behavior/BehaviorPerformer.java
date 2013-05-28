@@ -1,4 +1,6 @@
-package xingu.node.commons.signal;
+package xingu.node.commons.signal.behavior;
+
+import xingu.node.commons.signal.Signal;
 
 public interface BehaviorPerformer
 {

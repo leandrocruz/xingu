@@ -1,5 +1,7 @@
 package xingu.node.commons.signal;
 
+import xingu.node.commons.signal.behavior.SignalBehavior;
+
 public class StringSignal
 	extends SignalSupport
 	implements Signal, SignalBehavior<StringSignal, StringSignal>
