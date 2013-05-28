@@ -3,14 +3,17 @@ package xingu.node.commons.signal;
 public class SignalWaiter
 	extends Waiter<Signal>
 {
-	public SignalWaiter(Signal request)
+	private final long id;
+	
+	public SignalWaiter(Signal signal)
 	{
-		super(request);
+		super();
+		id = signal.getSignalId();
 	}
 
 	@Override
 	public boolean waitingOn(Signal reply)
 	{
-		return request.getSignalId() == reply.getSignalId();
+		return id == reply.getSignalId();
 	}
 }

@@ -4,17 +4,14 @@ public abstract class Waiter<T>
 {
 	public T		reply;
 
-	public T		request;
-
 	private long	startTime;
 
 	private long	stopTime;
 
 	private boolean	notified	= false;
 
-	public Waiter(T request)
+	public Waiter()
 	{
-		this.request   = request;
 		this.startTime = System.currentTimeMillis();
 	}
 
