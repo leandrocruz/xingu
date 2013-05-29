@@ -68,7 +68,7 @@ public class CommandTask
 				text = codec.encode(result);		
 			}
 		}
-		channel.write(text + "\r\nin " + TimeUtils.toSeconds(end - start) + " seconds\r\n");
+		channel.write(text + "\r\n\r\nin " + TimeUtils.toSeconds(end - start) + " seconds\r\n");
 		return command;
 	}
 
