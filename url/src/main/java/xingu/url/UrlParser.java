@@ -22,6 +22,10 @@ public class UrlParser
 
 	public static final int NO_PORT = -1, MISSING_PORT = -2, BAD_PORT = -3;
 
+    public static final String HTTP = "http://";
+    
+    public static final String HTTPS = "https://";
+
 	public static Url parse(String spec)
 	{
 		if (StringUtils.isEmpty(spec))
@@ -30,9 +34,9 @@ public class UrlParser
 		}
 
 		// HACK
-		if (!spec.startsWith("http://") && !spec.startsWith("https://") && !spec.startsWith("about:"))
+		if (!spec.startsWith(HTTP) && !spec.startsWith(HTTPS) && !spec.startsWith("about:"))
 		{
-			spec = "http://" + spec;
+			spec = HTTP + spec;
 		}
 
 		UrlParser parser = new UrlParser(spec);

@@ -2,6 +2,8 @@ package xingu.netty.http;
 
 import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.HOST;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,6 +29,8 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.CharUtils;
 
 import xingu.netty.Deflater;
+import xingu.url.Url;
+import xingu.url.UrlParser;
 import xingu.utils.NettyUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -41,10 +45,13 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMessage;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
+import org.jboss.netty.handler.codec.http.HttpVersion;
 
 public class HttpUtils
 {
     public static final String HTTP = "http://";
+    
+    public static final String HTTPS = "https://";
 
     public static Pattern pattern = Pattern.compile("< *meta http-equiv *= *[\"'] *Content\\-Type *[\"'] *content *= *[\"'] *([a-zA-Z0-9 \\-=;/]+) *[\"']", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
@@ -412,5 +419,28 @@ public class HttpUtils
 		buffer.writeBytes(value.getBytes("ASCII"));
 		buffer.writeByte(CharUtils.CR);
 		buffer.writeByte(CharUtils.LF);
+	}
+
+	public static final String hostFrom(HttpRequest req)
+	{
+		String host = req.getHeader(HOST);
+		if(host != null)
+		{
+			return host;
+		}
+		
+		String      uri     = req.getUri();
+		HttpVersion version = req.getProtocolVersion();
+		boolean     v1_0    = HttpVersion.HTTP_1_0.equals(version);
+		if(v1_0)
+		{
+			boolean startsWithProto = uri.startsWith(HTTP) || uri.startsWith(HTTPS);
+			if(startsWithProto)
+			{
+				Url url = UrlParser.parse(uri);
+				return url.getHost();
+			}
+		}
+		throw new NotImplementedYet("Can't retrieve host from '" + uri + "'");
 	}
 }
