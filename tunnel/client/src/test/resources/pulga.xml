@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ 
+ Xingu TCP Tunnel Agent
+ 
+-->
+<pulga>
+
+	<component 	initialize="true"
+				role="xingu.tunnel.Agent"
+				class="xingu.tunnel.impl.NettyAgent"
+				serverAddress="127.0.0.1"
+				serverPort="xx"/>
+
+	<component	key="proto"
+				role="xingu.codec.Codec"
+				class="xingu.codec.impl.xstream.XStreamCodec" />
+
+	<component	role="xingu.node.client.bridge.BridgeConnector"
+				class="xingu.tunnel.AgentBridgeConnector">
+		<connection address="127.0.0.1" ports="8865"/>
+	</component>
+</pulga>

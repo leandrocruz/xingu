@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ 
+ Xingu TCP Tunnel Server
+ 
+-->
+<pulga>
+
+	<component 	initialize="true"
+				role="xingu.tunnel.ServerProxy"
+				class="xingu.tunnel.impl.NettyServerProxy"
+				name="Xingu TCP Tunnel Server Proxy"
+				address="127.0.0.1"
+				port="8866"/>
+
+	<component 	initialize="true"
+				role="xingu.tunnel.AgentAcceptor"
+				class="xingu.tunnel.impl.NettyAgentAcceptor"
+				name="Xingu TCP Tunnel Agent Acceptor"
+				address="127.0.0.1"
+				port="8865"/>
+
+	<component	key="proto"
+				role="xingu.codec.Codec"
+				class="xingu.codec.impl.xstream.XStreamCodec" />
+
+</pulga>

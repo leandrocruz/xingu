@@ -93,6 +93,7 @@
 		<module>node</module>		
 		<module>l10n</module>
 		<module>process</module>
+		<module>tunnel</module>
 		<!--
 		<module>ibatis</module>
 		<module>dao</module>
