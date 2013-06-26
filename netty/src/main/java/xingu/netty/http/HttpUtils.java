@@ -441,6 +441,6 @@ public class HttpUtils
 				return url.getHost();
 			}
 		}
-		throw new NotImplementedYet("Can't retrieve host from '" + uri + "'");
+		throw new NotImplementedYet("Can't retrieve host from version: '" +version + "', host: '" + host + "', uri: '" + uri + "'");
 	}
 }
