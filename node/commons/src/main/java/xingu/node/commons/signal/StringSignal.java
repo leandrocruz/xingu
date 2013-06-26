@@ -1,10 +1,9 @@
 package xingu.node.commons.signal;
 
-import xingu.node.commons.signal.behavior.SignalBehavior;
 
 public class StringSignal
 	extends SignalSupport
-	implements Signal, SignalBehavior<StringSignal, StringSignal>
+	implements Signal
 {
 	private String s;
 
@@ -17,14 +16,5 @@ public class StringSignal
 	public String toString()
 	{
 		return s;
-	}
-
-	@Override
-	public StringSignal perform(StringSignal signal)
-		throws Exception
-	{
-		s = s.toUpperCase();
-		System.out.println(s);
-		return this;
 	}
 }
