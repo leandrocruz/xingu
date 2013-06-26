@@ -17,9 +17,14 @@ public class HtmlUtils
     
     public static List<ExtractedTag> extractTags(String content)
     {
-        //a small optimization
+    	boolean empty = StringUtils.isEmpty(content);
+		if(empty)
+		{
+			return null;
+		}
+        
         int start = content.indexOf("<");
-        int end = content.indexOf(">");
+        int end   = content.indexOf(">");
         if(start < 0 || end < 0 || start > end)
         {
             return null;
@@ -37,12 +42,11 @@ public class HtmlUtils
 
     public static boolean isHtml(String content)
     {
-    	boolean empty = StringUtils.isEmpty(content);
-		if(empty || content.indexOf("<") < 0 || content.indexOf(">") < 0)
-		{
-			return false;
-		}
         List<ExtractedTag> tags = extractTags(content);
+        if(tags == null || tags.size() == 0)
+        {
+        	return false;
+        }
         for (ExtractedTag tag : tags)
         {
             String tagName = tag.name();
