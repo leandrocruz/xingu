@@ -14,6 +14,7 @@ import xingu.node.console.command.Command;
 
 import org.apache.avalon.framework.activity.Startable;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -108,8 +109,15 @@ public class ConsoleChannelHandler
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
 		throws Exception
 	{
-		e.getCause().printStackTrace();
-		write(e.getChannel(), codec.encode(e.getCause()));
+		Throwable t = e.getCause();
+		t.printStackTrace();
+
+		Channel channel = e.getChannel();
+		if(channel.isConnected())
+		{
+			String trace = ExceptionUtils.getStackTrace(t);
+			write(channel, trace);
+		}
 	}
 
 	private void write(Channel channel, String message)

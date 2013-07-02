@@ -19,11 +19,6 @@ public class ExceptionSignal
 		this.trace  = trace;
 	}
 
-	public Signal getSignal(){return signal;}
-	public void setSignal(Signal signal){this.signal = signal;}
-	public String getTrace(){return trace;}
-	public void setTrace(String trace){this.trace = trace;}
-
 	@Override
 	public BooleanSignal perform(ExceptionSignal signal)
 		throws Exception
@@ -32,4 +27,10 @@ public class ExceptionSignal
 		System.err.println(trace);
 		return null;
 	}
+
+	public Signal getSignal(){return signal;}
+	public void setSignal(Signal signal){this.signal = signal;}
+	public String getTrace(){return trace;}
+	public void setTrace(String trace){this.trace = trace;}
+
 }

@@ -21,15 +21,19 @@ public class EncodedChannelWriter
 	@Override
 	public void write(Object obj)
 	{
-		String text;
-		if(obj instanceof String)
+		boolean open = channel.isOpen();
+		if(open)
 		{
-			text = obj.toString();
+			String text;
+			if(obj instanceof String)
+			{
+				text = obj.toString();
+			}
+			else
+			{
+				text = codec.encode(obj);
+			}
+			channel.write(text + "\r\n");
 		}
-		else
-		{
-			text = codec.encode(obj);
-		}
-		channel.write(text + "\r\n");
 	}
 }
