@@ -7,7 +7,7 @@ public class SignalSupport
 {
 	private long				signalId;
 
-	protected String			sessionId;
+	protected long				sessionId;
 
 	protected long				cTime;
 
@@ -26,8 +26,8 @@ public class SignalSupport
     /* @formatter:off */
 	@Override public long getSignalId() {return signalId;}
 	@Override public void setSignalId(long id){this.signalId = id;}
-    @Override public String getSessionId() {return sessionId;}
-    @Override public void setSessionId(String sessionId) {this.sessionId = sessionId;}
+    @Override public long getSessionId() {return sessionId;}
+    @Override public void setSessionId(long sessionId) {this.sessionId = sessionId;}
     @Override public long cTime() {return cTime;}
     @Override public void cTime(long time){this.cTime = time;}
     @Override public long sTime() {return sTime;}

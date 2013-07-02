@@ -40,10 +40,10 @@ public class SignalTaskImpl
 		}
 	};
 	
-	public SignalTaskImpl(Signal signal, Channel pipe)
+	public SignalTaskImpl(Signal signal, Channel channel)
 	{
 		this.signal  = signal;
-		this.channel = pipe;
+		this.channel = channel;
 	}
 
 	@Override

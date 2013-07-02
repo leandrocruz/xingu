@@ -10,8 +10,8 @@ public interface Signal
 	long getSignalId();
     void setSignalId(long id);
     
-    String getSessionId();
-    void setSessionId(String sessionId);
+    long getSessionId();
+    void setSessionId(long sessionId);
     
     long cTime(); /* Client Time */
     void cTime(long time);
