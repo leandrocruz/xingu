@@ -5,11 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
@@ -24,7 +25,7 @@ import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class SignalBridgeImpl
-	implements SignalBridge
+	implements SignalBridge, Configurable
 {
 	@Inject
 	private SignalProcessor			processor;
@@ -32,13 +33,19 @@ public class SignalBridgeImpl
 	@Inject
 	private SessionManager			sessionManager;
 
-	private static final long		queryTimeout	= TimeUtils.toMillis("1m");
+	private long					queryTimeout;
 
-	private static final Logger		logger			= LoggerFactory.getLogger(SignalBridgeImpl.class);
+	private volatile AtomicLong		count	= new AtomicLong(0);
 
-	private volatile AtomicLong		count			= new AtomicLong(0);
+	private List<Waiter<Signal>>	waiters	= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
 
-	private List<Waiter<Signal>>	waiters			= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		String       tm = conf.getChild("query").getAttribute("timeout", "1m");
+		queryTimeout    = TimeUtils.toMillis(tm);
+	}
 
 	@Override
 	public void on(Channel channel, Signal signal)
