@@ -10,6 +10,8 @@ public class ExceptionSignal
 
 	private String		trace;
 
+	private Throwable	cause;
+
 	public ExceptionSignal()
 	{}
 
@@ -17,6 +19,15 @@ public class ExceptionSignal
 	{
 		this.signal = signal;
 		this.trace  = trace;
+	}
+
+	/*
+	 * Don't use this over the wire
+	 */
+	public ExceptionSignal(Signal signal, Throwable cause)
+	{
+		this.signal = signal;
+		this.cause = cause;
 	}
 
 	@Override
@@ -32,5 +43,6 @@ public class ExceptionSignal
 	public void setSignal(Signal signal){this.signal = signal;}
 	public String getTrace(){return trace;}
 	public void setTrace(String trace){this.trace = trace;}
-
+	public Throwable getCause(){return cause;}
+	public void setCause(Throwable cause){this.cause = cause;}
 }

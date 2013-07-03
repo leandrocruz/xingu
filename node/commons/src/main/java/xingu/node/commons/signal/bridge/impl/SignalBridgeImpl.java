@@ -13,13 +13,14 @@ import org.slf4j.LoggerFactory;
 
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
+import xingu.node.commons.signal.ExceptionSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalWaiter;
+import xingu.node.commons.signal.TimeoutSignal;
 import xingu.node.commons.signal.Waiter;
 import xingu.node.commons.signal.bridge.SignalBridge;
 import xingu.node.commons.signal.processor.SignalProcessor;
 import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class SignalBridgeImpl
@@ -38,22 +39,6 @@ public class SignalBridgeImpl
 	private volatile AtomicLong		count			= new AtomicLong(0);
 
 	private List<Waiter<Signal>>	waiters			= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
-
-	private ChannelFutureListener	onWrite			= new ChannelFutureListener()
-	{
-		@Override
-		public void operationComplete(ChannelFuture future)
-			throws Exception
-		{
-			boolean success = future.isSuccess();
-			if(!success)
-			{
-				//TODO: mark signal as error
-				Throwable error = future.getCause();
-				logger.error("Error sending signal", error);
-			}
-		}
-	};
 
 	@Override
 	public void on(Channel channel, Signal signal)
@@ -96,39 +81,50 @@ public class SignalBridgeImpl
 	}
 
 	@Override
-	public Signal query(Channel channel, Signal signal)
+	public Signal query(Channel channel, ChannelFutureListener onWrite, Signal signal)
 		throws Exception
 	{
 		Signal reply = null;
 		touch(channel, signal);
 		Waiter<Signal> waiter = new SignalWaiter(signal);
 		waiters.add(waiter);
+		
 		try
 		{
 			ChannelFuture future = deliver(channel, signal);
+			future.addListener(onWrite);
 			future.awaitUninterruptibly();
-			if(future.isDone() && future.isSuccess())
-			{
-				reply = waitForReply(signal, waiter);
-			}
-			else
-			{
-				// TODO: mark query as failed
-				throw new NotImplementedYet();
-			}
+			reply = backFromTheFuture(future, signal, waiter); /* pretty cool don't you think? */
 		}
 		catch(Exception e)
 		{
-			// TODO: mark query as failed
-			logger.error("Error waiting for query reply '" + signal + "'", e);
+			return new ExceptionSignal(signal, e);
 		}
 		finally
 		{
 			waiters.remove(waiter);
 		}
 
-		// TODO: if reply is null then mark query as failed
 		return reply;
+	}
+
+	private Signal backFromTheFuture(ChannelFuture future, Signal signal, Waiter<Signal> waiter)
+	{
+		boolean success = future.isSuccess();
+		if(success)
+		{
+			Signal reply = waitForReply(signal, waiter);
+			if(reply != null)
+			{
+				return reply;
+			}
+			return new TimeoutSignal(signal);
+		}
+		else
+		{
+			Throwable cause = future.getCause();
+			return new ExceptionSignal(signal, cause);
+		}
 	}
 
 	@Override
@@ -136,9 +132,7 @@ public class SignalBridgeImpl
 		throws Exception
 	{
 		touch(channel, signal);
-		ChannelFuture future = channel.write(signal);
-		future.addListener(onWrite);
-		return future;
+		return channel.write(signal);
 	}
 
 	private long touch(Channel channel, Signal signal)
