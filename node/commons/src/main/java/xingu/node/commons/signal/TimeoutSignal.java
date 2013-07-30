@@ -6,9 +6,22 @@ public class TimeoutSignal
 {
 	private Signal	signal;
 
-	public TimeoutSignal(Signal signal)
+	private long	timeout;
+
+	public TimeoutSignal(Signal signal, long timeout)
 	{
-		this.signal = signal;
+		this.signal  = signal;
+		this.timeout = timeout;
+	}
+	
+	public Signal getSignal()
+	{
+		return signal;
+	}
+
+	public long getTimeout()
+	{
+		return timeout;
 	}
 
 	@Override

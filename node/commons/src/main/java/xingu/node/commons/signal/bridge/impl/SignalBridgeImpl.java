@@ -125,7 +125,7 @@ public class SignalBridgeImpl
 			{
 				return reply;
 			}
-			return new TimeoutSignal(signal);
+			return new TimeoutSignal(signal, queryTimeout);
 		}
 		else
 		{
