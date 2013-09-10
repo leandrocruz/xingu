@@ -29,7 +29,13 @@ public class Pinger
 	public PingResult ping(String addr)
 		throws IOException
 	{
-		ProcessBuilder builder   = new ProcessBuilder("ping", "-c3", addr);
+		return ping(addr, 3);
+	}
+	
+	public PingResult ping(String addr, int count)
+		throws IOException
+	{
+		ProcessBuilder builder   = new ProcessBuilder("ping", "-c" + count, addr);
 		builder.redirectErrorStream(true);
 		Process        process   = builder.start();
 		InputStream    is        = process.getInputStream();
