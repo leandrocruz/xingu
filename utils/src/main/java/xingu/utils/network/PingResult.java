@@ -47,6 +47,11 @@ public class PingResult
 		return errors;
 	}
 
+	public boolean isAlive()
+	{
+		return received > 0;
+	}
+	
 	@Override
 	public String toString()
 	{
@@ -62,6 +67,4 @@ public class PingResult
 				+ loss + "% packet loss, "
 				+ "time " + time + "ms";
 	}
-	
-	
 }
