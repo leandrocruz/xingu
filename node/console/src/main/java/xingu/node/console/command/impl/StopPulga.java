@@ -17,7 +17,7 @@ public class StopPulga
 	public Void execute(String[] args, Writer writer)
 		throws Exception
 	{
-		String name = args.length > 0 ? args[0] : null;
+		String name = args == null || args.length == 0 ? null: args[0];
 		if(StringUtils.isEmpty(name))
 		{
 			System.out.println("Stopping All components");
