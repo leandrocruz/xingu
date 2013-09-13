@@ -3,6 +3,7 @@ package xingu.node.server.impl;
 import static org.jboss.netty.channel.Channels.pipeline;
 
 import java.net.InetSocketAddress;
+import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,9 +18,10 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.group.ChannelGroup;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.jboss.netty.channel.socket.oio.OioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
+import org.jboss.netty.util.ThreadNameDeterminer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +52,7 @@ public class ServerNodeSupport
 
 	protected ChannelGroup		mainChannelGroup	= new DefaultChannelGroup("main");
 
-	protected AddChannelTo		channelCollector	= new AddChannelTo(mainChannelGroup);
+	protected AddChannelToGroup	channelCollector	= new AddChannelToGroup(mainChannelGroup);
 
 	protected Logger			logger				= LoggerFactory.getLogger(getClass());
 
@@ -73,7 +75,14 @@ public class ServerNodeSupport
 			= new DaemonThreadFactory(new SimpleThreadNamer(name + "Boss"));
 		workerExecutor = Executors.newCachedThreadPool(workerThreadFactory);
 		bossExecutor   = Executors.newCachedThreadPool(bossThreadFactory);
-		bootstrap      = new ServerBootstrap(new NioServerSocketChannelFactory(workerExecutor, bossExecutor));
+		bootstrap      = new ServerBootstrap(new OioServerSocketChannelFactory(bossExecutor, workerExecutor, new ThreadNameDeterminer() {
+			@Override
+			public String determineThreadName(String currentThreadName, String proposedThreadName)
+				throws Exception
+			{
+				return currentThreadName;
+			}
+		}));
 		ChannelPipelineFactory pipelineFactory = getChannelPipelineFactory();
 		bootstrap.setPipelineFactory(pipelineFactory);
 		bootstrap.setOption("tcpNoDelay",		true);
@@ -113,10 +122,17 @@ public class ServerNodeSupport
 	public void stop()
 		throws Exception
 	{
+		//System.err.println("SERVER NODE STOP -- START");
 		/*
 		 * Hack/Ugly. Probably a Netty problem TODO: close all opened channels
 		 */
-
+//		Iterator<Channel> it = mainChannelGroup.iterator();
+//		while(it.hasNext())
+//		{
+//			Channel channel = it.next();
+//			System.err.println("Closing: " + channel);
+//			
+//		}
 		mainChannelGroup.close().awaitUninterruptibly();
 
 		((ExecutorService) workerExecutor).shutdown();
@@ -126,5 +142,6 @@ public class ServerNodeSupport
 		{
 			bootstrap.releaseExternalResources();
 		}
+		//System.err.println("SERVER NODE STOP -- END");
 	}
 }
