@@ -10,6 +10,7 @@
 	<groupId>xingu</groupId>
 	<artifactId>xavante</artifactId>
 	<packaging>jar</packaging>
+	<name>Xingu Xavante: Web RPC</name>
 	<licenses>
 		<license>
        	    <name>The Apache Software License, Version 2.0</name>
