@@ -1,28 +1,30 @@
-package xavante.comet;
+package xavante.comet.impl;
 
 import java.net.SocketAddress;
 
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
+import xavante.comet.CometMessage;
+
 public class CometMessageImpl
 	implements CometMessage
 {
-	private String token;
+	private String			token;
 
-	private String sequence;
-	
-	private String command;
-	
-	private String data;
+	private String			sequence;
 
-	private HttpRequest request;
+	private String			command;
 
-	private HttpResponse response;
-	
-	private SocketAddress localAddress;
-	
-	private SocketAddress remoteAddress;
+	private String			data;
+
+	private HttpRequest		request;
+
+	private HttpResponse	response;
+
+	private SocketAddress	localAddress;
+
+	private SocketAddress	remoteAddress;
 	
 	public String getToken(){return token;}
 	public void setToken(String hash){this.token = hash;}

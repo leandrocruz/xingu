@@ -9,7 +9,6 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-import xavante.comet.LongPollingCometHandler;
 import xavante.dispatcher.DefaultRequestHandler;
 import xavante.dispatcher.RequestDispatcher;
 import xavante.dispatcher.RequestHandler;

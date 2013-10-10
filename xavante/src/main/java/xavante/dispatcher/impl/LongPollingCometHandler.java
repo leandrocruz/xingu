@@ -1,4 +1,4 @@
-package xavante.comet;
+package xavante.dispatcher.impl;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -8,7 +8,10 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
-import xavante.dispatcher.impl.RequestHandlerSupport;
+import xavante.comet.CometHandler;
+import xavante.comet.CometMessage;
+import xavante.comet.MessageFactory;
+import xavante.comet.impl.MessageFactoryImpl;
 import xingu.netty.http.HttpResponseBuilder;
 import br.com.ibnetwork.xingu.container.Inject;
 
@@ -17,6 +20,9 @@ public class LongPollingCometHandler
 {
 	@Inject
 	private CometHandler	handler;
+	
+	@Inject
+	private MessageFactory factory;
 
 	private static final String PATH = "/api/lp";
 
@@ -41,7 +47,7 @@ public class LongPollingCometHandler
 		String reply = null;
 		try
 		{
-			CometMessage msg = CometMessageFactory.build(req, resp, channel);
+			CometMessage msg = factory.build(req, resp, channel);
 			reply            = handler.onMessage(msg);
 		}
 		catch(Throwable t)
