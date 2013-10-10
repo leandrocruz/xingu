@@ -1,7 +1,10 @@
 package xavante.comet;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -12,13 +15,9 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.junit.Test;
 
 import xavante.comet.impl.MessageFactoryImpl;
-
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class MessageFactoryTest
 	extends XinguTestCase
