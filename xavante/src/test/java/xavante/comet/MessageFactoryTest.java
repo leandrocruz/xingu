@@ -103,7 +103,7 @@ public class MessageFactoryTest
 		when(req.getUri()).thenReturn("/aaa/" + token + "/1");
 		
 		String charset = "utf-8";
-		when(req.getHeader(HttpHeaders.Names.CONTENT_TYPE)).thenReturn("application/json; charset=" + charset);
+		when(req.getHeader(HttpHeaders.Names.CONTENT_TYPE)).thenReturn("application/x-www-form-urlencoded; charset=" + charset);
 		
 		String payload = "Léandro Çruz";
 		String encoded = URLEncoder.encode(payload, charset);

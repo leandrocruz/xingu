@@ -81,13 +81,16 @@ public class MessageFactoryImpl
 			int readable = buffer.readableBytes();
 			if(readable > 0)
 			{
-				String  cType       = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
-				String  charsetName = HttpUtils.charset(cType, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
-				Charset charset     = Charset.forName(charsetName);
-				String  str         = buffer.toString(charset);
-				String  decoded     = URLDecoder.decode(str, charsetName);
-				//decoded             = decoded.substring("data=".length());
-				msg.setData(decoded);
+				String  cType        = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
+				String  csName       = HttpUtils.charset(cType, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+				Charset charset      = Charset.forName(csName);
+				String  data         = buffer.toString(charset);
+				boolean isUrlEncoded = HttpUtils.isUrlEncoded(cType);
+				if(isUrlEncoded)
+				{
+					data = URLDecoder.decode(data, csName);
+				}
+				msg.setData(data);
 			}
 		}
 		

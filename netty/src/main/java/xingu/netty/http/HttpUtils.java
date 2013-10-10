@@ -76,6 +76,12 @@ public class HttpUtils
         return HTTP+host+path;
     }
 
+    public static boolean isUrlEncoded(String type)
+    {
+    	int idx = type.indexOf("application/x-www-form-urlencoded");
+		return idx >= 0;
+    }
+    
     public static String charset(String type, String defaultCharset)
     {
         if(type == null)
