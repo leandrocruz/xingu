@@ -4,7 +4,7 @@ import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
-public class CommandHandlerImpl
+public class CometHandlerImpl
 	implements CometHandler
 {
 	@Override
