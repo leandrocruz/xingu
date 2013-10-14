@@ -1,4 +1,6 @@
-package xingu.node.commons.signal;
+package xingu.node.commons.signal.impl;
+
+import xingu.node.commons.signal.Signal;
 
 
 public class TimeoutSignal

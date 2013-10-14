@@ -14,12 +14,12 @@ import org.jboss.netty.channel.ChannelFutureListener;
 
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
-import xingu.node.commons.signal.ExceptionSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalWaiter;
-import xingu.node.commons.signal.TimeoutSignal;
 import xingu.node.commons.signal.Waiter;
 import xingu.node.commons.signal.bridge.SignalBridge;
+import xingu.node.commons.signal.impl.ExceptionSignal;
+import xingu.node.commons.signal.impl.TimeoutSignal;
 import xingu.node.commons.signal.processor.SignalProcessor;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.TimeUtils;

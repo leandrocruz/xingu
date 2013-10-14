@@ -1,22 +1,19 @@
 package xavante.comet.impl;
 
-import xavante.comet.CometHandler;
-import xavante.comet.CometMessage;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.node.commons.identity.Identity;
+import xingu.node.commons.signal.Signal;
 
 public class CometHandlerImpl
-	implements CometHandler
+	extends CometHandlerSupport
 {
 	@Override
-	public String onMessage(CometMessage msg)
-		throws Exception
+	protected void verifyOwnership(Signal signal)
 	{
-		throw new NotImplementedYet();
 	}
 
 	@Override
-	public String onError(Throwable t)
+	protected Identity findOwner(String token, Signal signal)
 	{
-		throw new NotImplementedYet();
+		return null;
 	}
 }

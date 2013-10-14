@@ -1,5 +1,6 @@
-package xingu.node.commons.signal;
+package xingu.node.commons.signal.impl;
 
+import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.SignalBehavior;
 
 public class ExceptionSignal

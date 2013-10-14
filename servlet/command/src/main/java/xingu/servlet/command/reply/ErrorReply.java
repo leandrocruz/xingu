@@ -28,7 +28,6 @@ public class ErrorReply
 		this.stackTrace = trace;
 	}
 
-
 	public String getMessage() {return message;}
 	public String getErrorClass() {return errorClass;}
 	public String getErrorMessage() {return errorMessage;}

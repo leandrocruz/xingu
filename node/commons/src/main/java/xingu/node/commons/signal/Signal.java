@@ -2,32 +2,39 @@ package xingu.node.commons.signal;
 
 import java.io.Serializable;
 
+import xingu.node.commons.identity.Identity;
 import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 
 public interface Signal
 	extends Serializable
 {
 	long getSignalId();
-    void setSignalId(long id);
-    
-    long getSessionId();
-    void setSessionId(long sessionId);
-    
-    long cTime(); /* Client Time */
-    void cTime(long time);
+	void setSignalId(long id);
 
-    String cTimeZone();
-    void cTimeZone(String timeZone);
-    
-    long sTime(); /* Server Time */
-    void sTime(long time);
+	long getSessionId();
+	void setSessionId(long sessionId);
 
-    NetworkAddress getAddress();
-    void setAddress(NetworkAddress address);
+	Identity<?> getIdentity();
+	void setIdentity(Identity<?> identity);
 
-    boolean isForward();
-    void setForward(boolean forward);
+	Identity<?> getOwner();
+	void setOwner(Identity<?> owner);
 
-    boolean isSync();
-    boolean isProcessEnabled();
+	long cTime(); /* Client Time */
+	void cTime(long time);
+
+	String cTimeZone();
+	void cTimeZone(String timeZone);
+
+	long sTime(); /* Server Time */
+	void sTime(long time);
+
+	NetworkAddress getAddress();
+	void setAddress(NetworkAddress address);
+
+	boolean isForward();
+	void setForward(boolean forward);
+
+	boolean isSync();
+	boolean isProcessEnabled();
 }

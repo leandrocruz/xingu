@@ -7,7 +7,6 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xingu.node.commons.signal.ExceptionSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
 import xingu.node.commons.signal.processor.SignalTask;
