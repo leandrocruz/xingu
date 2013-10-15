@@ -9,9 +9,9 @@ public class SignalSupport
 {
 	protected long				signalId;
 
-	protected Identity			owner;
+	protected Identity<?>		owner;
 
-	protected Identity			identity;
+	protected Identity<?>		identity;
 
 	protected long				sessionId;
 
@@ -32,10 +32,10 @@ public class SignalSupport
     /* @formatter:off */
 	@Override public long getSignalId() {return signalId;}
 	@Override public void setSignalId(long id){this.signalId = id;}
-	@Override public Identity getIdentity(){return identity;}
-	@Override public void setIdentity(Identity identity){this.identity = identity;}
-	@Override public Identity getOwner() {return owner;}
-	@Override public void setOwner(Identity owner){this.owner = owner;}
+	@Override public Identity<?> getIdentity(){return identity;}
+	@Override public void setIdentity(Identity<?> identity){this.identity = identity;}
+	@Override public Identity<?> getOwner() {return owner;}
+	@Override public void setOwner(Identity<?> owner){this.owner = owner;}
     @Override public long getSessionId() {return sessionId;}
     @Override public void setSessionId(long sessionId) {this.sessionId = sessionId;}
     @Override public long cTime() {return cTime;}
