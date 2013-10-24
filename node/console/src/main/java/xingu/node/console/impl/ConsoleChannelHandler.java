@@ -77,12 +77,24 @@ public class ConsoleChannelHandler
 		String   received = (String) e.getMessage();
 		String[] args     = null;
 		String   name     = received;
+		name              = StringUtils.trimToNull(name);
 		String[] parts    = StringUtils.split(received);
 		if(parts.length > 1)
 		{
 			name = parts[0];
 			args = new String[parts.length - 1];
 			System.arraycopy(parts, 1, args, 0, args.length);
+			for(String part : parts)
+			{
+				int  len   = part.length();
+				char start = part.charAt(0);
+				char end   = part.charAt(len - 1);
+				if((start == '\'' && end == '\'') || (start == '"' && end == '"'))
+				{
+					part = part.substring(1, len - 1);
+					part = StringUtils.trimToNull(part);
+				}
+			}
 		}
 		
 		if("q".equals(name))
