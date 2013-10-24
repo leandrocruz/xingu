@@ -16,6 +16,12 @@ public class NumberUtils
 
     public static long toLong(String value, long defaultValue)
     {
+    	value = StringUtils.trimToNull(value);
+    	if(value == null)
+    	{
+    		return defaultValue;
+    	}
+    	
         try
         {
             return Long.parseLong(value);
