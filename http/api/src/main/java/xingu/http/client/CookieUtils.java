@@ -1,6 +1,5 @@
 package xingu.http.client;
 
-import java.util.Map;
 import java.util.Set;
 
 import org.jboss.netty.handler.codec.http.Cookie;
@@ -14,14 +13,23 @@ public class CookieUtils
 
 	public static Cookies getCookies(HttpResponse<?> res)
 	{
-		Map<String, String> headers = res.getHeaders();
-		String      header          = headers.get("set-cookie");
-		if(header == null)
+		StringBuffer  sb      = new StringBuffer();
+		Header[]      headers = res.getHeaders();
+		CookieDecoder decoder = new CookieDecoder();
+
+		for(Header header : headers)
 		{
-			return null;
+			String name = header.getName();
+			if("set-cookie".equalsIgnoreCase(name))
+			{
+				String value = header.getValue();
+				sb.append(value).append(";");
+			}
 		}
-		Set<Cookie> cookies         = new CookieDecoder().decode(header);
-		return new CookiesImpl(cookies);
+		
+		String      buffer  = sb.toString();
+		Set<Cookie> decoded = decoder.decode(buffer);
+		return new CookiesImpl(decoded);
 	}
 
 	public static String getCookieNameAndValue(Cookie cookie)

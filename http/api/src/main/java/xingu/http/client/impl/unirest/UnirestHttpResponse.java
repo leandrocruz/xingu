@@ -1,17 +1,14 @@
 package xingu.http.client.impl.unirest;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import xingu.http.client.HttpResponse;
+import xingu.http.client.Header;
+import xingu.http.client.impl.HeaderImpl;
+import xingu.http.client.impl.HttpResponseSupport;
 
 public class UnirestHttpResponse<T>
-	implements HttpResponse<T>
+	extends HttpResponseSupport<T>
 {
 	private com.mashape.unirest.request.HttpRequest		req;
 
@@ -30,9 +27,17 @@ public class UnirestHttpResponse<T>
 	}
 
 	@Override
-	public Map<String, String> getHeaders()
+	public Header[] getHeaders()
 	{
-		return res.getHeaders();
+		Map<String, String> headers = res.getHeaders();
+		Header[] result = new Header[headers.size()];
+		int i = 0;
+		for(String name : headers.keySet())
+		{
+			String value = headers.get(name);
+			result[i++] = new HeaderImpl(name, value);
+		}
+		return result;
 	}
 
 	@Override
@@ -44,31 +49,19 @@ public class UnirestHttpResponse<T>
 	@Override
 	public String getHeader(String name)
 	{
-		Map<String, String> headers = getHeaders();
+		Map<String, String> headers = res.getHeaders();
 		return headers.get(name);
 	}
 
 	@Override
-	public Document getDocument()
-		throws IOException
+	protected String getUrl()
 	{
-		return getDocument("ISO-8859-1");
+		return req.getUrl();
 	}
 
 	@Override
-	public Document getDocument(String charset)
-		throws IOException
+	protected InputStream getRawBody()
 	{
-		InputStream is = null;
-		try
-		{
-			is         = res.getRawBody();
-			String url = req.getUrl();
-			return Jsoup.parse(is, charset, url);
-		}
-		finally
-		{
-			IOUtils.closeQuietly(is);
-		}
+		return res.getRawBody();
 	}
 }
