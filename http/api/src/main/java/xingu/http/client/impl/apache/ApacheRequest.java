@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,7 +16,6 @@ import org.apache.http.message.BasicNameValuePair;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class ApacheRequest
 	implements HttpRequest
@@ -57,10 +55,9 @@ public class ApacheRequest
 		}
 		
 		CloseableHttpClient client = HttpClients.createDefault();
-		org.apache.http.HttpResponse res;
 		try
 		{
-			res = client.execute(req);
+			org.apache.http.HttpResponse res = client.execute(req);
 			return ApacheHttpResponseBuilder.build(req, res, String.class);
 		}
 		catch(Exception e)
@@ -75,7 +72,7 @@ public class ApacheRequest
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace();
+				throw new HttpException(e);
 			}
 		}
 	}
@@ -85,5 +82,4 @@ public class ApacheRequest
 	{
 		return req.getURI().toString();
 	}
-
 }
