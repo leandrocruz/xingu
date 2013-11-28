@@ -1,6 +1,7 @@
 package xingu.http.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jsoup.nodes.Document;
 
@@ -10,6 +11,8 @@ public interface HttpResponse<T>
 
 	T getBody();
 
+	InputStream getRawBody();
+	
 	Header[] getHeaders();
 
 	String getHeader(String name);

@@ -82,7 +82,7 @@ public class ApacheHttpResponse<T>
 	}
 
 	@Override
-	protected InputStream getRawBody()
+	public InputStream getRawBody()
 	{
 		return rawBody;
 	}

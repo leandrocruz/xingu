@@ -60,7 +60,7 @@ public class UnirestHttpResponse<T>
 	}
 
 	@Override
-	protected InputStream getRawBody()
+	public InputStream getRawBody()
 	{
 		return res.getRawBody();
 	}

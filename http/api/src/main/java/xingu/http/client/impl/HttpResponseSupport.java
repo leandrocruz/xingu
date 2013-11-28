@@ -39,6 +39,6 @@ public abstract class HttpResponseSupport<T>
 
 	protected abstract String getUrl();
 
-	protected abstract InputStream getRawBody();
+	public abstract InputStream getRawBody();
 
 }

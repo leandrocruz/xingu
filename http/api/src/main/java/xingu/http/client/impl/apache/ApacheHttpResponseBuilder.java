@@ -1,5 +1,7 @@
 package xingu.http.client.impl.apache;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,20 +20,22 @@ public class ApacheHttpResponseBuilder
 		throws IOException
 	
 	{
-		Header[]    headers = getHeaders(res);
-		int         code    = res.getStatusLine().getStatusCode();
+		Header[]    headers     = getHeaders(res);
+		int         code        = res.getStatusLine().getStatusCode();
 
-		HttpEntity  entity  = res.getEntity();
-		InputStream is      = entity.getContent();
-		T body;
+		T           body;
+		HttpEntity  entity      = res.getEntity();
+		InputStream is          = entity.getContent();
+		byte[]      raw         = IOUtils.toByteArray(is);
+		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
+
 		if (String.class.equals(target))
 		{
-			byte[] raw = IOUtils.toByteArray(is);
 			body = (T) new String(raw);
 		}
 		else if (InputStream.class.equals(target))
 		{
-			body = (T) is;
+			body = (T) replacement;
 		}
 		else
 		{
@@ -43,7 +47,7 @@ public class ApacheHttpResponseBuilder
 		result.setCode(code);
 		result.setHeaders(headers);
 		result.setBody(body);
-		result.setRawBody(is);
+		result.setRawBody(replacement);
 		return result;
 	}
 
