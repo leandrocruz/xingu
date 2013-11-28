@@ -7,7 +7,6 @@ import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import xingu.http.client.Header;
 import xingu.http.client.HttpResponse;
 
 public abstract class HttpResponseSupport<T>
