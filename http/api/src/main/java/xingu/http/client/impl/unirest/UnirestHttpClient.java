@@ -1,16 +1,14 @@
 package xingu.http.client.impl.unirest;
 
-import xingu.http.client.CookieUtils;
-import xingu.http.client.Cookies;
-import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.impl.HttpClientSupport;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
 public class UnirestHttpClient
-	implements HttpClient
+	extends HttpClientSupport
 {
 	@Override
 	public HttpRequest get(String uri)
@@ -25,17 +23,4 @@ public class UnirestHttpClient
 		HttpRequestWithBody req = Unirest.post(uri);
 		return new UnirestPostRequest(req);
 	}
-
-	@Override
-	public Cookies getCookies(String uri)
-	{
-		xingu.http.client.HttpResponse<?> res = get(uri)
-				.header("Accept", "text/html")
-				.header("Accept-Charset", "ISO-8859-1,utf-8")
-				.asString();
-		
-		
-		return CookieUtils.getCookies(res);
-	}
-
 }

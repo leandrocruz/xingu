@@ -4,15 +4,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.impl.HttpClientSupport;
 
 public class ApacheHttpClient
+	extends HttpClientSupport 
 	implements HttpClient
 {
-
 	@Override
 	public HttpRequest get(String uri)
 		throws HttpException
@@ -28,12 +28,4 @@ public class ApacheHttpClient
 		HttpUriRequest req = new HttpPost(uri);
 		return new ApacheRequest(req);
 	}
-
-	@Override
-	public Cookies getCookies(String uri)
-		throws HttpException
-	{
-		return null;
-	}
-
 }
