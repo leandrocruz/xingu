@@ -8,13 +8,15 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>http</artifactId>
+	<artifactId>http-impl</artifactId>
 	<packaging>pom</packaging>
-	<name>Xingu HTTP</name>
+	<name>Xingu HTTP Impl</name>
 	<dependencies>
 	</dependencies>
 	<modules>
-		<module>api</module>
-		<module>impl</module>
+		<module>commons</module>
+		<module>ahc</module>
+		<module>unirest</module>
+		<module>wget</module>
 	</modules>
 </project>

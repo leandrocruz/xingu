@@ -1,4 +1,4 @@
-package xingu.http.client.impl.unirest;
+package xingu.http.client.impl;
 
 import xingu.http.client.HttpRequest;
 import xingu.http.client.impl.HttpClientSupport;

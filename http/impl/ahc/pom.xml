@@ -8,42 +8,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>http-api</artifactId>
+	<artifactId>http-impl-ahc</artifactId>
 	<packaging>jar</packaging>
-	<name>Xingu HTTP API</name>
-	<repositories>
-		<repository>
-			<id>mashape-releases</id>
-			<url>http://maven.mashape.com/releases</url>
-		</repository>
-	</repositories>
+	<name>Xingu HTTP Impl Apache Http Client</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-container</artifactId>
+			<artifactId>http-impl-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>netty-utils</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.mashape.unirest</groupId>
-			<artifactId>unirest-java</artifactId>
-			<version>1.3.0</version>
-		</dependency>
-		<!-- 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3</version>
-		</dependency>
-		 -->
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.7.2</version>
 		</dependency>
 	</dependencies>
 </project>

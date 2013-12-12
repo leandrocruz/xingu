@@ -1,4 +1,4 @@
-package xingu.http.client.impl.apache;
+package xingu.http.client.impl;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

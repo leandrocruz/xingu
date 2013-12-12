@@ -1,4 +1,4 @@
-package xingu.http.client.impl.apache;
+package xingu.http.client.impl;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
