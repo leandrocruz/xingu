@@ -17,5 +17,15 @@
 			<artifactId>http-impl-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-creator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-process</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

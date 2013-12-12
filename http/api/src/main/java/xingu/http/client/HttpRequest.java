@@ -9,5 +9,8 @@ public interface HttpRequest
 	HttpResponse<String> asString()
 		throws HttpException;
 
+	HttpRequest withCertificate(String certificate);
+
 	String getUri();
+
 }

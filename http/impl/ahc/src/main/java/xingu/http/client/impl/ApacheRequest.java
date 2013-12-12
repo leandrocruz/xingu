@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -81,5 +82,11 @@ public class ApacheRequest
 	public String getUri()
 	{
 		return req.getURI().toString();
+	}
+
+	@Override
+	public HttpRequest withCertificate(String certificate)
+	{
+		throw new NotImplementedYet();
 	}
 }
