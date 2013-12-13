@@ -68,7 +68,7 @@ public class CommandLineBuilderSupport
 			}
 			else
 			{
-				body.append(line);
+				body.append(line).append("\n");
 			}
 			i++;
 		}
