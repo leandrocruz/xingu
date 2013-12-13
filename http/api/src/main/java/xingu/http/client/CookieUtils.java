@@ -14,10 +14,10 @@ public class CookieUtils
 	public static Cookies getCookies(HttpResponse<?> res)
 	{
 		StringBuffer  sb      = new StringBuffer();
-		Header[]      headers = res.getHeaders();
+		NameValue[]      headers = res.getHeaders();
 		CookieDecoder decoder = new CookieDecoder();
 
-		for(Header header : headers)
+		for(NameValue header : headers)
 		{
 			String name = header.getName();
 			if("set-cookie".equalsIgnoreCase(name))

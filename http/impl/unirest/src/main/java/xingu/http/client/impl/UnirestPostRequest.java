@@ -3,15 +3,13 @@ package xingu.http.client.impl;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
 public class UnirestPostRequest
-	implements HttpRequest
+	extends HttpRequestSupport
 {
-
 	private HttpRequestWithBody	req;
 
 	public UnirestPostRequest(HttpRequestWithBody req)
@@ -53,11 +51,5 @@ public class UnirestPostRequest
 	public String getUri()
 	{
 		return req.getUrl();
-	}
-
-	@Override
-	public HttpRequest withCertificate(String certificate)
-	{
-		throw new NotImplementedYet();
 	}
 }

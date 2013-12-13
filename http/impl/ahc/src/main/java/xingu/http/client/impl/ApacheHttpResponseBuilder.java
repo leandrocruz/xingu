@@ -9,9 +9,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import xingu.http.client.Header;
+import xingu.http.client.NameValue;
 import xingu.http.client.HttpResponse;
-import xingu.http.client.impl.HeaderImpl;
+import xingu.http.client.impl.NameValueImpl;
 
 public class ApacheHttpResponseBuilder
 {
@@ -20,7 +20,7 @@ public class ApacheHttpResponseBuilder
 		throws IOException
 	
 	{
-		Header[]    headers     = getHeaders(res);
+		NameValue[]    headers     = getHeaders(res);
 		int         code        = res.getStatusLine().getStatusCode();
 
 		T           body;
@@ -51,14 +51,14 @@ public class ApacheHttpResponseBuilder
 		return result;
 	}
 
-	private static Header[] getHeaders(org.apache.http.HttpResponse response)
+	private static NameValue[] getHeaders(org.apache.http.HttpResponse response)
 	{
 		org.apache.http.Header[] allHeaders = response.getAllHeaders();
-		Header[] result = new Header[allHeaders.length];
+		NameValue[] result = new NameValue[allHeaders.length];
 		for(int i = 0; i < result.length; i++)
 		{
 			org.apache.http.Header h = allHeaders[i];
-			result[i] = new HeaderImpl(h.getName().toLowerCase(), h.getValue());
+			result[i] = new NameValueImpl(h.getName().toLowerCase(), h.getValue());
 		}
 		return result;
 	}

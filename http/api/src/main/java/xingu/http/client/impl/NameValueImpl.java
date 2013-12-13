@@ -1,16 +1,16 @@
 package xingu.http.client.impl;
 
-import xingu.http.client.Header;
+import xingu.http.client.NameValue;
 
-public class HeaderImpl
-	implements Header
+public class NameValueImpl
+	implements NameValue
 {
 
 	private String	name;
 
 	private String	value;
 
-	public HeaderImpl(String name, String value)
+	public NameValueImpl(String name, String value)
 	{
 		this.name  = name;
 		this.value = value;

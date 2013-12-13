@@ -1,6 +1,6 @@
 package xingu.http.client;
 
-public interface Header
+public interface NameValue
 {
 	String getName();
 	

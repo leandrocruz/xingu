@@ -1,19 +1,16 @@
-package xingu.http.client.impl.wget;
+package xingu.http.client.impl;
 
-import java.io.File;
 import java.io.InputStream;
 
-import xingu.http.client.Header;
+import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseSupport;
 
-public class WgetResponse<T>
+public class SimpleHttpResponse<T>
 	extends HttpResponseSupport<T>
 {
-	private File		file;
-
 	private int			code;
 
-	private Header[]	headers;
+	private NameValue[]	headers;
 
 	private String		uri;
 
@@ -28,7 +25,7 @@ public class WgetResponse<T>
 	}
 
 	@Override
-	public Header[] getHeaders()
+	public NameValue[] getHeaders()
 	{
 		return headers;
 	}
@@ -36,7 +33,7 @@ public class WgetResponse<T>
 	@Override
 	public String getHeader(String name)
 	{
-		for(Header h : headers)
+		for(NameValue h : headers)
 		{
 			if(h.getName().equals(name))
 			{
@@ -64,17 +61,12 @@ public class WgetResponse<T>
 		return (T) body;
 	}
 
-	public void setFile(File file)
-	{
-		this.file = file;
-	}
-
 	public void setCode(int code)
 	{
 		this.code = code;
 	}
 
-	public void setHeaders(Header[] headers)
+	public void setHeaders(NameValue[] headers)
 	{
 		this.headers = headers;
 	}

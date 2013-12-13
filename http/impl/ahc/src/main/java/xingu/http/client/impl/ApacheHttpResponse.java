@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import org.apache.http.client.methods.HttpUriRequest;
 
-import xingu.http.client.Header;
+import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseSupport;
 
 public class ApacheHttpResponse<T>
@@ -16,7 +16,7 @@ public class ApacheHttpResponse<T>
 
 	private int								code;
 
-	private Header[]						headers;
+	private NameValue[]						headers;
 
 	private T								body;
 
@@ -41,7 +41,7 @@ public class ApacheHttpResponse<T>
 	}
 
 	@Override
-	public Header[] getHeaders()
+	public NameValue[] getHeaders()
 	{
 		return headers;
 	}
@@ -49,7 +49,7 @@ public class ApacheHttpResponse<T>
 	@Override
 	public String getHeader(String wanted)
 	{
-		for(Header h : headers)
+		for(NameValue h : headers)
 		{
 			String name = h.getName();
 			if(wanted.equalsIgnoreCase(name))
@@ -65,7 +65,7 @@ public class ApacheHttpResponse<T>
 		this.code = code;
 	}
 
-	public void setHeaders(Header[] headers)
+	public void setHeaders(NameValue[] headers)
 	{
 		this.headers = headers;
 	}

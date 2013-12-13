@@ -3,8 +3,8 @@ package xingu.http.client.impl;
 import java.io.InputStream;
 import java.util.Map;
 
-import xingu.http.client.Header;
-import xingu.http.client.impl.HeaderImpl;
+import xingu.http.client.NameValue;
+import xingu.http.client.impl.NameValueImpl;
 import xingu.http.client.impl.HttpResponseSupport;
 
 public class UnirestHttpResponse<T>
@@ -27,15 +27,15 @@ public class UnirestHttpResponse<T>
 	}
 
 	@Override
-	public Header[] getHeaders()
+	public NameValue[] getHeaders()
 	{
 		Map<String, String> headers = res.getHeaders();
-		Header[] result = new Header[headers.size()];
+		NameValue[] result = new NameValue[headers.size()];
 		int i = 0;
 		for(String name : headers.keySet())
 		{
 			String value = headers.get(name);
-			result[i++] = new HeaderImpl(name, value);
+			result[i++] = new NameValueImpl(name, value);
 		}
 		return result;
 	}

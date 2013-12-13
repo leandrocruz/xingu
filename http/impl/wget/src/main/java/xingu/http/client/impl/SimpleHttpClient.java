@@ -1,14 +1,15 @@
-package xingu.http.client.impl.wget;
+package xingu.http.client.impl;
 
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.impl.SimpleHttpRequest;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
-public class WgetHttpClient
+public class SimpleHttpClient
 	implements HttpClient
 {
 	@Inject
@@ -18,14 +19,14 @@ public class WgetHttpClient
 	public HttpRequest get(String uri)
 		throws HttpException
 	{
-		return factory.create(WgetRequest.class, uri);
+		return factory.create(SimpleHttpRequest.class, uri, false);
 	}
 
 	@Override
 	public HttpRequest post(String uri)
 		throws HttpException
 	{
-		throw new NotImplementedYet();
+		return factory.create(SimpleHttpRequest.class, uri, true);
 	}
 
 	@Override
@@ -34,5 +35,4 @@ public class WgetHttpClient
 	{
 		throw new NotImplementedYet();
 	}
-
 }

@@ -12,14 +12,15 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.jboss.netty.handler.codec.http.Cookie;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
+import xingu.http.client.NameValue;
 
 public class ApacheRequest
-	implements HttpRequest
+	extends HttpRequestSupport
 {
 	private HttpUriRequest	req;
 	
@@ -85,8 +86,8 @@ public class ApacheRequest
 	}
 
 	@Override
-	public HttpRequest withCertificate(String certificate)
+	public List<NameValue> getFields()
 	{
-		throw new NotImplementedYet();
+		return null;
 	}
 }

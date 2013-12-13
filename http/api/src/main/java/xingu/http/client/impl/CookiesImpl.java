@@ -1,5 +1,7 @@
 package xingu.http.client.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.jboss.netty.handler.codec.http.Cookie;
@@ -33,5 +35,16 @@ public class CookiesImpl
 	public Set<Cookie> set()
 	{
 		return set;
+	}
+
+	@Override
+	public List<String> names()
+	{
+		List<String> result = new ArrayList<String>();
+		for(Cookie c : set)
+		{
+			result.add(c.getName());
+		}
+		return result;
 	}
 }

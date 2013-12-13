@@ -13,7 +13,7 @@ public interface HttpResponse<T>
 
 	InputStream getRawBody();
 	
-	Header[] getHeaders();
+	NameValue[] getHeaders();
 
 	String getHeader(String name);
 
