@@ -32,7 +32,7 @@ public class CurlCommandLineBuilder
 		placeCookies(req, buffer);
 		placeFields(req, buffer);
 
-		buffer.append(" ").append(req.getUri());
+		buffer.append(" '").append(req.getUri()).append("' --compressed");
 		return buffer.toString();
 	}
 
