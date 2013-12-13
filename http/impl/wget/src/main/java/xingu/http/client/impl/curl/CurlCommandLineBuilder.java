@@ -29,29 +29,24 @@ public class CurlCommandLineBuilder
 			buffer.append(" --cert ").append(certificate);
 		}
 		
-		List<Cookie> cookies = req.getCookies();
-		if(cookies != null && cookies.size() > 0)
-		{
-			for(Cookie c : cookies)
-			{
-				buffer
-					.append(" --header 'Cookie: ")
-					.append(c.getName())
-					.append("=")
-					.append(c.getValue())
-					.append("'");
-			}
-		}
-		
+		placeCookies(req, buffer);
+		placeFields(req, buffer);
+
+		buffer.append(" ").append(req.getUri());
+		return buffer.toString();
+	}
+
+	private void placeFields(HttpRequest req, StringBuffer buffer)
+	{
 		List<NameValue> fields = req.getFields();
-		if(fields != null && fields.size() > 0)
+		int len = fields == null ? 0 : fields.size();
+		if(len > 0)
 		{
 			boolean isPost = req.isPost();
 			if(isPost)
 			{
-				buffer.append(" --data '");
-				int len = fields.size();
 				int i = 0;
+				buffer.append(" --data '");
 				for(NameValue f : fields)
 				{
 					i++;
@@ -68,8 +63,26 @@ public class CurlCommandLineBuilder
 				throw new NotImplementedYet();
 			}
 		}
+	}
 
-		buffer.append(" ").append(req.getUri());
-		return buffer.toString();
+	private void placeCookies(HttpRequest req, StringBuffer buffer)
+	{
+		List<Cookie> cookies = req.getCookies();
+		int len = cookies == null ? 0 : cookies.size();
+		if(len > 0)
+		{
+			int i = 0;
+			buffer.append(" --cookie \"");
+			for(Cookie c : cookies)
+			{
+				i++;
+				buffer.append(c.getName()).append("=").append(c.getValue());
+				if(i < len)
+				{
+					buffer.append("; ");
+				}
+			}
+			buffer.append("\"");
+		}
 	}
 }
