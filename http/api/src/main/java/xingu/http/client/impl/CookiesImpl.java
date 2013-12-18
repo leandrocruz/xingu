@@ -30,6 +30,19 @@ public class CookiesImpl
 		}
 		return null;
 	}
+	
+	@Override
+	public Cookie startingWith(String name)
+	{
+		for(Cookie c : set)
+		{
+			if(c.getName().startsWith(name))
+			{
+				return c;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public Set<Cookie> set()

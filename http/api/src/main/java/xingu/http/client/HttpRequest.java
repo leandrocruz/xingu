@@ -26,4 +26,12 @@ public interface HttpRequest
 	List<NameValue> getFields();
 
 	boolean isPost();
+
+	List<NameValue> getHeaders();
+
+	HttpRequest withCertificate(String certificate, String password);
+
+	String getCertificatePassword();
+
+	HttpRequest withCookies(Cookies cookies);
 }

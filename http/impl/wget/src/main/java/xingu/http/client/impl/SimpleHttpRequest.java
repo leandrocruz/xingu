@@ -8,6 +8,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.http.client.Cookies;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -34,6 +35,10 @@ public class SimpleHttpRequest
 	protected List<Cookie>			cookies	= new ArrayList<Cookie>();
 
 	protected List<NameValue>		fields	= new ArrayList<NameValue>();
+	
+	protected List<NameValue>		headers	= new ArrayList<NameValue>();
+
+	private String	certificatePassword;
 
 	protected static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
 
@@ -52,6 +57,7 @@ public class SimpleHttpRequest
 	@Override
 	public HttpRequest header(String name, String value)
 	{
+		headers.add(new NameValueImpl(name, value));
 		return this;
 	}
 
@@ -85,6 +91,12 @@ public class SimpleHttpRequest
 	public List<NameValue> getFields()
 	{
 		return fields;
+	}
+	
+	@Override
+	public List<NameValue> getHeaders()
+	{
+		return headers;
 	}
 
 	@Override
@@ -121,5 +133,25 @@ public class SimpleHttpRequest
 		{
 			throw new HttpException(e);
 		}
+	}
+
+	@Override
+	public HttpRequest withCertificate(String certificate, String password)
+	{
+		this.certificatePassword = password;
+		return withCertificate(certificate);
+	}
+
+	@Override
+	public String getCertificatePassword()
+	{
+		return certificatePassword;
+	}
+
+	@Override
+	public HttpRequest withCookies(Cookies c)
+	{
+		cookies.addAll(c.set());
+		return this;
 	}
 }

@@ -27,13 +27,35 @@ public class CurlCommandLineBuilder
 		if(StringUtils.isNotEmpty(certificate))
 		{
 			buffer.append(" --cert ").append(certificate);
+			String certificatePwd = req.getCertificatePassword();
+			if(StringUtils.isNotEmpty(certificatePwd))
+			{
+				buffer.append(":").append(certificatePwd).append(" ");
+			}
 		}
 		
 		placeCookies(req, buffer);
+		placeHeader(req, buffer);
 		placeFields(req, buffer);
 
-		buffer.append(" '").append(req.getUri()).append("' --compressed");
+		buffer.append(" \"").append(req.getUri()).append("\" --compressed");
 		return buffer.toString();
+	}
+	
+	private void placeHeader(HttpRequest req, StringBuffer buffer)
+	{
+		List<NameValue> fields = req.getHeaders();
+		int len = fields == null ? 0 : fields.size();
+		if(len > 0)
+		{
+			for(NameValue f : fields)
+			{
+				buffer.append(" -H \"");
+				buffer.append(f.getName()).append(": ").append(f.getValue());
+				buffer.append("\"");
+			}
+			
+		}
 	}
 
 	private void placeFields(HttpRequest req, StringBuffer buffer)
@@ -46,7 +68,7 @@ public class CurlCommandLineBuilder
 			if(isPost)
 			{
 				int i = 0;
-				buffer.append(" --data '");
+				buffer.append(" --data \"");
 				for(NameValue f : fields)
 				{
 					i++;
@@ -56,7 +78,7 @@ public class CurlCommandLineBuilder
 						buffer.append("&");
 					}
 				}
-				buffer.append("'");
+				buffer.append("\"");
 			}
 			else
 			{
@@ -72,7 +94,7 @@ public class CurlCommandLineBuilder
 		if(len > 0)
 		{
 			int i = 0;
-			buffer.append(" --cookie \"");
+			buffer.append(" -H \"Cookie: ");
 			for(Cookie c : cookies)
 			{
 				i++;
