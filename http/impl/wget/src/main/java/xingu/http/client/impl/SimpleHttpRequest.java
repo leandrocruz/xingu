@@ -107,7 +107,7 @@ public class SimpleHttpRequest
 		{
 			File   file = File.createTempFile("curl-http-response-", ".html");
 			String cmd  = builder.buildLine(this, file);
-			logger.debug("Executing command: {}", cmd);
+			logger.info("Executing command: {}", cmd);
 			
 			int result = pm.exec(cmd);
 			if(result != 0)
