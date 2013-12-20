@@ -18,10 +18,16 @@ public class CurlCommandLineBuilder
 	extends CommandLineBuilderSupport
 {
 	@Override
+	public String name()
+	{
+		return "curl";
+	}
+
+	@Override
 	public String buildLine(HttpRequest req, File file)
 	{
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("curl -i -o ").append(file);
+		buffer.append("curl -v -i -o ").append(file);
 		
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
@@ -35,14 +41,20 @@ public class CurlCommandLineBuilder
 		}
 		
 		placeCookies(req, buffer);
-		placeHeader(req, buffer);
+		placeUserAgent(req, buffer);
+		placeHeaders(req, buffer);
 		placeFields(req, buffer);
 
 		buffer.append(" \"").append(req.getUri()).append("\" --compressed");
 		return buffer.toString();
 	}
 	
-	private void placeHeader(HttpRequest req, StringBuffer buffer)
+	private void placeUserAgent(HttpRequest req, StringBuffer buffer)
+	{
+		buffer.append(" --user-agent '").append(req.getUserAgent()).append("'");
+	}
+
+	private void placeHeaders(HttpRequest req, StringBuffer buffer)
 	{
 		List<NameValue> fields = req.getHeaders();
 		int len = fields == null ? 0 : fields.size();
@@ -54,7 +66,6 @@ public class CurlCommandLineBuilder
 				buffer.append(f.getName()).append(": ").append(f.getValue());
 				buffer.append("\"");
 			}
-			
 		}
 	}
 
@@ -94,7 +105,7 @@ public class CurlCommandLineBuilder
 		if(len > 0)
 		{
 			int i = 0;
-			buffer.append(" -H \"Cookie: ");
+			buffer.append(" --cookie \"");
 			for(Cookie c : cookies)
 			{
 				i++;

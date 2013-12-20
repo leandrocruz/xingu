@@ -37,6 +37,12 @@ public abstract class HttpRequestSupport
 	}
 	
 	@Override
+	public HttpRequest withUserAgent(String ua)
+	{
+		return null;
+	}
+
+	@Override
 	public String getCertificate()
 	{
 		throw new NotImplementedYet();
@@ -68,6 +74,12 @@ public abstract class HttpRequestSupport
 	
 	@Override
 	public String getCertificatePassword()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public String getUserAgent()
 	{
 		throw new NotImplementedYet();
 	}

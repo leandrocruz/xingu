@@ -15,13 +15,19 @@ public class WgetCommandLineBuilder
 	extends CommandLineBuilderSupport
 {
 	@Override
+	public String name()
+	{
+		return "wget";
+	}
+
+	@Override
 	public String buildLine(HttpRequest req, File file)
 	{
+
 		StringBuffer buffer = new StringBuffer();
 		buffer
-			.append("wget -S --max-redirect=0 -O ")
-			.append(file)
-			.append(" --save-headers");
+			.append("wget -d -S --save-headers --keep-session-cookies -O ")
+			.append(file);
 		
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
@@ -29,31 +35,57 @@ public class WgetCommandLineBuilder
 			buffer.append(" --certificate ").append(certificate);
 		}
 		
-		List<Cookie> cookies = req.getCookies();
-		if(cookies != null && cookies.size() > 0)
+		placeCookies(req, buffer);
+		placeUserAgent(req, buffer);
+		placeHeaders(req, buffer);
+		placeFields(req, buffer);
+
+		buffer.append(" ").append(req.getUri());
+		return buffer.toString();
+	}
+
+	private void placeUserAgent(HttpRequest req, StringBuffer buffer)
+	{
+		buffer.append(" --user-agent='").append(req.getUserAgent()).append("'");
+	}
+
+	private void placeHeaders(HttpRequest req, StringBuffer buffer)
+	{
+		List<NameValue> headers = req.getHeaders();
+		if(headers != null && headers.size() > 0)
 		{
-			for(Cookie c : cookies)
+			for(NameValue h : headers)
 			{
 				buffer
-					.append(" --header='Cookie: ")
-					.append(c.getName())
-					.append("=")
-					.append(c.getValue())
-					.append("'");
+				.append(" --header='")
+				.append(h.getName())
+				.append(": ")
+				.append(h.getValue())
+				.append("'");
 			}
 		}
-		
+	}
+	
+
+	private void placeFields(HttpRequest req, StringBuffer buffer)
+	{
 		List<NameValue> fields = req.getFields();
-		if(fields != null && fields.size() > 0)
+		int             len    = fields.size();
+		if(fields != null && len > 0)
 		{
 			boolean isPost = req.isPost();
 			if(isPost)
 			{
 				buffer.append(" --post-data '");
+				int i = 0;
 				for(NameValue f : fields)
 				{
 					buffer.append(f.getName()).append("=").append(f.getValue());
-					//TODO: more than one field
+					i++;
+					if(i < len)
+					{
+						buffer.append("&");
+					}
 				}
 				buffer.append("'");
 			}
@@ -62,8 +94,22 @@ public class WgetCommandLineBuilder
 				throw new NotImplementedYet();
 			}
 		}
+	}
 
-		buffer.append(" ").append(req.getUri());
-		return buffer.toString();
+	private void placeCookies(HttpRequest req, StringBuffer buffer)
+	{
+		List<Cookie> cookies = req.getCookies();
+		if(cookies != null && cookies.size() > 0)
+		{
+			for(Cookie c : cookies)
+			{
+				buffer
+					.append("--header='Cookie: ")
+					.append(c.getName())
+					.append("=")
+					.append(c.getValue())
+					.append("'");
+			}
+		}
 	}
 }

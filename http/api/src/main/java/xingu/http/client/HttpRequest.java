@@ -34,4 +34,8 @@ public interface HttpRequest
 	String getCertificatePassword();
 
 	HttpRequest withCookies(Cookies cookies);
+
+	HttpRequest withUserAgent(String ua);
+
+	String getUserAgent();
 }

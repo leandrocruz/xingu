@@ -30,15 +30,17 @@ public class SimpleHttpRequest
 
 	protected String				uri;
 
+	private String					ua;
+
 	protected String				certificate;
+
+	private String					certificatePassword;
 
 	protected List<Cookie>			cookies	= new ArrayList<Cookie>();
 
 	protected List<NameValue>		fields	= new ArrayList<NameValue>();
-	
-	protected List<NameValue>		headers	= new ArrayList<NameValue>();
 
-	private String	certificatePassword;
+	protected List<NameValue>		headers	= new ArrayList<NameValue>();
 
 	protected static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
 
@@ -115,11 +117,12 @@ public class SimpleHttpRequest
 	public HttpResponse<String> asString()
 		throws HttpException
 	{
+		String impl = builder.name();
 		try
 		{
-			File   file = File.createTempFile("curl-http-response-", ".html");
+			File   file = File.createTempFile(impl + "-http-response-", ".html");
 			String cmd  = builder.buildLine(this, file);
-			logger.info("Executing command: {}", cmd);
+			logger.info("Executing command: {}");
 			
 			int result = pm.exec(cmd);
 			if(result != 0)
@@ -153,5 +156,18 @@ public class SimpleHttpRequest
 	{
 		cookies.addAll(c.set());
 		return this;
+	}
+	
+	@Override
+	public HttpRequest withUserAgent(String ua)
+	{
+		this.ua = ua;
+		return this;
+	}
+	
+	@Override
+	public String getUserAgent()
+	{
+		return ua;
 	}
 }

@@ -16,7 +16,7 @@ import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 
-public class CommandLineBuilderSupport
+public abstract class CommandLineBuilderSupport
 	implements CommandLineBuilder
 {
 	private static final NameValue[] EMPTY = new NameValue[]{};
