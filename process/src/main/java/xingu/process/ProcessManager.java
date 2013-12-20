@@ -5,9 +5,12 @@ import java.io.OutputStream;
 
 public interface ProcessManager
 {
-	int exec(String line);
+	int exec(String line)
+		throws Exception;
 
-	int exec(String line, File baseDir);
+	int exec(String line, File baseDir)
+		throws Exception;
 
-	int exec(String line, File baseDir, OutputStream os);
+	int exec(String line, File baseDir, OutputStream os)
+		throws Exception;
 }
