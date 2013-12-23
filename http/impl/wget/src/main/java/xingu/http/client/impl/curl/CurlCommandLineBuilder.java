@@ -9,7 +9,6 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilderSupport;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 /*
  * See: http://curl.haxx.se/docs/manpage.html
@@ -28,7 +27,7 @@ public class CurlCommandLineBuilder
 	{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("curl -v -i -o ").append(file);
-		
+
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
 		{
@@ -39,19 +38,73 @@ public class CurlCommandLineBuilder
 				buffer.append(":").append(certificatePwd).append(" ");
 			}
 		}
-		
+
 		placeCookies(req, buffer);
 		placeUserAgent(req, buffer);
 		placeHeaders(req, buffer);
-		placeFields(req, buffer);
 
-		buffer.append(" \"").append(req.getUri()).append("\" --compressed");
+		if(req.isPost())
+		{
+			placePostFields(req, buffer);
+		}
+		else
+		{
+			placeQueryStringFields(req, buffer);
+		}
+
+		buffer.append(" --compressed");
+
 		return buffer.toString();
 	}
-	
+
+	private void placePostFields(HttpRequest req, StringBuffer buffer)
+	{
+		if(req.isMultipart())
+		{
+			placeMultipartFields(req, buffer);
+		}
+		else
+		{
+			placeDataFields(req, buffer);
+		}
+		buffer.append(" '").append(req.getUri()).append("'");
+	}
+
+	private void placeMultipartFields(HttpRequest req, StringBuffer buffer)
+	{
+		// TODO: try to work with only one list
+		List<NameValue> uploadFields = req.getUploadFiles();
+		int len = uploadFields == null ? 0 : uploadFields.size();
+
+		List<NameValue> fields = req.getFields();
+		int len2 = fields == null ? 0 : fields.size();
+
+		if(len > 0)
+		{
+			for(NameValue f : uploadFields)
+			{
+				buffer.append(" -F ");
+				buffer.append(f.getName()).append("=@'").append(f.getValue()).append("'");
+			}
+		}
+
+		if(len2 > 0)
+		{
+			for(NameValue f : fields)
+			{
+				buffer.append(" -F ");
+				buffer.append(f.getName()).append("='").append(f.getValue()).append("'");
+			}
+		}
+	}
+
 	private void placeUserAgent(HttpRequest req, StringBuffer buffer)
 	{
-		buffer.append(" --user-agent '").append(req.getUserAgent()).append("'");
+		String ua = req.getUserAgent();
+		if(StringUtils.isNotEmpty(ua))
+		{
+			buffer.append(" --user-agent '").append(ua).append("'");
+		}
 	}
 
 	private void placeHeaders(HttpRequest req, StringBuffer buffer)
@@ -62,39 +115,55 @@ public class CurlCommandLineBuilder
 		{
 			for(NameValue f : fields)
 			{
-				buffer.append(" -H \"");
+				buffer.append(" -H '");
 				buffer.append(f.getName()).append(": ").append(f.getValue());
-				buffer.append("\"");
+				buffer.append("'");
 			}
 		}
 	}
 
-	private void placeFields(HttpRequest req, StringBuffer buffer)
+	private void placeQueryStringFields(HttpRequest req, StringBuffer buffer)
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();
+		StringBuffer uri = new StringBuffer(req.getUri());
+
 		if(len > 0)
 		{
-			boolean isPost = req.isPost();
-			if(isPost)
+			int i = 0;
+			uri.append("?");
+			for(NameValue f : fields)
 			{
-				int i = 0;
-				buffer.append(" --data \"");
-				for(NameValue f : fields)
+				i++;
+				uri.append(f.getName()).append("=").append(f.getValue());
+				if(i < len)
 				{
-					i++;
-					buffer.append(f.getName()).append("=").append(f.getValue());
-					if(i < len)
-					{
-						buffer.append("&");
-					}
+					uri.append("&");
 				}
-				buffer.append("\"");
 			}
-			else
+		}
+		buffer.append(" '").append(uri).append("'");
+	}
+
+	private void placeDataFields(HttpRequest req, StringBuffer buffer)
+	{
+		List<NameValue> fields = req.getFields();
+		int len = fields == null ? 0 : fields.size();
+
+		if(len > 0)
+		{
+			int i = 0;
+			buffer.append(" --data '");
+			for(NameValue f : fields)
 			{
-				throw new NotImplementedYet();
+				i++;
+				buffer.append(f.getName()).append("=").append(f.getValue());
+				if(i < len)
+				{
+					buffer.append("&");
+				}
 			}
+			buffer.append("'");
 		}
 	}
 
@@ -105,7 +174,8 @@ public class CurlCommandLineBuilder
 		if(len > 0)
 		{
 			int i = 0;
-			buffer.append(" --cookie \"");
+			buffer.append(" --cookie '");
+
 			for(Cookie c : cookies)
 			{
 				i++;
@@ -115,7 +185,7 @@ public class CurlCommandLineBuilder
 					buffer.append("; ");
 				}
 			}
-			buffer.append("\"");
+			buffer.append("'");
 		}
 	}
 }

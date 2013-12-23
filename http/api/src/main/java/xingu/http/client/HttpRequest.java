@@ -11,6 +11,8 @@ public interface HttpRequest
 	HttpRequest header(String name, String value);
 
 	HttpRequest field(String name, String value);
+	
+	HttpRequest queryString(String name, String value);
 
 	HttpRequest withCertificate(String certificate);
 
@@ -27,6 +29,8 @@ public interface HttpRequest
 
 	boolean isPost();
 
+	boolean isMultipart();
+	
 	List<NameValue> getHeaders();
 
 	HttpRequest withCertificate(String certificate, String password);
@@ -38,4 +42,10 @@ public interface HttpRequest
 	HttpRequest withUserAgent(String ua);
 
 	String getUserAgent();
+	
+	HttpRequest multipart(boolean isMultipartFormData);
+
+	HttpRequest upload(String name, String filePath);
+
+	List<NameValue> getUploadFiles();
 }

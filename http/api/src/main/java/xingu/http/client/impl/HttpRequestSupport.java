@@ -6,7 +6,9 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 
 public abstract class HttpRequestSupport
@@ -17,7 +19,7 @@ public abstract class HttpRequestSupport
 	{
 		throw new NotImplementedYet();
 	}
-	
+
 	@Override
 	public HttpRequest withCertificate(String certificate, String password)
 	{
@@ -29,13 +31,13 @@ public abstract class HttpRequestSupport
 	{
 		throw new NotImplementedYet();
 	}
-	
+
 	@Override
 	public HttpRequest withCookies(Cookies cookie)
 	{
 		throw new NotImplementedYet();
 	}
-	
+
 	@Override
 	public HttpRequest withUserAgent(String ua)
 	{
@@ -53,7 +55,7 @@ public abstract class HttpRequestSupport
 	{
 		throw new NotImplementedYet();
 	}
-	
+
 	@Override
 	public List<NameValue> getHeaders()
 	{
@@ -71,7 +73,19 @@ public abstract class HttpRequestSupport
 	{
 		throw new NotImplementedYet();
 	}
-	
+
+	@Override
+	public boolean isMultipart()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public HttpRequest queryString(String name, String filePath)
+	{
+		throw new NotImplementedYet();
+	}
+
 	@Override
 	public String getCertificatePassword()
 	{
@@ -80,6 +94,23 @@ public abstract class HttpRequestSupport
 
 	@Override
 	public String getUserAgent()
+	{
+		throw new NotImplementedYet();
+	}
+	
+	public HttpRequest multipart(boolean isMultipartFormData)
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public HttpRequest upload(String name, String filePath)
+	{
+		throw new NotImplementedYet();
+	}
+	
+	@Override
+	public List<NameValue> getUploadFiles()
 	{
 		throw new NotImplementedYet();
 	}

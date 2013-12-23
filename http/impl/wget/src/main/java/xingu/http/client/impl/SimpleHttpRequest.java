@@ -39,8 +39,12 @@ public class SimpleHttpRequest
 	protected List<Cookie>			cookies	= new ArrayList<Cookie>();
 
 	protected List<NameValue>		fields	= new ArrayList<NameValue>();
-
+	
+	protected List<NameValue>		upload	= new ArrayList<NameValue>();
+	
 	protected List<NameValue>		headers	= new ArrayList<NameValue>();
+
+	private boolean	multipart;
 
 	protected static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
 
@@ -100,6 +104,12 @@ public class SimpleHttpRequest
 	{
 		return headers;
 	}
+	
+	@Override
+	public List<NameValue> getUploadFiles()
+	{
+		return upload;
+	}
 
 	@Override
 	public List<Cookie> getCookies()
@@ -122,7 +132,7 @@ public class SimpleHttpRequest
 		{
 			File   file = File.createTempFile(impl + "-http-response-", ".html");
 			String cmd  = builder.buildLine(this, file);
-			logger.info("Executing command: {}");
+			logger.info("Executing command: {}", cmd);
 			
 			int result = pm.exec(cmd);
 			if(result != 0)
@@ -165,9 +175,33 @@ public class SimpleHttpRequest
 		return this;
 	}
 	
+	public HttpRequest multipart(boolean multipart)
+	{
+		this.multipart = multipart;
+		return this;
+	}
+
+	@Override
+	public HttpRequest upload(String name, String filePath)
+	{
+		upload.add(new NameValueImpl(name, filePath));
+		return this;
+	}
+	
 	@Override
 	public String getUserAgent()
 	{
 		return ua;
+	}
+	
+	public boolean isMultipart()
+	{
+		return multipart;
+	}
+
+	@Override
+	public HttpRequest queryString(String name, String filePath)
+	{
+		throw new NotImplementedYet();
 	}
 }
