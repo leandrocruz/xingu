@@ -32,6 +32,17 @@ public class CookieUtils
 		return new CookiesImpl(decoded);
 	}
 
+	public static Cookie replaceCookie(HttpResponse<String> resp, Cookie old)
+	{
+		String name = old.getName();
+		Cookie cookie = getCookies(resp).byName(name);
+		if(cookie == null)
+		{
+			return old;
+		}
+		return cookie;
+	}
+
 	public static String getCookieNameAndValue(Cookie cookie)
 	{
 		return cookie.getName() + "=" + cookie.getValue();
