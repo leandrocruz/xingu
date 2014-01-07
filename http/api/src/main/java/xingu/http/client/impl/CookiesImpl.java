@@ -1,6 +1,7 @@
 package xingu.http.client.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,15 @@ public class CookiesImpl
 	implements Cookies
 {
 	private Set<Cookie> set;
+	
+	public CookiesImpl(Cookie... cookies)
+	{
+		set = new HashSet<Cookie>();
+		for(Cookie c : cookies)
+		{
+			set.add(c);
+		}
+	}
 	
 	public CookiesImpl(Set<Cookie> cookies)
 	{

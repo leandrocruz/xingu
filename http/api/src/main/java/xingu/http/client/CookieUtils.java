@@ -14,7 +14,7 @@ public class CookieUtils
 	public static Cookies getCookies(HttpResponse<?> res)
 	{
 		StringBuffer  sb      = new StringBuffer();
-		NameValue[]      headers = res.getHeaders();
+		NameValue[]   headers = res.getHeaders();
 		CookieDecoder decoder = new CookieDecoder();
 
 		for(NameValue header : headers)
