@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,14 +131,14 @@ public class SimpleHttpRequest
 		String impl = builder.name();
 		try
 		{
-			File   file = File.createTempFile(impl + "-http-response-", ".html");
-			String cmd  = builder.buildLine(this, file);
-			logger.info("Executing command: {}", cmd);
+			File         file = File.createTempFile(impl + "-http-response-", ".html");
+			List<String> cmd  = builder.buildLine(this, file);
+			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 			
 			int result = pm.exec(cmd);
 			if(result != 0)
 			{
-				throw new NotImplementedYet("ERROR executing wget processes: " + result);
+				throw new NotImplementedYet("ERROR executing "+impl+" processes: " + result);
 			}
 			
 			return builder.responseFrom(this, file);

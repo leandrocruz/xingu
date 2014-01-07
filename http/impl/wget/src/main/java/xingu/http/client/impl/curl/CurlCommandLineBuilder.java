@@ -1,11 +1,13 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilderSupport;
@@ -23,91 +25,91 @@ public class CurlCommandLineBuilder
 	}
 
 	@Override
-	public String buildLine(HttpRequest req, File file)
+	public List<String> buildLine(HttpRequest req, File file)
 	{
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("curl -v -i -o ").append(file);
+		List<String> result = new ArrayList<String>();
+		result.add("curl");
+		result.add("-v");
+		result.add("-i");
+		result.add("-o");
+		result.add(file.toString());
+		
 
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
 		{
-			buffer.append(" --cert ").append(certificate);
-			String certificatePwd = req.getCertificatePassword();
-			if(StringUtils.isNotEmpty(certificatePwd))
-			{
-				buffer.append(":").append(certificatePwd).append(" ");
-			}
+			result.add("--cert");
+			result.add(certificate);
 		}
 
-		placeCookies(req, buffer);
-		placeUserAgent(req, buffer);
-		placeHeaders(req, buffer);
+		placeCookies(req, 	result);
+		placeUserAgent(req, result);
+		placeHeaders(req, 	result);
 
 		if(req.isPost())
 		{
-			placePostFields(req, buffer);
+			placePostFields(req, result);
 		}
 		else
 		{
-			placeQueryStringFields(req, buffer);
+			placeQueryStringFields(req, result);
 		}
 
-		buffer.append(" --compressed");
-
-		return buffer.toString();
+		result.add("--compressed");
+		
+		return result;
 	}
 
-	private void placePostFields(HttpRequest req, StringBuffer buffer)
+	private void placePostFields(HttpRequest req, List<String> result)
 	{
 		if(req.isMultipart())
 		{
-			placeMultipartFields(req, buffer);
+			placeMultipartFields(req, result);
 		}
 		else
 		{
-			placeDataFields(req, buffer);
+			placeDataFields(req, result);
 		}
-		buffer.append(" '").append(req.getUri()).append("'");
+		result.add(req.getUri());
 	}
 
-	private void placeMultipartFields(HttpRequest req, StringBuffer buffer)
+	private void placeMultipartFields(HttpRequest req, List<String> result)
 	{
 		// TODO: try to work with only one list
 		List<NameValue> uploadFields = req.getUploadFiles();
 		int len = uploadFields == null ? 0 : uploadFields.size();
-
-		List<NameValue> fields = req.getFields();
-		int len2 = fields == null ? 0 : fields.size();
-
 		if(len > 0)
 		{
 			for(NameValue f : uploadFields)
 			{
-				buffer.append(" -F ");
-				buffer.append(f.getName()).append("=@'").append(f.getValue()).append("'");
+				result.add("-F");
+				result.add(f.getName() + "=@'" + f.getValue() + "'");
 			}
 		}
 
+		List<NameValue> fields = req.getFields();
+		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
 		{
 			for(NameValue f : fields)
 			{
-				buffer.append(" -F ");
-				buffer.append(f.getName()).append("='").append(f.getValue()).append("'");
+				result.add("-F");
+				result.add(f.getName() + "='" + f.getValue() + "'");
 			}
 		}
 	}
 
-	private void placeUserAgent(HttpRequest req, StringBuffer buffer)
+	private void placeUserAgent(HttpRequest req, List<String> result)
 	{
 		String ua = req.getUserAgent();
 		if(StringUtils.isNotEmpty(ua))
 		{
-			buffer.append(" --user-agent '").append(ua).append("'");
+			result.add("--user-agent");
+			result.add(ua);
 		}
 	}
 
-	private void placeHeaders(HttpRequest req, StringBuffer buffer)
+	private void placeHeaders(HttpRequest req, List<String> result)
 	{
 		List<NameValue> fields = req.getHeaders();
 		int len = fields == null ? 0 : fields.size();
@@ -115,14 +117,13 @@ public class CurlCommandLineBuilder
 		{
 			for(NameValue f : fields)
 			{
-				buffer.append(" -H '");
-				buffer.append(f.getName()).append(": ").append(f.getValue());
-				buffer.append("'");
+				result.add("-H");
+				result.add(f.getName() + ": " + f.getValue());
 			}
 		}
 	}
 
-	private void placeQueryStringFields(HttpRequest req, StringBuffer buffer)
+	private void placeQueryStringFields(HttpRequest req, List<String> result)
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();
@@ -142,10 +143,10 @@ public class CurlCommandLineBuilder
 				}
 			}
 		}
-		buffer.append(" '").append(uri).append("'");
+		result.add(uri.toString());
 	}
 
-	private void placeDataFields(HttpRequest req, StringBuffer buffer)
+	private void placeDataFields(HttpRequest req, List<String> result)
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();
@@ -153,39 +154,48 @@ public class CurlCommandLineBuilder
 		if(len > 0)
 		{
 			int i = 0;
-			buffer.append(" --data '");
+
+			result.add("--data");
+			StringBuffer sb = new StringBuffer();
 			for(NameValue f : fields)
 			{
 				i++;
-				buffer.append(f.getName()).append("=").append(f.getValue());
+				sb.append(f.getName()).append("=").append(f.getValue());
 				if(i < len)
 				{
-					buffer.append("&");
+					sb.append("&");
 				}
 			}
-			buffer.append("'");
+			result.add(sb.toString());
 		}
 	}
 
-	private void placeCookies(HttpRequest req, StringBuffer buffer)
+	private void placeCookies(HttpRequest req, List<String> result)
 	{
 		List<Cookie> cookies = req.getCookies();
 		int len = cookies == null ? 0 : cookies.size();
 		if(len > 0)
 		{
 			int i = 0;
-			buffer.append(" --cookie '");
-
+			result.add("--cookie");
+			StringBuffer sb = new StringBuffer();
 			for(Cookie c : cookies)
 			{
+				if(c == null 
+						|| StringUtils.isEmpty(c.getName())
+						|| StringUtils.isEmpty(c.getValue()))
+				{
+					throw new NotImplementedYet("Cookie is null");
+				}
 				i++;
-				buffer.append(c.getName()).append("=").append(c.getValue());
+				sb.append(c.getName()).append("=").append(c.getValue());
+				
 				if(i < len)
 				{
-					buffer.append("; ");
+					sb.append("; ");
 				}
 			}
-			buffer.append("'");
+			result.add(sb.toString());
 		}
 	}
 }

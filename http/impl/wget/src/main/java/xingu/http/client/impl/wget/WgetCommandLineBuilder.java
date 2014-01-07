@@ -1,6 +1,7 @@
 package xingu.http.client.impl.wget;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,53 +22,51 @@ public class WgetCommandLineBuilder
 	}
 
 	@Override
-	public String buildLine(HttpRequest req, File file)
+	public List<String> buildLine(HttpRequest req, File file)
 	{
-
-		StringBuffer buffer = new StringBuffer();
-		buffer
-			.append("wget -d -S --save-headers --keep-session-cookies -O ")
-			.append(file);
+		List<String> result = new ArrayList<String>();
+		result.add("wget");
+		result.add("-d");
+		result.add("-S");
+		result.add("--save-headers");
+		result.add("--keep-session-cookies");
+		result.add("-O");
+		result.add(file.toString());
 		
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
 		{
-			buffer.append(" --certificate ").append(certificate);
+			result.add("--certificate");
+			result.add(certificate);
 		}
 		
-		placeCookies(req, buffer);
-		placeUserAgent(req, buffer);
-		placeHeaders(req, buffer);
-		placeFields(req, buffer);
+		placeCookies(req, result);
+		placeUserAgent(req, result);
+		placeHeaders(req, result);
+		placeFields(req, result);
 
-		buffer.append(" ").append(req.getUri());
-		return buffer.toString();
+		result.add(req.getUri());
+		return result;
 	}
 
-	private void placeUserAgent(HttpRequest req, StringBuffer buffer)
+	private void placeUserAgent(HttpRequest req, List<String> result)
 	{
-		buffer.append(" --user-agent='").append(req.getUserAgent()).append("'");
+		result.add("--user-agent='" + req.getUserAgent() + "'");
 	}
 
-	private void placeHeaders(HttpRequest req, StringBuffer buffer)
+	private void placeHeaders(HttpRequest req, List<String> result)
 	{
 		List<NameValue> headers = req.getHeaders();
 		if(headers != null && headers.size() > 0)
 		{
 			for(NameValue h : headers)
 			{
-				buffer
-				.append(" --header='")
-				.append(h.getName())
-				.append(": ")
-				.append(h.getValue())
-				.append("'");
+				result.add("--header='" + h.getName() + ": " + h.getValue() + "'");
 			}
 		}
 	}
-	
 
-	private void placeFields(HttpRequest req, StringBuffer buffer)
+	private void placeFields(HttpRequest req, List<String> result)
 	{
 		List<NameValue> fields = req.getFields();
 		int             len    = fields.size();
@@ -76,18 +75,20 @@ public class WgetCommandLineBuilder
 			boolean isPost = req.isPost();
 			if(isPost)
 			{
-				buffer.append(" --post-data '");
+				result.add("--post-data");
+				StringBuffer sb = new StringBuffer("'");
 				int i = 0;
 				for(NameValue f : fields)
 				{
-					buffer.append(f.getName()).append("=").append(f.getValue());
 					i++;
+					sb.append(f.getName()).append("=").append(f.getValue());
 					if(i < len)
 					{
-						buffer.append("&");
+						sb.append("&");
 					}
 				}
-				buffer.append("'");
+				sb.append("'");
+				result.add(sb.toString());
 			}
 			else
 			{
@@ -96,19 +97,14 @@ public class WgetCommandLineBuilder
 		}
 	}
 
-	private void placeCookies(HttpRequest req, StringBuffer buffer)
+	private void placeCookies(HttpRequest req, List<String> result)
 	{
 		List<Cookie> cookies = req.getCookies();
 		if(cookies != null && cookies.size() > 0)
 		{
 			for(Cookie c : cookies)
 			{
-				buffer
-					.append("--header='Cookie: ")
-					.append(c.getName())
-					.append("=")
-					.append(c.getValue())
-					.append("'");
+				result.add("--header='Cookie: " + c.getName() + "=" + c.getValue() + "'");
 			}
 		}
 	}

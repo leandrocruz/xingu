@@ -22,7 +22,7 @@ public abstract class CommandLineBuilderSupport
 	private static final NameValue[] EMPTY = new NameValue[]{};
 	
 	@Override
-	public String buildLine(HttpRequest request, File file)
+	public List<String> buildLine(HttpRequest request, File file)
 	{
 		throw new NotImplementedYet();
 	}
