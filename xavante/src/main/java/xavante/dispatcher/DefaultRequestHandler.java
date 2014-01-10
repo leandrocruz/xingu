@@ -18,6 +18,7 @@ public class DefaultRequestHandler
 	extends RequestHandlerSupport
 {
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss Z");
+	
 	@Override
 	public void handle(HttpRequest req, Channel channel)
 		throws Exception
@@ -38,11 +39,5 @@ public class DefaultRequestHandler
 		{
 			future.addListener(ChannelFutureListener.CLOSE);
 		}
-	}
-
-	@Override
-	public String getPath()
-	{
-		return "/";
 	}
 }

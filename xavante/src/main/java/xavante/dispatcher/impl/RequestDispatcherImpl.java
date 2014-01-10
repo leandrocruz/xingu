@@ -1,7 +1,7 @@
 package xavante.dispatcher.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
@@ -20,32 +20,50 @@ public class RequestDispatcherImpl
 	implements RequestDispatcher, Configurable
 {
 	@Inject
-	private Factory					factory;
+	private Factory						factory;
 
-	private RequestHandler			deflt		= new DefaultRequestHandler();
+	private RequestHandler				deflt			= new DefaultRequestHandler();
 
-	private List<RequestHandler>	handlers	= new ArrayList<RequestHandler>();
+	private Map<String, RequestHandler>	handlerByPath	= new HashMap<String, RequestHandler>();
 
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		handlers.add(factory.create(LongPollingCometHandler.class));
+		Configuration[] handlers = conf.getChild("handlers").getChildren("handler");
+		for(Configuration h : handlers)
+		{
+			String         path    = h.getAttribute("path");
+			String         clazz   = h.getAttribute("class");
+			RequestHandler handler = (RequestHandler) factory.create(clazz);
+			handlerByPath.put(path, handler);
+		}
 	}
 
 	@Override
 	public void dispatch(HttpRequest req, Channel channel)
 		throws Exception
 	{
-		RequestHandler handler = handlerFor(req);
-		fixPath(req, handler);
+		RequestHandler handler = deflt;
+		String         path    = "/";
+		String         uri     = req.getUri();
+		for(String key : handlerByPath.keySet())
+		{
+			if(uri.startsWith(key))
+			{
+				handler = handlerByPath.get(key);
+				path    = key;
+				break;
+			}
+		}
+
+		fixPath(req, path);
 		handler.handle(req, channel);
 	}
 
-	private void fixPath(HttpRequest req, RequestHandler handler)
+	private void fixPath(HttpRequest req, String path)
 	{
-		String         path    = handler.getPath();
-		String         uri     = req.getUri();
+		String uri = req.getUri();
 		if(!uri.startsWith(path))
 		{
 			throw new NotImplementedYet();
@@ -54,18 +72,5 @@ public class RequestDispatcherImpl
 		int len = path.length();
 		uri     = uri.substring(len);
 		req.setUri(uri);
-	}
-
-	private RequestHandler handlerFor(HttpRequest req)
-	{
-		for(RequestHandler handler : handlers)
-		{
-			boolean accepts = handler.accepts(req);
-			if(accepts)
-			{
-				return handler;
-			}
-		}
-		return deflt;
 	}
 }
