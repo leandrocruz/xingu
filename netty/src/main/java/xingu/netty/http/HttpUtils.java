@@ -5,6 +5,8 @@ import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGT
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.HOST;
 
 
+
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,11 @@ import java.util.zip.ZipOutputStream;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.CharUtils;
-
 import xingu.netty.Deflater;
+import xingu.url.QueryString;
 import xingu.url.Url;
 import xingu.url.UrlParser;
+import xingu.url.impl.QueryStringImpl;
 import xingu.utils.NettyUtils;
 
 import org.apache.commons.io.IOUtils;
@@ -193,6 +196,19 @@ public class HttpUtils
         String value = m.group(1);
         return charset(value, null);
     }
+
+    public static QueryString queryStringFrom(HttpRequest req)
+	{
+		String uri = req.getUri();
+		int    idx = uri.indexOf("?");
+		if(idx < 0)
+		{
+			return null;
+		}
+
+		String in = uri.substring(idx + 1);
+		return new QueryStringImpl(in);
+	}
 
     public static Map<String, String[]> parseQueryString(String input /* escaped */)
     {
@@ -448,5 +464,11 @@ public class HttpUtils
 			}
 		}
 		throw new NotImplementedYet("Can't retrieve host from version: '" +version + "', host: '" + host + "', uri: '" + uri + "'");
+	}
+
+	public static boolean isMultipartFormData(HttpRequest req)
+	{
+		String cType = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
+		return cType == null ? false : cType.startsWith("multipart/form-data");
 	}
 }
