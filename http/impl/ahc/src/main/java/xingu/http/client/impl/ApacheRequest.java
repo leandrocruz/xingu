@@ -1,18 +1,22 @@
 package xingu.http.client.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
@@ -22,9 +26,13 @@ import xingu.http.client.NameValue;
 public class ApacheRequest
 	extends HttpRequestSupport
 {
-	private HttpUriRequest	req;
-	
+	private HttpUriRequest      req;
+
 	private List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+	private List<NameValuePair> files = new ArrayList<NameValuePair>();
+	
+	private boolean	isMultipart;
 
 	public ApacheRequest(HttpUriRequest req)
 	{
@@ -52,8 +60,25 @@ public class ApacheRequest
 		String method = req.getMethod();
 		if("POST".equals(method))
 		{
-			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, Consts.UTF_8);
-			((HttpPost) req).setEntity(entity);
+			HttpPost post = ((HttpPost) req);
+			HttpEntity entity = null;
+			if(isMultipart)
+			{
+				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+				for(NameValuePair pair : files)
+				{
+					String name = pair.getName();
+					String path = pair.getValue();
+					builder.addPart(name, new FileBody(new File(path)));
+				}
+				entity = builder.build();
+			}
+			else
+			{
+				entity = new UrlEncodedFormEntity(params, Consts.UTF_8);
+			}
+			
+			post.setEntity(entity);
 		}
 		
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -89,5 +114,19 @@ public class ApacheRequest
 	public List<NameValue> getFields()
 	{
 		return null;
+	}
+
+	@Override
+	public HttpRequest multipart(boolean isMultipartFormData)
+	{
+		this.isMultipart = isMultipartFormData;
+		return this;
+	}
+
+	@Override
+	public HttpRequest upload(String name, String filePath)
+	{
+		files.add(new BasicNameValuePair(name, filePath));
+		return this;
 	}
 }
