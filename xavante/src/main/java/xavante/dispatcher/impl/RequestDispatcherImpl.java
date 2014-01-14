@@ -6,9 +6,11 @@ import java.util.Map;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
+import xavante.Xavante;
 import xavante.dispatcher.DefaultRequestHandler;
 import xavante.dispatcher.RequestDispatcher;
 import xavante.dispatcher.RequestHandler;
@@ -20,11 +22,11 @@ public class RequestDispatcherImpl
 	implements RequestDispatcher, Configurable
 {
 	@Inject
-	private Factory						factory;
+	private Factory						 factory;
 
-	private RequestHandler				deflt			= new DefaultRequestHandler();
+	private RequestHandler				 deflt			= new DefaultRequestHandler();
 
-	private Map<String, RequestHandler>	handlerByPath	= new HashMap<String, RequestHandler>();
+	private Map<String, RequestHandler>	 handlerByPath	= new HashMap<String, RequestHandler>();
 
 	@Override
 	public void configure(Configuration conf)
@@ -45,7 +47,7 @@ public class RequestDispatcherImpl
 		throws Exception
 	{
 		RequestHandler handler = deflt;
-		String         path    = "/";
+		String         path    = Xavante.SLASH;
 		String         uri     = req.getUri();
 		for(String key : handlerByPath.keySet())
 		{
@@ -71,6 +73,10 @@ public class RequestDispatcherImpl
 
 		int len = path.length();
 		uri     = uri.substring(len);
+		if(StringUtils.EMPTY.equals(uri))
+		{
+			uri = Xavante.SLASH;
+		}
 		req.setUri(uri);
 	}
 }

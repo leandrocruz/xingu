@@ -2,13 +2,6 @@ package xavante;
 
 import java.net.SocketAddress;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-
-import xavante.dispatcher.RequestDispatcher;
-
-import xingu.netty.http.HttpResponseBuilder;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -22,6 +15,11 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.websocketx.WebSocketFrame;
+
+import xavante.dispatcher.RequestDispatcher;
+import xingu.netty.http.HttpResponseBuilder;
+import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class XavanteChannelHandler
 	extends SimpleChannelHandler
@@ -59,7 +57,7 @@ public class XavanteChannelHandler
 		long start = System.currentTimeMillis();
 		doWork(e);
 		long end   = System.currentTimeMillis();
-		System.err.println("XavanteChannelHandler done in " + (end - start) + " ms");
+		Xavante.logger.info("XavanteChannelHandler done in {} ms", end - start);
 	}
 
 	private void doWork(MessageEvent e)
