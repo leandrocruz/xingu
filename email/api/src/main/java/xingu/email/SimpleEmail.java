@@ -68,8 +68,8 @@ public class SimpleEmail
 		}
 		Email other = (Email) obj;
 		return id == other.getId() 
-				&& type == null ? false : type.equals(other.getType()) 
-				&& toAddress == null ? false : toAddress.equals(other.getToAddress());
+				&& (type == null ? false : type.equals(other.getType())) 
+				&& (toAddress == null ? false : toAddress.equals(other.getToAddress()));
 	}
 
     public void setSent(Date sent) {this.sent = sent;}
