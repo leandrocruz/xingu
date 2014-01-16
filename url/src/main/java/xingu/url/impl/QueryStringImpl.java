@@ -17,6 +17,8 @@ public class QueryStringImpl
     
     private transient Map<String, String> map;
     
+    public static final QueryString EMPTY = new QueryStringImpl("");
+    
     /* HACK: duplicate from HttpUtils.DEFAULT_HTTP_CHARSET */
     public static String DEFAULT_HTTP_CHARSET_NAME = "ISO-8859-1";
 

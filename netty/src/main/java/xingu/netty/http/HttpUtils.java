@@ -203,7 +203,7 @@ public class HttpUtils
 		int    idx = uri.indexOf("?");
 		if(idx < 0)
 		{
-			return null;
+			return QueryStringImpl.EMPTY;
 		}
 
 		String in = uri.substring(idx + 1);
