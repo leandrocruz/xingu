@@ -77,6 +77,6 @@ public class RequestDispatcherImpl
 		{
 			uri = Xavante.SLASH;
 		}
-		req.setUri(uri);
+		req.setUri(Xavante.SLASH + uri);
 	}
 }
