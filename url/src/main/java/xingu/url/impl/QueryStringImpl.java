@@ -165,4 +165,17 @@ public class QueryStringImpl
         }
         return true;
     }
+
+	@Override
+	public Map<String, String> toMap()
+	{
+		Map<String, String> result = new HashMap<String, String>();
+        Set<String> keys = map().keySet();
+        for (String key : keys)
+        {
+        	String decoded = getDecoded(key);
+        	result.put(key, decoded);
+        }
+		return result;
+	}
 }

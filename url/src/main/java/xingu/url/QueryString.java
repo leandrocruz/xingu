@@ -1,6 +1,7 @@
 package xingu.url;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 public interface QueryString
@@ -17,4 +18,6 @@ public interface QueryString
     String getDecoded(String name);
 
     String getDecoded(String name, String encoding);
+    
+    Map<String, String> toMap();
 }
