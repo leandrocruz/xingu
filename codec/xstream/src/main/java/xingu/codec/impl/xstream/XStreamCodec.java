@@ -152,6 +152,7 @@ public class XStreamCodec
         {
             ((CodecObject) object).beforeEncode();
         }
+    	xstream.processAnnotations(object.getClass());    	
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         Writer writer = new OutputStreamWriter(bytes, charset);
         try
