@@ -393,4 +393,22 @@ public class StringUtils
 		return result;
 	}
 
+	public static final String toColumn(String input, int width)
+	{
+		int size  = input.length();
+		int start = 0;
+		int end   = width;
+		
+		StringBuffer sb = new StringBuffer();
+		do
+		{
+			String line = input.substring(start, end);
+			sb.append(line).append("\n");
+			start       = end;
+			end         = end + width;
+			end         = end < size ? end : size;
+		}
+		while(start < size);
+		return sb.toString();
+	}
 }
