@@ -41,6 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferFactory;
 import org.jboss.netty.buffer.ChannelBuffers;
+import org.jboss.netty.handler.codec.base64.Base64;
 import org.jboss.netty.handler.codec.compression.EmbeddedDeflater;
 import org.jboss.netty.handler.codec.compression.ZlibWrapper;
 import org.jboss.netty.handler.codec.http.HttpChunk;
@@ -470,5 +471,28 @@ public class HttpUtils
 	{
 		String cType = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
 		return cType == null ? false : cType.startsWith("multipart/form-data");
+	}
+	
+	public static final String[] authFrom(HttpRequest httpRequest)
+	{
+		String scheme = "Basic";
+		String auth   = httpRequest.getHeader(HttpHeaders.Names.AUTHORIZATION);
+		if(StringUtils.isEmpty(auth) || auth.indexOf(scheme) < 0)
+		{
+			return null;
+		}
+		
+		auth                  = auth.substring(scheme.length());
+		auth                  = auth.trim();
+		ChannelBuffer encoded = ChannelBuffers.wrappedBuffer(auth.getBytes());
+		ChannelBuffer decoded = Base64.decode(encoded);
+		String        up      = decoded.toString(Charset.forName("utf8"));
+		if(StringUtils.isEmpty(up))
+		{
+			return null;
+		}
+		
+		String[] pair = up.split(":");
+		return pair;
 	}
 }
