@@ -1,5 +1,6 @@
 package xingu.http.client;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
@@ -21,6 +22,9 @@ public interface HttpRequest
 	HttpResponse<String> asString()
 		throws HttpException;
 
+	HttpResponse<InputStream> asData()
+			throws HttpException;
+	
 	String getCertificate();
 
 	List<Cookie> getCookies();

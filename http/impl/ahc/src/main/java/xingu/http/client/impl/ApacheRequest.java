@@ -2,6 +2,7 @@ package xingu.http.client.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,63 +58,6 @@ public class ApacheRequest
 	}
 
 	@Override
-	public HttpResponse<String> asString()
-		throws HttpException
-	{
-		String method = req.getMethod();
-		if("POST".equals(method))
-		{
-			HttpPost post = ((HttpPost) req);
-			HttpEntity entity = null;
-			if(isMultipart)
-			{
-				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-				for(NameValuePair pair : files)
-				{
-					String name = pair.getName();
-					String path = pair.getValue();
-					builder.addPart(name, new FileBody(new File(path)));
-				}
-				entity = builder.build();
-			}
-			else
-			{
-				entity = new UrlEncodedFormEntity(params, Consts.UTF_8);
-			}
-			
-			post.setEntity(entity);
-		}
-		
-		for(Cookie cookie : cookies)
-		{
-			String cookieNameAndValue = CookieUtils.getCookieNameAndValue(cookie);
-			req.addHeader("Cookie", cookieNameAndValue);
-		}
-		
-		CloseableHttpClient client = HttpClients.createDefault();
-		try
-		{
-			org.apache.http.HttpResponse res = client.execute(req);
-			return ApacheHttpResponseBuilder.build(req, res, String.class);
-		}
-		catch(Exception e)
-		{
-			throw new HttpException(e);
-		}
-		finally
-		{
-			try
-			{
-				client.close();
-			}
-			catch(IOException e)
-			{
-				throw new HttpException(e);
-			}
-		}
-	}
-
-	@Override
 	public String getUri()
 	{
 		return req.getURI().toString();
@@ -151,4 +95,76 @@ public class ApacheRequest
 	{
 		return req.getMethod() + " " + req.getURI();
 	}
+
+
+	@Override
+	public HttpResponse<InputStream> asData()
+		throws HttpException
+	{
+		return exec(InputStream.class);
+	}
+
+	@Override
+	public HttpResponse<String> asString()
+		throws HttpException
+	{
+		return exec(String.class);
+	}
+
+	private <T> HttpResponse<T> exec(Class<T> clazz)
+	{
+		String method = req.getMethod();
+		if("POST".equals(method))
+		{
+			HttpPost post = ((HttpPost) req);
+			HttpEntity entity = null;
+			if(isMultipart)
+			{
+				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+				for(NameValuePair pair : files)
+				{
+					String name = pair.getName();
+					String path = pair.getValue();
+					builder.addPart(name, new FileBody(new File(path)));
+				}
+				entity = builder.build();
+			}
+			else
+			{
+				entity = new UrlEncodedFormEntity(params, Consts.UTF_8);
+			}
+			
+			post.setEntity(entity);
+		}
+		
+		for(Cookie cookie : cookies)
+		{
+			String cookieNameAndValue = CookieUtils.getCookieNameAndValue(cookie);
+			req.addHeader("Cookie", cookieNameAndValue);
+		}
+		
+		CloseableHttpClient client = HttpClients.createDefault();
+		try
+		{
+			org.apache.http.HttpResponse res = client.execute(req);
+			return ApacheHttpResponseBuilder.build(req, res, clazz);
+		}
+		catch(Exception e)
+		{
+			throw new HttpException(e);
+		}
+		finally
+		{
+			try
+			{
+				client.close();
+			}
+			catch(IOException e)
+			{
+				throw new HttpException(e);
+			}
+		}
+
+	}
+
 }

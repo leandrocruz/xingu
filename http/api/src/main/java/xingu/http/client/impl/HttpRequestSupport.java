@@ -1,11 +1,14 @@
 package xingu.http.client.impl;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
@@ -109,6 +112,13 @@ public abstract class HttpRequestSupport
 	
 	@Override
 	public List<NameValue> getUploadFiles()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public HttpResponse<InputStream> asData()
+		throws HttpException
 	{
 		throw new NotImplementedYet();
 	}
