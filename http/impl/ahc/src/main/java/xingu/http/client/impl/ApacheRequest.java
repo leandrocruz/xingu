@@ -16,7 +16,9 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.CookieUtils;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -25,13 +27,15 @@ import xingu.http.client.NameValue;
 public class ApacheRequest
 	extends HttpRequestSupport
 {
-	private HttpUriRequest      req;
+	private HttpUriRequest		req;
 
-	private List<NameValuePair> params = new ArrayList<NameValuePair>();
+	private List<NameValuePair>	params	= new ArrayList<NameValuePair>();
 
-	private List<NameValuePair> files = new ArrayList<NameValuePair>();
-	
-	private boolean	isMultipart;
+	private List<NameValuePair>	files	= new ArrayList<NameValuePair>();
+
+	private List<Cookie>		cookies	= new ArrayList<Cookie>();
+
+	private boolean				isMultipart;
 
 	public ApacheRequest(HttpUriRequest req)
 	{
@@ -80,6 +84,12 @@ public class ApacheRequest
 			post.setEntity(entity);
 		}
 		
+		for(Cookie cookie : cookies)
+		{
+			String cookieNameAndValue = CookieUtils.getCookieNameAndValue(cookie);
+			req.addHeader("Cookie", cookieNameAndValue);
+		}
+		
 		CloseableHttpClient client = HttpClients.createDefault();
 		try
 		{
@@ -126,6 +136,13 @@ public class ApacheRequest
 	public HttpRequest upload(String name, String filePath)
 	{
 		files.add(new BasicNameValuePair(name, filePath));
+		return this;
+	}
+
+	@Override
+	public HttpRequest withCookie(Cookie cookie)
+	{
+		cookies.add(cookie);
 		return this;
 	}
 
