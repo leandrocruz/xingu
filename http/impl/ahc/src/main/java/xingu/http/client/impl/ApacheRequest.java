@@ -116,7 +116,7 @@ public class ApacheRequest
 		String method = req.getMethod();
 		if("POST".equals(method))
 		{
-			HttpPost post = ((HttpPost) req);
+			HttpPost   post   = ((HttpPost) req);
 			HttpEntity entity = null;
 			if(isMultipart)
 			{
@@ -164,7 +164,5 @@ public class ApacheRequest
 				throw new HttpException(e);
 			}
 		}
-
 	}
-
 }
