@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import xingu.url.impl.QueryStringImpl;
+
 public class UrlTest
 {
     private Url urlFrom(String url)
@@ -60,7 +62,7 @@ public class UrlTest
         assertEquals(-1, url.getPort());
         assertEquals("http", url.getScheme());
         assertNull(url.getPath());
-        assertNull(url.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertNull(url.getFragment());
     }
     
@@ -112,7 +114,7 @@ public class UrlTest
         assertTrue(url.getDomainName().isLocalHost());
         assertEquals(-1, url.getPort());
         assertNull(url.getPath());
-        assertNull(url.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertNull(url.getFragment());
     }
     
@@ -131,7 +133,7 @@ public class UrlTest
         assertEquals(null, url.getDomainName());
         assertEquals(-1, url.getPort());
         assertEquals(null, url.getPath());
-        assertEquals(null, url.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertEquals(null, url.getFragment());
     }
     

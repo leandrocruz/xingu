@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import xingu.url.impl.QueryStringImpl;
+
 public class HttpUrlTest
 {
     private static final String SCHEME = "http";
@@ -125,9 +127,9 @@ public class HttpUrlTest
         assertEquals(QUERY, hostAndQuery.getQueryString().toString());
         assertEquals(QUERY, hostPathAndQuery.getQueryString().toString());
         assertEquals(QUERY, hostPortAndQuery.getQueryString().toString());
-        assertNull(hostOnly.getQueryString());
-        assertNull(hostAndPort.getQueryString());
-        assertNull(hostAndPath.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, hostOnly.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, hostAndPort.getQueryString());
+        assertEquals(QueryStringImpl.EMPTY, hostAndPath.getQueryString());
     }
 
     @Test

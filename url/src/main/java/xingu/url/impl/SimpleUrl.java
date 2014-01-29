@@ -172,7 +172,7 @@ public class SimpleUrl
 
 		if (StringUtils.isEmpty(query))
 		{
-			return null;
+			query = "";
 		}
 
 		queryString = new QueryStringImpl(query);
@@ -276,7 +276,7 @@ public class SimpleUrl
 		if (q != null)
 		{
 			String value = q.toString();
-			if (value != null)
+			if (StringUtils.isNotEmpty(value))
 			{
 				sb.append("?");
 				sb.append(value);
