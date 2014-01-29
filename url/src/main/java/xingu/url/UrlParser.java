@@ -39,13 +39,13 @@ public class UrlParser
 			spec = HTTP + spec;
 		}
 
-		UrlParser parser = new UrlParser(spec);
-		String scheme = parser.getScheme();
-		String host = parser.getHost();
-		int port = parser.getPort();
-		String path = parser.getPath();
-		String query = parser.getQuery();
-		String fragment = parser.getFragment();
+		UrlParser parser   = new UrlParser(spec);
+		String    scheme   = parser.getScheme();
+		String    host     = parser.getHost();
+		int       port     = parser.getPort();
+		String    path     = parser.getPath();
+		String    query    = parser.getQuery();
+		String    fragment = parser.getFragment();
 		return new SimpleUrl(spec, scheme, host, port, path, query, fragment);
 	}
 
