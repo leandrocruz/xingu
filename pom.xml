@@ -71,6 +71,7 @@
 		<module>url</module>
 		<module>inhaka</module>
 		<module>container</module>
+		<module>taster</module>		
 		<module>time</module>
 		<module>codec</module>
 		<module>http</module>		
