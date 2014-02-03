@@ -7,6 +7,21 @@ import java.util.zip.ZipOutputStream;
 
 public class ByteUtils
 {
+	private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	
+	public static String toHex(byte[] data)
+	{
+		char[] hexChars = new char[data.length * 2];
+
+		for(int j = 0; j < data.length; j++)
+		{
+			int        v         = data[j] & 0xFF;
+			hexChars[j * 2]      = hexArray[v >>> 4];
+			hexChars[j * 2  + 1] = hexArray[v & 0x0F];
+		}
+		return new String(hexChars);
+	}
+
     public static byte[] compress(String name, byte[] data) 
         throws IOException
     {
