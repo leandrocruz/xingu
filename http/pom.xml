@@ -11,8 +11,6 @@
 	<artifactId>http</artifactId>
 	<packaging>pom</packaging>
 	<name>Xingu HTTP</name>
-	<dependencies>
-	</dependencies>
 	<modules>
 		<module>api</module>
 		<module>impl</module>
