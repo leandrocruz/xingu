@@ -29,13 +29,13 @@
 	    <repository>
 	        <id>releases</id>
 			<name>Kidux Maven Repository (Releases)</name>
-			<url>file:///var/www/kidux.net/repository/releases/</url>
+			<url>file:///var/www/maven/repository/releases/</url>
 			<layout>default</layout>
 	    </repository>
 	    <snapshotRepository>
 	        <id>snapshots</id>
 			<name>Kidux Maven Repository (Releases)</name>
-			<url>file:///var/www/kidux.net/repository/snapshots/</url>
+			<url>file:///var/www/maven/repository/snapshots/</url>
 			<layout>default</layout>
 	    </snapshotRepository>
 	</distributionManagement>
