@@ -15,6 +15,6 @@
 		<module>commons</module>
 		<module>ahc</module>
 		<module>unirest</module>
-		<module>wget</module>
+		<module>native</module>
 	</modules>
 </project>

@@ -3,29 +3,24 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>xingu</groupId>
-		<artifactId>http-impl</artifactId>
+		<artifactId>http</artifactId>
 		<version>1.4.39-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>http-impl-wget</artifactId>
+	<artifactId>http-service</artifactId>
 	<packaging>jar</packaging>
-	<name>Xingu HTTP Impl Wget</name>
+	<name>Xingu HTTP Service</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>http-impl-commons</artifactId>
+			<artifactId>xingu-container</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-process</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3</version>
 		</dependency>
 	</dependencies>
 </project>

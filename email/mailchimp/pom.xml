@@ -22,7 +22,7 @@
 		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>http-api</artifactId>
+			<artifactId>http-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>	
