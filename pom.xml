@@ -42,6 +42,7 @@
 		</dependency>
 	</dependencies>	
 	<modules>
+		<module>maze</module>
 		<module>utils</module>
 		<module>url</module>
 		<module>inhaka</module>

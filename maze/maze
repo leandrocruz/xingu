@@ -1,0 +1,14 @@
+#!/bin/sh
+JAVA=`which java`
+KIDUX_HOME="/opt/kidux"
+if [ "$DEBUG" = "True" ]; then
+    DBG="-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090"
+else
+        DBG=" "
+    fi
+    MAZE_CMD="$JAVA $DBG -classpath $KIDUX_HOME/lib/java/maze-1.0.jar $MAZE_OPTIONS net.kidux.maze.Launcher"
+
+
+start_app() {
+    $MAZE_CMD $* 1>$OUTFILE 2>$OUTFILE&
+}
