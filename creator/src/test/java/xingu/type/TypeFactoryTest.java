@@ -7,7 +7,6 @@ import org.junit.Test;
 import xingu.type.TypeFactory;
 import xingu.type.test.Ack;
 import xingu.type.test.Ping;
-
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
 
@@ -16,6 +15,12 @@ public class TypeFactoryTest
 {
     @Inject
     private TypeFactory typeFactory;
+
+    @Override
+	protected String getContainerFile()
+	{
+		return "pulga.xml";
+	}
 
     @Test
     public void testTypeMapping()

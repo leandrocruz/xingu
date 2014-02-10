@@ -32,7 +32,13 @@ public class FactoryTest
 {
 	@Inject
     private Factory factory;
-    
+
+	@Override
+	protected String getContainerFile()
+	{
+		return "pulga.xml";
+	}
+
 	@Test
     public void testCreateObject()
     	throws Exception

@@ -42,15 +42,36 @@ public abstract class FactorySupport
     public Object create(String className) 
         throws FactoryException
     {
-        return create(className, null, (Object[]) null);
+    	return create(className, null, null, (Object[]) null);
     }
+
+	@Override
+	public Object create(String className, ClassLoader cl)
+		throws FactoryException
+	{
+		return create(className, null, cl, (Object[]) null);
+	}
+
+	@Override
+	public Object create(String className, Configuration conf, ClassLoader cl)
+		throws FactoryException
+	{
+		return create(className, conf, cl, (Object[]) null);
+	}
 
     @Override
     public Object create(String className, Object... params)
         throws FactoryException
     {
-        return create(className, null, params);
+        return create(className, null, null, params);
     }
+
+	@Override
+	public Object create(String className, ClassLoader cl, Object... params)
+		throws FactoryException
+	{
+		return create(className, null, cl, params);
+	}
 
     @Override
     public Object create(String className, Configuration conf)
@@ -63,9 +84,16 @@ public abstract class FactorySupport
     public Object create(String className, Configuration conf, Object... params)
         throws FactoryException
     {
-        Class<?> clazz = ObjectUtils.loadClass(className);
-        return create(clazz, conf, params);
+    	return create(className, conf, null, (Object[]) null);
     }
+
+    @Override
+	public Object create(String className, Configuration conf, ClassLoader cl, Object... params)
+		throws FactoryException
+	{
+    	Class<?> clazz = ObjectUtils.loadClass(className, cl);
+        return create(clazz, conf, params);
+	}
 
     @Override
     public <T> T create(Class<? extends T> clazz) 
@@ -151,6 +179,4 @@ public abstract class FactorySupport
         }
         
     }
-
-
 }

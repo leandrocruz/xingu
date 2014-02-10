@@ -38,11 +38,11 @@ public class FactoryImpl
     {
         return (Class<T>) map.get(clazz.getName());
     }
-    
-    @Override
-    public <T> T create(Class<? extends T> clazz, Configuration conf, Object... params) 
-        throws FactoryException
-    {
+
+	@Override
+	public <T> T create(Class<? extends T> clazz, Configuration conf, Object... params)
+		throws FactoryException
+	{
         Class<? extends T> theClazz = mappingFor(clazz);
         if(theClazz == null && clazz.isInterface()) 
         {
@@ -65,7 +65,5 @@ public class FactoryImpl
         }
         startLifecyle(result, conf);
         return result;
-    }
-
-    
+	}
 }
