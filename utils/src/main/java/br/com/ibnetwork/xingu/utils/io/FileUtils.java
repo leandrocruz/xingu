@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +26,27 @@ public class FileUtils
 	public static final DateFormat df = new SimpleDateFormat("yyyyMMdd.HHmmss");
 
 	public static final String COMMENT_LINE = "#";
+
+	public static InputStream toInputStream(String name)
+		throws Exception
+	{
+		return toInputStream(name, Thread.currentThread().getContextClassLoader());
+	}
+
+	public static InputStream toInputStream(String name, ClassLoader cl)
+		throws Exception
+	{
+		File file = new File(name);
+        if(file.exists())
+        {
+        	return new FileInputStream(file);
+        }
+        else
+        {
+        	URL url = cl.getResource(name);
+        	return url.openStream();
+        }
+	}
 
 	public static String toString(File file)
 		throws IOException
