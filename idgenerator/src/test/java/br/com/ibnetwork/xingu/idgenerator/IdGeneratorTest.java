@@ -17,6 +17,12 @@ public class IdGeneratorTest
     private IdGenerator idGenerator;
 
 	@Override
+	protected String getContainerFile()
+	{
+		return "pulga.xml";
+	}
+
+	@Override
     protected void rebind(Binder binder)
     {
 	    binder.bind(ObjectStore.class).to(InMemoryObjectStore.class);

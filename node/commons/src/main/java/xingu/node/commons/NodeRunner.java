@@ -1,5 +1,6 @@
 package xingu.node.commons;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -17,7 +18,7 @@ public class NodeRunner
 	public void configure(String[] args)
 		throws Exception
 	{
-		String file = null;
+		String name = null;
 		if(args.length > 0)
 		{
 			for(String arg : args)
@@ -28,14 +29,15 @@ public class NodeRunner
 				}
 				else if(arg.startsWith(CONFIG_PARAM))
 				{
-					file = arg.substring(CONFIG_PARAM.length());
+					name = arg.substring(CONFIG_PARAM.length());
 				}
 			}
 		}
-		if(file == null || file.length() == 0)
+		if(name == null || name.length() == 0)
 		{
-			file = ContainerUtils.getFileName();
+			name = ContainerUtils.getFileName();
 		}
+		File file = new File(name);
 		ContainerUtils.getContainer(file, true);
 	}
 

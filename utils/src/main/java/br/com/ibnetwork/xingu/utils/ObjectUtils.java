@@ -18,6 +18,11 @@ public class ObjectUtils
 	public static Class<?> loadClass(String className, ClassLoader cl)
 		throws RuntimeException
 	{
+		if(cl == null)
+		{
+			return loadClass(className);
+		}
+		
 		Class<?> clazz;
         try
         {

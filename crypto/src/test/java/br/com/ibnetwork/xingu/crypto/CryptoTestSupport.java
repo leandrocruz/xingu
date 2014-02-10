@@ -28,7 +28,7 @@ public abstract class CryptoTestSupport
 	@Inject
 	protected Crypto crypto;
 	
-    @Test
+	@Test
     @Ignore
 	public void printProvidersAndServices() 
     {

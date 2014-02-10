@@ -20,7 +20,13 @@ public class FreemarkerTemplateEngineTest
 {
 	@Inject
 	private TemplateEngine engine;
-        
+
+	@Override
+	protected String getContainerFile()
+	{
+		return "pulga.xml";
+	}
+
 	@Test
     public void testTemplateExists()
     	throws Exception

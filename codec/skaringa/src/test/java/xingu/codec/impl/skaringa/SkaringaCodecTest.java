@@ -14,12 +14,6 @@ public class SkaringaCodecTest
 {
     @Inject
     private Codec codec;
-    
-//    @Override
-//	protected String getContainerFile()
-//	{
-//    	return "pulga-empty.xml";
-//	}
 
 	@Override
     protected void rebind(Binder binder)

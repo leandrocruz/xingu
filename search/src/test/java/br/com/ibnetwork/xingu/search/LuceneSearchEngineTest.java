@@ -25,6 +25,12 @@ public class LuceneSearchEngineTest
     
     private static int docId;
 
+    @Override
+	protected String getContainerFile()
+	{
+		return "pulga.xml";
+	}
+
     private int indexDoc(String fieldName, String value)
     {
         Document doc = new Document();

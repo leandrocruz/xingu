@@ -13,6 +13,13 @@ public class ByteTasterTest
 	@Inject
 	private ByteTaster taster;
 
+	
+	@Override
+	protected String getContainerFile()
+	{
+		return "pulga-empty.xml";
+	}
+
 	@Test
 	public void testTaste()
 		throws Exception
