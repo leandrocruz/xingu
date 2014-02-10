@@ -12,6 +12,7 @@ import org.mortbay.jetty.handler.HandlerCollection;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class ContextHandlers
     implements ServerConfig
@@ -27,8 +28,9 @@ public class ContextHandlers
     {
         for(Configuration handlerConf : conf.getChild("server").getChildren("handler"))
         {
-            String className = handlerConf.getAttribute("class");
-            HandlerFactory handler = (HandlerFactory) factory.create(className, handlerConf);
+            String         className = handlerConf.getAttribute("class");
+            Class<?>       clazz     = ObjectUtils.loadClass(className);
+            HandlerFactory handler   = (HandlerFactory) factory.create(clazz, handlerConf);
             handlers.add(handler);
         }
     }

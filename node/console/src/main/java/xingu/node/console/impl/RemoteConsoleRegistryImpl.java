@@ -5,7 +5,7 @@ import java.util.Map;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
-
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import xingu.node.console.RemoteConsoleRegistry;
 import xingu.node.console.command.Command;
 
@@ -54,7 +54,8 @@ public class RemoteConsoleRegistryImpl
 		Command cmd = conf.cmd;
 		if(cmd == null)
 		{
-			cmd = (Command) factory.create(conf.clazz, conf.conf);
+			Class<?> clazz = ObjectUtils.loadClass(conf.clazz);
+			cmd = (Command) factory.create(clazz, conf.conf);
 			conf.cmd = cmd;
 		}
 		return cmd;

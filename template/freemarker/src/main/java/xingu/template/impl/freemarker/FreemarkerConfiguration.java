@@ -143,7 +143,8 @@ public class FreemarkerConfiguration
 
     private Object createObject(String className)
     {
-        return factory.create(className);
+		Class<?> clazz = ObjectUtils.loadClass(className);
+		return factory.create(clazz);
     }
 
     public Map<String, TemplateMethodModel> getMethods()

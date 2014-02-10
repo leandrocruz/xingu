@@ -35,6 +35,7 @@ import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.search.SearchEngine;
 import br.com.ibnetwork.xingu.search.SearchEngineException;
 import br.com.ibnetwork.xingu.utils.FSUtils;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class LuceneSearchEngine
     implements SearchEngine, Initializable, Configurable
@@ -92,7 +93,16 @@ public class LuceneSearchEngine
     public void initialize() 
         throws Exception
     {
-        analyzer = analyserClass != null ? (Analyzer) factory.create(analyserClass) : new StandardAnalyzer(Version.LUCENE_30);
+		if(analyserClass != null)
+		{
+			Class<?> clazz = ObjectUtils.loadClass(analyserClass);
+			analyzer       = (Analyzer) factory.create(clazz);
+		}
+		else
+		{
+			analyzer = new StandardAnalyzer(Version.LUCENE_30);
+		}
+		
         if("FSDirectory".equals(directoryType))
         {
             directory = FSDirectory.open(new File(indexDir));

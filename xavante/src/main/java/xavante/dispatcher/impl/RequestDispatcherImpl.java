@@ -17,6 +17,7 @@ import xavante.dispatcher.RequestHandler;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class RequestDispatcherImpl
 	implements RequestDispatcher, Configurable
@@ -35,9 +36,10 @@ public class RequestDispatcherImpl
 		Configuration[] handlers = conf.getChild("handlers").getChildren("handler");
 		for(Configuration h : handlers)
 		{
-			String         path    = h.getAttribute("path");
-			String         clazz   = h.getAttribute("class");
-			RequestHandler handler = (RequestHandler) factory.create(clazz);
+			String         path      = h.getAttribute("path");
+			String         className = h.getAttribute("class");
+			Class<?>       clazz     = ObjectUtils.loadClass(className);
+			RequestHandler handler   = (RequestHandler) factory.create(clazz);
 			handlerByPath.put(path, handler);
 		}
 	}

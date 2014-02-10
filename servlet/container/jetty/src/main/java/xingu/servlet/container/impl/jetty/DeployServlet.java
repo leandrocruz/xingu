@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class DeployServlet
     implements HandlerFactory, Configurable
@@ -52,8 +53,9 @@ public class DeployServlet
             String path = mapping.getAttribute("path");
             logger.info("Adding servlet '{}' on {}{}", new Object[]{className, contextPath, path});
 
-            Servlet servlet = (Servlet) factory.create(className /*, servletConf */ );
-            ServletHolder holder = new ServletHolder(servlet);
+            Class<?>      clazz   = ObjectUtils.loadClass(className);
+            Servlet       servlet = (Servlet) factory.create(clazz /*, servletConf */ );
+            ServletHolder holder  = new ServletHolder(servlet);
             servletHandler.addServletWithMapping(holder, path);
         }
         SessionHandler sessionHandler = sessionBroker.handlerFor(null);

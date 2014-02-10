@@ -41,8 +41,9 @@ public class GSonCodec
         conf = conf.getChild("typeAdapters");
         for (Configuration adapterConf : conf.getChildren("adapter"))
         {
-            String className = adapterConf.getAttribute("class");
-            TypeAdapter adapter = (TypeAdapter) factory.create(className);
+            String      className = adapterConf.getAttribute("class");
+            Class<?>    clazz     = ObjectUtils.loadClass(className);
+            TypeAdapter adapter   = (TypeAdapter) factory.create(clazz);
             typeAdapters.add(adapter);
         }
     }

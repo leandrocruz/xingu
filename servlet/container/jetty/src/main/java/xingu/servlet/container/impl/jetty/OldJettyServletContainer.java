@@ -27,9 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.servlet.container.ServletContainer;
-
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 /**
@@ -158,8 +158,9 @@ public class OldJettyServletContainer
 		    server.addHandler(handler);
 		    for(Mapping info : servlets)
 		    {
-		        Servlet servlet = (Servlet) factory.create(info.className);
-		        ServletHolder holder = new ServletHolder(servlet);
+		    	Class<?>      clazz   = ObjectUtils.loadClass(info.className);
+		        Servlet       servlet = (Servlet) factory.create(clazz);
+		        ServletHolder holder  = new ServletHolder(servlet);
 		        handler.addServletWithMapping(holder, info.path);
 		    }
 		}

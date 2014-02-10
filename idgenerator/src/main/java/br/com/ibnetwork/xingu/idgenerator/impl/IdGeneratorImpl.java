@@ -14,6 +14,7 @@ import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.idgenerator.Generator;
 import br.com.ibnetwork.xingu.idgenerator.GeneratorException;
 import br.com.ibnetwork.xingu.idgenerator.IdGenerator;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class IdGeneratorImpl 
 	implements IdGenerator, Configurable
@@ -35,10 +36,11 @@ public class IdGeneratorImpl
         registry = new HashMap<String, Generator<?>>(generators.length);
         for (Configuration conf : generators)
         {
-            String id = conf.getAttribute("id", DEFAULT);
-            String className = conf.getAttribute("class");
-            int grabSize = conf.getAttributeAsInteger("grabSize", 20);
-            Generator<?> gen = (Generator<?>) factory.create(className, id, grabSize);
+            String   id        = conf.getAttribute("id", DEFAULT);
+            String   className = conf.getAttribute("class");
+            int      grabSize  = conf.getAttributeAsInteger("grabSize", 20);
+            Class<?> clazz     = ObjectUtils.loadClass(className);
+            Generator<?> gen = (Generator<?>) factory.create(clazz, id, grabSize);
             logger.info("Creating generator '{}'", className);
             registry.put(id, gen);
         }

@@ -173,30 +173,30 @@ public class Pulga
         return binder;
     }
 
-	@Override
-	public <T> T lookup(String name)
-		throws ContainerException
-	{
-		return lookup(name, null);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T lookup(String name, String key)
-		throws ContainerException
-	{
-		Class<?> clazz = null;
-		try
-		{
-			clazz = cl.loadClass(name);
-		}
-		catch(ClassNotFoundException e)
-		{
-			throw new ContainerException("Error loading class", e);
-		}
-
-		return (T) lookup(clazz, key);
-	}
+//	@Override
+//	public <T> T lookup(String name)
+//		throws ContainerException
+//	{
+//		return lookup(name, null);
+//	}
+//
+//	@Override
+//	@SuppressWarnings("unchecked")
+//	public <T> T lookup(String name, String key)
+//		throws ContainerException
+//	{
+//		Class<?> clazz = null;
+//		try
+//		{
+//			clazz = cl.loadClass(name);
+//		}
+//		catch(ClassNotFoundException e)
+//		{
+//			throw new ContainerException("Error loading class", e);
+//		}
+//
+//		return (T) lookup(clazz, key);
+//	}
 
     public <T> T lookup(Class<T> clazz)
         throws ContainerException

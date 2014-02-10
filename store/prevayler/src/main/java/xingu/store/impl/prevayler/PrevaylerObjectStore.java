@@ -37,6 +37,7 @@ import br.com.ibnetwork.xingu.container.Environment;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class PrevaylerObjectStore
@@ -146,9 +147,10 @@ public class PrevaylerObjectStore
     {
         if (snapshotInterval > 0)
         {
-            snapshotTimer = new Timer("Prevayler Snapshooter Timer", true);
-            TimerTask snapshooter = (TimerTask) factory.create(snapshooterClass, this, prevayler, prevalenceDirectory, snapshooterConf);
-            long deplay = snapshotInterval;
+            snapshotTimer             = new Timer("Prevayler Snapshooter Timer", true);
+            Class<?>      clazz       = ObjectUtils.loadClass(snapshooterClass);
+            TimerTask     snapshooter = (TimerTask) factory.create(clazz, this, prevayler, prevalenceDirectory, snapshooterConf);
+            long          deplay      = snapshotInterval;
             if(takeSnapshotOnStart)
             {
                 deplay = 300;

@@ -20,6 +20,7 @@ import xingu.codec.impl.OutputMode;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
@@ -61,7 +62,8 @@ public class XStreamCodec
         	String convName = c.getAttribute("class", null);
         	if(convName != null)
         	{
-    			SingleValueConverter converter = (SingleValueConverter) factory.create(convName);
+        		Class<?>             clazz     = ObjectUtils.loadClass(convName);
+    			SingleValueConverter converter = (SingleValueConverter) factory.create(clazz);
     			converters.add(converter);
         	}
         }

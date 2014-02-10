@@ -6,11 +6,11 @@ import org.apache.avalon.framework.configuration.Configuration;
 public interface Container
 	extends Configurable
 {
-	<T> T lookup(String string)
-		throws ContainerException;
-
-	<T> T lookup(String string, String key)
-		throws ContainerException;
+//	<T> T lookup(String string)
+//		throws ContainerException;
+//
+//	<T> T lookup(String string, String key)
+//		throws ContainerException;
 
 	<T> T lookup(Class<T> clazz)
 		throws ContainerException;

@@ -4,6 +4,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 
 public interface Factory
 {
+/*	
 	Object create(String className)
 		throws FactoryException;
 
@@ -27,6 +28,7 @@ public interface Factory
 
 	Object create(String className, Configuration conf, ClassLoader cl, Object... params)
 		throws FactoryException;
+*/
 
 	<T> T create(Class<? extends T> clazz)
 		throws FactoryException;

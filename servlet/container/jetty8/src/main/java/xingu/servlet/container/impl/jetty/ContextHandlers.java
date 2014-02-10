@@ -8,6 +8,8 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
+
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -27,8 +29,9 @@ public class ContextHandlers
     {
         for(Configuration handlerConf : conf.getChild("server").getChildren("handler"))
         {
-            String className = handlerConf.getAttribute("class");
-            HandlerFactory handler = (HandlerFactory) factory.create(className, handlerConf);
+            String         className = handlerConf.getAttribute("class");
+            Class<?>       clazz     = ObjectUtils.loadClass(className);
+            HandlerFactory handler   = (HandlerFactory) factory.create(clazz, handlerConf);
             handlers.add(handler);
         }
     }

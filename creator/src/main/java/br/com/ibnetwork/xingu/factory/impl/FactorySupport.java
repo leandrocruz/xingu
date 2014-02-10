@@ -38,6 +38,7 @@ public abstract class FactorySupport
         creator = (Creator) ObjectUtils.getInstance(defaultCreatorClassName);
     }
 
+    /*
     @Override
     public Object create(String className) 
         throws FactoryException
@@ -94,7 +95,8 @@ public abstract class FactorySupport
     	Class<?> clazz = ObjectUtils.loadClass(className, cl);
         return create(clazz, conf, params);
 	}
-
+	*/
+    
     @Override
     public <T> T create(Class<? extends T> clazz) 
         throws FactoryException

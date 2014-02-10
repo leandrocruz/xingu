@@ -1,11 +1,6 @@
 package br.com.ibnetwork.xingu.container;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import br.com.ibnetwork.xingu.container.impl.Pulga;
 import br.com.ibnetwork.xingu.utils.FSUtils;
@@ -94,5 +89,4 @@ public class ContainerUtils
         }
         return fileName;
     }
-
 }
