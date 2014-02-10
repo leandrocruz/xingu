@@ -1,12 +1,15 @@
 package br.com.ibnetwork.xingu.container.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.apache.commons.io.IOUtils;
 
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Binding;
@@ -24,37 +27,49 @@ public class Pulga
 	implements Container
 {
     /* holds keys for components that require early init */
-    private List<Class<?>> earlyInit = new ArrayList<Class<?>>();
-    
-    private Stack<Object> stack;
-    
-    private Binder binder;
-    
-    private String file;
-    
-    private Configuration conf;
+    private List<Class<?>> earlyInit   = new ArrayList<Class<?>>();
 
-	private boolean configured;
-    
-    public Pulga(String fileName)
+    private Stack<Object>  stack;
+
+    private Binder         binder;
+
+    private ClassLoader    cl;
+
+    //private File           file;
+
+    private Configuration  conf;
+
+	private boolean        configured;
+
+	public Pulga(File file)
+		throws Exception
+	{
+		this(file, Thread.currentThread().getContextClassLoader());
+	}
+
+    public Pulga(File file, ClassLoader cl)
         throws Exception
     {
-        stack = new Stack<Object>();
-        binder = new SimpleBinder();
-        binder.bind(Injector.class).to(new FieldInjector(this));
-        this.file = fileName;
-        
-        if(fileName == null)
-        {
-            log.info("Creating container without configuration");
-            conf = new DefaultConfiguration("pulga");
-        }
-        else
-        {
-            log.info("Creating container from file["+fileName+"]");
-            conf = ConfigurationLoader.load(fileName);  
-        }
+    	this(new FileInputStream(file), cl);
     }
+
+	public Pulga(InputStream is)
+		throws Exception
+	{
+		this(is, Thread.currentThread().getContextClassLoader());
+	}
+
+	public Pulga(InputStream is, ClassLoader cl)
+		throws Exception
+	{
+    	stack     = new Stack<Object>();
+        binder    = new SimpleBinder();
+        binder.bind(Injector.class).to(new FieldInjector(this));
+
+        this.cl   = cl;
+        this.conf = ConfigurationLoader.load(is);
+        IOUtils.closeQuietly(is);
+	}
 
 	@Override
 	public void configure()
@@ -158,6 +173,31 @@ public class Pulga
         return binder;
     }
 
+	@Override
+	public <T> T lookup(String name)
+		throws ContainerException
+	{
+		return lookup(name, null);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T lookup(String name, String key)
+		throws ContainerException
+	{
+		Class<?> clazz = null;
+		try
+		{
+			clazz = cl.loadClass(name);
+		}
+		catch(ClassNotFoundException e)
+		{
+			throw new ContainerException("Error loading class", e);
+		}
+
+		return (T) lookup(clazz, key);
+	}
+
     public <T> T lookup(Class<T> clazz)
         throws ContainerException
     {
@@ -181,7 +221,7 @@ public class Pulga
         Binding<T> binding = binder.get(role, key);
         if (binding == null)
         {
-            impl = tryDefaults(role);
+            impl = tryDefaults(role, cl);
             if (impl == null)
             {
                 // give up
@@ -234,6 +274,6 @@ public class Pulga
     @Override
     public String toString()
     {
-        return "Pulga@"+System.identityHashCode(this) + " ("+file+")";
+        return "Pulga@"+System.identityHashCode(this);
     }
 }

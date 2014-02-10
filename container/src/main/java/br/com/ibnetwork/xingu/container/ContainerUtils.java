@@ -1,5 +1,9 @@
 package br.com.ibnetwork.xingu.container;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import br.com.ibnetwork.xingu.container.impl.Pulga;
 import br.com.ibnetwork.xingu.utils.FSUtils;
 
@@ -33,7 +37,7 @@ public class ContainerUtils
             return container;
         }
         String fileName = getFileName();
-        return getContainer(fileName, start);
+        return getContainer(new File(fileName), start);
     }
 
     public static String getFileName()
@@ -58,20 +62,20 @@ public class ContainerUtils
         return fileName;
     }
 
-    public static Container getContainer(String fileName)
+    public static Container getContainer(File file)
     	throws Exception
     {
-    	return getContainer(fileName, true);
+    	return getContainer(file, true);
     }
 
-    public static Container getContainer(String fileName, boolean start)
+    public static Container getContainer(File file, boolean start)
     	throws Exception
     {
         if(container != null)
         {
             return container;
         }
-        container = createContainer(fileName);
+        container = createContainer(file);
         container.configure();
         if(start)
         {
@@ -79,11 +83,16 @@ public class ContainerUtils
         }
         return container;
     }
-    
-    public static Container createContainer(String fileName)
+
+    public static Container createContainer(File file)
     	throws Exception
     {
-        Pulga pulga = new Pulga(fileName);
-        return pulga;
+    	return createContainer(new FileInputStream(file));
+	}
+
+    public static Container createContainer(InputStream is)
+    	throws Exception
+    {
+    	return new Pulga(is);
     }
 }

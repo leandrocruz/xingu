@@ -164,7 +164,7 @@ public class ContainerTest
     	Configuration conf = confManager.configurationFor("some-key").getChild("some");
     	assertEquals("value",conf.getAttribute("key"));
 
-    	pulga = ContainerUtils.getContainer(FSUtils.load("pulgaEmpty.xml"));
+    	pulga = ContainerUtils.getContainer(FSUtils.loadAsFile("pulgaEmpty.xml"));
     	confManager = pulga.lookup(ConfigurationManager.class);
     	conf = confManager.configurationFor("some-key").getChild("some");
     	assertEquals("value",conf.getAttribute("key"));

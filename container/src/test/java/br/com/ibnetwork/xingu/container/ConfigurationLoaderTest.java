@@ -1,10 +1,14 @@
 package br.com.ibnetwork.xingu.container;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import br.com.ibnetwork.xingu.utils.FSUtils;
 
 public class ConfigurationLoaderTest
 {
@@ -13,8 +17,9 @@ public class ConfigurationLoaderTest
 	public void testMergeConfiguration()
 		throws Exception
 	{
-		Configuration conf = ConfigurationLoader.load("nebers.xml");
-		Configuration c0 = conf.getChildren("component")[0];
+		File          file = FSUtils.loadAsFile("nebers.xml");
+		Configuration conf = ConfigurationLoader.load(file);
+		Configuration c0   = conf.getChildren("component")[0];
 		assertEquals("A", c0.getAttribute("role"));
 		assertEquals(null, c0.getAttribute("key", null));
 		assertEquals("a", c0.getAttribute("class"));

@@ -87,14 +87,14 @@ public abstract class ContainerSupport
         return binding;
     }
 
-    protected <T> T tryDefaults(Class<T> clazz) 
+    protected <T> T tryDefaults(Class<T> clazz, ClassLoader cl) 
         throws ContainerException
     {
         String role = clazz.getName(); 
         String packageName = role.substring(0,role.lastIndexOf("."));
         String componentName = role.substring(role.lastIndexOf(".")+1,role.length());
         String className = packageName + ".impl."+componentName+"Impl";
-        T component = (T) ObjectUtils.getInstance(className);
+        T component = (T) ObjectUtils.getInstance(className, cl);
         return component;
     }
 

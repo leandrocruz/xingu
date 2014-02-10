@@ -3,7 +3,10 @@ package br.com.ibnetwork.xingu.container;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.avalon.framework.configuration.Configuration;
@@ -13,24 +16,32 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.mockito.internal.util.MockUtil;
 
-import br.com.ibnetwork.xingu.utils.FSUtils;
-
 public class XinguTestCase 
 {
-	private static Container container;
-	
-	private static MockUtil mockUtil = new MockUtil();
-	
-	private static Binder binder;
+	private static Container	container;
+
+	private static MockUtil		mockUtil	= new MockUtil();
+
+	private static Binder		binder;
 
     protected Container getContainer()
     	throws Exception
     {
     	if(container == null)
     	{
-    		String fileName = getContainerFile();
-    		fileName = FSUtils.load(fileName);
-    		container = ContainerUtils.createContainer(fileName);
+    		String      fileName = getContainerFile();
+    		File        file     = new File(fileName);
+    		InputStream is       = null;
+    		if(file.exists())
+    		{
+    			is = new FileInputStream(file);
+    		}
+    		else
+    		{
+    			URL resource = Thread.currentThread().getContextClassLoader().getResource(fileName);
+    			is           = resource.openStream();
+    		}
+    		container = ContainerUtils.createContainer(is);
     		container.configure();
     		container.start();
     	}
@@ -39,7 +50,7 @@ public class XinguTestCase
     
 	protected String getContainerFile()
     {
-	    return "pulga.xml";
+	    return "pulga-empty.xml";
     }
 
 	protected boolean resetContainer()

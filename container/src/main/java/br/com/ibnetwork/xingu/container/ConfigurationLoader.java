@@ -21,28 +21,23 @@ public class ConfigurationLoader
     private static final DefaultConfigurationBuilder builder = new  DefaultConfigurationBuilder();
     
     private static final Pattern MASK = Pattern.compile("^(\\w+)\\.xml$");
+
+    public static Configuration load(InputStream is)
+    	throws Exception
+    {
+		return builder.build(is);
+    }
     
-	public static Configuration load(String fileName)
+	public static Configuration load(File file)
 		throws Exception
 	{
-		File file = new File(fileName);
-		Configuration conf;
-		if (file.exists())
+		if(!file.exists())
 		{
-			conf = builder.buildFromFile(fileName);
+			throw new Exception("Can't find container file: " + file
+					+ ". Please check your classpath or set the "
+					+ "XINGU_CONTAINER_FILE environment variable");
 		}
-		else
-		{
-			InputStream is = FSUtils.loadStream(file.getName());
-			if (is == null)
-			{
-				throw new Exception("Can't find container file: " + fileName
-						+ ". Please check your classpath or set the "
-						+ "XINGU_CONTAINER_FILE environment variable");
-			}
-			conf = builder.build(is);
-		}
-		return conf;
+		return builder.buildFromFile(file);
 	}
 
     public static Configuration loadNew(String fileName) 
