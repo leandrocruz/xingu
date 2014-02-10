@@ -1,11 +1,12 @@
 package xingu.node.commons;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
 import br.com.ibnetwork.xingu.container.ContainerUtils;
 import br.com.ibnetwork.xingu.lang.ThreadBlocker;
+import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class NodeRunner
 {
@@ -37,8 +38,8 @@ public class NodeRunner
 		{
 			name = ContainerUtils.getFileName();
 		}
-		File file = new File(name);
-		ContainerUtils.getContainer(file, true);
+		InputStream is = FileUtils.toInputStream(name);
+		ContainerUtils.getContainer(is, true);
 	}
 
 	public void start()

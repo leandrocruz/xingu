@@ -6,6 +6,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.InputStream;
+import java.net.URL;
+
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 import org.junit.After;
@@ -27,7 +30,7 @@ import br.com.ibnetwork.xingu.container.components.UsesSimple;
 import br.com.ibnetwork.xingu.container.components.impl.ComponentImpl;
 import br.com.ibnetwork.xingu.container.components.impl.NotSoSimple;
 import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
-import br.com.ibnetwork.xingu.utils.FSUtils;
+import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class ContainerTest
 {
@@ -164,8 +167,9 @@ public class ContainerTest
     	Configuration conf = confManager.configurationFor("some-key").getChild("some");
     	assertEquals("value",conf.getAttribute("key"));
 
-    	pulga = ContainerUtils.getContainer(FSUtils.loadAsFile("pulgaEmpty.xml"));
-    	confManager = pulga.lookup(ConfigurationManager.class);
+    	InputStream is = FileUtils.toInputStream("pulgaEmpty.xml");
+    	pulga          = ContainerUtils.getContainer(is);
+    	confManager    = pulga.lookup(ConfigurationManager.class);
     	conf = confManager.configurationFor("some-key").getChild("some");
     	assertEquals("value",conf.getAttribute("key"));
     }

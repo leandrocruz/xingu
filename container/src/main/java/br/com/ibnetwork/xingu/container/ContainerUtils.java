@@ -2,10 +2,14 @@ package br.com.ibnetwork.xingu.container;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import br.com.ibnetwork.xingu.container.impl.Pulga;
 import br.com.ibnetwork.xingu.utils.FSUtils;
+import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class ContainerUtils
 {
@@ -32,12 +36,41 @@ public class ContainerUtils
     public static Container getContainer(boolean start)
         throws Exception
     {
+//        if(container != null)
+//        {
+//            return container;
+//        }
+        String      name = getFileName();
+        InputStream is   = FileUtils.toInputStream(name);
+        return getContainer(is, start);
+    }
+
+    public static Container getContainer(InputStream is)
+    	throws Exception
+    {
+    	return getContainer(is, true);
+    }
+
+    public static Container getContainer(InputStream is, boolean start)
+    	throws Exception
+    {
         if(container != null)
         {
             return container;
         }
-        String fileName = getFileName();
-        return getContainer(new File(fileName), start);
+        container = createContainer(is);
+        container.configure();
+        if(start)
+        {
+        	container.start();
+        }
+        return container;
+    }
+
+    public static Container createContainer(InputStream is)
+    	throws Exception
+    {
+    	return new Pulga(is);
     }
 
     public static String getFileName()
@@ -62,37 +95,4 @@ public class ContainerUtils
         return fileName;
     }
 
-    public static Container getContainer(File file)
-    	throws Exception
-    {
-    	return getContainer(file, true);
-    }
-
-    public static Container getContainer(File file, boolean start)
-    	throws Exception
-    {
-        if(container != null)
-        {
-            return container;
-        }
-        container = createContainer(file);
-        container.configure();
-        if(start)
-        {
-        	container.start();
-        }
-        return container;
-    }
-
-    public static Container createContainer(File file)
-    	throws Exception
-    {
-    	return createContainer(new FileInputStream(file));
-	}
-
-    public static Container createContainer(InputStream is)
-    	throws Exception
-    {
-    	return new Pulga(is);
-    }
 }
