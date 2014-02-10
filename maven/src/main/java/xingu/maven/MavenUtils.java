@@ -6,6 +6,6 @@ public class MavenUtils
 {
 	public static final String getName(Artifact artifact)
 	{
-		return null;
+		return artifact.getArtifactId() + "-" + artifact.getVersion();
 	}
 }
