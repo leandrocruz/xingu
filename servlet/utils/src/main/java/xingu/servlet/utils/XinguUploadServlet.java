@@ -32,6 +32,8 @@ public class XinguUploadServlet
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, java.io.IOException 
 	{
+		System.out.println("CHARSET> " + request.getCharacterEncoding());
+		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if(!isMultipart)
 		{
@@ -53,12 +55,14 @@ public class XinguUploadServlet
 			for(FileItem fi : fileItems)
 			{
 				boolean formField = fi.isFormField();
-				PrintStream out = System.out;
 				if(formField)
 				{
-					out = System.err;
+					System.out.println(fi.getFieldName() + "=" + fi.getString("utf-8"));
 				}
-				out.println(fi.getFieldName() + "=" + fi.getSize());
+				else
+				{
+					System.out.println(fi.getFieldName() + " (" + fi.getSize()+")");
+				}
 			}
 		}
 		catch(FileUploadException e)
