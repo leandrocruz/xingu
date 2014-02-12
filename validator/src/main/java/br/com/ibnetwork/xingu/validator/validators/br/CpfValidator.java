@@ -9,21 +9,13 @@ public class CpfValidator
 {
 	public CpfValidator(ValidateCpf ann)
 	{
-		_message = ann.message();
+		_message   = ann.message();
 		_messageId = ann.messageId();
 	}
 	
 	@Override
     public boolean apply(Object bean, String cpf)
     {
-	    cpf = Cpf.clearMask(cpf);
-		if (cpf.length() != 11)
-		{
-			return false;
-		}
-		String numDig = cpf.substring(0, 9);
-		String digit = Cpf.calcDigVerif(numDig);
-		boolean result = digit.equals(cpf.substring(9, 11)); 
-		return result;
+	    return Cpf.isValid(cpf);
     }
 }

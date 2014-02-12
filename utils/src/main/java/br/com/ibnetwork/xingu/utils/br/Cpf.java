@@ -4,6 +4,21 @@ public class Cpf
 {
 	public static final String EXAMPLE = "123.123.123-87";
 	
+	public static boolean isValid(String num)
+	{
+		num = clearMask(num);
+		int len = num.length();
+		if(len != 11)
+		{
+			return false;
+		}
+		
+		String prefix   = num.substring(0, 9);
+		String dig      = num.substring(9);
+		String expected = calcDigVerif(prefix);
+		return expected.equals(dig);
+	}
+	
 	public static String calcDigVerif(String num)
 	{
 		Integer primDig, segDig;
