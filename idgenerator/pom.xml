@@ -21,5 +21,10 @@
 			<artifactId>xingu-creator</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>time</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>	
 </project>
