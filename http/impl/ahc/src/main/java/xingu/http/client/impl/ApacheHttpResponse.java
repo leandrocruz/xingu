@@ -5,10 +5,9 @@ import java.io.InputStream;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import xingu.http.client.NameValue;
-import xingu.http.client.impl.HttpResponseSupport;
 
-public class ApacheHttpResponse<T>
-	extends HttpResponseSupport<T>
+public class ApacheHttpResponse
+	extends HttpResponseSupport
 {
 	private HttpUriRequest					req;
 
@@ -18,9 +17,9 @@ public class ApacheHttpResponse<T>
 
 	private NameValue[]						headers;
 
-	private T								body;
+	private String							body;
 
-	private InputStream	rawBody;
+	private InputStream						rawBody;
 
 	public ApacheHttpResponse(HttpUriRequest req, org.apache.http.HttpResponse res)
 	{
@@ -35,7 +34,7 @@ public class ApacheHttpResponse<T>
 	}
 
 	@Override
-	public T getBody()
+	public String getBody()
 	{
 		return body;
 	}
@@ -70,7 +69,7 @@ public class ApacheHttpResponse<T>
 		this.headers = headers;
 	}
 
-	public void setBody(T body)
+	public void setBody(String body)
 	{
 		this.body = body;
 	}

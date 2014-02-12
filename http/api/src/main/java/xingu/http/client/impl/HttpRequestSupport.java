@@ -1,6 +1,5 @@
 package xingu.http.client.impl;
 
-import java.io.InputStream;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
@@ -117,7 +116,7 @@ public abstract class HttpRequestSupport
 	}
 
 	@Override
-	public HttpResponse<InputStream> asData()
+	public HttpResponse exec()
 		throws HttpException
 	{
 		throw new NotImplementedYet();

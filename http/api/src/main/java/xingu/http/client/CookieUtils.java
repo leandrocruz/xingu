@@ -11,7 +11,7 @@ public class CookieUtils
 {
 	public static final Cookie[] EMPTY = new Cookie[]{};
 
-	public static Cookies getCookies(HttpResponse<?> res)
+	public static Cookies getCookies(HttpResponse res)
 	{
 		StringBuffer  sb      = new StringBuffer();
 		NameValue[]   headers = res.getHeaders();
@@ -32,7 +32,7 @@ public class CookieUtils
 		return new CookiesImpl(decoded);
 	}
 
-	public static Cookie replaceCookie(HttpResponse<String> resp, Cookie old)
+	public static Cookie replaceCookie(HttpResponse resp, Cookie old)
 	{
 		String name = old.getName();
 		Cookie cookie = getCookies(resp).byName(name);

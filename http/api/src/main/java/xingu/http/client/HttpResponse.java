@@ -5,12 +5,12 @@ import java.io.InputStream;
 
 import org.jsoup.nodes.Document;
 
-public interface HttpResponse<T>
+public interface HttpResponse
 {
 	int getCode();
 
-	T getBody();
-
+	String getBody();
+	
 	InputStream getRawBody();
 	
 	NameValue[] getHeaders();

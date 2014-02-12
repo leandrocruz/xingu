@@ -5,8 +5,8 @@ import java.io.InputStream;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseSupport;
 
-public class SimpleHttpResponse<T>
-	extends HttpResponseSupport<T>
+public class SimpleHttpResponse
+	extends HttpResponseSupport
 {
 	private int			code;
 
@@ -56,9 +56,9 @@ public class SimpleHttpResponse<T>
 	}
 
 	@Override
-	public T getBody()
+	public String getBody()
 	{
-		return (T) body;
+		return body;
 	}
 
 	public void setCode(int code)

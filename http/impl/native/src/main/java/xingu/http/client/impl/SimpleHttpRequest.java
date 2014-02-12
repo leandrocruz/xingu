@@ -130,23 +130,9 @@ public class SimpleHttpRequest
 		return isPost;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public HttpResponse<InputStream> asData()
+	public HttpResponse exec()
 		throws HttpException
-	{
-		return (HttpResponse<InputStream>) exec();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public HttpResponse<String> asString()
-		throws HttpException
-	{
-		return (HttpResponse<String>) exec();
-	}
-
-	private HttpResponse<?> exec()
 	{
 		String impl = builder.name();
 		try

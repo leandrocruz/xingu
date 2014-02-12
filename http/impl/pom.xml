@@ -14,7 +14,6 @@
 	<modules>
 		<module>commons</module>
 		<module>ahc</module>
-		<module>unirest</module>
 		<module>native</module>
 	</modules>
 </project>

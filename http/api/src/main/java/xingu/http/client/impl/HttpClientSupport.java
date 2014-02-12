@@ -12,10 +12,10 @@ public abstract class HttpClientSupport
 	public Cookies getCookies(String uri)
 		throws HttpException
 	{
-		xingu.http.client.HttpResponse<?> res = get(uri)
+		xingu.http.client.HttpResponse res = get(uri)
 				.header("Accept", "text/html")
 				.header("Accept-Charset", "ISO-8859-1,utf-8")
-				.asString();
+				.exec();
 		return CookieUtils.getCookies(res);
 	}
 }

@@ -31,7 +31,7 @@ public abstract class CommandLineBuilderSupport
 	}
 
 	@Override
-	public <T> HttpResponse<T> responseFrom(HttpRequest req, File file)
+	public HttpResponse responseFrom(HttpRequest req, File file)
 		throws Exception
 	{
 		InputStream   is     = new FileInputStream(file);
@@ -72,7 +72,7 @@ public abstract class CommandLineBuilderSupport
 		}
 		while(StringUtils.isNotEmpty(line));
 		
-		SimpleHttpResponse<T> result = new SimpleHttpResponse<T>();
+		SimpleHttpResponse result = new SimpleHttpResponse();
 		result.setCode(code);
 		result.setHeaders(headers.toArray(EMPTY));
 		result.setUri(req.getUri());

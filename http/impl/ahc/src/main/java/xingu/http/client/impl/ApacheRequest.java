@@ -2,7 +2,6 @@ package xingu.http.client.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,22 +95,9 @@ public class ApacheRequest
 		return req.getMethod() + " " + req.getURI();
 	}
 
-
 	@Override
-	public HttpResponse<InputStream> asData()
+	public HttpResponse exec()
 		throws HttpException
-	{
-		return exec(InputStream.class);
-	}
-
-	@Override
-	public HttpResponse<String> asString()
-		throws HttpException
-	{
-		return exec(String.class);
-	}
-
-	private <T> HttpResponse<T> exec(Class<T> clazz)
 	{
 		String method = req.getMethod();
 		if("POST".equals(method))
@@ -147,7 +133,7 @@ public class ApacheRequest
 		try
 		{
 			org.apache.http.HttpResponse res = client.execute(req);
-			return ApacheHttpResponseBuilder.build(req, res, clazz);
+			return ApacheHttpResponseBuilder.build(req, res);
 		}
 		catch(Exception e)
 		{

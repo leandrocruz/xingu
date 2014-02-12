@@ -9,8 +9,8 @@ import org.jsoup.nodes.Document;
 
 import xingu.http.client.HttpResponse;
 
-public abstract class HttpResponseSupport<T>
-	implements HttpResponse<T>
+public abstract class HttpResponseSupport
+	implements HttpResponse
 {
 
 	@Override

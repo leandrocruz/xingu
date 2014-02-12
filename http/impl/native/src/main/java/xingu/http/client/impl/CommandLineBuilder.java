@@ -12,6 +12,6 @@ public interface CommandLineBuilder
 
 	List<String> buildLine(HttpRequest request, File file);
 
-	<T> HttpResponse<T> responseFrom(HttpRequest req, File file)
+	HttpResponse responseFrom(HttpRequest req, File file)
 		throws Exception;
 }
