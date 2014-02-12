@@ -1,20 +1,23 @@
 package xingu.http.client.impl;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
+import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBufferInputStream;
+import org.jboss.netty.buffer.ChannelBuffers;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.NumberUtils;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
+import xingu.utils.NettyUtils;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.NumberUtils;
 
 public abstract class CommandLineBuilderSupport
 	implements CommandLineBuilder
@@ -31,23 +34,24 @@ public abstract class CommandLineBuilderSupport
 	public <T> HttpResponse<T> responseFrom(HttpRequest req, File file)
 		throws Exception
 	{
-		/* Parsing State */
-		int     i              = 0;
-		int     code           = -1;
-		boolean readingHeaders = true;
+		InputStream   is     = new FileInputStream(file);
+		byte[]        data   = IOUtils.toByteArray(is);
+		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
 
-		StringBuffer    body           = new StringBuffer();
-		List<NameValue> headers        = new ArrayList<NameValue>();
-		Reader          reader         = new FileReader(file);
-		LineIterator    it             = IOUtils.lineIterator(reader);
-		while(it.hasNext())
+		/* Parsing State */
+		int    i    = 0;
+		int    code = -1;
+		String line = null;
+		
+		List<NameValue> headers = new ArrayList<NameValue>();
+		do
 		{
-			String line = it.next();
+			line = NettyUtils.readLine(buffer);
 			if(i == 0)
 			{
 				code = toResponseCode(line);
 			}
-			else if(readingHeaders)
+			else
 			{
 				if(StringUtils.isEmpty(line))
 				{
@@ -57,8 +61,6 @@ public abstract class CommandLineBuilderSupport
 						i = 0;
 						continue;
 					}
-					readingHeaders = false;
-					continue;
 				}
 				else
 				{
@@ -66,19 +68,17 @@ public abstract class CommandLineBuilderSupport
 					headers.add(h);
 				}
 			}
-			else
-			{
-				body.append(line).append("\n");
-			}
 			i++;
 		}
+		while(StringUtils.isNotEmpty(line));
 		
 		SimpleHttpResponse<T> result = new SimpleHttpResponse<T>();
 		result.setCode(code);
 		result.setHeaders(headers.toArray(EMPTY));
 		result.setUri(req.getUri());
-		result.setBody(body.toString());
-		result.setRawBody(IOUtils.toInputStream(body));
+
+		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
+		result.setRawBody(raw);
 		return result;
 	}
 
