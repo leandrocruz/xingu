@@ -20,4 +20,18 @@ public class CpfTest
 		String cpf = Cpf.geraCPF("123.123.123");
 		assertEquals("12312312387", cpf);
 	}
+	
+	public void testValidate()
+		throws Exception
+	{
+		boolean valid = Cpf.isValid("123.123.123-87");
+		assertTrue(valid);
+
+		valid = Cpf.isValid("123.123.121-87");
+		assertFalse(valid);
+
+		valid = Cpf.isValid("123.123.123-88");
+		assertFalse(valid);
+
+	}
 }
