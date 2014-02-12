@@ -52,4 +52,6 @@ public interface HttpRequest
 	HttpRequest upload(String name, String filePath);
 
 	List<NameValue> getUploadFiles();
+	
+	HttpRequest ndc(String ndc);
 }

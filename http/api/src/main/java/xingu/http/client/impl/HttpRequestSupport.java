@@ -122,4 +122,10 @@ public abstract class HttpRequestSupport
 	{
 		throw new NotImplementedYet();
 	}
+
+	@Override
+	public HttpRequest ndc(String ndc)
+	{
+		return this;
+	}
 }

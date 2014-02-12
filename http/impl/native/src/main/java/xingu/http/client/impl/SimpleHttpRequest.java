@@ -1,6 +1,8 @@
 package xingu.http.client.impl;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,37 +19,41 @@ import xingu.http.client.NameValue;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.io.FileNamer;
+import br.com.ibnetwork.xingu.utils.io.SerialFileContainer;
 
 public class SimpleHttpRequest
 	extends HttpRequestSupport
 {
 	@Inject
-	protected ProcessManager		pm;
+	private ProcessManager		pm;
 
 	@Inject
-	protected CommandLineBuilder	builder;
+	private CommandLineBuilder	builder;
 
-	protected boolean				isPost;
+	private boolean				isPost;
 
-	protected String				uri;
+	private String				uri;
 
-	private String					ua;
+	private String				ua;
 
-	protected String				certificate;
+	private String				certificate;
 
-	private String					certificatePassword;
+	private String				certificatePassword;
 
-	protected List<Cookie>			cookies	= new ArrayList<Cookie>();
+	private boolean				multipart;
 
-	protected List<NameValue>		fields	= new ArrayList<NameValue>();
-	
-	protected List<NameValue>		upload	= new ArrayList<NameValue>();
-	
-	protected List<NameValue>		headers	= new ArrayList<NameValue>();
+	private String				ndc;
 
-	private boolean	multipart;
+	private List<Cookie>		cookies	= new ArrayList<Cookie>();
 
-	protected static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
+	private List<NameValue>		fields	= new ArrayList<NameValue>();
+
+	private List<NameValue>		upload	= new ArrayList<NameValue>();
+
+	private List<NameValue>		headers	= new ArrayList<NameValue>();
+
+	private static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
 
 	public SimpleHttpRequest(String uri, boolean isPost)
 	{
@@ -123,15 +129,29 @@ public class SimpleHttpRequest
 	{
 		return isPost;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public HttpResponse<InputStream> asData()
+		throws HttpException
+	{
+		return (HttpResponse<InputStream>) exec();
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public HttpResponse<String> asString()
 		throws HttpException
 	{
+		return (HttpResponse<String>) exec();
+	}
+
+	private HttpResponse<?> exec()
+	{
 		String impl = builder.name();
 		try
 		{
-			File         file = File.createTempFile(impl + "-http-response-", ".html");
+			File         file = getOutputFile();
 			List<String> cmd  = builder.buildLine(this, file);
 			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 			
@@ -147,6 +167,38 @@ public class SimpleHttpRequest
 		{
 			throw new HttpException(e);
 		}
+	}
+
+	private File getOutputFile()
+		throws IOException
+	{
+		final String impl = builder.name();
+		File  tmp         = org.apache.commons.io.FileUtils.getTempDirectory();
+		if(StringUtils.isNotEmpty(ndc))
+		{
+			File    root    = new File(tmp, ndc);
+			root.mkdirs();
+			
+			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
+				@Override
+				public Integer getParam(String name)
+				{
+					String pre = impl + "-http-response-";
+					String s   = name.substring(pre.length());
+					int    idx = s.indexOf(".");
+					s          = s.substring(0, idx);
+					return Integer.parseInt(s);
+				}
+
+				@Override
+				public String getName(Integer i)
+				{
+					return impl + "-http-response-" + i + ".html";
+				}
+			});
+			return container.next();
+		}
+		return File.createTempFile(impl + "-http-response-", ".html");
 	}
 
 	@Override
@@ -198,6 +250,13 @@ public class SimpleHttpRequest
 	public boolean isMultipart()
 	{
 		return multipart;
+	}
+
+	@Override
+	public HttpRequest ndc(String ndc)
+	{
+		this.ndc = ndc;
+		return this;
 	}
 
 	@Override
