@@ -9,6 +9,8 @@ public interface Cookies
 {
 	Cookie byName(String name);
 	
+	Cookie replace(String name, String content);
+	
 	Cookie startingWith(String name);
 	
 	List<String> names();

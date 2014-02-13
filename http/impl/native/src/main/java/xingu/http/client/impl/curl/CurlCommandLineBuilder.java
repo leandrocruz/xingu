@@ -1,6 +1,8 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilderSupport;
+import xingu.http.client.impl.NameValueImpl;
+import xingu.netty.http.HttpUtils;
 
 /*
  * See: http://curl.haxx.se/docs/manpage.html
@@ -25,7 +29,8 @@ public class CurlCommandLineBuilder
 	}
 
 	@Override
-	public List<String> buildLine(HttpRequest req, File file)
+	public List<String> buildLine(HttpRequest req, File file) 
+		throws UnsupportedEncodingException
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
@@ -34,7 +39,14 @@ public class CurlCommandLineBuilder
 		result.add("-o");
 		result.add(file.toString());
 		
-
+		String authUser  = req.getAuthenticationUser();
+		String authPwd	 = req.getAuthenticationPassword();
+		if(StringUtils.isNotEmpty(authUser) && StringUtils.isNotEmpty(authPwd))
+		{
+			result.add("--user");
+			result.add(authUser + ":" + authPwd);
+		}
+		
 		String certificate = req.getCertificate();
 		if(StringUtils.isNotEmpty(certificate))
 		{
@@ -48,13 +60,13 @@ public class CurlCommandLineBuilder
 
 		if(req.isPost())
 		{
-			placePostFields(req, result);
+			placePostFields(req, result);			
 		}
 		else
 		{
 			placeQueryStringFields(req, result);
 		}
-
+		
 		result.add("--compressed");
 		
 		return result;
@@ -80,10 +92,11 @@ public class CurlCommandLineBuilder
 		int len = uploadFields == null ? 0 : uploadFields.size();
 		if(len > 0)
 		{
+			uploadFields = escape(uploadFields);
 			for(NameValue f : uploadFields)
 			{
 				result.add("-F");
-				result.add(f.getName() + "=@'" + f.getValue() + "'");
+				result.add(f.getName() + "=@" + f.getValue());
 			}
 		}
 
@@ -91,10 +104,11 @@ public class CurlCommandLineBuilder
 		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
 		{
+			fields = escape(fields);
 			for(NameValue f : fields)
 			{
 				result.add("-F");
-				result.add(f.getName() + "='" + f.getValue() + "'");
+				result.add(f.getName() + "=" + f.getValue());
 			}
 		}
 	}
@@ -123,7 +137,8 @@ public class CurlCommandLineBuilder
 		}
 	}
 
-	private void placeQueryStringFields(HttpRequest req, List<String> result)
+	private void placeQueryStringFields(HttpRequest req, List<String> result) 
+		throws UnsupportedEncodingException
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();
@@ -131,6 +146,7 @@ public class CurlCommandLineBuilder
 
 		if(len > 0)
 		{
+			fields = urlEncode(fields, HttpUtils.DEFAULT_HTTP_CHARSET.name());
 			int i = 0;
 			uri.append("?");
 			for(NameValue f : fields)
@@ -149,10 +165,12 @@ public class CurlCommandLineBuilder
 	private void placeDataFields(HttpRequest req, List<String> result)
 	{
 		List<NameValue> fields = req.getFields();
-		int len = fields == null ? 0 : fields.size();
+		int len = fields == null ? 0 : fields.size();		
 
 		if(len > 0)
 		{
+			fields = escape(fields);
+			
 			int i = 0;
 
 			result.add("--data");
@@ -168,6 +186,35 @@ public class CurlCommandLineBuilder
 			}
 			result.add(sb.toString());
 		}
+	}
+	
+	private List<NameValue> urlEncode(List<NameValue> fields, String codec) 
+		throws UnsupportedEncodingException
+	{
+		List<NameValue> escapedList = new ArrayList<NameValue>();
+		for(NameValue v : fields)
+		{
+			String		fieldName	 = v.getName();
+			String 		escapedValue = URLEncoder.encode(v.getValue(), codec);
+			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
+			
+			escapedList.add(escaped);
+		}
+		return escapedList;
+	}
+
+	private List<NameValue> escape(List<NameValue> fields)
+	{
+		List<NameValue> escapedList = new ArrayList<NameValue>();
+		for(NameValue v : fields)
+		{
+			String		fieldName	 = v.getName();
+			String 		escapedValue = v.getValue().replace(" ", "\\ ");
+			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
+			
+			escapedList.add(escaped);
+		}
+		return escapedList;
 	}
 
 	private void placeCookies(HttpRequest req, List<String> result)

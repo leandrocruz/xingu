@@ -15,6 +15,24 @@ public abstract class HttpRequestSupport
 	implements HttpRequest
 {
 	@Override
+	public String getAuthenticationUser()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public String getAuthenticationPassword()
+	{
+		throw new NotImplementedYet();
+	}
+	
+	@Override
+	public HttpRequest withAuthentication(String user, String password)
+	{
+		throw new NotImplementedYet();
+	}
+	
+	@Override
 	public HttpRequest withCertificate(String certificate)
 	{
 		throw new NotImplementedYet();

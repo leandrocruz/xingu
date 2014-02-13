@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jboss.netty.handler.codec.http.Cookie;
+import org.jboss.netty.handler.codec.http.DefaultCookie;
 
 import xingu.http.client.Cookies;
 
@@ -69,5 +70,25 @@ public class CookiesImpl
 			result.add(c.getName());
 		}
 		return result;
+	}
+
+	@Override
+	public Cookie replace(String name, String content)
+	{
+		Cookie toRemove = null;
+		for(Cookie c : set)
+		{
+			if(c.getName().startsWith(name))
+			{
+				toRemove = c;
+				break;
+			}
+		}
+		if(toRemove != null)
+		{
+			set.remove(toRemove);
+			set.add(new DefaultCookie(name, content));
+		}
+		return null;
 	}
 }

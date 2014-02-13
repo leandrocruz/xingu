@@ -40,6 +40,10 @@ public class SimpleHttpRequest
 	private String				certificate;
 
 	private String				certificatePassword;
+	
+	private String				authUser;
+	
+	private String				authPassword;
 
 	private boolean				multipart;
 
@@ -225,6 +229,26 @@ public class SimpleHttpRequest
 	{
 		upload.add(new NameValueImpl(name, filePath));
 		return this;
+	}
+	
+	@Override
+	public HttpRequest withAuthentication(String user, String password)
+	{
+		this.authUser 		= user;
+		this.authPassword 	= password;
+		return this;
+	}
+	
+	@Override
+	public String getAuthenticationUser()
+	{
+		return authUser;
+	}
+
+	@Override
+	public String getAuthenticationPassword()
+	{
+		return authPassword;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package xingu.http.client.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public abstract class CommandLineBuilderSupport
 	
 	@Override
 	public List<String> buildLine(HttpRequest request, File file)
+			throws UnsupportedEncodingException
 	{
 		throw new NotImplementedYet();
 	}
@@ -90,9 +92,11 @@ public abstract class CommandLineBuilderSupport
 
 	private static NameValue toHeader(String line)
 	{
-		String[] parts = StringUtils.split(line, ":");
-		String   name  = StringUtils.trimToEmpty(parts[0]);
-		String   value = StringUtils.trimToEmpty(parts[1]);
+		int 	idx 	= line.indexOf(":");
+		String 	name 	= line.substring(0, idx);
+		String 	value 	= line.substring(idx + 1);		
+		name  			= StringUtils.trimToEmpty(name);
+		value 			= StringUtils.trimToEmpty(value);		
 		return new NameValueImpl(name, value);
 	}
 }

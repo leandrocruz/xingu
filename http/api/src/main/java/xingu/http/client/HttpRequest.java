@@ -50,4 +50,10 @@ public interface HttpRequest
 	List<NameValue> getUploadFiles();
 	
 	HttpRequest ndc(String ndc);
+
+	HttpRequest withAuthentication(String user, String password);
+
+	String getAuthenticationUser();
+
+	String getAuthenticationPassword();
 }
