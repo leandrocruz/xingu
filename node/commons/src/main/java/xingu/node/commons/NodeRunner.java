@@ -38,6 +38,7 @@ public class NodeRunner
 		{
 			name = ContainerUtils.getFileName();
 		}
+		System.out.println("config: " + name);
 		InputStream is = FileUtils.toInputStream(name);
 		ContainerUtils.getContainer(is, true);
 	}
