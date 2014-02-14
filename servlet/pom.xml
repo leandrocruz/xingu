@@ -13,6 +13,7 @@
 		<module>utils</module>
 		<module>command</module>
 		<module>container</module>
+		<module>sample</module>
 	</modules>
 	<dependencies>
 		<dependency>
