@@ -2,7 +2,6 @@ package xingu.http.client.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.http.client.ConnectionRefused;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
@@ -138,25 +138,30 @@ public class SimpleHttpRequest
 	public HttpResponse exec()
 		throws HttpException
 	{
-		String impl = builder.name();
+		String impl   = builder.name();
+		int    result = 0 ;
 		try
 		{
 			File         file = getOutputFile();
 			List<String> cmd  = builder.buildLine(this, file);
 			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 			
-			int result = pm.exec(cmd);
-			if(result != 0)
+			result = pm.exec(cmd);
+			if(result == 0)
 			{
-				throw new NotImplementedYet("ERROR executing "+impl+" processes: " + result);
+				return builder.responseFrom(this, file);
 			}
-			
-			return builder.responseFrom(this, file);
 		}
 		catch(Exception e)
 		{
 			throw new HttpException(e);
 		}
+
+		if(7 == result /* TODO: curl specific */)
+		{
+			throw new ConnectionRefused("Failed connect to '"+this.getUri()+"'");
+		}
+		throw new NotImplementedYet("ERROR executing "+impl+" processes: " + result);
 	}
 
 	private File getOutputFile()
