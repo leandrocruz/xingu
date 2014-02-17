@@ -155,4 +155,27 @@ public class ArrayUtils
     	return result;
     }
 
+    public static final boolean equals(Object[] expected, Object[] array)
+    {
+    	if(expected == null && array == null)
+    	{
+    		return true;
+    	}
+    	
+    	if(expected.length != array.length)
+    	{
+    		return false;
+    	}
+    	
+    	for(int i = 0; i < expected.length; i++)
+    	{
+    		Object a = expected[i];
+    		Object b = array[i];
+    		if(!a.equals(b))
+    		{
+    			return false;
+    		}
+    	}
+    	return true;
+    }
 }

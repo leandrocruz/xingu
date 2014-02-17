@@ -2,16 +2,16 @@ package xingu.node.console.impl;
 
 import java.util.concurrent.Callable;
 
-import xingu.codec.Codec;
-import xingu.node.console.command.Command;
-import xingu.node.console.command.Writer;
-import xingu.node.console.command.impl.EncodedChannelWriter;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.codec.Codec;
+import xingu.node.console.command.Command;
+import xingu.node.console.command.Writer;
+import xingu.node.console.command.impl.EncodedChannelWriter;
+import br.com.ibnetwork.xingu.utils.ArgsUtils;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class CommandTask
@@ -47,7 +47,8 @@ public class CommandTask
 		long   start  = System.currentTimeMillis();
 		try
 		{
-			result = command.execute(args, writer);
+			String[] my = ArgsUtils.norm(args);
+			result = command.execute(my, writer);
 		}
 		catch(Throwable t)
 		{

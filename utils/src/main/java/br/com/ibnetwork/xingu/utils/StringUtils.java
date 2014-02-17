@@ -25,6 +25,8 @@ public class StringUtils
     public static final String AND = "&";
     
     public static final Charset UTF8 = Charset.forName("utf8");
+    
+    public static final String[] EMPTY_ARRAY = new String[]{};
 
     public static final boolean isEmpty(String[] array)
     {
