@@ -83,7 +83,7 @@ public abstract class CometHandlerSupport
 			signal.setOwner(owner);
 			verifyOwnership(signal);
 
-			Signal reply = performer.performBehavior(signal);
+			Signal reply = performer.performBehavior(signal, null);
 			if(reply != null)
 			{
 				reply.setSignalId(id);

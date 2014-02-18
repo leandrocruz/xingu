@@ -2,6 +2,7 @@ package xavante.comet.impl;
 
 import java.net.SocketAddress;
 
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
@@ -25,6 +26,8 @@ public class CometMessageImpl
 	private SocketAddress	localAddress;
 
 	private SocketAddress	remoteAddress;
+
+	private Channel			channel;
 	
 	public String getToken(){return token;}
 	public void setToken(String hash){this.token = hash;}
@@ -42,4 +45,6 @@ public class CometMessageImpl
 	public void setLocalAddress(SocketAddress localAddress){this.localAddress = localAddress;}
 	public SocketAddress getRemoteAddress(){return remoteAddress;}
 	public void setRemoteAddress(SocketAddress remoteAddress){this.remoteAddress = remoteAddress;}
+	@Override public Channel getChannel(){return channel;}
+	public void setChannel(Channel channel){this.channel = channel;}
 }

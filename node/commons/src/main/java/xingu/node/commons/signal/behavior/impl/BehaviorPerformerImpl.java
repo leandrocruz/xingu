@@ -1,5 +1,7 @@
 package xingu.node.commons.signal.behavior.impl;
 
+import org.jboss.netty.channel.Channel;
+
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
 import xingu.node.commons.signal.behavior.BehaviorResolver;
@@ -13,11 +15,11 @@ public class BehaviorPerformerImpl
 	private BehaviorResolver resolver;
 
 	@Override
-	public Signal performBehavior(Signal signal)
+	public Signal performBehavior(Signal signal, Channel channel)
 		throws Exception
 	{
 		SignalBehavior<Signal, Signal> behavior = resolver.behaviorFor(signal);
-		Signal reply = behavior.perform(signal);
+		Signal reply = behavior.perform(signal, channel);
 		return reply;
 	}
 }

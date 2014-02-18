@@ -1,5 +1,7 @@
 package xingu.node.commons.signal.behavior;
 
+import org.jboss.netty.channel.Channel;
+
 import xingu.node.commons.signal.Signal;
 
 public class NullBehavior
@@ -11,7 +13,7 @@ public class NullBehavior
 	{}
 
 	@Override
-	public Signal perform(Signal signal)
+	public Signal perform(Signal signal, Channel channel)
 	{
 		return null;
 	}

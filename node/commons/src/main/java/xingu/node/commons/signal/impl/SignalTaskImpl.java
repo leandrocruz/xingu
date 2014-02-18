@@ -52,7 +52,7 @@ public class SignalTaskImpl
 		Signal reply = null;
 		try
 		{
-			reply = performer.performBehavior(signal);
+			reply = performer.performBehavior(signal, channel);
 		}
 		catch(Throwable t)
 		{

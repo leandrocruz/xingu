@@ -1,5 +1,7 @@
 package xingu.node.commons.signal.impl;
 
+import org.jboss.netty.channel.Channel;
+
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.SignalBehavior;
 
@@ -32,7 +34,7 @@ public class ExceptionSignal
 	}
 
 	@Override
-	public BooleanSignal perform(ExceptionSignal signal)
+	public BooleanSignal perform(ExceptionSignal signal, Channel channel)
 		throws Exception
 	{
 		System.err.println("Error Executing Signal " + this.signal);

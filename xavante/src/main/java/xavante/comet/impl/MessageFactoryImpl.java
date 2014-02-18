@@ -37,6 +37,7 @@ public class MessageFactoryImpl
 		msg.setResponse(resp);
 		msg.setRemoteAddress(remoteAddress);
 		msg.setLocalAddress(localAddress);
+		msg.setChannel(channel);
 		int start, end = 0;
 		
 		//command
