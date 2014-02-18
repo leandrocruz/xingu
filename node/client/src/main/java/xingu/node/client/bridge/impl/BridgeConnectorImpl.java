@@ -61,6 +61,8 @@ public class BridgeConnectorImpl
 
 	protected Logger				logger		= LoggerFactory.getLogger(getClass());
 
+	private Channel					acceptedChannel;
+
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
@@ -114,16 +116,23 @@ public class BridgeConnectorImpl
 	}
 
 	@Override
+	public Channel getAcceptedChannel()
+	{
+		return acceptedChannel;
+	}
+
+	@Override
 	public Channel connect()
 	{
 		foundPort = 0;
     	int size = ports.length;
     	for (int i = 0; i < size; i++)
 		{
-			int port = ports[i];
+			int     port    = ports[i];
 			Channel channel = tryPort(port);
 			if(channel != null)
 			{
+				this.acceptedChannel = channel;
 				return channel;
 			}
 		}
