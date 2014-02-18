@@ -19,4 +19,9 @@ public class BooleanSignal
 	{
 		return bool != null ? bool.toString() : "NULL";
 	}
+
+	public boolean get()
+	{
+		return bool;
+	}
 }
