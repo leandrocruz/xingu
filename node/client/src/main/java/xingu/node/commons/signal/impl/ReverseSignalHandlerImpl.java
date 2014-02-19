@@ -7,21 +7,24 @@ import org.jboss.netty.channel.ChannelFutureListener;
 import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.commons.signal.ReverseSignalHandler;
 import xingu.node.commons.signal.Signal;
+import xingu.node.commons.signal.SignalHandler;
 import br.com.ibnetwork.xingu.container.Inject;
 
 public class ReverseSignalHandlerImpl
-	extends SignalHandlerSupport
 	implements ReverseSignalHandler
 {
 	@Inject
 	private BridgeConnector connector;
 
+	@Inject
+	private SignalHandler signals; // do NOT extend SignalHandlerSupport. We need the SignalHandler shared instance
+	
 	@Override
 	public Signal query(Signal signal)
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
-		return query(signal, null, channel);
+		return signals.query(signal, null, channel);
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class ReverseSignalHandlerImpl
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
-		return query(signal, onWrite, channel);
+		return signals.query(signal, onWrite, channel);
 	}
 
 	@Override
@@ -37,6 +40,6 @@ public class ReverseSignalHandlerImpl
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
-		return deliver(signal, channel);
+		return signals.deliver(signal, channel);
 	}
 }
