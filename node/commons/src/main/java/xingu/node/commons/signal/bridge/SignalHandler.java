@@ -6,7 +6,7 @@ import org.jboss.netty.channel.ChannelFutureListener;
 
 import xingu.node.commons.signal.Signal;
 
-public interface SignalBridge
+public interface SignalHandler
 {
 	void on(Channel channel, Signal signal)
 		throws Exception;

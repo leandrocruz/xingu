@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -14,12 +17,19 @@ import xingu.node.commons.session.SessionManager;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalWaiter;
 import xingu.node.commons.signal.Waiter;
+import xingu.node.commons.signal.bridge.SignalHandler;
 import xingu.node.commons.signal.impl.ExceptionSignal;
 import xingu.node.commons.signal.impl.TimeoutSignal;
+import xingu.node.commons.signal.processor.SignalProcessor;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.utils.TimeUtils;
 
-public class BridgeSupport
+public class SignalHandlerImpl
+	implements SignalHandler, Configurable
 {
+	@Inject
+	private SignalProcessor			processor;
+	
 	@Inject
 	protected SessionManager		sessions;
 
@@ -28,6 +38,14 @@ public class BridgeSupport
 	protected volatile AtomicLong	count	= new AtomicLong(0);
 
 	protected List<Waiter<Signal>>	waiters	= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
+
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		String tm = conf.getChild("query").getAttribute("timeout", "1m");
+		queryTimeout = TimeUtils.toMillis(tm);
+	}
 
 	public ChannelFuture deliver(Channel channel, Signal signal)
 		throws Exception
@@ -118,5 +136,26 @@ public class BridgeSupport
 	    waiter.waitFor(queryTimeout);
 	    return waiter.reply;
 	}
+	
+	@Override
+	public void on(Channel channel, Signal signal)
+		throws Exception
+	{
+		Session session = sessions.by(channel);
+		long    id      = session.getId();
+		signal.setSessionId(id);
 
+		Waiter<Signal> waiter = findWaiter(signal);
+		if(waiter != null)
+		{
+			synchronized(waiter)
+			{
+				waiter.notify(signal);
+			}
+		}
+		else
+		{
+			processor.process(signal, channel);
+		}
+	}
 }
