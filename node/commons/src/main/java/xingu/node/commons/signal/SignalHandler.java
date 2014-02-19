@@ -1,4 +1,4 @@
-package xingu.node.commons.signal.bridge;
+package xingu.node.commons.signal;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;

@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.node.commons.signal.Signal;
-import xingu.node.commons.signal.bridge.SignalHandler;
+import xingu.node.commons.signal.SignalHandler;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
