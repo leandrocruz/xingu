@@ -5,6 +5,9 @@ import org.jboss.netty.channel.ChannelFutureListener;
 
 public interface ReverseSignalHandler
 {
+	Signal query(Signal signal)
+			throws Exception;
+
 	Signal query(Signal signal, ChannelFutureListener onWrite)
 		throws Exception;
 

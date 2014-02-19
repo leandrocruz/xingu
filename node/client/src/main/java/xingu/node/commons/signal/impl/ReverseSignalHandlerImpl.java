@@ -15,7 +15,15 @@ public class ReverseSignalHandlerImpl
 {
 	@Inject
 	private BridgeConnector connector;
-	
+
+	@Override
+	public Signal query(Signal signal)
+		throws Exception
+	{
+		Channel channel = connector.getAcceptedChannel();
+		return query(signal, null, channel);
+	}
+
 	@Override
 	public Signal query(Signal signal, ChannelFutureListener onWrite)
 		throws Exception

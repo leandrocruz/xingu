@@ -27,7 +27,6 @@ import br.com.ibnetwork.xingu.utils.TimeUtils;
 public class SignalHandlerSupport
 	implements Configurable
 {
-
 	@Inject
 	protected SessionManager		sessions;
 
@@ -51,6 +50,12 @@ public class SignalHandlerSupport
 		idGen           = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
 
+	public Signal query(Signal signal, Channel channel)
+		throws Exception
+	{
+		return query(signal, null, channel);
+	}
+	
 	public Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel)
 		throws Exception
 	{
