@@ -56,6 +56,14 @@ public class FileUtils
 		IOUtils.closeQuietly(is);
 		return result;
 	}
+	
+	public static void toFile(byte[] buffer, File file)
+		throws IOException
+	{
+		OutputStream os = new FileOutputStream(file);
+		IOUtils.write(buffer, os);
+		IOUtils.closeQuietly(os);
+	}
 
 	public static void toFile(String s, File file)
 		throws IOException
