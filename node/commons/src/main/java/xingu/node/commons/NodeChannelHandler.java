@@ -57,7 +57,7 @@ public class NodeChannelHandler
 		{
 			logger.debug("Processing signal '{}' from {}", name, addr);
 			Signal signal = (Signal) msg;
-			bridge.on(channel, signal);
+			bridge.on(signal, channel);
 		}
 		else
 		{

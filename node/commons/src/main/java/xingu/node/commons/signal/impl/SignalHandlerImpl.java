@@ -55,14 +55,14 @@ public class SignalHandlerImpl
 		idGen           = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
 
-	public ChannelFuture deliver(Channel channel, Signal signal)
+	public ChannelFuture deliver(Signal signal, Channel channel)
 		throws Exception
 	{
 		touch(channel, signal);
 		return channel.write(signal);
 	}
 
-	public Signal query(Channel channel, ChannelFutureListener onWrite, Signal signal)
+	public Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel)
 		throws Exception
 	{
 		Signal reply = null;
@@ -72,7 +72,7 @@ public class SignalHandlerImpl
 		
 		try
 		{
-			ChannelFuture future = deliver(channel, signal);
+			ChannelFuture future = deliver(signal, channel);
 			if(onWrite != null)
 			{
 				future.addListener(onWrite);
@@ -149,7 +149,7 @@ public class SignalHandlerImpl
 	}
 	
 	@Override
-	public void on(Channel channel, Signal signal)
+	public void on(Signal signal, Channel channel)
 		throws Exception
 	{
 		Session session = sessions.by(channel);

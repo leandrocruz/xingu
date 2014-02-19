@@ -8,12 +8,12 @@ import xingu.node.commons.signal.Signal;
 
 public interface SignalHandler
 {
-	void on(Channel channel, Signal signal)
+	void on(Signal signal, Channel channel)
 		throws Exception;
 
-	Signal query(Channel channel, ChannelFutureListener onWrite, Signal signal)
+	Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel)
 		throws Exception;
 
-	ChannelFuture deliver(Channel channel, Signal signal)
+	ChannelFuture deliver(Signal signal, Channel channel)
 		throws Exception;
 }
