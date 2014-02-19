@@ -167,4 +167,32 @@ public class FileUtils
 			throw new IOException("Failed to create temp dir named " + dir.getAbsolutePath());
 		}
 	}
+	
+	public static File toFile(InputStream is, String prefix, String suffix)
+		throws IOException
+	{
+		File         file = File.createTempFile(prefix, suffix);
+		OutputStream os   = new FileOutputStream(file);
+		IOUtils.copy(is, os);
+		IOUtils.closeQuietly(os);
+		IOUtils.closeQuietly(is);
+		
+		return file;
+
+	}
+
+	public static File toFile(URL url, String prefix, String suffix)
+		throws IOException
+	{
+		File         file = File.createTempFile(prefix, suffix);
+		InputStream  is   = url.openStream();
+		byte[]       data = IOUtils.toByteArray(is);
+		OutputStream os   = new FileOutputStream(file);
+		IOUtils.write(data, os);
+
+		IOUtils.closeQuietly(os);
+		IOUtils.closeQuietly(is);
+
+		return file;
+	}
 }
