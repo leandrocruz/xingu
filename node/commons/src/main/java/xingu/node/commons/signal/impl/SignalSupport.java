@@ -7,7 +7,7 @@ import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 public class SignalSupport
 	implements Signal
 {
-	protected long				signalId;
+	protected String				signalId;
 
 	protected Identity<?>		owner;
 
@@ -30,8 +30,8 @@ public class SignalSupport
 	protected boolean			processEnabled	= true;
 
     /* @formatter:off */
-	@Override public long getSignalId() {return signalId;}
-	@Override public void setSignalId(long id){this.signalId = id;}
+	@Override public String getSignalId() {return signalId;}
+	@Override public void setSignalId(String id){this.signalId = id;}
 	@Override public Identity<?> getIdentity(){return identity;}
 	@Override public void setIdentity(Identity<?> identity){this.identity = identity;}
 	@Override public Identity<?> getOwner() {return owner;}

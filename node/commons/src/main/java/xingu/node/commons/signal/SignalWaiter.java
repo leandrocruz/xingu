@@ -3,7 +3,7 @@ package xingu.node.commons.signal;
 public class SignalWaiter
 	extends Waiter<Signal>
 {
-	private final long id;
+	private final String id;
 	
 	public SignalWaiter(Signal signal)
 	{
@@ -14,6 +14,6 @@ public class SignalWaiter
 	@Override
 	public boolean waitingOn(Signal reply)
 	{
-		return id == reply.getSignalId();
+		return id.equals(reply.getSignalId());
 	}
 }

@@ -63,7 +63,7 @@ public class SignalTaskImpl
 		}
 		if(reply != null)
 		{
-			long signalId = signal.getSignalId();
+			String signalId = signal.getSignalId();
 			reply.setSignalId(signalId);
 			channel.write(reply).addListener(onWrite);
 		}

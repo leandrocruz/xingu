@@ -28,5 +28,10 @@
 			<artifactId>xingu-crypto</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-idgenerator</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

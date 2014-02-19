@@ -70,7 +70,7 @@ public abstract class CometHandlerSupport
 		if(decoded instanceof Signal)
 		{
 			Signal      signal         = (Signal) decoded;
-			long        id             = signal.getSignalId();
+			String        id             = signal.getSignalId();
 			boolean     processEnabled = signal.isProcessEnabled();
 			Identity<?> owner          = findOwner(token, signal);
 

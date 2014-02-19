@@ -8,8 +8,8 @@ import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 public interface Signal
 	extends Serializable
 {
-	long getSignalId();
-	void setSignalId(long id);
+	String getSignalId();
+	void setSignalId(String id);
 
 	long getSessionId();
 	void setSessionId(long sessionId);

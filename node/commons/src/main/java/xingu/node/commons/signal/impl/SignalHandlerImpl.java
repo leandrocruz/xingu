@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -20,6 +21,9 @@ import xingu.node.commons.signal.SignalWaiter;
 import xingu.node.commons.signal.Waiter;
 import xingu.node.commons.signal.processor.SignalProcessor;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.idgenerator.Generator;
+import br.com.ibnetwork.xingu.idgenerator.impl.TimestampInMemoryGenerator;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class SignalHandlerImpl
@@ -27,9 +31,12 @@ public class SignalHandlerImpl
 {
 	@Inject
 	private SignalProcessor			processor;
-	
+
 	@Inject
 	protected SessionManager		sessions;
+
+	@Inject
+	protected Factory				factory;
 
 	protected long					queryTimeout;
 
@@ -37,12 +44,15 @@ public class SignalHandlerImpl
 
 	protected List<Waiter<Signal>>	waiters	= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
 
+	protected Generator<String>		idGen;
+
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		String tm = conf.getChild("query").getAttribute("timeout", "1m");
-		queryTimeout = TimeUtils.toMillis(tm);
+		String       tm = conf.getChild("query").getAttribute("timeout", "1m");
+		queryTimeout    = TimeUtils.toMillis(tm);
+		idGen           = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
 
 	public ChannelFuture deliver(Channel channel, Signal signal)
@@ -63,7 +73,10 @@ public class SignalHandlerImpl
 		try
 		{
 			ChannelFuture future = deliver(channel, signal);
-			future.addListener(onWrite);
+			if(onWrite != null)
+			{
+				future.addListener(onWrite);
+			}
 			future.awaitUninterruptibly();
 			reply = backFromTheFuture(future, signal, waiter); /* pretty cool don't you think? */
 		}
@@ -98,7 +111,7 @@ public class SignalHandlerImpl
 		}
 	}
 
-	protected long touch(Channel channel, Signal signal)
+	protected String touch(Channel channel, Signal signal)
 	{
 		long sid = signal.getSessionId();
 		if(sid <= 0)
@@ -108,10 +121,10 @@ public class SignalHandlerImpl
 			signal.setSessionId(sid);
 		}
 
-		long id = signal.getSignalId();
-		if(id <= 0)
+		String id = signal.getSignalId();
+		if(StringUtils.isEmpty(id))
 		{
-			id = count.incrementAndGet();
+			id = idGen.next(); //count.incrementAndGet();
 			signal.setSignalId(id);
 		}
 		return id;
