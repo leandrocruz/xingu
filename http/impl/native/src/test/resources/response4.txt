@@ -1,0 +1,20 @@
+HTTP/1.1 302 Found
+Location: http://www.google.com.br/?gfe_rd=ctrl&ei=sFEGU778JIqX8QfLloHYBw&gws_rd=cr
+Cache-Control: private
+Content-Type: text/html; charset=UTF-8
+Set-Cookie: PREF=ID=ce20a24454b3e7b0:FF=0:TM=1392923056:LM=1392923056:S=XJzMcL5FMR_wGaFN; expires=Sat, 20-Feb-2016 19:04:16 GMT; path=/; domain=.google.com
+Set-Cookie: NID=67=gbVYO3CBYtd5fAHBUEPbz6FkA8vQ7MqymZaWefWUgAK0gfW0PGnZc7ByFguhcOI798Kh-y6eZVNaqYJVZ2ytjGl7Kbsvx21ndYBds0qUkS-NsBeBRuBMh3mcvR55N18S; expires=Fri, 22-Aug-2014 19:04:16 GMT; path=/; domain=.google.com; HttpOnly
+P3P: CP="This is not a P3P policy! See http://www.google.com/support/accounts/bin/answer.py?hl=en&answer=151657 for more info."
+Date: Thu, 20 Feb 2014 19:04:16 GMT
+Server: gws
+Content-Length: 278
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+Alternate-Protocol: 80:quic
+
+<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
+<TITLE>302 Moved</TITLE></HEAD><BODY>
+<H1>302 Moved</H1>
+The document has moved
+<A HREF="http://www.google.com.br/?gfe_rd=ctrl&amp;ei=sFEGU778JIqX8QfLloHYBw&amp;gws_rd=cr">here</A>.
+</BODY></HTML>
