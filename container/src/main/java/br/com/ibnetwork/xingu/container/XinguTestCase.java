@@ -129,6 +129,11 @@ public class XinguTestCase
 		}
 	}
 
+	protected URL getResource(String name)
+	{
+		return Thread.currentThread().getContextClassLoader().getResource(name);
+	}
+
 	protected Configuration buildFrom(String xml)
 	{
 		DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
