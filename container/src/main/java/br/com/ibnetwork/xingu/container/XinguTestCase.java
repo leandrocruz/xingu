@@ -129,6 +129,12 @@ public class XinguTestCase
 		}
 	}
 
+    protected File getFile(String name)
+    {
+    	URL url = getResource(name);
+    	return new File(url.getFile());
+    }
+    
 	protected URL getResource(String name)
 	{
 		return Thread.currentThread().getContextClassLoader().getResource(name);
