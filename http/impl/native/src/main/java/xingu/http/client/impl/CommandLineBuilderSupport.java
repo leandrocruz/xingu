@@ -72,7 +72,7 @@ public abstract class CommandLineBuilderSupport
 			}
 			i++;
 		}
-		while(StringUtils.isNotEmpty(line));
+		while(StringUtils.isNotEmpty(line) || code == 100);
 		
 		SimpleHttpResponse result = new SimpleHttpResponse();
 		result.setCode(code);

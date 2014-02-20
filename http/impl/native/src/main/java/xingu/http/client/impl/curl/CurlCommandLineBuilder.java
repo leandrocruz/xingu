@@ -205,16 +205,17 @@ public class CurlCommandLineBuilder
 
 	private List<NameValue> escape(List<NameValue> fields)
 	{
-		List<NameValue> escapedList = new ArrayList<NameValue>();
-		for(NameValue v : fields)
-		{
-			String		fieldName	 = v.getName();
-			String 		escapedValue = v.getValue().replace(" ", "\\ ");
-			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
-			
-			escapedList.add(escaped);
-		}
-		return escapedList;
+		return fields;
+//		List<NameValue> escapedList = new ArrayList<NameValue>();
+//		for(NameValue v : fields)
+//		{
+//			String		fieldName	 = v.getName();
+//			String 		escapedValue = v.getValue().replace(" ", "\\ ");
+//			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
+//			
+//			escapedList.add(escaped);
+//		}
+//		return escapedList;
 	}
 
 	private void placeCookies(HttpRequest req, List<String> result)
