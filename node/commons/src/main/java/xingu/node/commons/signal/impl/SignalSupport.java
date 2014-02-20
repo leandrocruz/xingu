@@ -7,7 +7,7 @@ import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 public class SignalSupport
 	implements Signal
 {
-	protected String				signalId;
+	protected String			signalId;
 
 	protected Identity<?>		owner;
 
