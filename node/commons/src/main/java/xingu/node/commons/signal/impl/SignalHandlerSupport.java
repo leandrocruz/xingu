@@ -45,7 +45,7 @@ public class SignalHandlerSupport
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		String       tm = conf.getChild("query").getAttribute("timeout", "1m");
+		String       tm = conf.getChild("query").getAttribute("timeout", "5m");
 		queryTimeout    = TimeUtils.toMillis(tm);
 		idGen           = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}

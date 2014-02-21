@@ -1,7 +1,20 @@
 package br.com.ibnetwork.xingu.utils;
 
+import java.util.Random;
+
 public class NumberUtils
 {
+	private static Random rnd = new Random(System.currentTimeMillis());
+
+	/*
+	 * Generates a random number between start/end
+	 */
+	public static long rnd(int start, int end)
+	{
+		int diff = end - start;
+		return start + rnd.nextInt(diff + 1);
+	}
+
     public static int toInt(String value, int defaultValue)
     {
         try
