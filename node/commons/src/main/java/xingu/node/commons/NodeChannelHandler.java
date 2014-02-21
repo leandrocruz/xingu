@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalHandler;
+import xingu.node.commons.signal.impl.ChannelDisconnected;
+import xingu.node.commons.signal.impl.ExceptionCaught;
+import xingu.node.commons.signal.impl.NotASignal;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
@@ -35,13 +38,17 @@ public class NodeChannelHandler
 	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e)
 		throws Exception
 	{
+		Channel channel = e.getChannel();
+		bridge.on(new ChannelDisconnected(channel), channel);
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
 		throws Exception
 	{
-		logger.error("TODO: "+getClass().getName()+".exceptionCaught()", e.getCause());
+		Channel channel = e.getChannel();
+		Throwable cause = e.getCause();
+		bridge.on(new ExceptionCaught(channel, cause), channel);
 	}
 
 	@Override
@@ -62,6 +69,7 @@ public class NodeChannelHandler
 		else
 		{
 			logger.warn("Message '{}' from {} is not a signal", name, addr);
+			bridge.on(new NotASignal(msg), channel);
 		}
 	}
 }
