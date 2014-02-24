@@ -48,11 +48,20 @@ public class FileUtils
         }
 	}
 
+	public static byte[] toByteArray(File file)
+		throws IOException
+	{
+		InputStream is     = new FileInputStream(file);
+		byte[]      result = IOUtils.toByteArray(is);
+		IOUtils.closeQuietly(is);
+		return result;
+	}
+
 	public static String toString(File file)
 		throws IOException
 	{
-		InputStream is = new FileInputStream(file);
-		String result = IOUtils.toString(is);
+		InputStream is     = new FileInputStream(file);
+		String      result = IOUtils.toString(is);
 		IOUtils.closeQuietly(is);
 		return result;
 	}
