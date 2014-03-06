@@ -34,4 +34,17 @@ public class CpfTest
 		assertFalse(valid);
 
 	}
+	
+	public void testMask()
+		throws Exception
+	{
+		String withMask = "123.123.123-87";
+		String noMask   = "12312312387";
+		
+		assertEquals(noMask, Cpf.clearMask(withMask));
+		assertEquals(noMask, Cpf.clearMask(noMask));
+		
+		assertEquals(withMask, Cpf.addMask(withMask));
+		assertEquals(withMask, Cpf.addMask(noMask));
+	}
 }

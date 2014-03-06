@@ -87,6 +87,22 @@ public class Cpf
 
 	public static String addMask(String s)
 	{
-		return null;
+		s = clearMask(s);
+		StringBuffer sb = new StringBuffer();
+		char[] array = s.toCharArray();
+		for (int i = 0; i < 11; i++)
+		{
+			char c = array[i];
+			sb.append(c);
+			if(i == 2 || i == 5)
+			{
+				sb.append(".");
+			}
+			else if (i == 8)
+			{
+				sb.append("-");
+			}
+		}
+		return sb.toString();
 	}
 }
