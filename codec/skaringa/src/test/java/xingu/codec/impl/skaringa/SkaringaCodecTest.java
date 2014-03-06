@@ -2,7 +2,11 @@ package xingu.codec.impl.skaringa;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
+import com.skaringa.javaxml.ObjectTransformer;
+import com.skaringa.javaxml.ObjectTransformerFactory;
 
 import xingu.codec.Codec;
 import br.com.ibnetwork.xingu.container.Binder;
@@ -34,5 +38,23 @@ public class SkaringaCodecTest
         
         String output = codec.encode(machine);
         assertEquals(input, output);
+    }
+    
+    @Test
+    @Ignore
+    public void testSample()
+    	throws Exception
+    {
+    	ObjectTransformer transformer = ObjectTransformerFactory.getInstance().getImplementation();
+    	transformer.setProperty(javax.xml.transform.OutputKeys.INDENT, "true");
+    	transformer.setProperty(com.skaringa.javaxml.PropertyKeys.OMIT_XSI_TYPE, "true");
+    	transformer.setProperty(com.skaringa.javaxml.PropertyKeys.SKIP_UNKNOWN_FIELDS, "true");
+    	
+    	SimpleMachine m      = new SimpleMachine();
+    	m.beanId             = 1;
+    	m.id                 = "machine";
+    	m.kiduxHome          = "Home";
+    	String        string = transformer.serializeToString(m);
+    	System.out.println(string);
     }
 }
