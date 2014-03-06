@@ -34,6 +34,7 @@ public class SimpleCodecTest
 		parent.children.add(new Child(3));
 		xml = codec.encode(parent);
 		
+		System.out.println(xml);
 		Parent decoded = codec.decode(xml, Parent.class);
 		assertEquals(10, decoded.i);
 		assertEquals("sample", decoded.s);
