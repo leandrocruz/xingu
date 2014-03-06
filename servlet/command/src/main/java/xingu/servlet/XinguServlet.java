@@ -203,6 +203,14 @@ public class XinguServlet
     	{
     		return ((StringReply) reply).string();
     	}
-        return codec.encode(reply);
+        try
+		{
+			return codec.encode(reply);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
     }
 }

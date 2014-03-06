@@ -85,7 +85,7 @@ public class HttpExceptionHandler
      * @see http://hc.apache.org/httpcomponents-client-ga/tutorial/html/fundamentals.html#d4e186 (HTML Forms)
      */
     protected HttpEntity entityFrom(ExceptionItem item)
-        throws UnsupportedEncodingException
+        throws Exception
     {
         Throwable error = item.throwable;
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -99,7 +99,8 @@ public class HttpExceptionHandler
             Object data = withData.data();
             if(data != null)
             {
-                params.add(new BasicNameValuePair("data", codec.encode(data)));
+                String encoded = codec.encode(data);
+				params.add(new BasicNameValuePair("data", encoded));
             }
         }
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");

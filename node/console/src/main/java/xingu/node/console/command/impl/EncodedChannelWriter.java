@@ -20,6 +20,7 @@ public class EncodedChannelWriter
 
 	@Override
 	public void write(Object obj)
+		throws Exception
 	{
 		boolean open = channel.isOpen();
 		if(open)
