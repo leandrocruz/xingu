@@ -13,7 +13,7 @@ public class InterpolatorTest
     public void testPlain()
     {
         String s = "just a plain string";
-        assertEquals(s, Interpolator.interpolate(s, null));
+        assertEquals(s, Interpolator.interpolate(s));
     }
 
     @Test
