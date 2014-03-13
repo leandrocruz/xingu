@@ -9,7 +9,11 @@ public interface HttpResponse
 {
 	int getCode();
 
-	String getBody();
+	String getBody(String charset)
+		throws IOException;
+	
+	String getBody() // ISO-8859-1
+		throws IOException; 
 	
 	InputStream getRawBody();
 	

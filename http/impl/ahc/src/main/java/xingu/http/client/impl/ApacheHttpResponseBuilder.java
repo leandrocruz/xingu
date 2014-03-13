@@ -1,17 +1,13 @@
 package xingu.http.client.impl;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import xingu.http.client.NameValue;
 import xingu.http.client.HttpResponse;
-import xingu.http.client.impl.NameValueImpl;
+import xingu.http.client.NameValue;
 
 public class ApacheHttpResponseBuilder
 {
@@ -25,15 +21,15 @@ public class ApacheHttpResponseBuilder
 
 		HttpEntity  entity      = res.getEntity();
 		InputStream is          = entity.getContent();
-		byte[]      raw         = IOUtils.toByteArray(is);
-		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
+//		byte[]      raw         = IOUtils.toByteArray(is);
+//		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
 
 		
-		ApacheHttpResponse result = new ApacheHttpResponse(req, res);
+		HttpResponseImpl result = new HttpResponseImpl();
+		result.setUri(req.getURI().toString());
 		result.setCode(code);
 		result.setHeaders(headers);
-		result.setBody(new String(raw));
-		result.setRawBody(replacement);
+		result.setRawBody(is /* replacement */);
 		return result;
 	}
 

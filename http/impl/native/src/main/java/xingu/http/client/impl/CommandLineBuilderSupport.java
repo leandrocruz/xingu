@@ -74,7 +74,7 @@ public abstract class CommandLineBuilderSupport
 		}
 		while(StringUtils.isNotEmpty(line) || code == 100);
 		
-		SimpleHttpResponse result = new SimpleHttpResponse();
+		HttpResponseImpl result = new HttpResponseImpl();
 		result.setCode(code);
 		result.setHeaders(headers.toArray(EMPTY));
 		result.setUri(req.getUri());
