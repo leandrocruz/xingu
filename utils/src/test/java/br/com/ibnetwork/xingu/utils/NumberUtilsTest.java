@@ -1,5 +1,6 @@
 package br.com.ibnetwork.xingu.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -19,5 +20,25 @@ public class NumberUtilsTest
     		assertTrue(rnd >= start);
     		assertTrue(rnd <= end);
     	}
+    }
+
+    @Test
+    public void testDivRoundUp()
+    	throws Exception
+    {
+    	assertEquals(1,  NumberUtils.divRoundUp(1, 1));
+    	assertEquals(1,  NumberUtils.divRoundUp(1, 2));
+    	assertEquals(2,  NumberUtils.divRoundUp(2, 1));
+    	assertEquals(20, NumberUtils.divRoundUp(20, 1));
+    	assertEquals(10, NumberUtils.divRoundUp(20, 2));
+    	assertEquals(7,  NumberUtils.divRoundUp(20, 3));
+    	assertEquals(5,  NumberUtils.divRoundUp(20, 4));
+    	assertEquals(4,  NumberUtils.divRoundUp(20, 5));
+    	assertEquals(4,  NumberUtils.divRoundUp(20, 6));
+    	assertEquals(3,  NumberUtils.divRoundUp(20, 7));
+    	assertEquals(3,  NumberUtils.divRoundUp(20, 8));
+    	assertEquals(3,  NumberUtils.divRoundUp(20, 9));
+    	assertEquals(2,  NumberUtils.divRoundUp(20, 10));
+    	assertEquals(1,  NumberUtils.divRoundUp(20, 21));
     }
 }

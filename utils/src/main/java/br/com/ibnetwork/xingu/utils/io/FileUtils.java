@@ -187,7 +187,6 @@ public class FileUtils
 		IOUtils.closeQuietly(is);
 		
 		return file;
-
 	}
 
 	public static File toFile(URL url, String prefix, String suffix)

@@ -45,4 +45,13 @@ public class NumberUtils
         }
     }
 
+    public static final int divRoundUp(int a, int b)
+    {
+    	if(b > a)
+    	{
+    		return 1;
+    	}
+		int result = a % b;
+		return result == 0 ? a / b : (a - result) / b + 1;
+    }
 }
