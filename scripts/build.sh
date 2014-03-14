@@ -27,6 +27,7 @@ mkdir -p $LIBDIR
 for i in `find . -name "*.jar"`;do
         cp $i $LIBDIR
 done
+find $LIBDIR -name "*sources*"|xargs rm -f
 
 if [ -f $PULGA ];then
 	mkdir -p $CFGDIR
