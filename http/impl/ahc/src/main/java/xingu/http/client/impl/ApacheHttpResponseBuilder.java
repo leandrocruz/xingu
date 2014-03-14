@@ -1,8 +1,11 @@
 package xingu.http.client.impl;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpUriRequest;
 
@@ -21,15 +24,17 @@ public class ApacheHttpResponseBuilder
 
 		HttpEntity  entity      = res.getEntity();
 		InputStream is          = entity.getContent();
-//		byte[]      raw         = IOUtils.toByteArray(is);
-//		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
+		
+		/* We need to read and replace the stream while the socket is still open */
+		byte[]      raw         = IOUtils.toByteArray(is);
+		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
 
 		
 		HttpResponseImpl result = new HttpResponseImpl();
 		result.setUri(req.getURI().toString());
 		result.setCode(code);
 		result.setHeaders(headers);
-		result.setRawBody(is /* replacement */);
+		result.setRawBody(replacement);
 		return result;
 	}
 
