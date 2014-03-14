@@ -34,9 +34,10 @@ public class CurlCommandLineBuilder
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
-		result.add("-v");
-		result.add("-i");
-		result.add("-o");
+		result.add("-v"); // verbose
+		result.add("-k"); // ignore server certificate
+		result.add("-i");  
+		result.add("-o"); // output to a file
 		result.add(file.toString());
 		
 		String authUser  = req.getAuthenticationUser();
