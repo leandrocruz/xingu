@@ -63,14 +63,15 @@ public class EclipseClassLoader
 			}
 			else if("var".equals(kind))
 			{
-				// a jar file
-				urls.add(new URL("file://" + path));
+				// a jar files
+				File file = new File(path);
+				urls.add(file.toURI().toURL());
 			}
 			else if("output".equals(kind))
 			{
 				// a source folder
-				String name = new File(project, path) + "/";
-				urls.add(new URL("file://" + name));
+				File file = new File(project, path + "/");
+				urls.add(file.toURI().toURL());
 			}
 	    }
 		return urls;
