@@ -30,11 +30,11 @@ public class DirectoryClassLoader
 			File file = list[i];
 			if(file.isDirectory())
 			{
-				urls[i] = new URL("file://" + file.getAbsolutePath() + "/");
+				urls[i] = new File(file.getParentFile(), file.getName() + "/").toURI().toURL();
 			}
 			else
 			{
-				urls[i] = new URL("file://" + file.getAbsolutePath());
+				urls[i] = file.toURI().toURL();
 			}
 		}
 		return new URLClassLoader(urls, parent);
