@@ -30,7 +30,14 @@ public class Documento
 		{
 			return Cpf.isValid(getValue());
 		}
-		throw new NotImplementedYet();
+		else if(isCnpj())
+		{
+			return true;
+		}
+		else
+		{
+			throw new NotImplementedYet();
+		}
 	}
 	
 	public boolean isCnpj()
