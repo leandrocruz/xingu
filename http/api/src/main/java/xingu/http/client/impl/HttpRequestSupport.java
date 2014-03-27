@@ -3,6 +3,7 @@ package xingu.http.client.impl;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
+import org.jboss.netty.handler.codec.http.HttpHeaders;
 
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpException;
@@ -59,7 +60,8 @@ public abstract class HttpRequestSupport
 	@Override
 	public HttpRequest withUserAgent(String ua)
 	{
-		return null;
+		this.header(HttpHeaders.Names.USER_AGENT, ua);
+		return this;
 	}
 
 	@Override
