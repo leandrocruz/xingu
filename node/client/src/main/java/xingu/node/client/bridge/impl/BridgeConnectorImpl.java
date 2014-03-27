@@ -2,6 +2,7 @@ package xingu.node.client.bridge.impl;
 
 import static org.jboss.netty.channel.Channels.pipeline;
 
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -202,7 +203,7 @@ public class BridgeConnectorImpl
 	}
 
 	
-	private ChannelFuture connectTo(ClientBootstrap bootstrap, InetSocketAddress address) 
+	private ChannelFuture connectTo(ClientBootstrap bootstrap, final InetSocketAddress address) 
     {
 		//final int port = address.getPort();
         ChannelFuture future = bootstrap.connect(address);
@@ -214,12 +215,12 @@ public class BridgeConnectorImpl
             {
                 if(future.isSuccess())
                 {
-                	//logger.info("Connected to '{}:{}'", host, port);
+                	logger.info("Connected to '{}'", address);
                 }
                 else
                 {
                     future.cancel();
-                    //logger.info("Connection to '"+host+":"+port+"' failed");
+                    logger.info("Connection to '{}' failed", address);
                     sem.release();
                 }
             }
@@ -281,10 +282,16 @@ public class BridgeConnectorImpl
 		throws Exception
 	{
 		Throwable t = e.getCause();
-		String message = t.getMessage();
-		if(!"Connection refused".equals(message))
+		if(t instanceof ConnectException)
 		{
-			logger.error("Handshake error", t);
+			/* 
+			 * There is no need to handle this exception here since
+			 * connectTo() ChannelFuture will release the semaphore
+			 */
+		}
+		else
+		{
+			logger.warn("Handshake error", e.getCause());
 			ctx.sendUpstream(e);
 		}
 	}
