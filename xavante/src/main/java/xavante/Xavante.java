@@ -17,6 +17,7 @@ import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public class Xavante
 	extends ServerNodeSupport
+	implements HttpServer
 {
 	@Inject
 	private Factory	 factory;
