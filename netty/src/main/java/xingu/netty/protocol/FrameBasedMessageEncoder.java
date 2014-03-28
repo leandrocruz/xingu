@@ -8,51 +8,60 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.MessageEvent;
 
-
+import xingu.netty.protocol.frame.ByteArrayFrame;
+import xingu.netty.protocol.frame.Frame;
+import xingu.netty.protocol.frame.IntegerFrame;
+import xingu.netty.protocol.frame.StringFrame;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class FrameBasedMessageEncoder
-    implements ChannelDownstreamHandler 
+	implements ChannelDownstreamHandler
 {
-    @Override
-    public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
-        throws Exception
-    {
-        if (e instanceof MessageEvent) 
-        {
-            Object obj = ((MessageEvent) e).getMessage();
-            int type = typeFrom(obj);
-            byte[] data = toByteArray(e.getChannel(), obj, type);
-            ChannelBuffer buffer = pack(ctx, e, data, type);
-            Channels.write(ctx, e.getFuture(), buffer);
-        }
-        else
-        {
-            //System.out.println("FrameBasedMessageEncoder: ignoring event " + e);
-            ctx.sendDownstream(e);
-        }
-    }
-
-	protected ChannelBuffer pack(ChannelHandlerContext ctx, ChannelEvent e, byte[] data, int type)
+	@Override
+	public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent e)
 		throws Exception
 	{
-		return FramedMessageUtils.pack(data, type);
+		if(e instanceof MessageEvent)
+		{
+			Object obj  = ((MessageEvent) e).getMessage();
+			int    type = typeFrom(obj);
+			String name = classLoaderNameFrom(obj);
+			byte[] data = toByteArray(e.getChannel(), obj, type);
+
+			Frame[] frames = new Frame[] {
+					new IntegerFrame(type),
+					new StringFrame(name),
+					new ByteArrayFrame(data)
+			};
+
+			ChannelBuffer buffer = Frame.packArray(frames);
+			Channels.write(ctx, e.getFuture(), buffer);
+		}
+		else
+		{
+			ctx.sendDownstream(e);
+		}
+	}
+
+	private String classLoaderNameFrom(Object obj)
+	{
+		return null;
 	}
 
 	protected byte[] toByteArray(Channel channel, Object obj, int type)
-        throws Exception
-    {
-        if(obj instanceof String)
-        {
-            String s = (String) obj;
-            return s.getBytes();
-        }
-        throw new NotImplementedYet("Object type is not suported: "+ obj);
-    }
+		throws Exception
+	{
+		if(obj instanceof String)
+		{
+			String s = (String) obj;
+			return s.getBytes();
+		}
+		throw new NotImplementedYet("Object type is not suported: " + obj);
+	}
 
-    protected int typeFrom(Object obj)
-        throws Exception
-    {
-        return 0;
-    }
+	protected int typeFrom(Object obj)
+		throws Exception
+	{
+		return 0;
+	}
 }

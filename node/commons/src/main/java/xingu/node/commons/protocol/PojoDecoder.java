@@ -14,10 +14,10 @@ public class PojoDecoder
     private Codec codec;
 
     @Override
-	protected Object toObject(Channel channel, byte[] bytes, int type)
-		throws Exception
+    protected Object toObject(Channel channel, int type, String name, byte[] data)
+    	throws Exception
 	{
-    	String input = new String(bytes, CharsetUtil.UTF_8);
+    	String input = new String(data, CharsetUtil.UTF_8);
     	return codec.decode(input);
 	}
 }
