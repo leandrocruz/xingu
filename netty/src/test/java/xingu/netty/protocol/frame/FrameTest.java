@@ -69,4 +69,26 @@ public class FrameTest
 		assertEquals("b", new String(unpacked[1]));
 		assertEquals("c", new String(unpacked[2]));
 	}
+
+	@Test
+	public void testCompositeFramePackingWithNulls()
+		throws Exception
+	{
+		Frame[] frames = new Frame[]{
+				new ByteArrayFrame(null),	/* Frame.INT_LEN + Frame.INT_LEN */
+				new StringFrame("123"), 	/* 3 + Frame.INT_LEN */
+				new ByteArrayFrame(null),
+				new StringFrame("123"),
+		};
+
+		ChannelBuffer buffer = Frame.packArray(frames);
+
+		byte[][] unpacked = Frame.unpackArray(buffer);
+		assertEquals(4, unpacked.length);
+		assertEquals(null, unpacked[0]);
+		assertEquals("123", new String(unpacked[1]));
+		assertEquals(null, unpacked[2]);
+		assertEquals("123", new String(unpacked[3]));
+	}
+
 }

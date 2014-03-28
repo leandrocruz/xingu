@@ -19,10 +19,14 @@ public abstract class Frame
 		}
 		
 		assert buffer.writableBytes() == 0;
+		assert buffer.readableBytes() == INT_LEN + len;
 		
 		return buffer;
 	}
 
+	/*
+	 * You may call this method multiple times for the same buffer
+	 */
 	public static byte[] unpack(ChannelBuffer buffer)
 		throws FrameException
 	{
@@ -75,6 +79,10 @@ public abstract class Frame
 		{
 			result.writeBytes(buffer);
 		}
+		
+		assert result.writableBytes() == 0;
+		assert result.readableBytes() == Frame.INT_LEN + size;
+		
 		return result;
 	}
 
@@ -96,6 +104,8 @@ public abstract class Frame
 			result[i] = Frame.unpack(slice);
 		}
 		
+		assert slice.readableBytes() == 0;
+		
 		return result;
 	}
 	
@@ -111,5 +121,4 @@ public abstract class Frame
 
 	protected abstract void writePayload(ChannelBuffer buffer);
 	protected abstract int getSize();
-
 }
