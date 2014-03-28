@@ -2,5 +2,5 @@ package br.com.ibnetwork.xingu.utils.classloader;
 
 public interface NamedClassLoaderManager
 {
-	NamedClassLoader byName(String name);
+	ClassLoader byName(String name);
 }

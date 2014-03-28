@@ -22,12 +22,12 @@ public class PojoDecoder
     protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
-    	String           input           = new String(data, CharsetUtil.UTF_8);
-    	int              idx             = input.indexOf("@");
-    	String           classLoaderName = input.substring(0, idx);
-    	String           payload         = input.substring(idx + 1);
-    	NamedClassLoader cl              = clm.byName(classLoaderName);
-
+    	String      input           = new String(data, CharsetUtil.UTF_8);
+    	int         idx             = input.indexOf("@");
+    	String      classLoaderName = input.substring(0, idx);
+    	String      payload         = input.substring(idx + 1);
+    	ClassLoader cl              = clm.byName(classLoaderName);
+    	
     	return codec.decode(payload);
 	}
 }
