@@ -12,6 +12,7 @@ import xingu.codec.Codec;
 import xingu.netty.protocol.FrameBasedMessageEncoder;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class PojoEncoder
 	extends FrameBasedMessageEncoder
@@ -32,8 +33,21 @@ public class PojoEncoder
             processToMap(obj, field);
         }
 
-    	String encoded = codec.encode(obj);
+        String classLoaderName = classLoaderNameFrom(obj);
+    	String encoded = classLoaderName + "@" + codec.encode(obj);
+
     	return encoded.getBytes(CharsetUtil.UTF_8);
+	}
+
+	private String classLoaderNameFrom(Object obj)
+	{
+		ClassLoader cl = obj.getClass().getClassLoader();
+		if(cl instanceof NamedClassLoader)
+		{
+			return ((NamedClassLoader) cl).getName();
+		}
+
+		return "system";
 	}
 
 	private void processToMap(Object obj, Field field)

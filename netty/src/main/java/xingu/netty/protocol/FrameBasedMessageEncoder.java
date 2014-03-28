@@ -13,6 +13,7 @@ import xingu.netty.protocol.frame.Frame;
 import xingu.netty.protocol.frame.IntegerFrame;
 import xingu.netty.protocol.frame.StringFrame;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class FrameBasedMessageEncoder
 	implements ChannelDownstreamHandler
@@ -25,12 +26,10 @@ public class FrameBasedMessageEncoder
 		{
 			Object obj  = ((MessageEvent) e).getMessage();
 			int    type = typeFrom(obj);
-			String name = classLoaderNameFrom(obj);
 			byte[] data = toByteArray(e.getChannel(), obj, type);
 
 			Frame[] frames = new Frame[] {
 					new IntegerFrame(type),
-					new StringFrame(name),
 					new ByteArrayFrame(data)
 			};
 
@@ -41,11 +40,6 @@ public class FrameBasedMessageEncoder
 		{
 			ctx.sendDownstream(e);
 		}
-	}
-
-	private String classLoaderNameFrom(Object obj)
-	{
-		return null;
 	}
 
 	protected byte[] toByteArray(Channel channel, Object obj, int type)

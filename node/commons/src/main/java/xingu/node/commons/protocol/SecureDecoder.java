@@ -20,7 +20,7 @@ public class SecureDecoder
     private Logger logger = LoggerFactory.getLogger(getClass());
     
     @Override
-    protected Object toObject(Channel channel, int type, String name, byte[] data)
+    protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
         String text = proto.decode(channel.getId() /* channel id is used as key id */, data, type);

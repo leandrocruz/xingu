@@ -28,17 +28,16 @@ public class FrameBasedMessageDecoder
     	}
     	
     	byte[] type = frames[0];
-    	byte[] name = frames[1];
-    	byte[] data = frames[2];
+    	byte[] data = frames[1];
     	
     	
-        return toObject(channel, Frame.toInt(type), Frame.toString(name), data);
+        return toObject(channel, Frame.toInt(type), data);
     }
 
 	/*
      * Called when all message bytes were read
      */
-    protected Object toObject(Channel channel, int type, String name, byte[] data)
+    protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
     	return new String(data);
