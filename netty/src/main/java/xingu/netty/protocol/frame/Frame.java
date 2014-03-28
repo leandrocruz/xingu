@@ -111,11 +111,25 @@ public abstract class Frame
 	
 	public static int toInt(byte[] data)
 	{
+		if(data == null)
+		{
+			return 0;
+		}
+		
+		if(data.length < INT_LEN)
+		{
+			throw new IllegalArgumentException("Don't have enough bytes to parse an int");
+		}
+		
 		return ChannelBuffers.wrappedBuffer(data).readInt();
 	}
 
 	public static String toString(byte[] data)
 	{
+		if(data == null)
+		{
+			return null;
+		}
 		return new String(data);
 	}
 
