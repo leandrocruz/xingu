@@ -4,9 +4,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import xingu.node.commons.universe.Universe;
-import xingu.node.commons.universe.Universes;
-import xingu.node.commons.universe.impl.UniverseImpl;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.ContainerUtils;
 import br.com.ibnetwork.xingu.lang.ThreadBlocker;
@@ -52,18 +49,12 @@ public class NodeRunner
 			name = ContainerUtils.getFileName();
 		}
 		System.out.println("Pulga Config: " + name);
-		InputStream is        = FileUtils.toInputStream(name);
-		Container   container = ContainerUtils.getContainer(is, false);
 
-		Universes   universes = container.lookup(Universes.class);
-		ClassLoader cl        = Thread.currentThread().getContextClassLoader();
-		Universe    universe  = new UniverseImpl(Universe.SYSTEM, container, cl);
-		universes.register(universe);
-		
-		container.start();
-		
+		InputStream is        = FileUtils.toInputStream(name);
+		Container   container = ContainerUtils.getContainer(/*null,*/ is, true);
 		if(lookup != null)
 		{
+			ClassLoader cl = Thread.currentThread().getContextClassLoader();
 			Class<?> clazz = cl.loadClass(lookup);
 			container.lookup(clazz);
 		}

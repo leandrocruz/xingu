@@ -5,8 +5,8 @@ import org.jboss.netty.util.CharsetUtil;
 
 import xingu.codec.Codec;
 import xingu.netty.protocol.FrameBasedMessageDecoder;
-import xingu.node.commons.universe.Universe;
-import xingu.node.commons.universe.Universes;
+import xingu.node.commons.sandbox.Sandbox;
+import xingu.node.commons.sandbox.SanbdoxManager;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.Inject;
 
@@ -16,7 +16,7 @@ public class PojoDecoder
 	private static final String KEY = "proto";
 	
     @Inject
-    private Universes universes;
+    private SanbdoxManager sandboxes;
 
     @SuppressWarnings({ "unchecked" })
 	@Override
@@ -25,13 +25,13 @@ public class PojoDecoder
 	{
     	String      input            = new String(data, CharsetUtil.UTF_8);
     	int         idx              = input.indexOf("@");
-    	String      universeId       = input.substring(0, idx);
+    	String      sandboxId        = input.substring(0, idx);
     	String      payload          = input.substring(idx + 1);
-    	Universe    universe         = universes.byId(universeId);
-    	Container   container        = universe.container();
-    	ClassLoader cl               = universe.classLoader();
+    	Sandbox    sandbox           = sandboxes.byId(sandboxId);
+    	Container   container        = sandbox.container();
+    	ClassLoader cl               = sandbox.classLoader();
     	Class<? extends Codec> clazz = (Class<? extends Codec>) cl.loadClass("xingu.codec.Codec");
     	Codec       codec            = container.lookup(clazz, KEY);
-    	return codec.decode(payload);
+    	return codec.decode(payload, cl);
 	}
 }

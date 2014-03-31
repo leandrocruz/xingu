@@ -1,8 +1,8 @@
-package xingu.node.commons.universe;
+package xingu.node.commons.sandbox;
 
 import br.com.ibnetwork.xingu.container.Container;
 
-public interface Universe
+public interface Sandbox
 {
 	String SYSTEM = "system";
 	
@@ -11,4 +11,7 @@ public interface Universe
 	ClassLoader classLoader();
 	
 	Container container();
+	
+	Object get(String component)
+		throws Exception;
 }

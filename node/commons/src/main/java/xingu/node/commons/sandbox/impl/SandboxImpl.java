@@ -1,10 +1,10 @@
-package xingu.node.commons.universe.impl;
+package xingu.node.commons.sandbox.impl;
 
-import xingu.node.commons.universe.Universe;
+import xingu.node.commons.sandbox.Sandbox;
 import br.com.ibnetwork.xingu.container.Container;
 
-public class UniverseImpl
-	implements Universe
+public class SandboxImpl
+	implements Sandbox
 {
 	private String		id;
 
@@ -12,7 +12,7 @@ public class UniverseImpl
 
 	private Container	container;
 	
-	public UniverseImpl(String id, Container container, ClassLoader cl)
+	public SandboxImpl(String id, Container container, ClassLoader cl)
 	{
 		this.id        = id;
 		this.cl        = cl;
@@ -41,5 +41,13 @@ public class UniverseImpl
 	public String toString()
 	{
 		return "Universe '"+id+"' @ " + (System.identityHashCode(this));
+	}
+
+	@Override
+	public Object get(String component)
+		throws Exception
+	{
+		Class<?> clazz = cl.loadClass(component);
+		return container.lookup(clazz);
 	}
 }
