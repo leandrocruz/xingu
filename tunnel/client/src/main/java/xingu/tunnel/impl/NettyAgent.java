@@ -6,10 +6,9 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import xingu.node.client.bridge.BridgeConnector;
+import xingu.node.client.bridge.OnConnect;
 import xingu.tunnel.Agent;
 import xingu.tunnel.proto.ClientConnected;
 import xingu.tunnel.proto.ClientDisconnected;
@@ -27,19 +26,26 @@ public class NettyAgent
 	
 	private Channel	toProxy;
 
-	private Logger	logger	= LoggerFactory.getLogger(getClass());
-
 	@Override
 	public void start()
 		throws Exception
 	{
-		Channel channel = connector.connect();
-		if(channel == null)
-		{
-			throw new NotImplementedYet();
-		}
-		toProxy = channel;
-		channel.getPipeline().addLast("handler", this);
+		connector.connect(new OnConnect(){
+
+			@Override
+			public void onSuccess(Channel channel)
+			{
+				NettyAgent.this.toProxy = channel;
+				channel.getPipeline().addLast("handler", NettyAgent.this);
+			}
+
+			@Override
+			public void onError(Channel channel)
+			{
+				throw new NotImplementedYet();
+			}
+		});
+		
 	}
 
 	@Override

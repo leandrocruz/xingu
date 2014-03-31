@@ -4,8 +4,11 @@ import static org.jboss.netty.channel.Channels.pipeline;
 
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.node.client.bridge.BridgeConnector;
+import xingu.node.client.bridge.OnConnect;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
 import br.com.ibnetwork.xingu.utils.StringUtils;
@@ -123,22 +127,41 @@ public class BridgeConnectorImpl
 	}
 
 	@Override
-	public Channel connect()
+	public Future<Channel> connect(final OnConnect onConnect)
 	{
-		foundPort = 0;
-    	int size = ports.length;
-    	for (int i = 0; i < size; i++)
-		{
-			int     port    = ports[i];
-			Channel channel = tryPort(port);
-			if(channel != null)
+		Callable<Channel> task = new Callable<Channel>(){
+
+			@Override
+			public Channel call()
+				throws Exception
 			{
-				this.acceptedChannel = channel;
-				return channel;
+				foundPort = 0;
+		    	int size = ports.length;
+		    	for (int i = 0; i < size; i++)
+				{
+					int     port    = ports[i];
+					Channel channel = tryPort(port);
+					if(channel != null)
+					{
+						BridgeConnectorImpl.this.acceptedChannel = channel;
+						onConnect.onSuccess(channel);
+						return channel;						
+					}
+				}
+		    	logger.info("No port available from '{}'", ports);
+		    	onConnect.onError(null);
+		    	return null;
 			}
-		}
-    	logger.info("No port available from '{}'", ports);
-    	return null;
+		};
+		
+		ExecutorService executor = executor();
+		return executor.submit(task);
+	}
+
+	protected ExecutorService executor()
+	{
+		DaemonThreadFactory tf = new DaemonThreadFactory(new SimpleThreadNamer("BridgeConnectorWorker"));
+		return Executors.newSingleThreadExecutor(tf);
 	}
 
 	private Channel tryPort(int port)
