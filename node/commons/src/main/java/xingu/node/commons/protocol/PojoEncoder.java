@@ -10,15 +10,19 @@ import org.jboss.netty.util.CharsetUtil;
 
 import xingu.codec.Codec;
 import xingu.netty.protocol.FrameBasedMessageEncoder;
+import xingu.node.commons.universe.Universe;
+import xingu.node.commons.universe.Universes;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class PojoEncoder
 	extends FrameBasedMessageEncoder
 {
     @Inject("proto")
     private Codec codec;
+    
+    @Inject
+    private Universes universes;
 
 	@Override
 	protected byte[] toByteArray(Channel channel, Object obj, int type)
@@ -33,21 +37,10 @@ public class PojoEncoder
             processToMap(obj, field);
         }
 
-        String classLoaderName = classLoaderNameFrom(obj);
-    	String encoded = classLoaderName + "@" + codec.encode(obj);
+        Universe universe = universes.universeFor(obj);
+    	String   encoded  = universe.id() + "@" + codec.encode(obj);
 
     	return encoded.getBytes(CharsetUtil.UTF_8);
-	}
-
-	private String classLoaderNameFrom(Object obj)
-	{
-		ClassLoader cl = obj.getClass().getClassLoader();
-		if(cl instanceof NamedClassLoader)
-		{
-			return ((NamedClassLoader) cl).getName();
-		}
-
-		return "system";
 	}
 
 	private void processToMap(Object obj, Field field)

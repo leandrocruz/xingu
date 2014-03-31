@@ -5,29 +5,33 @@ import org.jboss.netty.util.CharsetUtil;
 
 import xingu.codec.Codec;
 import xingu.netty.protocol.FrameBasedMessageDecoder;
+import xingu.node.commons.universe.Universe;
+import xingu.node.commons.universe.Universes;
+import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoaderManager;
 
 public class PojoDecoder
 	extends FrameBasedMessageDecoder
 {
-    @Inject("proto")
-    private Codec codec;
-    
+	private static final String KEY = "proto";
+	
     @Inject
-    private NamedClassLoaderManager clm;
+    private Universes universes;
 
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
-    	String      input           = new String(data, CharsetUtil.UTF_8);
-    	int         idx             = input.indexOf("@");
-    	String      classLoaderName = input.substring(0, idx);
-    	String      payload         = input.substring(idx + 1);
-    	ClassLoader cl              = clm.byName(classLoaderName);
-    	
+    	String      input      = new String(data, CharsetUtil.UTF_8);
+    	int         idx        = input.indexOf("@");
+    	String      universeId = input.substring(0, idx);
+    	String      payload    = input.substring(idx + 1);
+    	Universe    universe   = universes.byId(universeId);
+    	Container   container  = universe.container();
+    	ClassLoader cl         = universe.classLoader();
+    	Class       codecClass = cl.loadClass("xingu.codec.Codec");
+    	Codec       codec      = container.lookup(codecClass, KEY);
     	return codec.decode(payload);
 	}
 }
