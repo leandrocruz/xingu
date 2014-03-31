@@ -8,9 +8,11 @@ import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class ContainerUtils
 {
-    private static Container container;
+	static final String XINGU_CONTAINER_FILE = "XINGU_CONTAINER_FILE";
+
+	private static Container container;
     
-    static final String XINGU_CONTAINER_FILE = "XINGU_CONTAINER_FILE";
+    private static final ThreadLocal<Container> local = new ThreadLocal<Container>();
     
     public static void reset()
     {
@@ -22,12 +24,17 @@ public class ContainerUtils
         container = null;
     }
 
+    public static final Container getLocalContainer()
+    {
+    	return local.get();
+    }
+
     public static Container getContainer()
     	throws Exception
     {
     	return getContainer(true);
     }
-    
+
     public static Container getContainer(boolean start)
         throws Exception
     {
@@ -54,6 +61,7 @@ public class ContainerUtils
             return container;
         }
         container = createContainer(is);
+        local.set(container);        
         container.configure();
         if(start)
         {
