@@ -18,20 +18,20 @@ public class PojoDecoder
     @Inject
     private Universes universes;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "unchecked" })
 	@Override
     protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
-    	String      input      = new String(data, CharsetUtil.UTF_8);
-    	int         idx        = input.indexOf("@");
-    	String      universeId = input.substring(0, idx);
-    	String      payload    = input.substring(idx + 1);
-    	Universe    universe   = universes.byId(universeId);
-    	Container   container  = universe.container();
-    	ClassLoader cl         = universe.classLoader();
-    	Class       codecClass = cl.loadClass("xingu.codec.Codec");
-    	Codec       codec      = container.lookup(codecClass, KEY);
+    	String      input            = new String(data, CharsetUtil.UTF_8);
+    	int         idx              = input.indexOf("@");
+    	String      universeId       = input.substring(0, idx);
+    	String      payload          = input.substring(idx + 1);
+    	Universe    universe         = universes.byId(universeId);
+    	Container   container        = universe.container();
+    	ClassLoader cl               = universe.classLoader();
+    	Class<? extends Codec> clazz = (Class<? extends Codec>) cl.loadClass("xingu.codec.Codec");
+    	Codec       codec            = container.lookup(clazz, KEY);
     	return codec.decode(payload);
 	}
 }
