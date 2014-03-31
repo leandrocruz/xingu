@@ -3,6 +3,6 @@ package br.com.ibnetwork.xingu.utils.classloader;
 
 public interface ClassLoaderFactory
 {
-	ClassLoader buildClassLoader(ClassLoader parent)
+	NamedClassLoader buildClassLoader(String name, ClassLoader parent)
 		throws Exception;
 }

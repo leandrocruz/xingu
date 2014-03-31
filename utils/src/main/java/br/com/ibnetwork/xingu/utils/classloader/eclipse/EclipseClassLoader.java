@@ -2,7 +2,6 @@ package br.com.ibnetwork.xingu.utils.classloader.eclipse;
 
 import java.io.File;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import br.com.ibnetwork.xingu.utils.StringUtils;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderFactory;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class EclipseClassLoader
 	implements ClassLoaderFactory
@@ -27,13 +27,12 @@ public class EclipseClassLoader
 	}
 	
 	@Override
-	public ClassLoader buildClassLoader(ClassLoader parent)
+	public NamedClassLoader buildClassLoader(String name, ClassLoader parent)
 		throws Exception
 	{
 		Set<URL>       urls   = get(workspace, project);
 	    URL[]          array  = urls.toArray(new URL[]{});
-	    URLClassLoader result = new URLClassLoader(array, parent);
-	    return result;
+	    return new NamedClassLoader(name, array, parent);
 	}
 
 	private Set<URL> get(Workspace workspace, File project)
