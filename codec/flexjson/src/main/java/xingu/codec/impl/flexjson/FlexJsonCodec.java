@@ -10,6 +10,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import xingu.codec.Codec;
+import xingu.codec.impl.CodecSupport;
 import br.com.ibnetwork.xingu.lang.Constructors;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.StringUtils;
@@ -19,6 +20,7 @@ import flexjson.ObjectFactory;
 import flexjson.transformer.Transformer;
 
 public class FlexJsonCodec
+	extends CodecSupport
 	implements Codec, Configurable, Initializable
 {
 	private JSONDeserializer<Map<String, Object>> decoder;

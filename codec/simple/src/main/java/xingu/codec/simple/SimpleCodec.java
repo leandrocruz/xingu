@@ -8,11 +8,12 @@ import org.simpleframework.xml.core.Persister;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.codec.Codec;
+import xingu.codec.impl.CodecSupport;
 
 public class SimpleCodec
+	extends CodecSupport
 	implements Codec, Initializable
 {
-
 	private Serializer	serializer;
 
 	@Override

@@ -30,7 +30,15 @@ public abstract class CodecSupport
     }
 
     @Override
+    public Object decode(String text, ClassLoader cl)
+    	throws Exception
+    {
+        throw new NotImplementedYet("TODO");
+    }
+
+    @Override
     public <T> T decode(String text, Class<? extends T> clazz)
+    	throws Exception
     {
         throw new NotImplementedYet("TODO");
     }
