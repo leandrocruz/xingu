@@ -1,7 +1,5 @@
 package br.com.ibnetwork.xingu.container.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +39,6 @@ public class Pulga
 
 	private boolean        configured;
 
-	public Pulga(File file)
-		throws Exception
-	{
-		this(file, Thread.currentThread().getContextClassLoader());
-	}
-
-    public Pulga(File file, ClassLoader cl)
-        throws Exception
-    {
-    	this(new FileInputStream(file), cl);
-    }
 
 	public Pulga(InputStream is)
 		throws Exception
@@ -132,13 +119,13 @@ public class Pulga
         Configuration[] array = pulgaConf.getChildren("component");
         for (int i = 0; i < array.length; i++)
         {
-            Configuration conf = array[i];
-            String roleName = conf.getAttribute("role");
-            String key = conf.getAttribute("key", null);
+            Configuration conf     = array[i];
+            String        roleName = conf.getAttribute("role");
+            String        key      = conf.getAttribute("key", null);
             configurationManager.register(roleName, key, conf);
             
-            String implName = conf.getAttribute("class");
-            Binding<?> binding = binding(roleName, key, implName);
+            String     implName = conf.getAttribute("class");
+            Binding<?> binding  = binding(cl, roleName, key, implName);
             
             boolean initialize = conf.getAttributeAsBoolean("initialize", false);
             initialize = initialize || conf.getAttributeAsBoolean("earlyInit", false);

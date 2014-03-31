@@ -68,15 +68,16 @@ public abstract class ContainerSupport
         return binder().get(ConfigurationManager.class).impl();
     }
     
-    protected <T> Binding<T> binding(String roleName, String key, String implName) 
+    @SuppressWarnings("unchecked")
+	protected <T> Binding<T> binding(ClassLoader cl, String roleName, String key, String implName) 
         throws ConfigurationException
     {
         Class<T> clazz = null;
         T impl = null;
         try
         {
-            clazz = (Class<T>) ObjectUtils.loadClass(roleName);
-            impl = (T) ObjectUtils.getInstance(implName);    
+            clazz = (Class<T>) ObjectUtils.loadClass(roleName, cl);
+            impl = (T) ObjectUtils.getInstance(implName, cl);    
         }
         catch(Exception e)
         {
