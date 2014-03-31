@@ -97,6 +97,4 @@ public abstract class ContainerSupport
         T component = (T) ObjectUtils.getInstance(className, cl);
         return component;
     }
-
-
 }

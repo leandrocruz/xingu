@@ -11,9 +11,7 @@ import org.jboss.netty.channel.MessageEvent;
 import xingu.netty.protocol.frame.ByteArrayFrame;
 import xingu.netty.protocol.frame.Frame;
 import xingu.netty.protocol.frame.IntegerFrame;
-import xingu.netty.protocol.frame.StringFrame;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class FrameBasedMessageEncoder
 	implements ChannelDownstreamHandler
