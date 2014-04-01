@@ -25,12 +25,12 @@ public class SimpleObjectInspector
 	}
 
 	@Override
-	public void visit(ObjectVisitor visitor)
+	public void visit(ObjectVisitor<?> visitor)
 	{
 		visitNode(root, null, visitor);
 	}
 
-	private void visitNode(Object obj, Field field, ObjectVisitor visitor)
+	private void visitNode(Object obj, Field field, ObjectVisitor<?> visitor)
 	{
 		if(obj == null)
 		{
@@ -66,7 +66,7 @@ public class SimpleObjectInspector
 		visitor.nodeEnd(obj, field, type);
 	}
 
-	private void visitCollection(Object obj, Field field, ObjectVisitor visitor)
+	private void visitCollection(Object obj, Field field, ObjectVisitor<?> visitor)
 	{
 		Collection<?> coll = (Collection<?>) obj;
 		Iterator<?> it = coll.iterator();
@@ -77,7 +77,7 @@ public class SimpleObjectInspector
 		}
 	}
 
-	private void visitArray(Object obj, Field field, ObjectVisitor visitor)
+	private void visitArray(Object obj, Field field, ObjectVisitor<?> visitor)
 	{
 		int length = Array.getLength(obj);
 		for (int i = 0; i < length; i++)
@@ -87,7 +87,7 @@ public class SimpleObjectInspector
 		}
 	}
 
-	private void visitObject(Object obj, Field field2, ObjectVisitor visitor)
+	private void visitObject(Object obj, Field notUsed, ObjectVisitor<?> visitor)
 	{
 		Class<?>    clazz  = obj.getClass();
 		List<Field> fields = FieldUtils.getAllFields(clazz);

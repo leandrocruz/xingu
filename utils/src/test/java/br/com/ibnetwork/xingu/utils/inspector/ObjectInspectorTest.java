@@ -11,10 +11,17 @@ import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 public class ObjectInspectorTest
 {
 	@Test
+	public void testString()
+		throws Exception
+	{
+		//execWith("a string");
+	}
+
+	@Test
 	public void testSimpleObject()
 		throws Exception
 	{
-		new SimpleObjectInspector(new SimpleObject(1, "single")).visit(new XmlEmitter());
+		execWith(new SimpleObject(1, "single"));
 	}
 
 	@Test
@@ -25,8 +32,8 @@ public class ObjectInspectorTest
 				new SimpleObject(1, "array a"),
 				new SimpleObject(2, "array b")
 		};
-		
-		new SimpleObjectInspector(array).visit(new XmlEmitter());
+
+		execWith(array);
 	}
 
 	@Test
@@ -44,15 +51,24 @@ public class ObjectInspectorTest
 			list.add(simple);
 		}
 		
-		new SimpleObjectInspector(list).visit(new XmlEmitter());
+		execWith(list);
 	}
-	
+
 	@Test
 	public void testNestedObject()
 		throws Exception
 	{
 		NestedObject obj = new NestedObject(1, new NestedObject(2));
-		new SimpleObjectInspector(obj).visit(new XmlEmitter());
+		//obj.nested = obj;
+		execWith(obj);
 	}
-	
+
+	private String execWith(Object obj)
+	{
+		XmlEmitter visitor = new XmlEmitter();
+		new SimpleObjectInspector(obj).visit(visitor);
+		String result = visitor.getResult();
+		System.err.println(result + "--");
+		return result;
+	}
 }
