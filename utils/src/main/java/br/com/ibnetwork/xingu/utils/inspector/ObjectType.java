@@ -8,7 +8,6 @@ public class ObjectType
 {
 	public static enum Type {
 		PRIMITIVE,
-		NATIVE,
 		OBJECT, 
 		ARRAY, 
 		COLLECTION,
@@ -18,8 +17,8 @@ public class ObjectType
 	public static final Map<Class<?>, Type>	typeByClass = new HashMap<Class<?>, Type>();
 	
 	static {
-		typeByClass.put(Object.class, 		Type.NATIVE);
-		typeByClass.put(String.class, 		Type.NATIVE);
+		typeByClass.put(Object.class, 		Type.PRIMITIVE);
+		typeByClass.put(String.class, 		Type.PRIMITIVE);
 		typeByClass.put(Boolean.class, 		Type.PRIMITIVE);
 		typeByClass.put(Byte.class, 		Type.PRIMITIVE);
 		typeByClass.put(Character.class, 	Type.PRIMITIVE);

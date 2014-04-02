@@ -72,7 +72,7 @@ public class SimpleObjectInspector
 		
 		identityToObject.put(id, obj);
 
-		boolean isPrimitive = type == Type.PRIMITIVE || type == Type.NATIVE;
+		boolean isPrimitive = type == Type.PRIMITIVE;
 		if(isPrimitive && field != null)
 		{
 			int     modifiers   = field.getModifiers();
@@ -105,7 +105,6 @@ public class SimpleObjectInspector
 				break;
 				
 			case PRIMITIVE:
-			case NATIVE:
 				visitor.onPrimitive(obj, id, alias, field);
 				break;
 			
