@@ -13,9 +13,9 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType;
-import br.com.ibnetwork.xingu.utils.inspector.TypeAlias;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
+import br.com.ibnetwork.xingu.utils.inspector.TypeAlias;
 import br.com.ibnetwork.xingu.utils.inspector.TypeAliasMap;
 
 public class SimpleObjectInspector
@@ -43,11 +43,23 @@ public class SimpleObjectInspector
 	{
 		if(obj == null)
 		{
-			//visitor.whenNodeEmpty(field);
 			return;
 		}
 
-		Class<?>  clazz = obj.getClass();
+		Class<?> clazz = null;
+		if(field != null)
+		{
+			obj = FieldUtils.valueFrom(field, obj);
+			if(obj == null)
+			{
+				return;
+			}
+			clazz = field.getType();
+		}
+		else
+		{
+			clazz = obj.getClass();
+		}
 		Type      type  = ObjectType.typeFor(clazz);
 		TypeAlias alias = aliases.aliasFor(clazz, type);
 		String    id    = Integer.toHexString(System.identityHashCode(obj));
@@ -59,32 +71,50 @@ public class SimpleObjectInspector
 		}
 		
 		identityToObject.put(id, obj);
-		
-		if(type == Type.PRIMITIVE || type == Type.NATIVE)
+
+		boolean isPrimitive = type == Type.PRIMITIVE || type == Type.NATIVE;
+		if(isPrimitive && field != null)
 		{
-			visitor.onPrimitiveCollectionItem(obj, id, alias);
+			int     modifiers   = field.getModifiers();
+			boolean isTransient = Modifier.isTransient(modifiers);
+			boolean isStatic    = Modifier.isStatic(modifiers);
+			if(isTransient || isStatic)
+			{
+				return;
+			}
 		}
-		else
+		
+		if(!isPrimitive)
 		{
 			visitor.onNodeStart(obj, id, alias, field);
-			switch(type)
-			{
-				case ARRAY:
-					visitArray(obj, visitor);
-					break;
-					
-				case COLLECTION:
-				case MAP:
-					visitCollection(obj, visitor);
-					break;
-					
-				case OBJECT:
-					visitObject(obj, visitor);
-					break;
-					
-				default:
-					throw new NotImplementedYet();
-			}
+		}
+		
+		switch(type)
+		{
+			case ARRAY:
+				visitArray(obj, visitor);
+				break;
+				
+			case COLLECTION:
+			case MAP:
+				visitCollection(obj, visitor);
+				break;
+				
+			case OBJECT:
+				visitObject(obj, visitor);
+				break;
+				
+			case PRIMITIVE:
+			case NATIVE:
+				visitor.onPrimitive(obj, id, alias, field);
+				break;
+			
+			default:
+				throw new NotImplementedYet();
+		}
+		
+		if(!isPrimitive)
+		{
 			visitor.onNodeEnd(obj, id, alias, field);
 		}
 	}
@@ -116,40 +146,7 @@ public class SimpleObjectInspector
 		List<Field> fields = FieldUtils.getAllFields(clazz);
 		for (Field field : fields)
 		{
-			visitField(obj, field, visitor);
-		}
-	}
-
-	private void visitField(Object obj, Field field, ObjectVisitor<?> visitor)
-	{
-		int     modifiers   = field.getModifiers();
-		boolean isTransient = Modifier.isTransient(modifiers);
-		boolean isStatic    = Modifier.isStatic(modifiers);
-		if(isTransient || isStatic)
-		{
-			return;
-		}
-
-		Class<?> fieldClass = field.getType();
-		Type     type       = ObjectType.typeFor(fieldClass);
-		Object   value      = FieldUtils.valueFrom(field, obj);
-		
-		switch(type)
-		{
-			case PRIMITIVE:
-			case NATIVE:
-				visitor.onPrimitiveObjectField(field, value);
-				break;
-
-			case ARRAY:
-			case COLLECTION:
-			case MAP:
-			case OBJECT:
-				visitNode(value, field, visitor);
-				break;
-				
-			default:
-				throw new NotImplementedYet();
+			visitNode(obj, field, visitor);
 		}
 	}
 }

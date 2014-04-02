@@ -7,7 +7,7 @@ public class NestedObject
 {
 	int						i;
 
-	NestedObject			nested;
+	NestedObject			me;
 
 	String[]				array = new String[]{"a", "b", "c"};
 
@@ -23,7 +23,7 @@ public class NestedObject
 	public NestedObject(int i, NestedObject nested)
 	{
 		this.i = i;
-		this.nested = nested;
+		this.me = nested;
 	}
 
 }

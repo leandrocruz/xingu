@@ -20,6 +20,7 @@ public class ObjectType
 	static {
 		typeByClass.put(Object.class, 		Type.NATIVE);
 		typeByClass.put(String.class, 		Type.NATIVE);
+		typeByClass.put(Boolean.class, 		Type.PRIMITIVE);
 		typeByClass.put(Byte.class, 		Type.PRIMITIVE);
 		typeByClass.put(Character.class, 	Type.PRIMITIVE);
 		typeByClass.put(Short.class, 		Type.PRIMITIVE);

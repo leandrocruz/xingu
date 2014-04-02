@@ -6,16 +6,19 @@ import java.util.List;
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
+import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasImpl;
 import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasMapImpl;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 
 public class ObjectInspectorTest
 {
 	@Test
-	public void testString()
+	public void testPrimitives()
 		throws Exception
 	{
-		//execWith("a string");
+		execWith("a string");
+		execWith(1);
+		execWith(false);
 	}
 
 	@Test
@@ -68,7 +71,7 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		NestedObject obj = new NestedObject(1);
-		obj.nested = obj;
+		obj.me = obj;
 		execWith(obj);
 	}
 
@@ -83,6 +86,9 @@ public class ObjectInspectorTest
 	
 	private String execWith(Object obj)
 	{
-		return execWith(obj, new TypeAliasMapImpl());
+		TypeAliasMapImpl aliases = new TypeAliasMapImpl();
+		aliases.put(SimpleObject.class, new TypeAliasImpl("simple"));
+		aliases.put(NestedObject.class, new TypeAliasImpl("nested"));
+		return execWith(obj, aliases);
 	}
 }

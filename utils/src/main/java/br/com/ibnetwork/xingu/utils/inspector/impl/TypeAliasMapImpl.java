@@ -13,7 +13,11 @@ public class TypeAliasMapImpl
 	private static Map<Class<?>, TypeAlias> aliasByClass = new HashMap<Class<?>, TypeAlias>();
 	
 	static {
-		aliasByClass.put(String.class, new TypeAliasImpl("string"));
+		aliasByClass.put(String.class, new TypeAliasImpl("string", Type.NATIVE));
+		aliasByClass.put(Boolean.class, new TypeAliasImpl("boolean", Type.PRIMITIVE));
+		aliasByClass.put(Integer.class, new TypeAliasImpl("int", Type.PRIMITIVE));
+		aliasByClass.put(Long.class, new TypeAliasImpl("long", Type.PRIMITIVE));
+		aliasByClass.put(Double.class, new TypeAliasImpl("double", Type.PRIMITIVE));
 	}
 	
 	@Override
@@ -42,5 +46,11 @@ public class TypeAliasMapImpl
 				break;
 		}
 		return new TypeAliasImpl(name, type);
+	}
+
+	@Override
+	public void put(Class<?> clazz, TypeAlias alias)
+	{
+		aliasByClass.put(clazz, alias);
 	}
 }
