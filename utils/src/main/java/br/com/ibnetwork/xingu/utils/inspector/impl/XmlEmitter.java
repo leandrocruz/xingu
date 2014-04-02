@@ -2,98 +2,113 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
 
-import org.apache.commons.lang3.StringUtils;
-
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
+import br.com.ibnetwork.xingu.utils.inspector.TypeAlias;
+import br.com.ibnetwork.xingu.utils.xml.XmlPrinter;
 
 public class XmlEmitter
 	implements ObjectVisitor<String>
 {
-	private int          depth = 0;
-
-	private StringBuffer sb    = new StringBuffer();
+	private XmlPrinter printer = new XmlPrinter("\t");
 	
 	@Override
-	public void nodeStart(Object obj, Field field, Type type)
+	public void onNodeStart(Object obj, String id, TypeAlias alias, Field field)
 	{
-		Class<?> clazz 			= obj.getClass();
-		String  className       = clazz.getName();
-		String  classLoaderName = ClassLoaderUtils.nameFor(clazz);
-		int     id              = System.identityHashCode(obj);
-		sb
-			.append(ident())
-			.append("<node")
-			.append(" id=\"").append(id).append("\"");
-
-		if(field != null)
-		{
-			sb.append(" attr=\"").append(field.getName()).append("\"");
-		}
 		
-		sb.append(" class=\"").append(className).append("\"");
+		Class<?> clazz           = obj.getClass();
+		String   className       = alias.name();
+		String   classLoaderName = ClassLoaderUtils.nameFor(clazz);
+		String   fieldName       = field == null ? null : field.getName();
 		
-		if(classLoaderName != null)
-		{
-			sb.append(" classLoader=\"").append("TODO").append("\"");
-		}
-
-		sb.append(">").append("\n");
-		depth++;
+		printer
+			.ident()
+			.startElement("node")
+			.attr("id", id)
+			.attrIf("at", fieldName)
+			.attr("type", alias.type().name())
+			.attr("class", className)
+			.attrIf("classLoader", classLoaderName)
+			.close().br().increment();
 	}
 
 	@Override
-	public void nodeEmpty(Field field)
+	public void onNodeEnd(Object obj, String id, TypeAlias alias, Field field)
+	{
+		printer
+			.decrement()
+			.ident()
+			.endElement("node")
+			.br();
+	}
+
+	@Override
+	public void onNodeReference(Object obj, String id, TypeAlias alias, Field field)
+	{
+		String fieldName = field == null ? null : field.getName();
+		printer
+			.ident()
+			.startElement("ref")
+			.attrIf("at", fieldName)
+			.attr("id", id)
+			.closeEmpty().br();
+	}
+
+	@Override
+	public void onPrimitiveObjectField(Field field, Object value)
+	{
+		String name = field.getName();
+		printer
+			.ident()
+			.startElement(name)
+			.close()
+			.value(value)
+			.endElement(name)
+			.br();
+	}
+
+	@Override
+	public void onPrimitiveCollectionItem(Object value, String id, TypeAlias alias)
+	{
+		String name = alias.name();
+		printer
+			.ident()
+			.startElement(name)
+			.attr("id", id)
+			.close()
+			.value(value)
+			.endElement(name)
+			.br();
+	}
+
+
+	@Override
+	public String getResult()
+	{
+		return printer.toString();
+	}
+
+	@Override
+	public String toString()
+	{
+		return printer.toString();
+	}
+
+	/*
+	@Override
+	public void whenNodeEmpty(Field field)
 	{
 		Class<?> clazz           = field.getType();
 		String   className       = clazz.getName();
 		String   classLoaderName = ClassLoaderUtils.nameFor(clazz);
 		
-		sb
-			.append(ident())
-			.append("<node")
-			.append(" attr=\"").append(field.getName()).append("\"")
-			.append(" class=\"").append(className).append("\"");
-		if(classLoaderName != null)
-		{
-			sb.append(" classLoader=\"").append(classLoaderName).append("\"");
-			
-		}
-		
-		sb.append("/>\n");
+		printer
+			.ident()
+			.startElement("node")
+			.attr("attr", field.getName())
+			.attr("class", className)
+			.attrIf("classLoader", classLoaderName)
+			.closeEmpty().br();
 	}
-
-	@Override
-	public void nodeEnd(Object obj, Field field, Type type)
-	{
-		depth--;
-		sb
-			.append(ident())
-			.append("</node>")
-			.append("\n");
-	}
-
-	@Override
-	public void field(Object obj, Field field, Object value)
-	{
-		String name = field.getName();
-		sb
-			.append(ident())
-			.append("<").append(name).append(">")
-			.append(value)
-			.append("</").append(name).append(">")
-			.append("\n");
-	}
-
-	private String ident()
-	{
-		return StringUtils.repeat("\t", depth);
-	}
-	
-	@Override
-	public String getResult()
-	{
-		return sb.toString();
-	}
+	*/
 }

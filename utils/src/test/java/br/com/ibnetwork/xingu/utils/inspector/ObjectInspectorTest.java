@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
+import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasMapImpl;
+import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 
 public class ObjectInspectorTest
 {
@@ -59,16 +60,29 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		NestedObject obj = new NestedObject(1, new NestedObject(2));
-		//obj.nested = obj;
 		execWith(obj);
 	}
 
-	private String execWith(Object obj)
+	@Test
+	public void testCyclicGraph()
+		throws Exception
+	{
+		NestedObject obj = new NestedObject(1);
+		obj.nested = obj;
+		execWith(obj);
+	}
+
+	private String execWith(Object obj, TypeAliasMap aliases)
 	{
 		XmlEmitter visitor = new XmlEmitter();
-		new SimpleObjectInspector(obj).visit(visitor);
+		new SimpleObjectInspector(obj, aliases).visit(visitor);
 		String result = visitor.getResult();
 		System.err.println(result + "--");
 		return result;
+	}
+	
+	private String execWith(Object obj)
+	{
+		return execWith(obj, new TypeAliasMapImpl());
 	}
 }

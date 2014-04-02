@@ -5,15 +5,15 @@ import java.util.Map;
 
 public class NestedObject
 {
-	int							i;
+	int						i;
 
-	NestedObject				nested;
+	NestedObject			nested;
 
-	NestedObject[]				array;
+	String[]				array = new String[]{"a", "b", "c"};
 
-	List<NestedObject>			list;
+	List<String>			list;
 
-	Map<Integer, NestedObject>	map;
+	Map<Integer, String>	map;
 
 	public NestedObject(int i)
 	{
