@@ -53,6 +53,13 @@ public class FieldUtils
 		return null;
 	}
 
+    public static void setField(Object bean, String fieldName, Object value)
+        throws Exception
+    {
+    	Field field = getField(bean.getClass(), fieldName);
+    	setField(bean, field, value);
+    }
+    
     public static void setField(Object bean, Field field, Object value)
         throws Exception
     {

@@ -14,4 +14,18 @@ public class SimpleObject
 		this.aString = string;
 		this.bString = string;
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof SimpleObject))
+		{
+			return false;
+		}
+		
+		SimpleObject other = (SimpleObject) obj;
+		return other.anInt == anInt 
+				&& other.aString.equals(aString)
+				&& other.bString.equals(bString);
+	}
 }

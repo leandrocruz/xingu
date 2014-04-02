@@ -15,22 +15,22 @@ import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
-import br.com.ibnetwork.xingu.utils.inspector.TypeAlias;
-import br.com.ibnetwork.xingu.utils.inspector.TypeAliasMap;
+import br.com.ibnetwork.xingu.utils.inspector.TypeHandler;
+import br.com.ibnetwork.xingu.utils.inspector.TypeHandlerRegistry;
 
 public class SimpleObjectInspector
 	implements ObjectInspector
 {
 	private Object       root;
 
-	private TypeAliasMap aliases;
+	private TypeHandlerRegistry registry;
 
 	private Map<String,  Object>  identityToObject = new HashMap<String, Object>();
 	
-	public SimpleObjectInspector(Object root, TypeAliasMap aliases)
+	public SimpleObjectInspector(Object root, TypeHandlerRegistry registry)
 	{
 		this.root    = root;
-		this.aliases = aliases;
+		this.registry = registry;
 	}
 
 	@Override
@@ -60,13 +60,13 @@ public class SimpleObjectInspector
 		{
 			clazz = obj.getClass();
 		}
-		Type      type  = ObjectType.typeFor(clazz);
-		TypeAlias alias = aliases.aliasFor(clazz, type);
-		String    id    = Integer.toHexString(System.identityHashCode(obj));
-		Object    ref   = identityToObject.get(id);
+		Type        type    = ObjectType.typeFor(clazz);
+		TypeHandler handler = registry.handlerFor(clazz, type);
+		String      id      = Integer.toHexString(System.identityHashCode(obj));
+		Object      ref     = identityToObject.get(id);
 		if(ref != null)
 		{
-			visitor.onNodeReference(ref, id, alias, field);
+			visitor.onNodeReference(ref, id, handler, field);
 			return;
 		}
 		
@@ -86,7 +86,7 @@ public class SimpleObjectInspector
 		
 		if(!isPrimitive)
 		{
-			visitor.onNodeStart(obj, id, alias, field);
+			visitor.onNodeStart(obj, id, handler, field);
 		}
 		
 		switch(type)
@@ -105,7 +105,7 @@ public class SimpleObjectInspector
 				break;
 				
 			case PRIMITIVE:
-				visitor.onPrimitive(obj, id, alias, field);
+				visitor.onPrimitive(obj, id, handler, field);
 				break;
 			
 			default:
@@ -114,7 +114,7 @@ public class SimpleObjectInspector
 		
 		if(!isPrimitive)
 		{
-			visitor.onNodeEnd(obj, id, alias, field);
+			visitor.onNodeEnd(obj, id, handler, field);
 		}
 	}
 

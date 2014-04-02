@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
-import br.com.ibnetwork.xingu.utils.inspector.TypeAlias;
+import br.com.ibnetwork.xingu.utils.inspector.TypeHandler;
 import br.com.ibnetwork.xingu.utils.xml.XmlPrinter;
 
 public class XmlEmitter
@@ -14,10 +14,10 @@ public class XmlEmitter
 	private XmlPrinter printer = new XmlPrinter("\t");
 
 	@Override
-	public void onPrimitive(Object obj, String id, TypeAlias alias, Field field)
+	public void onPrimitive(Object obj, String id, TypeHandler handler, Field field)
 	{
 		String fieldName = field == null ? null : field.getName();
-		String type      = alias.type() == Type.ARRAY ? Type.ARRAY.name() : null;
+		String type      = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
 	
 		printer
 			.ident()
@@ -25,21 +25,20 @@ public class XmlEmitter
 			.attr("id", id)
 			.attrIf("field", fieldName)
 			.attrIf("type", type)
-			.attr("class", alias.name())
-			.close()
-			.value(obj)
-			.endElement("node")
+			.attr("class", handler.name())
+			.attr("value", obj.toString())
+			.closeEmpty()
 			.br();
 	}
 
 	@Override
-	public void onNodeStart(Object obj, String id, TypeAlias alias, Field field)
+	public void onNodeStart(Object obj, String id, TypeHandler handler, Field field)
 	{
 		Class<?> clazz           = obj.getClass();
-		String   className       = alias.name();
+		String   className       = handler.name();
 		String   classLoaderName = ClassLoaderUtils.nameFor(clazz);
 		String   fieldName       = field == null ? null : field.getName();
-		String   type            = alias.type() == Type.ARRAY ? Type.ARRAY.name() : null;
+		String   type            = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
 		
 		printer
 			.ident()
@@ -53,7 +52,7 @@ public class XmlEmitter
 	}
 
 	@Override
-	public void onNodeEnd(Object obj, String id, TypeAlias alias, Field field)
+	public void onNodeEnd(Object obj, String id, TypeHandler handler, Field field)
 	{
 		printer
 			.decrement()
@@ -63,7 +62,7 @@ public class XmlEmitter
 	}
 
 	@Override
-	public void onNodeReference(Object obj, String id, TypeAlias alias, Field field)
+	public void onNodeReference(Object obj, String id, TypeHandler handler, Field field)
 	{
 		String fieldName = field == null ? null : field.getName();
 		printer

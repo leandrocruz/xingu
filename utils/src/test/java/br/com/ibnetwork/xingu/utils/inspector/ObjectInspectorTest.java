@@ -1,14 +1,18 @@
 package br.com.ibnetwork.xingu.utils.inspector;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
+import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
-import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasImpl;
-import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasMapImpl;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
+import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
+import br.com.ibnetwork.xingu.utils.inspector.type.SimpleTypeHandler;
+import br.com.ibnetwork.xingu.utils.inspector.type.TypeHandlerRegistryImpl;
 
 public class ObjectInspectorTest
 {
@@ -75,7 +79,8 @@ public class ObjectInspectorTest
 		execWith(obj);
 	}
 
-	private String execWith(Object obj, TypeAliasMap aliases)
+	private String execWith(Object obj, TypeHandlerRegistry aliases)
+		throws Exception
 	{
 		XmlEmitter visitor = new XmlEmitter();
 		new SimpleObjectInspector(obj, aliases).visit(visitor);
@@ -85,10 +90,24 @@ public class ObjectInspectorTest
 	}
 	
 	private String execWith(Object obj)
+		throws Exception
 	{
-		TypeAliasMapImpl aliases = new TypeAliasMapImpl();
-		aliases.put(SimpleObject.class, new TypeAliasImpl("simple"));
-		aliases.put(NestedObject.class, new TypeAliasImpl("nested"));
-		return execWith(obj, aliases);
+		TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
+		registry.register(new SimpleTypeHandler(SimpleObject.class, "simple", Type.OBJECT));
+		registry.register(new SimpleTypeHandler(NestedObject.class, "nested", Type.OBJECT));
+		String encoded = execWith(obj, registry);
+		Object decoded = decode(encoded, registry);
+		
+		assertEquals(obj, decoded);
+		
+		return encoded;
+	}
+
+	private Object decode(String encoded, TypeHandlerRegistry registry)
+		throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		ObjectEmitter deserializer = new XmlObjectEmitter(registry, cl);
+		return deserializer.from(encoded);
 	}
 }
