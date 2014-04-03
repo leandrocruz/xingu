@@ -6,14 +6,14 @@ import java.util.Map;
 import org.apache.avalon.framework.activity.Initializable;
 
 import xingu.node.commons.sandbox.Sandbox;
-import xingu.node.commons.sandbox.SanbdoxManager;
+import xingu.node.commons.sandbox.SandboxManager;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.ContainerUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class SandboxManagerImpl
-	implements SanbdoxManager, Initializable
+	implements SandboxManager, Initializable
 {
 	private Map<String, Sandbox> sandboxById = new HashMap<String, Sandbox>();
 

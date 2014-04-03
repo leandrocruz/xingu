@@ -1,6 +1,6 @@
 package xingu.node.commons.sandbox;
 
-public interface SanbdoxManager
+public interface SandboxManager
 {
 	void register(Sandbox sandbox);
 

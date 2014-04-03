@@ -11,7 +11,7 @@ import org.jboss.netty.util.CharsetUtil;
 import xingu.codec.Codec;
 import xingu.netty.protocol.FrameBasedMessageEncoder;
 import xingu.node.commons.sandbox.Sandbox;
-import xingu.node.commons.sandbox.SanbdoxManager;
+import xingu.node.commons.sandbox.SandboxManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 
@@ -22,7 +22,7 @@ public class PojoEncoder
     private Codec codec;
     
     @Inject
-    private SanbdoxManager sandboxes;
+    private SandboxManager sandboxes;
 
 	@Override
 	protected byte[] toByteArray(Channel channel, Object obj, int type)
@@ -37,8 +37,8 @@ public class PojoEncoder
             processToMap(obj, field);
         }
 
-        Sandbox sandboxe = sandboxes.sandboxFor(obj);
-    	String   encoded  = sandboxe.id() + "@" + codec.encode(obj);
+        Sandbox sandbox = sandboxes.sandboxFor(obj);
+    	String  encoded = sandbox.id() + "@" + codec.encode(obj);
 
     	return encoded.getBytes(CharsetUtil.UTF_8);
 	}
