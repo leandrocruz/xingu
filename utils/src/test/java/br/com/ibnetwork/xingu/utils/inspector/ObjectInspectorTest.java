@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.impl.GenericTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 

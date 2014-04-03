@@ -12,11 +12,11 @@ import java.util.Map;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
+import br.com.ibnetwork.xingu.utils.type.ObjectType;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public class SimpleObjectInspector
 	implements ObjectInspector

@@ -2,7 +2,7 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import java.util.Date;
 
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public class DateTypeHandler
 	extends TypeHandlerSupport

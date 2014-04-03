@@ -3,9 +3,9 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 import java.lang.reflect.Field;
 
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.xml.XmlPrinter;
 
 public class XmlEmitter

@@ -3,9 +3,9 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public class TypeHandlerRegistryImpl
 	implements TypeHandlerRegistry

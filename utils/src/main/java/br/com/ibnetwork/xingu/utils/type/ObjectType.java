@@ -1,4 +1,4 @@
-package br.com.ibnetwork.xingu.utils.inspector;
+package br.com.ibnetwork.xingu.utils.type;
 
 import java.util.Collection;
 import java.util.Date;

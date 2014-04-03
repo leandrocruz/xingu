@@ -1,8 +1,8 @@
 package br.com.ibnetwork.xingu.utils.type.impl;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public class TypeHandlerSupport
 	implements TypeHandler

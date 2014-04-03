@@ -1,7 +1,6 @@
 package br.com.ibnetwork.xingu.utils.type;
 
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public interface TypeHandlerRegistry
 {
