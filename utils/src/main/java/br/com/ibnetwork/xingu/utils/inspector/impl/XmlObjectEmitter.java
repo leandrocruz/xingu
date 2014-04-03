@@ -31,11 +31,11 @@ public class XmlObjectEmitter
 {
 	private TypeHandlerRegistry	registry;
 
-	private Stack<Object>		stack		= new Stack<Object>();
+	private Object				result;
+
+	private Stack<Node>			stack		= new Stack<Node>();
 
 	private Map<String, Object>	nodeById	= new HashMap<String, Object>();
-
-	private Object				result;
 	
 	public XmlObjectEmitter(TypeHandlerRegistry aliases, ClassLoader unused)
 	{
@@ -61,20 +61,12 @@ public class XmlObjectEmitter
 		if("node".equals(name))
 		{
 			Object node = handleNode(attrs);
-			nodeById.put(id, node);
-			stack.push(node);
+			push(node, attrs);
 		}
 		else if("ref".equals(name))
 		{
 			Object node = nodeById.get(id);
-			try
-			{
-				attachToPeek(node, attrs);
-			}
-			catch(Exception e)
-			{
-				throw new SAXException("Error handling object reference", e);
-			}
+			push(node, attrs);
 		}
 		else
 		{
@@ -82,71 +74,33 @@ public class XmlObjectEmitter
 		}
 	}
 
+	private void push(Object node, Attributes attrs)
+	{
+		String id = attrs.getValue("id");
+		nodeById.put(id, node);
+		stack.push(new Node(node, attrs));
+	}
+
 	private Object handleNode(Attributes attrs)
 		throws SAXException
 	{
 		try
 		{
-			Object node  = nodeFrom(attrs);
-			attachToPeek(node, attrs);
-
-			return node;
+			return nodeFrom(attrs);
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new SAXException("Error creating node", e);
-		}
-	}
-
-	private void attachToPeek(Object node, Attributes attrs)
-		throws Exception
-	{
-		int size = stack.size();
-		if(size == 0)
-		{
-			return;
-		}
-
-		Object parent = stack.peek();
-		String field  = attrs.getValue("field");
-		if(field != null)
-		{
-			FieldUtils.setField(parent, field, node);
-			return;
-		}
-		
-		Class<? extends Object> clazz = parent.getClass();
-		Type type = ObjectType.typeFor(clazz);
-		switch(type)
-		{
-			case ARRAY:
-				int len = Array.getLength(parent);
-				Object enlarged = ArrayUtils.resizeArray(parent, len + 1);
-				Array.set(enlarged, len, node);
-				stack.set(size - 1, enlarged);
-				break;
-
-			case COLLECTION:
-				Collection<Object> coll = (Collection<Object>) parent;
-				coll.add(node);
-				break;
-				
-			default:
-				throw new NotImplementedYet();
 		}
 	}
 
 	private Object nodeFrom(Attributes attrs)
 		throws Exception
 	{
-		String      id        = attrs.getValue("id");
 		String      className = attrs.getValue("class");
 		String      value     = attrs.getValue("value");
 		TypeHandler handler   = registry.get(className);
-
-		System.out.println("node: " + id + "/" + className);
-
 		if(handler != null && StringUtils.isNotEmpty(value))
 		{
 			return handler.toObject(value);
@@ -158,9 +112,88 @@ public class XmlObjectEmitter
 	public void endElement(String namespaceURI, String localName, String name)
 		throws SAXException
 	{
-		if("node".equals(name))
+		Node node = stack.pop();
+		if(stack.empty())
 		{
-			result = stack.pop();
+			result = node.obj;
+			return;
+		}
+		
+		if("node".equals(name) || "ref".equals(name))
+		{
+			Node target = stack.peek();
+			try
+			{
+				attach(target, node);
+			}
+			catch(Exception e)
+			{
+				//e.printStackTrace();
+				throw new SAXException(e);
+			}
 		}
 	}
+
+	private void attach(Node target, Node value)
+		throws Exception
+	{
+		String targetName = target.obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(target.obj));;
+		String field = value.field;
+		if(field != null)
+		{
+			//System.err.println(targetName + "." + field + " <- " + value.obj);
+			FieldUtils.setField(target.obj, field, value.obj);
+			return;
+		}
+
+		//System.err.println(targetName + " + " + value.obj);
+		Class<? extends Object> clazz = target.obj.getClass();
+		Type type = ObjectType.typeFor(clazz);
+		switch(type)
+		{
+			case ARRAY:
+				int len = Array.getLength(target.obj);
+				target.obj = ArrayUtils.resizeArray(target.obj, len + 1);
+				Array.set(target.obj, len, value.obj);
+				return;
+
+			case COLLECTION:
+				Collection<Object> coll = (Collection<Object>) target.obj;
+				coll.add(value.obj);
+				return;
+				
+			default:
+				throw new NotImplementedYet();
+		}
+	}
+}
+
+class Node
+{
+	Object	obj;
+
+	String	id;
+
+	String	field;
+
+	String	className;
+
+	String	value;
+
+	public Node(Object obj, Attributes attrs)
+	{
+		this.obj       = obj;
+		this.id        = attrs.getValue("id");
+		this.className = attrs.getValue("class");
+		this.field     = attrs.getValue("field");
+		this.value     = attrs.getValue("value");
+	}
+
+	@Override
+	public String toString()
+	{
+		return "node: " + id + "/" + className;
+	}
+	
+	
 }

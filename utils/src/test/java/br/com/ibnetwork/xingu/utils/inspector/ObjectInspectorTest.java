@@ -87,7 +87,7 @@ public class ObjectInspectorTest
 		XmlEmitter visitor = new XmlEmitter();
 		new SimpleObjectInspector(obj, aliases).visit(visitor);
 		String result = visitor.getResult();
-		System.err.println(result + "--");
+		//System.err.println(result + "--");
 		return result;
 	}
 	
