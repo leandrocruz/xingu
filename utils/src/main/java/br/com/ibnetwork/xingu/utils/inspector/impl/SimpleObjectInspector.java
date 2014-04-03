@@ -15,8 +15,8 @@ import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
-import br.com.ibnetwork.xingu.utils.inspector.TypeHandler;
-import br.com.ibnetwork.xingu.utils.inspector.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.TypeHandler;
+import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 
 public class SimpleObjectInspector
 	implements ObjectInspector

@@ -20,8 +20,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
-import br.com.ibnetwork.xingu.utils.inspector.TypeHandler;
-import br.com.ibnetwork.xingu.utils.inspector.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.TypeHandler;
+import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 
 public class XmlObjectEmitter
 	extends DefaultHandler

@@ -11,8 +11,9 @@ import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
-import br.com.ibnetwork.xingu.utils.inspector.type.GenericTypeHandler;
-import br.com.ibnetwork.xingu.utils.inspector.type.TypeHandlerRegistryImpl;
+import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.impl.GenericTypeHandler;
+import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 
 public class ObjectInspectorTest
 {
