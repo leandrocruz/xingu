@@ -3,7 +3,9 @@ package br.com.ibnetwork.xingu.utils.inspector;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -11,8 +13,8 @@ import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
-import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
+import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 import br.com.ibnetwork.xingu.utils.type.impl.GenericTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 
@@ -73,6 +75,19 @@ public class ObjectInspectorTest
 	}
 
 	@Test
+	public void testMap()
+		throws Exception
+	{
+		Map<String, SimpleObject> map = new HashMap<String, SimpleObject>();
+		execWith(new WithMap(map));
+		
+		map.put("a", new SimpleObject(1, "a"));
+		map.put("b", new SimpleObject(2, "b"));
+		
+		execWith(new WithMap(map));
+	}
+	
+	@Test
 	public void testCyclicGraph()
 		throws Exception
 	{
@@ -87,7 +102,7 @@ public class ObjectInspectorTest
 		XmlEmitter visitor = new XmlEmitter();
 		new SimpleObjectInspector(obj, aliases).visit(visitor);
 		String result = visitor.getResult();
-		//System.err.println(result + "--");
+		System.err.println(result + "--");
 		return result;
 	}
 	

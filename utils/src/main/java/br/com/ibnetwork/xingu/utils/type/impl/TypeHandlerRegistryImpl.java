@@ -54,7 +54,10 @@ public class TypeHandlerRegistryImpl
 		{
 			case ARRAY:
 				return clazz.getComponentType().getName() + "[]";
-
+			
+			case MAP:
+				return clazz.getName(); //clazz.getComponentType().getName() + "{}";
+				
 			default:
 				return clazz.getName();
 		}

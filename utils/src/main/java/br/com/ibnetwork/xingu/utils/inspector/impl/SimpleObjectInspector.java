@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
@@ -54,12 +55,9 @@ public class SimpleObjectInspector
 			{
 				return;
 			}
-			clazz = field.getType();
 		}
-		else
-		{
-			clazz = obj.getClass();
-		}
+		clazz = obj.getClass();
+
 		Type        type    = ObjectType.typeFor(clazz);
 		TypeHandler handler = registry.handlerFor(clazz, type);
 		String      id      = Integer.toHexString(System.identityHashCode(obj));
@@ -96,8 +94,11 @@ public class SimpleObjectInspector
 				break;
 				
 			case COLLECTION:
-			case MAP:
 				visitCollection(obj, visitor);
+				break;
+
+			case MAP:
+				visitMap(obj, visitor);
 				break;
 				
 			case OBJECT:
@@ -115,6 +116,18 @@ public class SimpleObjectInspector
 		if(!isPrimitive)
 		{
 			visitor.onNodeEnd(obj, id, handler, field);
+		}
+	}
+
+	private void visitMap(Object obj, ObjectVisitor<?> visitor)
+	{
+		Map<?,      ?>   map = (Map<?, ?>) obj;
+		Set<?>      keys     = map.keySet();
+		Iterator<?> it       = keys.iterator();
+		while(it.hasNext())
+		{
+			Object key   = it.next();
+			Object value = map.get(key);
 		}
 	}
 

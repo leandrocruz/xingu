@@ -16,4 +16,13 @@ public class MapUtils
         
         return result;
     }
+    
+    public static final boolean equals(Map m1, Map m2)
+    {
+    	if(m1.isEmpty())
+    	{
+    		return m2.isEmpty();
+    	}
+    	return false;
+    }
 }
