@@ -158,27 +158,34 @@ class Node
 		if(value.field != null)
 		{
 			FieldUtils.setField(payload, value.field, value.payload);
-			return;
 		}
-
-		Class<? extends Object> clazz = payload.getClass();
-		Type type = ObjectType.typeFor(clazz);
-		switch(type)
+		else
 		{
-			case ARRAY:
-				int len = Array.getLength(payload);
-				payload = ArrayUtils.resizeArray(payload, len + 1);
-				Array.set(payload, len, value.payload);
-				return;
-
-			case COLLECTION:
-				Collection<Object> coll = (Collection<Object>) payload;
-				coll.add(value.payload);
-				return;
-
-			default:
-				throw new NotImplementedYet();
+			Class<?> clazz = payload.getClass();
+			Type type	   = ObjectType.typeFor(clazz);
+			switch(type)
+			{
+				case ARRAY:
+					
+					int len = Array.getLength(payload);
+					payload = ArrayUtils.resizeArray(payload, len + 1);
+					Array.set(payload, len, value.payload);
+					
+					return;
+					
+				case COLLECTION:
+					
+					@SuppressWarnings("unchecked")
+					Collection<Object> coll = (Collection<Object>) payload;
+					coll.add(value.payload);
+					
+					return;
+					
+				default:
+					throw new NotImplementedYet();
+			}
 		}
+
 	}
 
 	@Override
