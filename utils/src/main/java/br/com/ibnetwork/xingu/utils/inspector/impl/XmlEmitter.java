@@ -17,7 +17,7 @@ public class XmlEmitter
 	public void onPrimitive(Object obj, String id, TypeHandler handler, Field field)
 	{
 		String fieldName = field == null ? null : field.getName();
-		String type      = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
+		String type      = typeName(handler);
 		String value     = handler.toString(obj);
 		printer
 			.ident()
@@ -31,6 +31,21 @@ public class XmlEmitter
 			.br();
 	}
 
+	private String typeName(TypeHandler handler)
+	{
+		Type type = handler.type();
+		switch(type)
+		{
+			case ARRAY:
+			case COLLECTION:
+			case MAP:
+				return type.name();
+
+			default:
+				return null;
+		}
+	}
+
 	@Override
 	public void onNodeStart(Object obj, String id, TypeHandler handler, Field field)
 	{
@@ -38,7 +53,7 @@ public class XmlEmitter
 		String   className       = handler.name();
 		String   classLoaderName = ClassLoaderUtils.nameFor(clazz);
 		String   fieldName       = field == null ? null : field.getName();
-		String   type            = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
+		String   type            = typeName(handler);
 		
 		printer
 			.ident()

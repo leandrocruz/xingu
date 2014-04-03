@@ -38,13 +38,26 @@ public class TypeHandlerRegistryImpl
 	@Override
 	public TypeHandler handlerFor(Class<?> clazz, Type type)
 	{
-		TypeHandler handler = get(clazz.getName());
+		String      name    = toName(clazz, type);
+		TypeHandler handler = get(name);
 		if(handler == null)
 		{
 			handler = getAlias(clazz, type);
 			register(handler);
 		}
 		return handler;
+	}
+
+	private String toName(Class<?> clazz, Type type)
+	{
+		switch(type)
+		{
+			case ARRAY:
+				return clazz.getComponentType().getName() + "[]";
+
+			default:
+				return clazz.getName();
+		}
 	}
 
 	private TypeHandler getAlias(Class<?> clazz, Type type)
@@ -54,13 +67,12 @@ public class TypeHandlerRegistryImpl
 		{
 			case ARRAY:
 				Class<?> componentType = clazz.getComponentType();
-				name = handlerFor(componentType, null).name();
-				break;
+				name = handlerFor(componentType, Type.OBJECT).name() + "[]";
+				return new ArrayTypeHandler(clazz, name);
 
 			default:
-				break;
+				return new GenericTypeHandler(clazz, name, type);
 		}
-		return new GenericTypeHandler(clazz, name, type);
 	}
 
 	@Override

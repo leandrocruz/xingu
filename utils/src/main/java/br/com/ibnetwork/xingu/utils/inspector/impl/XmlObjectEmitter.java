@@ -1,6 +1,8 @@
 package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -10,16 +12,16 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.objenesis.Objenesis;
-import org.objenesis.ObjenesisStd;
-import org.objenesis.instantiator.ObjectInstantiator;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
+import br.com.ibnetwork.xingu.utils.type.ObjectType;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 
@@ -29,20 +31,15 @@ public class XmlObjectEmitter
 {
 	private TypeHandlerRegistry	registry;
 
-	private ClassLoader			cl;
-
 	private Stack<Object>		stack		= new Stack<Object>();
 
 	private Map<String, Object>	nodeById	= new HashMap<String, Object>();
 
-	private Objenesis			objenesis	= new ObjenesisStd();
-
 	private Object				result;
-
-	public XmlObjectEmitter(TypeHandlerRegistry aliases, ClassLoader cl)
+	
+	public XmlObjectEmitter(TypeHandlerRegistry aliases, ClassLoader unused)
 	{
 		this.registry = aliases;
-		this.cl = cl;
 	}
 
 	@Override
@@ -64,20 +61,15 @@ public class XmlObjectEmitter
 		if("node".equals(name))
 		{
 			Object node = handleNode(attrs);
-			if(result == null)
-			{
-				result = node;
-			}
 			nodeById.put(id, node);
 			stack.push(node);
 		}
 		else if("ref".equals(name))
 		{
 			Object node = nodeById.get(id);
-			String field = attrs.getValue("field");
 			try
 			{
-				attachToPeek(node, field);
+				attachToPeek(node, attrs);
 			}
 			catch(Exception e)
 			{
@@ -96,11 +88,7 @@ public class XmlObjectEmitter
 		try
 		{
 			Object node  = nodeFrom(attrs);
-			String field = attrs.getValue("field");
-			if(StringUtils.isNotEmpty(field))
-			{
-				attachToPeek(node, field);
-			}
+			attachToPeek(node, attrs);
 
 			return node;
 		}
@@ -111,11 +99,42 @@ public class XmlObjectEmitter
 		}
 	}
 
-	private void attachToPeek(Object node, String field)
+	private void attachToPeek(Object node, Attributes attrs)
 		throws Exception
 	{
+		int size = stack.size();
+		if(size == 0)
+		{
+			return;
+		}
+
 		Object parent = stack.peek();
-		FieldUtils.setField(parent, field, node);
+		String field  = attrs.getValue("field");
+		if(field != null)
+		{
+			FieldUtils.setField(parent, field, node);
+			return;
+		}
+		
+		Class<? extends Object> clazz = parent.getClass();
+		Type type = ObjectType.typeFor(clazz);
+		switch(type)
+		{
+			case ARRAY:
+				int len = Array.getLength(parent);
+				Object enlarged = ArrayUtils.resizeArray(parent, len + 1);
+				Array.set(enlarged, len, node);
+				stack.set(size - 1, enlarged);
+				break;
+
+			case COLLECTION:
+				Collection<Object> coll = (Collection<Object>) parent;
+				coll.add(node);
+				break;
+				
+			default:
+				throw new NotImplementedYet();
+		}
 	}
 
 	private Object nodeFrom(Attributes attrs)
@@ -124,21 +143,15 @@ public class XmlObjectEmitter
 		String      id        = attrs.getValue("id");
 		String      className = attrs.getValue("class");
 		String      value     = attrs.getValue("value");
-		//System.out.println("node: " + id + "/" + className);
-		
 		TypeHandler handler   = registry.get(className);
+
+		System.out.println("node: " + id + "/" + className);
+
 		if(handler != null && StringUtils.isNotEmpty(value))
 		{
 			return handler.toObject(value);
 		}
-		
-		Class<?> clazz = handler.clazz();
-		if(clazz == null)
-		{
-			clazz = cl.loadClass(className);
-		}
-		ObjectInstantiator<?> instantiatorOf = objenesis.getInstantiatorOf(clazz);
-		return instantiatorOf.newInstance();
+		return handler.newInstance();
 	}
 
 	@Override
@@ -147,7 +160,7 @@ public class XmlObjectEmitter
 	{
 		if("node".equals(name))
 		{
-			stack.pop();
+			result = stack.pop();
 		}
 	}
 }

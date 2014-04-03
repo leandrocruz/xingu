@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
@@ -99,7 +100,14 @@ public class ObjectInspectorTest
 		String encoded = execWith(obj, registry);
 		Object decoded = decode(encoded, registry);
 		
-		assertEquals(obj, decoded);
+		if(obj.getClass().isArray())
+		{
+			assertEquals(true, ArrayUtils.equals((Object[])obj, (Object[])decoded));
+		}
+		else
+		{
+			assertEquals(obj, decoded);
+		}
 		
 		return encoded;
 	}

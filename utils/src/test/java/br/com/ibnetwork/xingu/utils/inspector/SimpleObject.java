@@ -12,6 +12,9 @@ public class SimpleObject
 	
 	Date date;
 
+	public SimpleObject()
+	{}
+	
 	public SimpleObject(int i, String string)
 	{
 		this(i, string, new Date());

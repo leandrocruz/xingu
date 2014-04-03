@@ -3,6 +3,8 @@ package br.com.ibnetwork.xingu.utils.inspector;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ibnetwork.xingu.utils.ArrayUtils;
+
 public class NestedObject
 {
 	int						i;
@@ -15,6 +17,9 @@ public class NestedObject
 
 	Map<Integer, String>	map;
 
+	public NestedObject()
+	{}
+	
 	public NestedObject(int i)
 	{
 		this.i = i;
@@ -26,4 +31,16 @@ public class NestedObject
 		this.me = nested;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof NestedObject))
+		{
+			return false;
+		}
+		
+		NestedObject other = (NestedObject) obj;
+		return other.i == i
+				&& ArrayUtils.equals(other.array, array);
+	}
 }
