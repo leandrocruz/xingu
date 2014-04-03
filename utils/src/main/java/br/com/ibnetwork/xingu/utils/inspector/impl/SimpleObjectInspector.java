@@ -128,6 +128,9 @@ public class SimpleObjectInspector
 		{
 			Object key   = it.next();
 			Object value = map.get(key);
+			
+			visitNode(key, null, visitor);
+			visitNode(value, null, visitor);
 		}
 	}
 

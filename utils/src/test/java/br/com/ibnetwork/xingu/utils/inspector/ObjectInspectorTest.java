@@ -81,8 +81,8 @@ public class ObjectInspectorTest
 		Map<String, SimpleObject> map = new HashMap<String, SimpleObject>();
 		execWith(new WithMap(map));
 		
-		map.put("a", new SimpleObject(1, "a"));
-		map.put("b", new SimpleObject(2, "b"));
+		map.put("a", new SimpleObject(1, "aa"));
+		map.put("b", new SimpleObject(2, "bb"));
 		
 		execWith(new WithMap(map));
 	}

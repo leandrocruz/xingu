@@ -180,6 +180,10 @@ class Node
 					coll.add(value.payload);
 					
 					return;
+				
+				case MAP:
+					
+					throw new NotImplementedYet("");
 					
 				default:
 					throw new NotImplementedYet();
