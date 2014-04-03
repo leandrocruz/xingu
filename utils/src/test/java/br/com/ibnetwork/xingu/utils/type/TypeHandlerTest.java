@@ -2,9 +2,12 @@ package br.com.ibnetwork.xingu.utils.type;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.type.impl.DateTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.IntegerTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.StringTypeHandler;
 
@@ -88,6 +91,11 @@ public class TypeHandlerTest
 	public void testDateTypeHandler()
 		throws Exception
 	{
-		throw new NotImplementedYet();
+		TypeHandler handler = new DateTypeHandler();
+		Object      object  = handler.toObject("100");
+		assertEquals(new Date(100), object);
+		
+		String string = handler.toString(new Date(13));
+		assertEquals("13", string);
 	}
 }
