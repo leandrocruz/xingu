@@ -10,5 +10,7 @@ public interface TypeHandler
 	
 	Class<?> clazz();
 
-	Object newInstanceWith(String value);
+	String toString(Object obj);
+
+	Object toObject(String value);
 }

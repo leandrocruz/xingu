@@ -11,7 +11,7 @@ public class StringTypeHandler
 	}
 
 	@Override
-	public Object newInstanceWith(String value)
+	public Object toObject(String value)
 	{
 		return value;
 	}

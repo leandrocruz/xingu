@@ -17,6 +17,7 @@ public class TypeHandlerRegistryImpl
 		_register(new BooleanTypeHandler());
 		_register(new IntegerTypeHandler());
 		_register(new StringTypeHandler());
+		_register(new DateTypeHandler());
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class TypeHandlerRegistryImpl
 			default:
 				break;
 		}
-		return new SimpleTypeHandler(clazz, name, type);
+		return new GenericTypeHandler(clazz, name, type);
 	}
 
 	@Override

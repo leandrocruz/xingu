@@ -11,7 +11,7 @@ public class BooleanTypeHandler
 	}
 
 	@Override
-	public Object newInstanceWith(String value)
+	public Object toObject(String value)
 	{
 		return Boolean.valueOf(value);
 	}

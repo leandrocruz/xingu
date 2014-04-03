@@ -125,11 +125,11 @@ public class XmlObjectEmitter
 		String      className = attrs.getValue("class");
 		String      value     = attrs.getValue("value");
 		//System.out.println("node: " + id + "/" + className);
-
+		
 		TypeHandler handler   = registry.get(className);
 		if(handler != null && StringUtils.isNotEmpty(value))
 		{
-			return handler.newInstanceWith(value);
+			return handler.toObject(value);
 		}
 		
 		Class<?> clazz = handler.clazz();

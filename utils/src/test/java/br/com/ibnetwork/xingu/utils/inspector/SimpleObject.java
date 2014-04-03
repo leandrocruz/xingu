@@ -1,5 +1,7 @@
 package br.com.ibnetwork.xingu.utils.inspector;
 
+import java.util.Date;
+
 public class SimpleObject
 {
 	int    anInt;
@@ -7,12 +9,20 @@ public class SimpleObject
 	String aString;
 	
 	String bString;
+	
+	Date date;
 
 	public SimpleObject(int i, String string)
+	{
+		this(i, string, new Date());
+	}
+	
+	public SimpleObject(int i, String string, Date date)
 	{
 		this.anInt   = i;
 		this.aString = string;
 		this.bString = string;
+		this.date    = date;
 	}
 
 	@Override
@@ -26,6 +36,7 @@ public class SimpleObject
 		SimpleObject other = (SimpleObject) obj;
 		return other.anInt == anInt 
 				&& other.aString.equals(aString)
-				&& other.bString.equals(bString);
+				&& other.bString.equals(bString)
+				&& other.date.equals(date);
 	}
 }

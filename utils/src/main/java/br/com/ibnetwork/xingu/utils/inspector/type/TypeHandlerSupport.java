@@ -51,9 +51,14 @@ public class TypeHandlerSupport
 	}
 
 	@Override
-	public Object newInstanceWith(String value)
+	public String toString(Object obj)
+	{
+		return obj.toString();
+	}
+
+	@Override
+	public Object toObject(String value)
 	{
 		throw new NotImplementedYet();
 	}
-
 }

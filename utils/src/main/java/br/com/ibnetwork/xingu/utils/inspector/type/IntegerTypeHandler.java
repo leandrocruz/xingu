@@ -11,8 +11,15 @@ public class IntegerTypeHandler
 	}
 
 	@Override
-	public Object newInstanceWith(String value)
+	public Object toObject(String value)
 	{
 		return Integer.valueOf(value);
+	}
+
+	@Override
+	public String toString(Object obj)
+	{
+		Integer myInteger = Integer.class.cast(obj);
+		return String.valueOf(myInteger);
 	}
 }

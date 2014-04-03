@@ -1,6 +1,7 @@
 package br.com.ibnetwork.xingu.utils.inspector;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class ObjectType
 		typeByClass.put(Long.class, 		Type.PRIMITIVE);
 		typeByClass.put(Float.class, 		Type.PRIMITIVE);
 		typeByClass.put(Double.class, 		Type.PRIMITIVE);
+		typeByClass.put(Date.class, 		Type.PRIMITIVE);
 	}
 
 	public static Type typeFor(Class<?> clazz)

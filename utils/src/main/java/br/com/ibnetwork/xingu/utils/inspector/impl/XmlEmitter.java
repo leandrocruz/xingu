@@ -1,6 +1,7 @@
 package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
@@ -18,7 +19,7 @@ public class XmlEmitter
 	{
 		String fieldName = field == null ? null : field.getName();
 		String type      = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
-	
+		String value     = handler.toString(obj);
 		printer
 			.ident()
 			.startElement("node")
@@ -26,7 +27,7 @@ public class XmlEmitter
 			.attrIf("field", fieldName)
 			.attrIf("type", type)
 			.attr("class", handler.name())
-			.attr("value", obj.toString())
+			.attr("value", value)
 			.closeEmpty()
 			.br();
 	}

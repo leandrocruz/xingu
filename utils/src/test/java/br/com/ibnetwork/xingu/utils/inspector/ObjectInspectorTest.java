@@ -11,7 +11,7 @@ import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
-import br.com.ibnetwork.xingu.utils.inspector.type.SimpleTypeHandler;
+import br.com.ibnetwork.xingu.utils.inspector.type.GenericTypeHandler;
 import br.com.ibnetwork.xingu.utils.inspector.type.TypeHandlerRegistryImpl;
 
 public class ObjectInspectorTest
@@ -93,8 +93,8 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
-		registry.register(new SimpleTypeHandler(SimpleObject.class, "simple", Type.OBJECT));
-		registry.register(new SimpleTypeHandler(NestedObject.class, "nested", Type.OBJECT));
+		registry.register(new GenericTypeHandler(SimpleObject.class, "simple", Type.OBJECT));
+		registry.register(new GenericTypeHandler(NestedObject.class, "nested", Type.OBJECT));
 		String encoded = execWith(obj, registry);
 		Object decoded = decode(encoded, registry);
 		
