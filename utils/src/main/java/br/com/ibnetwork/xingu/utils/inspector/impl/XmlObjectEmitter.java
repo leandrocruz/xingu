@@ -35,7 +35,7 @@ public class XmlObjectEmitter
 
 	private Stack<Node>			stack		= new Stack<Node>();
 
-	private Map<String, Object>	nodeById	= new HashMap<String, Object>();
+	private Map<String, Node>	nodeById	= new HashMap<String, Node>();
 	
 	public XmlObjectEmitter(TypeHandlerRegistry aliases, ClassLoader unused)
 	{
@@ -57,53 +57,44 @@ public class XmlObjectEmitter
 	public void startElement(String namespaceURI, String localName, String name, Attributes attrs)
 		throws SAXException
 	{
-		String id = attrs.getValue("id");
+		try
+		{
+			Node node = onStart(name, attrs);
+			stack.push(node);
+		}
+		catch(Exception e)
+		{
+			throw new SAXException("Error creating node", e);
+		}
+	}
+
+	private Node onStart(String name, Attributes attrs)
+		throws Exception
+	{
+		Node node = new Node(attrs);
 		if("node".equals(name))
 		{
-			Object node = handleNode(attrs);
-			push(node, attrs);
+			nodeById.put(node.id, node);
+			node.payload = getPayload(node);
 		}
 		else if("ref".equals(name))
 		{
-			Object node = nodeById.get(id);
-			push(node, attrs);
+			node.payload = nodeById.get(node.id).payload;
 		}
 		else
 		{
 			throw new NotImplementedYet();
 		}
+		return node;
 	}
 
-	private void push(Object node, Attributes attrs)
-	{
-		String id = attrs.getValue("id");
-		nodeById.put(id, node);
-		stack.push(new Node(node, attrs));
-	}
-
-	private Object handleNode(Attributes attrs)
-		throws SAXException
-	{
-		try
-		{
-			return nodeFrom(attrs);
-		}
-		catch(Exception e)
-		{
-			//e.printStackTrace();
-			throw new SAXException("Error creating node", e);
-		}
-	}
-
-	private Object nodeFrom(Attributes attrs)
+	private Object getPayload(Node node)
 		throws Exception
 	{
-		String      className = attrs.getValue("class");
-		String      value     = attrs.getValue("value");
-		TypeHandler handler   = registry.get(className);
-		if(handler != null && StringUtils.isNotEmpty(value))
+		TypeHandler handler = registry.get(node.clazz);
+		if(handler != null && StringUtils.isNotEmpty(node.value))
 		{
-			return handler.toObject(value);
+			return handler.toObject(node.value);
 		}
 		return handler.newInstance();
 	}
@@ -112,88 +103,87 @@ public class XmlObjectEmitter
 	public void endElement(String namespaceURI, String localName, String name)
 		throws SAXException
 	{
-		Node node = stack.pop();
-		if(stack.empty())
+		try
 		{
-			result = node.obj;
-			return;
+			result = onEnd();
 		}
-		
-		if("node".equals(name) || "ref".equals(name))
+		catch(Exception e)
 		{
-			Node target = stack.peek();
-			try
-			{
-				attach(target, node);
-			}
-			catch(Exception e)
-			{
-				//e.printStackTrace();
-				throw new SAXException(e);
-			}
+			throw new SAXException(e);
 		}
 	}
 
-	private void attach(Node target, Node value)
+	public Object onEnd()
 		throws Exception
 	{
-		String targetName = target.obj.getClass().getSimpleName() + "@" + Integer.toHexString(System.identityHashCode(target.obj));;
-		String field = value.field;
-		if(field != null)
+		Node value = stack.pop();
+		if(stack.empty())
 		{
-			//System.err.println(targetName + "." + field + " <- " + value.obj);
-			FieldUtils.setField(target.obj, field, value.obj);
-			return;
+			return value.payload;
 		}
-
-		//System.err.println(targetName + " + " + value.obj);
-		Class<? extends Object> clazz = target.obj.getClass();
-		Type type = ObjectType.typeFor(clazz);
-		switch(type)
-		{
-			case ARRAY:
-				int len = Array.getLength(target.obj);
-				target.obj = ArrayUtils.resizeArray(target.obj, len + 1);
-				Array.set(target.obj, len, value.obj);
-				return;
-
-			case COLLECTION:
-				Collection<Object> coll = (Collection<Object>) target.obj;
-				coll.add(value.obj);
-				return;
-				
-			default:
-				throw new NotImplementedYet();
-		}
+		
+		Node target = stack.peek();
+		target.attach(value);
+		
+		return null;
 	}
 }
 
 class Node
 {
-	Object	obj;
-
 	String	id;
+
+	String	type;
 
 	String	field;
 
-	String	className;
+	String	clazz;
 
 	String	value;
 
-	public Node(Object obj, Attributes attrs)
+	Object	payload;
+
+	public Node(Attributes attrs)
 	{
-		this.obj       = obj;
-		this.id        = attrs.getValue("id");
-		this.className = attrs.getValue("class");
-		this.field     = attrs.getValue("field");
-		this.value     = attrs.getValue("value");
+		this.id    = attrs.getValue("id");
+		this.clazz = attrs.getValue("class");
+		this.field = attrs.getValue("field");
+		this.value = attrs.getValue("value");
+		this.type  = attrs.getValue("type");
+	}
+	
+	public void attach(Node value)
+		throws Exception
+	{
+		if(value.field != null)
+		{
+			FieldUtils.setField(payload, value.field, value.payload);
+			return;
+		}
+
+		Class<? extends Object> clazz = payload.getClass();
+		Type type = ObjectType.typeFor(clazz);
+		switch(type)
+		{
+			case ARRAY:
+				int len = Array.getLength(payload);
+				payload = ArrayUtils.resizeArray(payload, len + 1);
+				Array.set(payload, len, value.payload);
+				return;
+
+			case COLLECTION:
+				Collection<Object> coll = (Collection<Object>) payload;
+				coll.add(value.payload);
+				return;
+
+			default:
+				throw new NotImplementedYet();
+		}
 	}
 
 	@Override
 	public String toString()
 	{
-		return "node: " + id + "/" + className;
+		return "id:"+id+", type:"+type+", field:"+field+", class:"+clazz+", value:"+value;
 	}
-	
-	
 }
