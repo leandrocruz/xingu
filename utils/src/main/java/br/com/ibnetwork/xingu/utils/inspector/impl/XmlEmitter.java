@@ -1,7 +1,6 @@
 package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectType.Type;
