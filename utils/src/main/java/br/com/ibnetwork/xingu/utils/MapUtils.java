@@ -8,9 +8,9 @@ import java.util.Set;
 
 public class MapUtils
 {
-    public static <K,V> List<MapElement<K, V>> toJSON(Map<K,V> map) {
+    public static <K,V> List<MapElement<K, V>> toJSON(Map<K,V> map)
+    {
         List<MapElement<K, V>> result = new ArrayList<MapElement<K, V>>(map.size());
-        
         for (K key : map.keySet())
         {
             result.add(new MapElement<K, V>(key, map.get(key)));

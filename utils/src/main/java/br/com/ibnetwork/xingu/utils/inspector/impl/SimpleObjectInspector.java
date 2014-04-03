@@ -127,9 +127,13 @@ public class SimpleObjectInspector
 		while(it.hasNext())
 		{
 			Object key   = it.next();
-			Object value = map.get(key);
-			
 			visitNode(key, null, visitor);
+
+			Object value = map.get(key);
+			if(value == null)
+			{
+				throw new NotImplementedYet();
+			}
 			visitNode(value, null, visitor);
 		}
 	}

@@ -129,6 +129,23 @@ public class XmlObjectEmitter
 	}
 }
 
+class MapEntry
+{
+	public Object	key;
+
+	public Object	value;
+
+	public MapEntry(Object key)
+	{
+		this.key = key;
+	}
+
+	public void set(Object value)
+	{
+		this.value = value;
+	}
+}
+
 class Node
 {
 	String	id;
@@ -142,6 +159,8 @@ class Node
 	String	value;
 
 	Object	payload;
+	
+	MapEntry entry;
 
 	public Node(Attributes attrs)
 	{
@@ -183,7 +202,21 @@ class Node
 				
 				case MAP:
 					
-					throw new NotImplementedYet("");
+					if(entry == null)
+					{
+						entry = new MapEntry(value.payload);
+						return;
+					}
+					else
+					{
+						entry.set(value.payload);
+					}
+					
+					Map map = (Map) payload;
+					map.put(entry.key, entry.value);
+					entry = null;
+					
+					return;
 					
 				default:
 					throw new NotImplementedYet();
