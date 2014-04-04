@@ -14,9 +14,14 @@ public class TypeHandlerRegistryImpl
 	private static Map<String, TypeHandler> handlerByName = new HashMap<String, TypeHandler>();
 	
 	static {
+		_register(new ByteTypeHandler());
 		_register(new BooleanTypeHandler());
+		_register(new CharTypeHandler());
 		_register(new IntegerTypeHandler());
+		_register(new LongTypeHandler());
 		_register(new StringTypeHandler());
+		_register(new FloatTypeHandler());
+		_register(new DoubleTypeHandler());
 		_register(new DateTypeHandler());
 	}
 

@@ -3,6 +3,7 @@ package br.com.ibnetwork.xingu.utils.inspector;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +26,22 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		execWith("a string");
+		execWith('c');
 		execWith(1);
+		execWith((byte)0);
+		execWith(10l);
+		execWith(20d);
+		execWith(30f);
 		execWith(false);
 	}
 
+	@Test
+	public void testDate()
+		throws Exception
+	{
+		execWith(new Date());
+	}
+	
 	@Test
 	public void testSimpleObject()
 		throws Exception
