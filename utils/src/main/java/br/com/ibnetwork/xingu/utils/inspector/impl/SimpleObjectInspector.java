@@ -4,7 +4,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,9 +15,9 @@ import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.type.ObjectType;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
-import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
 public class SimpleObjectInspector
 	implements ObjectInspector
