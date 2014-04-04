@@ -23,6 +23,7 @@
 	</dependencies>
 	<modules>
 		<module>api</module>
+		<module>xoia</module>		
 		<module>gson</module>
 		<module>flexjson</module>
 		<module>xstream</module>

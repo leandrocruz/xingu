@@ -1,45 +1,50 @@
 package xingu.codec.impl.xoia;
 
 import xingu.codec.Codec;
-import br.com.ibnetwork.xingu.utils.inspector.ObjectInspector;
-import br.com.ibnetwork.xingu.utils.inspector.TypeAliasMap;
+import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
-import br.com.ibnetwork.xingu.utils.inspector.impl.TypeAliasMapImpl;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
+import br.com.ibnetwork.xingu.utils.inspector.impl.XmlReader;
+import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
+import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 
 public class XoiaCodec
 	implements Codec
 {
-	private TypeAliasMap aliases = new TypeAliasMapImpl();
+	private TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
 	
 	@Override
-	public Object decode(String text)
+	public String encode(Object object)
 		throws Exception
 	{
-		return null;
+		XmlEmitter visitor = new XmlEmitter();
+		new SimpleObjectInspector(object, registry).visit(visitor);
+		String result = visitor.getResult();
+		System.err.println("<< " + result);
+		return result;
 	}
 
 	@Override
 	public Object decode(String text, ClassLoader cl)
 		throws Exception
 	{
-		return null;
+		System.err.println(">> " + text);
+		ObjectEmitter deserializer = new XmlReader(registry, cl);
+		return deserializer.from(text);
+	}
+
+	@Override
+	public Object decode(String text)
+		throws Exception
+	{
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		return decode(text, cl);
 	}
 
 	@Override
 	public <T> T decode(String text, Class<? extends T> clazz)
 		throws Exception
 	{
-		return null;
-	}
-
-	@Override
-	public String encode(Object object)
-		throws Exception
-	{
-		XmlEmitter      visitor   = new XmlEmitter();
-		ObjectInspector inspector = new SimpleObjectInspector(object, aliases);
-		inspector.visit(visitor);
-		return visitor.getResult();
+		return (T) decode(text);
 	}
 }
