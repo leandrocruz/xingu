@@ -71,19 +71,15 @@ public class XmlReader
 	private Node onStart(String name, Attributes attrs)
 		throws Exception
 	{
-		Node node = new Node(attrs);
-		if("node".equals(name))
-		{
-			nodeById.put(node.id, node);
-			node.payload = getPayload(node);
-		}
-		else if("ref".equals(name))
+		Node node = new Node(name, attrs);
+		if("ref".equals(name))
 		{
 			node.payload = nodeById.get(node.id).payload;
 		}
 		else
 		{
-			throw new NotImplementedYet();
+			nodeById.put(node.id, node);
+			node.payload = getPayload(node);
 		}
 		return node;
 	}
@@ -91,7 +87,8 @@ public class XmlReader
 	private Object getPayload(Node node)
 		throws Exception
 	{
-		TypeHandler handler = registry.get(node.clazz);
+		String type = node.clazz != null ? node.clazz : node.name;
+		TypeHandler handler = registry.get(type);
 		if(handler != null && StringUtils.isNotEmpty(node.value))
 		{
 			return handler.toObject(node.value);
@@ -148,6 +145,8 @@ class MapEntry
 
 class Node
 {
+	String	name;
+
 	String	id;
 
 	String	type;
@@ -162,8 +161,9 @@ class Node
 	
 	MapEntry entry;
 
-	public Node(Attributes attrs)
+	public Node(String name, Attributes attrs)
 	{
+		this.name  = name;
 		this.id    = attrs.getValue("id");
 		this.clazz = attrs.getValue("class");
 		this.field = attrs.getValue("field");
@@ -228,6 +228,6 @@ class Node
 	@Override
 	public String toString()
 	{
-		return "id:"+id+", type:"+type+", field:"+field+", class:"+clazz+", value:"+value;
+		return "name:"+name+",id:"+id+", type:"+type+", field:"+field+", class:"+clazz+", value:"+value;
 	}
 }

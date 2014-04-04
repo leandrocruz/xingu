@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
@@ -17,15 +18,12 @@ public class XmlEmitter
 	public void onPrimitive(Object obj, String id, TypeHandler handler, Field field)
 	{
 		String fieldName = field == null ? null : field.getName();
-		String type      = typeName(handler);
 		String value     = handler.toString(obj);
 		printer
 			.ident()
-			.startElement("node")
+			.startElement(handler.name())
 			.attr("id", id)
 			.attrIf("field", fieldName)
-			.attrIf("type", type)
-			.attr("class", handler.name())
 			.attr("value", value)
 			.closeEmpty()
 			.br();
@@ -39,10 +37,13 @@ public class XmlEmitter
 			case ARRAY:
 			case COLLECTION:
 			case MAP:
-				return type.name();
+				return type.name().toLowerCase();
 
+			case OBJECT:
+				return "obj";
+				
 			default:
-				return null;
+				throw new NotImplementedYet();
 		}
 	}
 
@@ -57,10 +58,9 @@ public class XmlEmitter
 		
 		printer
 			.ident()
-			.startElement("node")
+			.startElement(type)
 			.attr("id", id)
 			.attrIf("field", fieldName)
-			.attrIf("type", type)
 			.attr("class", className)
 			.attrIf("classLoader", classLoaderName)
 			.close().br().increment();
@@ -69,10 +69,11 @@ public class XmlEmitter
 	@Override
 	public void onNodeEnd(Object obj, String id, TypeHandler handler, Field field)
 	{
+		String type = typeName(handler);
 		printer
 			.decrement()
 			.ident()
-			.endElement("node")
+			.endElement(type)
 			.br();
 	}
 
