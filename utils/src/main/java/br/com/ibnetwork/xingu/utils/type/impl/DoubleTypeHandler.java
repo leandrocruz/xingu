@@ -2,24 +2,24 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
-public class BooleanTypeHandler
+public class DoubleTypeHandler
 	extends TypeHandlerSupport
 {
-	public BooleanTypeHandler()
+	public DoubleTypeHandler()
 	{
-		super(Boolean.class, "bool", Type.PRIMITIVE);
+		super(Double.class, "double", Type.PRIMITIVE);
 	}
 
 	@Override
 	public Object toObject(String value)
 	{
-		return Boolean.valueOf(value);
+		return Double.valueOf(value);
 	}
-	
+
 	@Override
 	public String toString(Object obj)
 	{
-		Boolean myBoolean = Boolean.class.cast(obj);
-		return String.valueOf(myBoolean);
+		Double myDouble = Double.class.cast(obj);
+		return String.valueOf(myDouble);
 	}
 }

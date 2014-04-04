@@ -2,24 +2,24 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
-public class BooleanTypeHandler
+public class LongTypeHandler
 	extends TypeHandlerSupport
 {
-	public BooleanTypeHandler()
+	public LongTypeHandler()
 	{
-		super(Boolean.class, "bool", Type.PRIMITIVE);
+		super(Long.class, "long", Type.PRIMITIVE);
 	}
 
 	@Override
 	public Object toObject(String value)
 	{
-		return Boolean.valueOf(value);
+		return Long.valueOf(value);
 	}
-	
+
 	@Override
 	public String toString(Object obj)
 	{
-		Boolean myBoolean = Boolean.class.cast(obj);
-		return String.valueOf(myBoolean);
+		Long myLong = Long.class.cast(obj);
+		return String.valueOf(myLong);
 	}
 }

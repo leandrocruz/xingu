@@ -2,24 +2,24 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
-public class BooleanTypeHandler
+public class FloatTypeHandler
 	extends TypeHandlerSupport
 {
-	public BooleanTypeHandler()
+	public FloatTypeHandler()
 	{
-		super(Boolean.class, "bool", Type.PRIMITIVE);
+		super(Float.class, "float", Type.PRIMITIVE);
 	}
 
 	@Override
 	public Object toObject(String value)
 	{
-		return Boolean.valueOf(value);
+		return Float.valueOf(value);
 	}
-	
+
 	@Override
 	public String toString(Object obj)
 	{
-		Boolean myBoolean = Boolean.class.cast(obj);
-		return String.valueOf(myBoolean);
+		Float myFloat = Float.class.cast(obj);
+		return String.valueOf(myFloat);
 	}
 }
