@@ -29,6 +29,8 @@ public class XmlReader
 	extends DefaultHandler
 	implements ObjectEmitter
 {
+	private ClassLoader			cl;
+
 	private TypeHandlerRegistry	registry;
 
 	private Object				result;
@@ -37,9 +39,10 @@ public class XmlReader
 
 	private Map<String, Node>	nodeById	= new HashMap<String, Node>();
 	
-	public XmlReader(TypeHandlerRegistry aliases, ClassLoader unused)
+	public XmlReader(TypeHandlerRegistry registry, ClassLoader cl)
 	{
-		this.registry = aliases;
+		this.cl       = cl;
+		this.registry = registry;
 	}
 
 	@Override
@@ -92,6 +95,12 @@ public class XmlReader
 		if(handler != null && StringUtils.isNotEmpty(node.value))
 		{
 			return handler.toObject(node.value);
+		}
+		
+		if(handler == null)
+		{
+			Class<?> clazz = cl.loadClass(node.clazz);
+			handler = registry.handlerFor(clazz, Type.OBJECT);
 		}
 		return handler.newInstance();
 	}

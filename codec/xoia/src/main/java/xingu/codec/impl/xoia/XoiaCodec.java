@@ -20,7 +20,7 @@ public class XoiaCodec
 		XmlEmitter visitor = new XmlEmitter();
 		new SimpleObjectInspector(object, registry).visit(visitor);
 		String result = visitor.getResult();
-		System.err.println("<< " + result);
+		System.err.println(">> " + result);
 		return result;
 	}
 
@@ -28,7 +28,7 @@ public class XoiaCodec
 	public Object decode(String text, ClassLoader cl)
 		throws Exception
 	{
-		System.err.println(">> " + text);
+		System.err.println("<< " + text);
 		ObjectEmitter deserializer = new XmlReader(registry, cl);
 		return deserializer.from(text);
 	}
@@ -42,6 +42,7 @@ public class XoiaCodec
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> T decode(String text, Class<? extends T> clazz)
 		throws Exception
 	{

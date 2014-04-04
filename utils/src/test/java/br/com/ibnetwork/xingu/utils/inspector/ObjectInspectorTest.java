@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.utils.ArrayUtils;
@@ -120,6 +121,52 @@ public class ObjectInspectorTest
 		execWith(obj);
 	}
 
+	@Test
+	public void testUnregisteredClass()
+		throws Exception
+	{
+		String xml = "<obj id=\"1'\" class=\"br.com.ibnetwork.xingu.utils.inspector.UnregisteredObject\"></obj>";
+
+		Object decoded = decode(xml, new TypeHandlerRegistryImpl());
+		UnregisteredObject unregistered = (UnregisteredObject) decoded;
+		assertEquals(0, unregistered.anInt);
+		assertEquals(null, unregistered.aString);
+		assertEquals(null, unregistered.bString);
+
+		xml = "<obj id=\"1'\" class=\"br.com.ibnetwork.xingu.utils.inspector.UnregisteredObject\">"
+				+ "<int id=\"2\" field=\"anInt\" value=\"100\"/>"
+				+ "<string id=\"3\" field=\"aString\" value=\"aaa\"/>"
+				+ "</obj>";
+
+		decoded = decode(xml, new TypeHandlerRegistryImpl());
+		unregistered = (UnregisteredObject) decoded;
+		assertEquals(100, unregistered.anInt);
+		assertEquals("aaa", unregistered.aString);
+		assertEquals(null, unregistered.bString);
+	}
+	
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void testEmptyCollection()
+		throws Exception
+	{
+		String xml     = "<collection id=\"1\" class=\"java.util.ArrayList\"></collection>";
+		Object decoded = decode(xml, new TypeHandlerRegistryImpl());
+		List   list    = (List) decoded;
+		assertEquals(0, list.size());
+	}
+
+	@Test
+	@Ignore
+	public void testEmptyArray()
+		throws Exception
+	{
+		String   xml     = "<array id=\"1\" class=\"string[]\"></array>";
+		Object   decoded = decode(xml, new TypeHandlerRegistryImpl());
+		String[] array   = (String[]) decoded;
+		assertEquals(0, array.length);
+	}
+	
 	private String execWith(Object obj, TypeHandlerRegistry aliases)
 		throws Exception
 	{
