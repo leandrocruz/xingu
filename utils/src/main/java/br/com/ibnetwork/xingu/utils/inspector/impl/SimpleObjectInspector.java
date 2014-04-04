@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,17 @@ import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 public class SimpleObjectInspector
 	implements ObjectInspector
 {
-	private Object       root;
+	private Object				root;
 
-	private TypeHandlerRegistry registry;
+	private TypeHandlerRegistry	registry;
 
-	private Map<String,  Object>  identityToObject = new HashMap<String, Object>();
+	private Map<Object, String>	identityByObject	= new IdentityHashMap<Object, String>();
+
+	private int					nextId				= 1;
 	
 	public SimpleObjectInspector(Object root, TypeHandlerRegistry registry)
 	{
-		this.root    = root;
+		this.root     = root;
 		this.registry = registry;
 	}
 
@@ -60,15 +63,18 @@ public class SimpleObjectInspector
 
 		Type        type    = ObjectType.typeFor(clazz);
 		TypeHandler handler = registry.handlerFor(clazz, type);
-		String      id      = Integer.toHexString(System.identityHashCode(obj));
-		Object      ref     = identityToObject.get(id);
-		if(ref != null)
+		String      id      = identityByObject.get(obj);
+		if(id == null)
 		{
-			visitor.onNodeReference(ref, id, handler, field);
+			id = String.valueOf(nextId++);
+			identityByObject.put(obj, id);
+		}
+		else
+		{
+			visitor.onNodeReference(obj, id, handler, field);
 			return;
 		}
 		
-		identityToObject.put(id, obj);
 
 		boolean isPrimitive = type == Type.PRIMITIVE;
 		if(isPrimitive && field != null)
