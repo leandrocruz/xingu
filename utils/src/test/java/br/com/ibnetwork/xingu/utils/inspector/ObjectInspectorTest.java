@@ -12,7 +12,7 @@ import org.junit.Test;
 import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
-import br.com.ibnetwork.xingu.utils.inspector.impl.XmlObjectEmitter;
+import br.com.ibnetwork.xingu.utils.inspector.impl.XmlReader;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 import br.com.ibnetwork.xingu.utils.type.impl.GenericTypeHandler;
@@ -64,6 +64,17 @@ public class ObjectInspectorTest
 		}
 		
 		execWith(list);
+	}
+
+	@Test
+	public void testMapOfSimpleObject()
+		throws Exception
+	{
+		Map<String, SimpleObject> map = new HashMap<String, SimpleObject>();
+		execWith(map);
+		
+		map.put("a", new SimpleObject(1, "1"));
+		execWith(map);
 	}
 
 	@Test
@@ -131,7 +142,7 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		ObjectEmitter deserializer = new XmlObjectEmitter(registry, cl);
+		ObjectEmitter deserializer = new XmlReader(registry, cl);
 		return deserializer.from(encoded);
 	}
 }

@@ -25,7 +25,7 @@ import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 
-public class XmlObjectEmitter
+public class XmlReader
 	extends DefaultHandler
 	implements ObjectEmitter
 {
@@ -37,7 +37,7 @@ public class XmlObjectEmitter
 
 	private Map<String, Node>	nodeById	= new HashMap<String, Node>();
 	
-	public XmlObjectEmitter(TypeHandlerRegistry aliases, ClassLoader unused)
+	public XmlReader(TypeHandlerRegistry aliases, ClassLoader unused)
 	{
 		this.registry = aliases;
 	}
