@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 
+
 public class GenericTypeHandler
 	extends TypeHandlerSupport
 {

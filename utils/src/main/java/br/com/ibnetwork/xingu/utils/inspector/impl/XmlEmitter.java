@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.type.TypeHandler;
@@ -17,18 +18,33 @@ public class XmlEmitter
 	public void onPrimitive(Object obj, String id, TypeHandler handler, Field field)
 	{
 		String fieldName = field == null ? null : field.getName();
-		String type      = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
 		String value     = handler.toString(obj);
 		printer
 			.ident()
-			.startElement("node")
+			.startElement(handler.name())
 			.attr("id", id)
 			.attrIf("field", fieldName)
-			.attrIf("type", type)
-			.attr("class", handler.name())
 			.attr("value", value)
 			.closeEmpty()
 			.br();
+	}
+
+	private String typeName(TypeHandler handler)
+	{
+		Type type = handler.type();
+		switch(type)
+		{
+			case ARRAY:
+			case COLLECTION:
+			case MAP:
+				return type.name().toLowerCase();
+
+			case OBJECT:
+				return "obj";
+				
+			default:
+				throw new NotImplementedYet();
+		}
 	}
 
 	@Override
@@ -38,14 +54,13 @@ public class XmlEmitter
 		String   className       = handler.name();
 		String   classLoaderName = ClassLoaderUtils.nameFor(clazz);
 		String   fieldName       = field == null ? null : field.getName();
-		String   type            = handler.type() == Type.ARRAY ? Type.ARRAY.name() : null;
+		String   type            = typeName(handler);
 		
 		printer
 			.ident()
-			.startElement("node")
+			.startElement(type)
 			.attr("id", id)
 			.attrIf("field", fieldName)
-			.attrIf("type", type)
 			.attr("class", className)
 			.attrIf("classLoader", classLoaderName)
 			.close().br().increment();
@@ -54,10 +69,11 @@ public class XmlEmitter
 	@Override
 	public void onNodeEnd(Object obj, String id, TypeHandler handler, Field field)
 	{
+		String type = typeName(handler);
 		printer
 			.decrement()
 			.ident()
-			.endElement("node")
+			.endElement(type)
 			.br();
 	}
 

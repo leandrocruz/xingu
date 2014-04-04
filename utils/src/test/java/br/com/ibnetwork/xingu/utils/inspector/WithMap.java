@@ -1,4 +1,4 @@
-package br.com.ibnetwork.xingu.utils.clone;
+package br.com.ibnetwork.xingu.utils.inspector;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import br.com.ibnetwork.xingu.utils.MapUtils;
 
 public class WithMap
 {
-	private Map<String, SimpleObject> map;
+	Map<String, SimpleObject> map;
 	
 	public WithMap()
 	{}
@@ -14,11 +14,6 @@ public class WithMap
 	public WithMap(Map<String, SimpleObject> map)
 	{
 		this.map = map;
-	}
-	
-	public Map<String, SimpleObject> map()
-	{
-		return map;
 	}
 
 	@Override

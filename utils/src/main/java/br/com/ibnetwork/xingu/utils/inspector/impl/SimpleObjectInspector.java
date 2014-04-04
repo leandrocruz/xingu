@@ -5,9 +5,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
@@ -21,15 +23,17 @@ import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
 public class SimpleObjectInspector
 	implements ObjectInspector
 {
-	private Object       root;
+	private Object				root;
 
-	private TypeHandlerRegistry registry;
+	private TypeHandlerRegistry	registry;
 
-	private Map<String,  Object>  identityToObject = new HashMap<String, Object>();
+	private Map<Object, String>	identityByObject	= new IdentityHashMap<Object, String>();
+
+	private int					nextId				= 1;
 	
 	public SimpleObjectInspector(Object root, TypeHandlerRegistry registry)
 	{
-		this.root    = root;
+		this.root     = root;
 		this.registry = registry;
 	}
 
@@ -54,23 +58,23 @@ public class SimpleObjectInspector
 			{
 				return;
 			}
-			clazz = field.getType();
+		}
+		clazz = obj.getClass();
+
+		Type        type    = ObjectType.typeFor(clazz);
+		TypeHandler handler = registry.handlerFor(clazz, type);
+		String      id      = identityByObject.get(obj);
+		if(id == null)
+		{
+			id = String.valueOf(nextId++);
+			identityByObject.put(obj, id);
 		}
 		else
 		{
-			clazz = obj.getClass();
-		}
-		Type        type    = ObjectType.typeFor(clazz);
-		TypeHandler handler = registry.handlerFor(clazz, type);
-		String      id      = Integer.toHexString(System.identityHashCode(obj));
-		Object      ref     = identityToObject.get(id);
-		if(ref != null)
-		{
-			visitor.onNodeReference(ref, id, handler, field);
+			visitor.onNodeReference(obj, id, handler, field);
 			return;
 		}
 		
-		identityToObject.put(id, obj);
 
 		boolean isPrimitive = type == Type.PRIMITIVE;
 		if(isPrimitive && field != null)
@@ -96,8 +100,11 @@ public class SimpleObjectInspector
 				break;
 				
 			case COLLECTION:
-			case MAP:
 				visitCollection(obj, visitor);
+				break;
+
+			case MAP:
+				visitMap(obj, visitor);
 				break;
 				
 			case OBJECT:
@@ -115,6 +122,25 @@ public class SimpleObjectInspector
 		if(!isPrimitive)
 		{
 			visitor.onNodeEnd(obj, id, handler, field);
+		}
+	}
+
+	private void visitMap(Object obj, ObjectVisitor<?> visitor)
+	{
+		Map<?,      ?>   map = (Map<?, ?>) obj;
+		Set<?>      keys     = map.keySet();
+		Iterator<?> it       = keys.iterator();
+		while(it.hasNext())
+		{
+			Object key   = it.next();
+			visitNode(key, null, visitor);
+
+			Object value = map.get(key);
+			if(value == null)
+			{
+				throw new NotImplementedYet();
+			}
+			visitNode(value, null, visitor);
 		}
 	}
 

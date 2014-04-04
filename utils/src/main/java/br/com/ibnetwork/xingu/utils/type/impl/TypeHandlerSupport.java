@@ -45,20 +45,33 @@ public class TypeHandlerSupport
 	}
 
 	@Override
-	public String toString()
-	{
-		return name + "[" + type + "]";
-	}
-
-	@Override
 	public String toString(Object obj)
 	{
 		return obj.toString();
+	}
+
+	//@Override
+	public boolean isArray()
+	{
+		return name.endsWith("[]");
+	}
+
+	@Override
+	public String toString()
+	{
+		return name  + "[" + type + "]";
 	}
 
 	@Override
 	public Object toObject(String value)
 	{
 		throw new NotImplementedYet();
+	}
+
+	@Override
+	public Object newInstance()
+		throws Exception
+	{
+		return clazz.newInstance();
 	}
 }
