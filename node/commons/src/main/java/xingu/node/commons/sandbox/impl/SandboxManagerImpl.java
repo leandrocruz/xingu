@@ -12,35 +12,34 @@ import br.com.ibnetwork.xingu.container.ContainerUtils;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
+import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderWrapper;
-import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoaderImpl;
+import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
 
 public class SandboxManagerImpl
 	implements SandboxManager, Initializable
 {
 	@Inject
-	private ClassLoaderManager clm;
-	
-	private Map<String, Sandbox> sandboxById = new HashMap<String, Sandbox>();
+	private ClassLoaderManager		clm;
+
+	private Map<String, Sandbox>	sandboxById	= new HashMap<String, Sandbox>();
 
 	@Override
 	public void initialize()
 		throws Exception
 	{
-		NamedClassLoader cl = new ClassLoaderWrapper(Sandbox.SYSTEM, Thread.currentThread().getContextClassLoader());
-		Container   container = ContainerUtils.getLocalContainer();
+		NamedClassLoader cl = new ClassLoaderAdapter(Sandbox.SYSTEM, Thread.currentThread().getContextClassLoader());
+		Container container = ContainerUtils.getLocalContainer();
 		register(new SandboxImpl(Sandbox.SYSTEM, container, cl));
 	}
 
 	@Override
 	public Sandbox sandboxFor(Object obj)
 	{
-		ClassLoader cl = obj.getClass().getClassLoader();
-		String      id = Sandbox.SYSTEM;
-		if(cl instanceof NamedClassLoaderImpl)
+		String id = ClassLoaderUtils.nameFor(obj.getClass());
+		if(id == null)
 		{
-			id = ((NamedClassLoader) cl).id();
+			id = Sandbox.SYSTEM;
 		}
 		return byId(id);
 	}
@@ -63,5 +62,4 @@ public class SandboxManagerImpl
 		sandboxById.put(id, sandbox);
 		clm.register(sandbox.classLoader());
 	}
-
 }

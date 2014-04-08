@@ -20,7 +20,7 @@ import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
 import br.com.ibnetwork.xingu.container.configuration.impl.SimpleConfigurationManager;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderWrapper;
+import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
 
 public class Pulga
     extends ContainerSupport
@@ -45,7 +45,7 @@ public class Pulga
 	public Pulga(InputStream is)
 		throws Exception
 	{
-		this(is, new ClassLoaderWrapper("context", Thread.currentThread().getContextClassLoader()));
+		this(is, new ClassLoaderAdapter("context", Thread.currentThread().getContextClassLoader()));
 	}
 
 	public Pulga(InputStream is, NamedClassLoader cl)

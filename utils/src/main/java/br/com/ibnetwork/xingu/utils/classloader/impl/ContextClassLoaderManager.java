@@ -11,7 +11,7 @@ public class ContextClassLoaderManager
 	static {
 		
 		final NamedClassLoader wrapper = 
-				new ClassLoaderWrapper("context-classloader", Thread.currentThread().getContextClassLoader());
+				new ClassLoaderAdapter("context-classloader", Thread.currentThread().getContextClassLoader());
 		
 		INSTANCE = new ClassLoaderManager()
 		{

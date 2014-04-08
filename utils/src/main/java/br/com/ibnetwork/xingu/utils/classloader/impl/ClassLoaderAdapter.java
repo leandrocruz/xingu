@@ -4,14 +4,14 @@ import java.net.URL;
 
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
-public class ClassLoaderWrapper
+public class ClassLoaderAdapter
 	implements NamedClassLoader
 {
 	private String		id;
 
 	private ClassLoader	cl;
 
-	public ClassLoaderWrapper(String id, ClassLoader cl)
+	public ClassLoaderAdapter(String id, ClassLoader cl)
 	{
 		this.id = id;
 		this.cl = cl;

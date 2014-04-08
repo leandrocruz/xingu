@@ -12,5 +12,4 @@ public interface NamedClassLoader
 	URL getResource(String string);
 	
 	ClassLoader getClassLoader();
-	
 }
