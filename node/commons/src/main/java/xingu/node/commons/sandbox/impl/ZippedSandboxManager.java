@@ -81,10 +81,10 @@ public class ZippedSandboxManager
 	private Sandbox from(File file)
 		throws Exception
 	{
-		String            id        = idFrom(file);
-		File              src       = sourceDirectoryFor(id);
+		String           id        = idFrom(file);
+		File             src       = sourceDirectoryFor(id);
 		NamedClassLoader cl        = buildClassLoader(id, src);
-		Container         container = buildContainer(cl);
+		Container        container = buildContainer(cl);
 		
 		return new SandboxImpl(id, container, cl);
 	}
