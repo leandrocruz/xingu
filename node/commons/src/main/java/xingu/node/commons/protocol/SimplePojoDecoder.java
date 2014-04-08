@@ -1,4 +1,4 @@
-package xingu.node.commons.protocol.impl;
+package xingu.node.commons.protocol;
 
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.util.CharsetUtil;
