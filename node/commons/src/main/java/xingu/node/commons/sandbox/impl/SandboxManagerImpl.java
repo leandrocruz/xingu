@@ -53,7 +53,7 @@ public class SandboxManagerImpl
 	@Override
 	public void register(Sandbox sandbox)
 	{
-		String   id  = sandbox.id();
+		String  id  = sandbox.id();
 		Sandbox old = sandboxById.get(id);
 		if(old != null)
 		{
