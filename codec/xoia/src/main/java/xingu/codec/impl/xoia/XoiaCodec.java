@@ -26,7 +26,7 @@ public class XoiaCodec
 		ObjectVisitor<String> visitor = new XmlEmitter();
 		new SimpleObjectInspector(object, registry).visit(visitor);
 		String result = visitor.getResult();
-		System.err.println("ENC >> " + result);
+		//System.err.println("ENC >> " + result);
 		return result;
 	}
 
@@ -34,7 +34,7 @@ public class XoiaCodec
 	public Object decode(String text)
 		throws Exception
 	{
-		System.err.println("DEC << " + text);
+		//System.err.println("DEC << " + text);
 		ObjectEmitter deserializer = new XmlReader(registry, clm);
 		return deserializer.from(text);
 	}
