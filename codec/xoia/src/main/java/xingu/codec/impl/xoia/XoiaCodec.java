@@ -1,6 +1,8 @@
 package xingu.codec.impl.xoia;
 
 import xingu.codec.Codec;
+import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
@@ -11,6 +13,9 @@ import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 public class XoiaCodec
 	implements Codec
 {
+	@Inject
+	private ClassLoaderManager clm;
+
 	private TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
 	
 	@Override
@@ -20,25 +25,17 @@ public class XoiaCodec
 		XmlEmitter visitor = new XmlEmitter();
 		new SimpleObjectInspector(object, registry).visit(visitor);
 		String result = visitor.getResult();
-		System.err.println(">> " + result);
+		//System.err.println("ENC >> " + result);
 		return result;
-	}
-
-	@Override
-	public Object decode(String text, ClassLoader cl)
-		throws Exception
-	{
-		System.err.println("<< " + text);
-		ObjectEmitter deserializer = new XmlReader(registry, cl);
-		return deserializer.from(text);
 	}
 
 	@Override
 	public Object decode(String text)
 		throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		return decode(text, cl);
+		//System.err.println("DEC << " + text);
+		ObjectEmitter deserializer = new XmlReader(registry, clm);
+		return deserializer.from(text);
 	}
 
 	@Override
