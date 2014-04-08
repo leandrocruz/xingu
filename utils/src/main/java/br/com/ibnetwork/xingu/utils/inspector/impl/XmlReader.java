@@ -19,6 +19,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
+import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.type.ObjectType;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
@@ -29,7 +31,7 @@ public class XmlReader
 	extends DefaultHandler
 	implements ObjectEmitter
 {
-	private ClassLoader			cl;
+	private ClassLoaderManager	clm;
 
 	private TypeHandlerRegistry	registry;
 
@@ -39,9 +41,9 @@ public class XmlReader
 
 	private Map<String, Node>	nodeById	= new HashMap<String, Node>();
 	
-	public XmlReader(TypeHandlerRegistry registry, ClassLoader cl)
+	public XmlReader(TypeHandlerRegistry registry, ClassLoaderManager clm)
 	{
-		this.cl       = cl;
+		this.clm      = clm;
 		this.registry = registry;
 	}
 
@@ -90,7 +92,7 @@ public class XmlReader
 	private Object getPayload(Node node)
 		throws Exception
 	{
-		String type = node.clazz != null ? node.clazz : node.name;
+		String      type    = node.clazz != null ? node.clazz : node.name;
 		TypeHandler handler = registry.get(type);
 		if(handler != null && StringUtils.isNotEmpty(node.value))
 		{
@@ -99,8 +101,9 @@ public class XmlReader
 		
 		if(handler == null)
 		{
-			Class<?> clazz = cl.loadClass(node.clazz);
-			handler = registry.handlerFor(clazz, Type.OBJECT);
+			SimpleClassLoader cl    = clm.byId(node.classLoader);
+			Class<?>          clazz = cl.loadClass(node.clazz);
+			handler                 = registry.handlerFor(clazz, Type.OBJECT);
 		}
 		return handler.newInstance();
 	}
@@ -164,6 +167,8 @@ class Node
 
 	String	clazz;
 
+	String	classLoader;
+
 	String	value;
 
 	Object	payload;
@@ -172,12 +177,13 @@ class Node
 
 	public Node(String name, Attributes attrs)
 	{
-		this.name  = name;
-		this.id    = attrs.getValue("id");
-		this.clazz = attrs.getValue("class");
-		this.field = attrs.getValue("field");
-		this.value = attrs.getValue("value");
-		this.type  = attrs.getValue("type");
+		this.name        = name;
+		this.id          = attrs.getValue("id");
+		this.clazz       = attrs.getValue("class");
+		this.classLoader = attrs.getValue("classLoader");
+		this.field       = attrs.getValue("field");
+		this.value       = attrs.getValue("value");
+		this.type        = attrs.getValue("type");
 	}
 	
 	public void attach(Node value)

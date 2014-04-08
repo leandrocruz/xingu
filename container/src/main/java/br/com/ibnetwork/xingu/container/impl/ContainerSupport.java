@@ -16,6 +16,7 @@ import br.com.ibnetwork.xingu.container.ContainerException;
 import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
 
 public abstract class ContainerSupport
     implements Container
@@ -69,15 +70,15 @@ public abstract class ContainerSupport
     }
     
     @SuppressWarnings("unchecked")
-	protected <T> Binding<T> binding(ClassLoader cl, String roleName, String key, String implName) 
+	protected <T> Binding<T> binding(SimpleClassLoader cl, String roleName, String key, String implName) 
         throws ConfigurationException
     {
         Class<T> clazz = null;
         T impl = null;
         try
         {
-            clazz = (Class<T>) ObjectUtils.loadClass(roleName, cl);
-            impl = (T) ObjectUtils.getInstance(implName, cl);    
+            clazz = (Class<T>) ObjectUtils.loadClass(roleName, cl.getClassLoader());
+            impl = (T) ObjectUtils.getInstance(implName, cl.getClassLoader());    
         }
         catch(Exception e)
         {
@@ -88,14 +89,14 @@ public abstract class ContainerSupport
         return binding;
     }
 
-    protected <T> T tryDefaults(Class<T> clazz, ClassLoader cl) 
+    protected <T> T tryDefaults(Class<T> clazz, SimpleClassLoader cl) 
         throws ContainerException
     {
         String role = clazz.getName(); 
         String packageName = role.substring(0,role.lastIndexOf("."));
         String componentName = role.substring(role.lastIndexOf(".")+1,role.length());
         String className = packageName + ".impl."+componentName+"Impl";
-        T component = (T) ObjectUtils.getInstance(className, cl);
+        T component = (T) ObjectUtils.getInstance(className, cl.getClassLoader());
         return component;
     }
 }

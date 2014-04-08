@@ -17,21 +17,18 @@ public class PojoDecoder
 	
     @Inject
     private SandboxManager sandboxes;
-
-    @SuppressWarnings({ "unchecked" })
+    
 	@Override
     protected Object toObject(Channel channel, int type, byte[] data)
     	throws Exception
 	{
-		String      input                  = new String(data, CharsetUtil.UTF_8);
-		int         idx                    = input.indexOf("@");
-		String      sandboxId              = input.substring(0, idx);
-		String      payload                = input.substring(idx + 1);
-		Sandbox     sandbox                = sandboxes.byId(sandboxId);
-		Container   container              = sandbox.container();
-		ClassLoader cl                     = sandbox.classLoader();
-		Class<?     extends   Codec> clazz = (Class<? extends Codec>) cl.loadClass("xingu.codec.Codec");
-		Codec       codec                  = container.lookup(clazz, KEY);
-    	return codec.decode(payload, cl);
+		String    input     = new String(data, CharsetUtil.UTF_8);
+		int       idx       = input.indexOf("@");
+		String    sandboxId = input.substring(0, idx);
+		String    payload   = input.substring(idx + 1);
+		Sandbox   sandbox   = sandboxes.byId(sandboxId);
+		Container container = sandbox.container();
+		Codec     codec     = container.lookup(Codec.class, KEY);
+    	return codec.decode(payload);
 	}
 }

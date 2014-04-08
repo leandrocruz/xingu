@@ -9,19 +9,26 @@ import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxManager;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.ContainerUtils;
+import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderWrapper;
+import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoader;
 
 public class SandboxManagerImpl
 	implements SandboxManager, Initializable
 {
+	@Inject
+	private ClassLoaderManager clm;
+	
 	private Map<String, Sandbox> sandboxById = new HashMap<String, Sandbox>();
 
 	@Override
 	public void initialize()
 		throws Exception
 	{
-		ClassLoader cl        = Thread.currentThread().getContextClassLoader();
+		SimpleClassLoader cl = new ClassLoaderWrapper(Sandbox.SYSTEM, Thread.currentThread().getContextClassLoader());
 		Container   container = ContainerUtils.getLocalContainer();
 		register(new SandboxImpl(Sandbox.SYSTEM, container, cl));
 	}
@@ -33,7 +40,7 @@ public class SandboxManagerImpl
 		String      id = Sandbox.SYSTEM;
 		if(cl instanceof NamedClassLoader)
 		{
-			id = ((NamedClassLoader) cl).getName();
+			id = ((SimpleClassLoader) cl).id();
 		}
 		return byId(id);
 	}
@@ -54,6 +61,7 @@ public class SandboxManagerImpl
 			throw new NotImplementedYet("Universes can't be replaced");
 		}
 		sandboxById.put(id, sandbox);
+		clm.register(sandbox.classLoader());
 	}
 
 }

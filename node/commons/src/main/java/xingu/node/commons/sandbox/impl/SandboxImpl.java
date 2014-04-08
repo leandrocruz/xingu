@@ -2,17 +2,18 @@ package xingu.node.commons.sandbox.impl;
 
 import xingu.node.commons.sandbox.Sandbox;
 import br.com.ibnetwork.xingu.container.Container;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
 
 public class SandboxImpl
 	implements Sandbox
 {
-	private String		id;
+	private String				id;
 
-	private ClassLoader	cl;
+	private SimpleClassLoader	cl;
 
-	private Container	container;
+	private Container			container;
 	
-	public SandboxImpl(String id, Container container, ClassLoader cl)
+	public SandboxImpl(String id, Container container, SimpleClassLoader cl)
 	{
 		this.id        = id;
 		this.cl        = cl;
@@ -26,7 +27,7 @@ public class SandboxImpl
 	}
 
 	@Override
-	public ClassLoader classLoader()
+	public SimpleClassLoader classLoader()
 	{
 		return cl;
 	}
@@ -40,7 +41,7 @@ public class SandboxImpl
 	@Override
 	public String toString()
 	{
-		return "Universe '"+id+"' @ " + (System.identityHashCode(this));
+		return "Sandbox '"+id+"' @ " + (System.identityHashCode(this));
 	}
 
 	@Override

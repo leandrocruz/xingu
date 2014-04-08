@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.ibnetwork.xingu.utils.ArrayUtils;
+import br.com.ibnetwork.xingu.utils.classloader.impl.ContextClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlReader;
@@ -201,8 +202,7 @@ public class ObjectInspectorTest
 	private Object decode(String encoded, TypeHandlerRegistry registry)
 		throws Exception
 	{
-		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		ObjectEmitter deserializer = new XmlReader(registry, cl);
+		ObjectEmitter deserializer = new XmlReader(registry, ContextClassLoaderManager.getClassLoaderManager());
 		return deserializer.from(encoded);
 	}
 }

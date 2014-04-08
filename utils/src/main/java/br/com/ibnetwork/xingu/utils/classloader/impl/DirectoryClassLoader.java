@@ -1,10 +1,13 @@
-package br.com.ibnetwork.xingu.utils.classloader;
+package br.com.ibnetwork.xingu.utils.classloader.impl;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
 
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+
+import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderFactory;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
 
 public class DirectoryClassLoader
 	implements ClassLoaderFactory
@@ -17,7 +20,7 @@ public class DirectoryClassLoader
 	}
 	
 	@Override
-	public NamedClassLoader buildClassLoader(String name, ClassLoader parent)
+	public SimpleClassLoader buildClassLoader(String name, SimpleClassLoader parent)
 		throws Exception
 	{
 		File        libDir = new File(root, "/lib");
@@ -36,6 +39,6 @@ public class DirectoryClassLoader
 				urls[i] = file.toURI().toURL();
 			}
 		}
-		return new NamedClassLoader(name, urls, parent);
+		return new NamedClassLoader(name, urls, parent.getClassLoader());
 	}
 }

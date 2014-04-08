@@ -19,7 +19,8 @@ import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.impl.Pulga;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.DirectoryClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.impl.DirectoryClassLoader;
 import br.com.ibnetwork.xingu.utils.io.zip.ZipUtils;
 
 /*
@@ -80,15 +81,15 @@ public class ZippedSandboxManager
 	private Sandbox from(File file)
 		throws Exception
 	{
-		String      id        = idFrom(file);
-		File        src       = sourceDirectoryFor(id);
-		ClassLoader cl        = buildClassLoader(id, src);
-		Container   container = buildContainer(cl);
+		String            id        = idFrom(file);
+		File              src       = sourceDirectoryFor(id);
+		SimpleClassLoader cl        = buildClassLoader(id, src);
+		Container         container = buildContainer(cl);
 		
 		return new SandboxImpl(id, container, cl);
 	}
 
-	private Container buildContainer(ClassLoader cl)
+	private Container buildContainer(SimpleClassLoader cl)
 		throws Exception
 	{
 		Sandbox  system = byId(Sandbox.SYSTEM);
@@ -103,11 +104,11 @@ public class ZippedSandboxManager
 		return pulga;
 	}
 
-	private ClassLoader buildClassLoader(String id, File src)
+	private SimpleClassLoader buildClassLoader(String id, File src)
 		throws Exception
 	{
 		Sandbox    system = byId(Sandbox.SYSTEM);
-		ClassLoader parent = system.classLoader();
+		SimpleClassLoader parent = system.classLoader();
 		return new DirectoryClassLoader(src).buildClassLoader(id, parent);
 	}
 
