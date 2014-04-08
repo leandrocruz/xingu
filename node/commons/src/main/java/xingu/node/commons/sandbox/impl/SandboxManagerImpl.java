@@ -1,5 +1,7 @@
 package xingu.node.commons.sandbox.impl;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,5 +63,12 @@ public class SandboxManagerImpl
 		}
 		sandboxById.put(id, sandbox);
 		clm.register(sandbox.classLoader());
+	}
+
+	@Override
+	public Collection<Sandbox> getAll()
+	{
+		Collection<Sandbox> values = sandboxById.values();
+		return Collections.unmodifiableCollection(values);
 	}
 }
