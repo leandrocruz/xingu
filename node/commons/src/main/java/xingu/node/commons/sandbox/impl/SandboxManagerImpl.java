@@ -57,7 +57,7 @@ public class SandboxManagerImpl
 		Sandbox old = sandboxById.get(id);
 		if(old != null)
 		{
-			throw new NotImplementedYet("Universes can't be replaced");
+			throw new NotImplementedYet("Sandbox '"+id+"' can't be replaced");
 		}
 		sandboxById.put(id, sandbox);
 		clm.register(sandbox.classLoader());
