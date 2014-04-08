@@ -98,7 +98,7 @@ public class ZippedSandboxManager
 		logger.info("Pulga file is '{}'", url);
 
 		InputStream is    = url.openStream();
-		Container   pulga = new Pulga(/*parent,*/ is, cl);
+		Container   pulga = new Pulga(parent, is, cl);
 		pulga.configure();
 		pulga.start();
 		return pulga;

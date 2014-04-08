@@ -77,6 +77,7 @@ class SimpleBinding<T>
     
     private Class<T> role;
     
+    private boolean isDefault;
     
     private boolean ready;
 
@@ -125,11 +126,11 @@ class SimpleBinding<T>
     {
         if(impl != null)
         {
-            return "to ["+impl.getClass().getName()+"]";
+            return "to ["+impl.getClass().getName()+"] default: " + isDefault();
         }
         else
         {
-            return "to [NULL]";
+            return "to [NULL] default: " + isDefault();
         }
     }
 
@@ -158,5 +159,18 @@ class SimpleBinding<T>
 	public Configuration configuration()
 	{
 		return conf;
+	}
+
+	@Override
+	public boolean isDefault()
+	{
+		return isDefault;
+	}
+
+	@Override
+	public Binding<T> asDefault()
+	{
+		isDefault = true;
+		return this;
 	}
 }

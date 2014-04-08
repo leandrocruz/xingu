@@ -9,6 +9,8 @@ public interface Binding<T>
     <E extends T> Binding<T> to(E impl);
     
     <E extends T> Binding<T> to(Class<E> impl);
+    
+    Binding<T> asDefault();
 
     T impl();
 
@@ -21,4 +23,6 @@ public interface Binding<T>
     Binding<T> with(Configuration conf);
     
     Configuration configuration();
+    
+    boolean isDefault();
 }

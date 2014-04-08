@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -19,6 +20,7 @@ import br.com.ibnetwork.xingu.container.components.Alternative;
 import br.com.ibnetwork.xingu.container.components.CircularOne;
 import br.com.ibnetwork.xingu.container.components.Component;
 import br.com.ibnetwork.xingu.container.components.DefaultExternalConf;
+import br.com.ibnetwork.xingu.container.components.My;
 import br.com.ibnetwork.xingu.container.components.NoImpl;
 import br.com.ibnetwork.xingu.container.components.Simple;
 import br.com.ibnetwork.xingu.container.components.SimpleImpl;
@@ -27,8 +29,12 @@ import br.com.ibnetwork.xingu.container.components.UsesAnnotations;
 import br.com.ibnetwork.xingu.container.components.UsesInject;
 import br.com.ibnetwork.xingu.container.components.UsesSimple;
 import br.com.ibnetwork.xingu.container.components.impl.ComponentImpl;
+import br.com.ibnetwork.xingu.container.components.impl.MyAlternative;
+import br.com.ibnetwork.xingu.container.components.impl.MyImpl;
 import br.com.ibnetwork.xingu.container.components.impl.NotSoSimple;
+import br.com.ibnetwork.xingu.container.components.impl.SimpleMy;
 import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
+import br.com.ibnetwork.xingu.container.impl.Pulga;
 import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class ContainerTest
@@ -244,5 +250,80 @@ public class ContainerTest
     {
     	CircularOne one = pulga.lookup(CircularOne.class);
     	assertEquals("one + two + 3", one.one());
+    }
+
+    private Container toContainer(Container parent, String config)
+    	throws Exception
+    {
+    	InputStream is = IOUtils.toInputStream(config);
+    	Container result = new Pulga(parent, is);
+    	result.configure();
+    	result.start();
+    	
+    	return result;
+    }
+
+    @Test
+    public void testDefinedNowhere()
+    	throws Exception
+    {
+    	String parentConfig = "<pulga></pulga>";
+    	String childConfig  = "<pulga></pulga>";
+
+    	Container parent = toContainer(null, parentConfig);
+    	My my = parent.lookup(My.class);
+    	assertTrue(my instanceof MyImpl);
+    	
+    	Container child = toContainer(parent, childConfig);
+    	My my2 = child.lookup(My.class);
+    	assertTrue(my2 instanceof MyImpl);
+    }
+
+    @Test
+    public void testDefinedOnlyOnChild()
+    	throws Exception
+    {
+    	String parentConfig = "<pulga></pulga>";
+    	String childConfig  = "<pulga><component role=\"br.com.ibnetwork.xingu.container.components.My\" class=\"br.com.ibnetwork.xingu.container.components.impl.SimpleMy\"/></pulga>";
+
+    	Container parent = toContainer(null, parentConfig);
+    	My        my     = parent.lookup(My.class);
+    	assertTrue(my instanceof MyImpl);
+    	
+    	Container child = toContainer(parent, childConfig);
+    	My        my2   = child.lookup(My.class);
+    	assertTrue(my2 instanceof SimpleMy);
+    }
+
+    @Test
+    public void testDefinedOnlyOnParent()
+    	throws Exception
+    {
+    	String parentConfig = "<pulga><component role=\"br.com.ibnetwork.xingu.container.components.My\" class=\"br.com.ibnetwork.xingu.container.components.impl.SimpleMy\"/></pulga>";
+    	String childConfig  = "<pulga></pulga>";
+
+    	Container parent = toContainer(null, parentConfig);
+    	My        my     = parent.lookup(My.class);
+    	assertTrue(my instanceof SimpleMy);
+    	
+    	Container child = toContainer(parent, childConfig);
+    	My        my2   = child.lookup(My.class);
+    	assertTrue(my2 instanceof SimpleMy);
+    }
+
+    @Test
+    public void testDefinedOnParentAndChild()
+    	throws Exception
+    {
+    	String parentConfig = "<pulga><component role=\"br.com.ibnetwork.xingu.container.components.My\" class=\"br.com.ibnetwork.xingu.container.components.impl.SimpleMy\"/></pulga>";
+    	String childConfig  = "<pulga><component role=\"br.com.ibnetwork.xingu.container.components.My\" class=\"br.com.ibnetwork.xingu.container.components.impl.MyAlternative\"/></pulga>";
+
+    	Container parent = toContainer(null, parentConfig);
+    	My        my     = parent.lookup(My.class);
+    	assertTrue(my instanceof SimpleMy);
+    	
+    	Container child = toContainer(parent, childConfig);
+    	My        my2   = child.lookup(My.class);
+    	assertTrue(my2 instanceof MyAlternative);
     }
 }

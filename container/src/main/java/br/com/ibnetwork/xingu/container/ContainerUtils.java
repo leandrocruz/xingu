@@ -73,7 +73,7 @@ public class ContainerUtils
     public static Container createContainer(InputStream is)
     	throws Exception
     {
-    	return new Pulga(is);
+    	return new Pulga(null, is);
     }
 
     public static String getFileName()

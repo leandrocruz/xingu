@@ -26,35 +26,34 @@ public class Pulga
     extends ContainerSupport
 	implements Container
 {
-    /* holds keys for components that require early init */
-    private List<Class<?>> earlyInit   = new ArrayList<Class<?>>();
+	private Container			parent;
 
-    private Stack<Object>  stack;
+	private List<Class<?>>		earlyInit	= new ArrayList<Class<?>>();
 
-    private Binder         binder;
+	private Stack<Object>		stack;
 
-    private NamedClassLoader    cl;
+	private Binder				binder;
 
-    //private File           file;
+	private NamedClassLoader	cl;
 
-    private Configuration  conf;
+	private Configuration		conf;
 
-	private boolean        configured;
+	private boolean				configured;
 
-
-	public Pulga(InputStream is)
+	public Pulga(Container parent, InputStream is)
 		throws Exception
 	{
-		this(is, new ClassLoaderAdapter("context", Thread.currentThread().getContextClassLoader()));
+		this(parent, is, new ClassLoaderAdapter("context", Thread.currentThread().getContextClassLoader()));
 	}
 
-	public Pulga(InputStream is, NamedClassLoader cl)
+	public Pulga(Container parent, InputStream is, NamedClassLoader cl)
 		throws Exception
 	{
     	stack     = new Stack<Object>();
         binder    = new SimpleBinder();
         binder.bind(Injector.class).to(new FieldInjector(this));
 
+        this.parent = parent;
         this.cl   = cl;
         this.conf = ConfigurationLoader.load(is);
         IOUtils.closeQuietly(is);
@@ -162,31 +161,6 @@ public class Pulga
         return binder;
     }
 
-//	@Override
-//	public <T> T lookup(String name)
-//		throws ContainerException
-//	{
-//		return lookup(name, null);
-//	}
-//
-//	@Override
-//	@SuppressWarnings("unchecked")
-//	public <T> T lookup(String name, String key)
-//		throws ContainerException
-//	{
-//		Class<?> clazz = null;
-//		try
-//		{
-//			clazz = cl.loadClass(name);
-//		}
-//		catch(ClassNotFoundException e)
-//		{
-//			throw new ContainerException("Error loading class", e);
-//		}
-//
-//		return (T) lookup(clazz, key);
-//	}
-
     public <T> T lookup(Class<T> clazz)
         throws ContainerException
     {
@@ -210,14 +184,23 @@ public class Pulga
         Binding<T> binding = binder.get(role, key);
         if (binding == null)
         {
-            impl = tryDefaults(role, cl);
+            if(parent != null)
+            {
+            	Binding<T> onParent = parent.binder().get(role, key);
+            	if(onParent != null && !onParent.isDefault())
+            	{
+            		return parent.lookup(role, key);
+            	}
+            }
+
+        	impl = tryDefaults(role, cl);
             if (impl == null)
             {
                 // give up
                 throw new ContainerException("No component found for key["+ key + "] role[" + role + "]");
             }
             binding = binder.bind(role);
-            binding.to(impl);
+            binding.to(impl).asDefault();
         }
         else
         {
