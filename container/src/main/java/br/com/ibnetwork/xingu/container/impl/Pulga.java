@@ -19,7 +19,7 @@ import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
 import br.com.ibnetwork.xingu.container.configuration.impl.SimpleConfigurationManager;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderWrapper;
 
 public class Pulga
@@ -33,7 +33,7 @@ public class Pulga
 
     private Binder         binder;
 
-    private SimpleClassLoader    cl;
+    private NamedClassLoader    cl;
 
     //private File           file;
 
@@ -48,7 +48,7 @@ public class Pulga
 		this(is, new ClassLoaderWrapper("context", Thread.currentThread().getContextClassLoader()));
 	}
 
-	public Pulga(InputStream is, SimpleClassLoader cl)
+	public Pulga(InputStream is, NamedClassLoader cl)
 		throws Exception
 	{
     	stack     = new Stack<Object>();

@@ -20,7 +20,7 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.type.ObjectType;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
@@ -101,7 +101,7 @@ public class XmlReader
 		
 		if(handler == null)
 		{
-			SimpleClassLoader cl    = clm.byId(node.classLoader);
+			NamedClassLoader cl    = clm.byId(node.classLoader);
 			Class<?>          clazz = cl.loadClass(node.clazz);
 			handler                 = registry.handlerFor(clazz, Type.OBJECT);
 		}

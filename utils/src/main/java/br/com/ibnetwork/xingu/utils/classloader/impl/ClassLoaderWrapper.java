@@ -2,10 +2,10 @@ package br.com.ibnetwork.xingu.utils.classloader.impl;
 
 import java.net.URL;
 
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class ClassLoaderWrapper
-	implements SimpleClassLoader
+	implements NamedClassLoader
 {
 	private String		id;
 

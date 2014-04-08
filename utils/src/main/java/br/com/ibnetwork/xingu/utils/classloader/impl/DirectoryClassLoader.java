@@ -7,7 +7,7 @@ import java.net.URL;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderFactory;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class DirectoryClassLoader
 	implements ClassLoaderFactory
@@ -20,7 +20,7 @@ public class DirectoryClassLoader
 	}
 	
 	@Override
-	public SimpleClassLoader buildClassLoader(String name, SimpleClassLoader parent)
+	public NamedClassLoader buildClassLoader(String name, NamedClassLoader parent)
 		throws Exception
 	{
 		File        libDir = new File(root, "/lib");
@@ -39,6 +39,6 @@ public class DirectoryClassLoader
 				urls[i] = file.toURI().toURL();
 			}
 		}
-		return new NamedClassLoader(name, urls, parent.getClassLoader());
+		return new NamedClassLoaderImpl(name, urls, parent.getClassLoader());
 	}
 }

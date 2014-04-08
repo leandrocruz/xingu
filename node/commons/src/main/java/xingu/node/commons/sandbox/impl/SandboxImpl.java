@@ -2,18 +2,18 @@ package xingu.node.commons.sandbox.impl;
 
 import xingu.node.commons.sandbox.Sandbox;
 import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class SandboxImpl
 	implements Sandbox
 {
 	private String				id;
 
-	private SimpleClassLoader	cl;
+	private NamedClassLoader	cl;
 
 	private Container			container;
 	
-	public SandboxImpl(String id, Container container, SimpleClassLoader cl)
+	public SandboxImpl(String id, Container container, NamedClassLoader cl)
 	{
 		this.id        = id;
 		this.cl        = cl;
@@ -27,7 +27,7 @@ public class SandboxImpl
 	}
 
 	@Override
-	public SimpleClassLoader classLoader()
+	public NamedClassLoader classLoader()
 	{
 		return cl;
 	}

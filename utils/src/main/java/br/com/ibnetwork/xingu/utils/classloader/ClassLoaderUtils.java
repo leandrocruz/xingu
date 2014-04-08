@@ -1,15 +1,15 @@
 package br.com.ibnetwork.xingu.utils.classloader;
 
-import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoaderImpl;
 
 public class ClassLoaderUtils
 {
 	public static final String nameFor(Class<?> clazz)
 	{
 		ClassLoader cl = clazz.getClassLoader();
-		if(cl instanceof NamedClassLoader)
+		if(cl instanceof NamedClassLoaderImpl)
 		{
-			return ((SimpleClassLoader) cl).id();
+			return ((NamedClassLoader) cl).id();
 		}
 		return null; 
 	}

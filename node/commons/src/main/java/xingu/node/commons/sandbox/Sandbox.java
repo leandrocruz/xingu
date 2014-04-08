@@ -1,7 +1,7 @@
 package xingu.node.commons.sandbox;
 
 import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public interface Sandbox
 {
@@ -9,7 +9,7 @@ public interface Sandbox
 	
 	String id();
 	
-	SimpleClassLoader classLoader();
+	NamedClassLoader classLoader();
 	
 	Container container();
 	

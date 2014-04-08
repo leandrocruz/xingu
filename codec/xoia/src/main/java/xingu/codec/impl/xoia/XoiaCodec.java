@@ -4,6 +4,7 @@ import xingu.codec.Codec;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
+import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlReader;
@@ -22,10 +23,10 @@ public class XoiaCodec
 	public String encode(Object object)
 		throws Exception
 	{
-		XmlEmitter visitor = new XmlEmitter();
+		ObjectVisitor<String> visitor = new XmlEmitter();
 		new SimpleObjectInspector(object, registry).visit(visitor);
 		String result = visitor.getResult();
-		//System.err.println("ENC >> " + result);
+		System.err.println("ENC >> " + result);
 		return result;
 	}
 
@@ -33,7 +34,7 @@ public class XoiaCodec
 	public Object decode(String text)
 		throws Exception
 	{
-		//System.err.println("DEC << " + text);
+		System.err.println("DEC << " + text);
 		ObjectEmitter deserializer = new XmlReader(registry, clm);
 		return deserializer.from(text);
 	}

@@ -16,7 +16,7 @@ import br.com.ibnetwork.xingu.container.ContainerException;
 import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public abstract class ContainerSupport
     implements Container
@@ -70,7 +70,7 @@ public abstract class ContainerSupport
     }
     
     @SuppressWarnings("unchecked")
-	protected <T> Binding<T> binding(SimpleClassLoader cl, String roleName, String key, String implName) 
+	protected <T> Binding<T> binding(NamedClassLoader cl, String roleName, String key, String implName) 
         throws ConfigurationException
     {
         Class<T> clazz = null;
@@ -89,7 +89,7 @@ public abstract class ContainerSupport
         return binding;
     }
 
-    protected <T> T tryDefaults(Class<T> clazz, SimpleClassLoader cl) 
+    protected <T> T tryDefaults(Class<T> clazz, NamedClassLoader cl) 
         throws ContainerException
     {
         String role = clazz.getName(); 

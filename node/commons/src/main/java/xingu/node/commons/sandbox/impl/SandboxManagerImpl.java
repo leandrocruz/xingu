@@ -12,9 +12,9 @@ import br.com.ibnetwork.xingu.container.ContainerUtils;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderWrapper;
-import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoaderImpl;
 
 public class SandboxManagerImpl
 	implements SandboxManager, Initializable
@@ -28,7 +28,7 @@ public class SandboxManagerImpl
 	public void initialize()
 		throws Exception
 	{
-		SimpleClassLoader cl = new ClassLoaderWrapper(Sandbox.SYSTEM, Thread.currentThread().getContextClassLoader());
+		NamedClassLoader cl = new ClassLoaderWrapper(Sandbox.SYSTEM, Thread.currentThread().getContextClassLoader());
 		Container   container = ContainerUtils.getLocalContainer();
 		register(new SandboxImpl(Sandbox.SYSTEM, container, cl));
 	}
@@ -38,9 +38,9 @@ public class SandboxManagerImpl
 	{
 		ClassLoader cl = obj.getClass().getClassLoader();
 		String      id = Sandbox.SYSTEM;
-		if(cl instanceof NamedClassLoader)
+		if(cl instanceof NamedClassLoaderImpl)
 		{
-			id = ((SimpleClassLoader) cl).id();
+			id = ((NamedClassLoader) cl).id();
 		}
 		return byId(id);
 	}

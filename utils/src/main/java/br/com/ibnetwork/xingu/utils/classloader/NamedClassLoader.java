@@ -2,7 +2,7 @@ package br.com.ibnetwork.xingu.utils.classloader;
 
 import java.net.URL;
 
-public interface SimpleClassLoader
+public interface NamedClassLoader
 {
 	String id();
 	

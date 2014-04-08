@@ -11,8 +11,8 @@ import javax.xml.parsers.SAXParserFactory;
 
 import br.com.ibnetwork.xingu.utils.StringUtils;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderFactory;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.impl.NamedClassLoaderImpl;
 
 public class EclipseClassLoader
 	implements ClassLoaderFactory
@@ -28,12 +28,12 @@ public class EclipseClassLoader
 	}
 	
 	@Override
-	public SimpleClassLoader buildClassLoader(String name, SimpleClassLoader parent)
+	public NamedClassLoader buildClassLoader(String name, NamedClassLoader parent)
 		throws Exception
 	{
 		Set<URL>       urls   = get(workspace, project);
 	    URL[]          array  = urls.toArray(new URL[]{});
-	    return new NamedClassLoader(name, array, parent.getClassLoader());
+	    return new NamedClassLoaderImpl(name, array, parent.getClassLoader());
 	}
 
 	private Set<URL> get(Workspace workspace, File project)

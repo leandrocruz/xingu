@@ -3,15 +3,15 @@ package br.com.ibnetwork.xingu.utils.classloader.impl;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
-public class NamedClassLoader
+public class NamedClassLoaderImpl
 	extends URLClassLoader
-	implements SimpleClassLoader
+	implements NamedClassLoader
 {
 	private final String id;
 
-	public NamedClassLoader(String name, URL[] urls, ClassLoader parent)
+	public NamedClassLoaderImpl(String name, URL[] urls, ClassLoader parent)
 	{
 		super(urls, parent);
 		this.id = name;

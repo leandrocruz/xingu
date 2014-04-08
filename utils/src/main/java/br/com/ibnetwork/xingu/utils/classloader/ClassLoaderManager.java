@@ -2,7 +2,7 @@ package br.com.ibnetwork.xingu.utils.classloader;
 
 public interface ClassLoaderManager
 {
-	SimpleClassLoader byId(String id);
+	NamedClassLoader byId(String id);
 
-	void register(SimpleClassLoader cl);
+	void register(NamedClassLoader cl);
 }

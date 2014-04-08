@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.SimpleClassLoader;
+import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 
 public class ClassLoaderManagerImpl
 	implements ClassLoaderManager
 {
-	private Map<String, SimpleClassLoader> byId = new HashMap<String, SimpleClassLoader>();
+	private Map<String, NamedClassLoader> byId = new HashMap<String, NamedClassLoader>();
 	
 	@Override
-	public SimpleClassLoader byId(String id)
+	public NamedClassLoader byId(String id)
 	{
 		if(id == null)
 		{
@@ -22,7 +22,7 @@ public class ClassLoaderManagerImpl
 	}
 
 	@Override
-	public void register(SimpleClassLoader cl)
+	public void register(NamedClassLoader cl)
 	{
 		byId.put(cl.id(), cl);
 	}
