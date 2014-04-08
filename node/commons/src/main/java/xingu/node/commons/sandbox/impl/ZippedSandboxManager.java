@@ -107,7 +107,7 @@ public class ZippedSandboxManager
 	private NamedClassLoader buildClassLoader(String id, File src)
 		throws Exception
 	{
-		Sandbox    system = byId(Sandbox.SYSTEM);
+		Sandbox system = byId(Sandbox.SYSTEM);
 		NamedClassLoader parent = system.classLoader();
 		return new DirectoryClassLoader(src).buildClassLoader(id, parent);
 	}
