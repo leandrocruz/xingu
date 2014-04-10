@@ -1,6 +1,7 @@
 package xavante;
 
 import java.net.SocketAddress;
+import java.net.SocketException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jboss.netty.channel.Channel;
@@ -47,7 +48,16 @@ public class XavanteChannelHandler
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
 		throws Exception
 	{
-		e.getCause().printStackTrace();
+		Throwable cause = e.getCause();
+		if(cause instanceof SocketException)
+		{
+			//we get a 'Broken pipe' when the client closes the connection from his end
+			System.err.println("xavante.XavanteChannelHandler.exceptionCaught(): " + cause.getMessage());
+		}
+		else
+		{
+			cause.printStackTrace();
+		}
 	}
 
 	@Override
