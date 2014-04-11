@@ -77,30 +77,30 @@ public class ObjectUtils
     }
 
     public static Object deepCopy(Object original) 
-            throws IOException, ClassNotFoundException
-        {
-            ObjectInputStream ois;
-            ObjectOutputStream oos;
-            ByteArrayInputStream bais;
-            ByteArrayOutputStream baos;
-            byte[] data;
-            Object copy;
+        throws IOException, ClassNotFoundException
+    {
+        ObjectInputStream ois;
+        ObjectOutputStream oos;
+        ByteArrayInputStream bais;
+        ByteArrayOutputStream baos;
+        byte[] data;
+        Object copy;
 
-            // write object to bytes
-            baos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(baos);
-            oos.writeObject(original);
-            oos.close();
+        // write object to bytes
+        baos = new ByteArrayOutputStream();
+        oos = new ObjectOutputStream(baos);
+        oos.writeObject(original);
+        oos.close();
 
-            // get the bytes
-            data = baos.toByteArray();
+        // get the bytes
+        data = baos.toByteArray();
 
-            // construct an object from the bytes
-            bais = new ByteArrayInputStream(data);
-            ois = new ObjectInputStream(bais);
-            copy = ois.readObject();
-            ois.close();
-            return copy;
-        }
+        // construct an object from the bytes
+        bais = new ByteArrayInputStream(data);
+        ois = new ObjectInputStream(bais);
+        copy = ois.readObject();
+        ois.close();
+        return copy;
+    }
 
 }
