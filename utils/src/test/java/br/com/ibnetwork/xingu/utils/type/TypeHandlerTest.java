@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.type.impl.BooleanTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.ByteTypeHandler;
 import br.com.ibnetwork.xingu.utils.type.impl.CharTypeHandler;
