@@ -6,19 +6,19 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.node.commons.ResolverInjector;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorResolver;
 import xingu.node.commons.signal.behavior.NullBehavior;
 import xingu.node.commons.signal.behavior.SignalBehavior;
 import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Injector;
 import br.com.ibnetwork.xingu.factory.Conventor;
 
 public class BehaviorResolverImpl
 	implements BehaviorResolver
 {
 	@Inject
-	private Injector						injector;
+	private ResolverInjector				injector;
 
 	@Inject
 	private Conventor						conventor;
