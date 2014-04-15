@@ -7,16 +7,26 @@ public class StringSignal
 	extends SignalSupport
 	implements Signal
 {
-	private String s;
+	private String value;
 
 	public StringSignal(String s)
 	{
-		this.s = s;
+		this.value = s;
 	}
 
 	@Override
 	public String toString()
 	{
-		return s;
+		return value;
+	}
+
+	public String getValue()
+	{
+		return value;
+	}
+
+	public void setValue(String value)
+	{
+		this.value = value;
 	}
 }
