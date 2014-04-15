@@ -37,14 +37,8 @@ public class ConventorImpl
         {
         	return null;
         }
-        if(params != null)
-        {
-        	return factory.create(clazz, params);
-        }
-        else
-        {
-        	return factory.create(clazz);
-        }
+        
+        return ObjectUtils.getInstance(clazz);
 	}
 
 }

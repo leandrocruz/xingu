@@ -56,7 +56,8 @@ public class FieldInjector
             return this;
         }
 
-		boolean resolved = container.isResolved(type, value);
+    	Container container = containerFor(obj);
+		boolean   resolved  = container.isResolved(type, value);
 		if(resolved || !lazy)
 		{
 			try
@@ -76,5 +77,10 @@ public class FieldInjector
     	}
 
 		throw new NotImplementedYet("Can't inject dependency '"+type.getName()+"' on '"+obj+"'");
+	}
+	
+	protected Container containerFor(Object obj)
+	{
+		return container;
 	}
 }

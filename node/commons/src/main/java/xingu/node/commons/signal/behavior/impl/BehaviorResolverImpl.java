@@ -64,6 +64,10 @@ public class BehaviorResolverImpl
 		{
 			result = NullBehavior.instance();
 		}
+		else
+		{
+			inject(result);
+		}
 		cache.put(clazz, result);
 
 		return result;
