@@ -28,6 +28,7 @@ public class ObjectInspectorTest
 		throws Exception
 	{
 		execWith("a string");
+		execWith("html&nbsp;entities");
 		execWith('c');
 		execWith(1);
 		execWith((byte)0);

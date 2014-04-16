@@ -25,10 +25,11 @@ public class ConventorImpl
 	{
         String name = base.getName() + suffix;
         Class<?> clazz = null;
+        ClassLoader cl = base.getClassLoader();
         
         try
         {
-            clazz = ObjectUtils.loadClass(name);
+            clazz = ObjectUtils.loadClass(name, cl);
         }
         catch(Throwable t) 
         {}

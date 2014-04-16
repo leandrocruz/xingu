@@ -2,6 +2,8 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
@@ -19,12 +21,13 @@ public class XmlEmitter
 	{
 		String fieldName = field == null ? null : field.getName();
 		String value     = handler.toString(obj);
+		String escaped	 = StringEscapeUtils.escapeXml(value);
 		printer
 			.ident()
 			.startElement(handler.name())
 			.attr("id", id)
 			.attrIf("field", fieldName)
-			.attr("value", value)
+			.attr("value", escaped)
 			.closeEmpty()
 			.br();
 	}
