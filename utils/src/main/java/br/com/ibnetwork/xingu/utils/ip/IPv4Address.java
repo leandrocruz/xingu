@@ -83,9 +83,14 @@ public class IPv4Address
 		return 0;
 	}
 
+	public String getAddress()
+	{
+		return octets[0] + "." + octets[1] + "." + octets[2] + "." + octets[3]; 
+	}
+	
 	@Override
 	public String toString()
 	{
-		return octets[0] + "." + octets[1] + "." + octets[2] + "." + octets[3]; 
+		return getAddress();
 	}
 }
