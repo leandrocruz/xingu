@@ -11,9 +11,12 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import xingu.codec.Codec;
 import xingu.codec.impl.CodecSupport;
+import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.lang.Constructors;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.StringUtils;
+import flexjson.ClassFinder;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.ObjectFactory;
@@ -23,6 +26,9 @@ public class FlexJsonCodec
 	extends CodecSupport
 	implements Codec, Configurable, Initializable
 {
+	@Inject
+	private Factory factory;
+	
 	private JSONDeserializer<Map<String, Object>> decoder;
 	
 	private JSONSerializer encoder;
@@ -94,7 +100,8 @@ public class FlexJsonCodec
 	public void initialize()
 		throws Exception
 	{
-		decoder = new JSONDeserializer<Map<String, Object>>();
+		ClassFinder finder = factory.create(XinguClassFinder.class);
+		decoder = new JSONDeserializer<Map<String, Object>>(finder);
 		for(Class<?> clazz : factoryByClass.keySet())
 		{
 			decoder.use(clazz, factoryByClass.get(clazz));
