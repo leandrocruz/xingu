@@ -1,6 +1,8 @@
 package xavante.comet.impl;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xavante.comet.CometClient;
 import xavante.comet.CometHandler;
@@ -10,6 +12,7 @@ import xingu.codec.Codec;
 import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
+import xingu.node.commons.signal.impl.ExceptionSignal;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
@@ -25,6 +28,8 @@ public abstract class CometHandlerSupport
 	@Inject
 	protected BehaviorPerformer	performer;
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Override
 	public String onMessage(CometMessage msg)
 		throws Exception
@@ -70,7 +75,7 @@ public abstract class CometHandlerSupport
 		if(decoded instanceof Signal)
 		{
 			Signal      signal         = (Signal) decoded;
-			String        id             = signal.getSignalId();
+			String      id             = signal.getSignalId();
 			boolean     processEnabled = signal.isProcessEnabled();
 			Identity<?> owner          = findOwner(token, signal);
 
@@ -83,7 +88,18 @@ public abstract class CometHandlerSupport
 			signal.setOwner(owner);
 			verifyOwnership(signal);
 
-			Signal reply = performer.performBehavior(signal, null);
+			Signal reply = null;
+			try
+			{
+				reply = performer.performBehavior(signal, null);
+			}
+			catch(Throwable t)
+			{
+				logger.error("Error Performing Behavior for Signal " + signal.getClass().getName(), t);
+				String trace = ExceptionUtils.getStackTrace(t);
+				reply = new ExceptionSignal(signal, trace);
+			}
+
 			if(reply != null)
 			{
 				reply.setSignalId(id);
@@ -141,10 +157,17 @@ public abstract class CometHandlerSupport
 	@Override
 	public String onError(Throwable t)
 	{
+		logger.error("Error Handing Comet Message", t);
 		String trace = ExceptionUtils.getStackTrace(t);
-		return trace;
-		// TODO://
-		// String encoded = codec.encode(new ErrorReply(t, "Error handling message", trace));
-		// return encoded;
+		String encoded;
+		try
+		{
+			encoded = codec.encode(new ExceptionSignal(null, trace));
+		}
+		catch(Exception e)
+		{
+			return "{trace: \""+trace+"\"}";
+		}
+		return encoded;
 	}
 }

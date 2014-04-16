@@ -3,29 +3,29 @@ package xingu.node.commons.signal.impl;
 import xingu.node.commons.signal.Signal;
 
 
-public class StringSignal
+public class LongSignal
 	extends SignalSupport
 	implements Signal
 {
-	private String value;
+	private long value;
 
-	public StringSignal(String s)
+	public LongSignal(long i)
 	{
-		this.value = s;
+		this.value = i;
 	}
 
 	@Override
 	public String toString()
 	{
-		return value;
+		return String.valueOf(value);
 	}
 
-	public String getValue()
+	public long getValue()
 	{
 		return value;
 	}
 
-	public void setValue(String value)
+	public void setValue(long value)
 	{
 		this.value = value;
 	}
