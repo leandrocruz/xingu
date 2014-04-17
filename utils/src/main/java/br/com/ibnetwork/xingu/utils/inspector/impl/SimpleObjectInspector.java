@@ -52,6 +52,14 @@ public class SimpleObjectInspector
 		Class<?> clazz = null;
 		if(field != null)
 		{
+			int     modifiers   = field.getModifiers();
+			boolean isTransient = Modifier.isTransient(modifiers);
+			boolean isStatic    = Modifier.isStatic(modifiers);
+			if(isTransient || isStatic)
+			{
+				return;
+			}
+
 			obj = FieldUtils.valueFrom(field, obj);
 			if(obj == null)
 			{
@@ -76,17 +84,6 @@ public class SimpleObjectInspector
 		
 
 		boolean isPrimitive = type == Type.PRIMITIVE;
-		if(isPrimitive && field != null)
-		{
-			int     modifiers   = field.getModifiers();
-			boolean isTransient = Modifier.isTransient(modifiers);
-			boolean isStatic    = Modifier.isStatic(modifiers);
-			if(isTransient || isStatic)
-			{
-				return;
-			}
-		}
-		
 		if(!isPrimitive)
 		{
 			visitor.onNodeStart(obj, id, handler, field);
