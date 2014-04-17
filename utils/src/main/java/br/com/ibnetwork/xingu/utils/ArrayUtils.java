@@ -154,23 +154,26 @@ public class ArrayUtils
     	}
     	return result;
     }
-
-    public static final boolean equals(Object[] expected, Object[] array)
+        
+    public static final boolean equals(Object expected, Object array)
     {
     	if(expected == null && array == null)
     	{
     		return true;
     	}
     	
-    	if(expected.length != array.length)
+    	int expectedLength = Array.getLength(expected);
+    	int arrayLength = Array.getLength(array);
+    	
+    	if(expectedLength != arrayLength)
     	{
     		return false;
     	}
     	
-    	for(int i = 0; i < expected.length; i++)
+    	for(int i = 0; i < expectedLength; i++)
     	{
-    		Object a = expected[i];
-    		Object b = array[i];
+    		Object a = Array.get(expected, i);
+    		Object b = Array.get(array, i);
     		if(!a.equals(b))
     		{
     			return false;
