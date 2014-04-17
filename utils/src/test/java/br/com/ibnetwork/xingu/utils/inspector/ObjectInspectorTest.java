@@ -39,6 +39,19 @@ public class ObjectInspectorTest
 	}
 
 	@Test
+	public void testTransient()
+		throws Exception
+	{
+		WithTransient       obj      = new WithTransient();
+		XmlEmitter          visitor  = new XmlEmitter();
+		TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
+		new SimpleObjectInspector(obj, registry).visit(visitor);
+		String result   = visitor.getResult();
+		String expected = "<obj id=\"1\" class=\"br.com.ibnetwork.xingu.utils.inspector.WithTransient\">\n</obj>\n";
+		assertEquals(expected, result);
+	}
+	
+	@Test
 	public void testDate()
 		throws Exception
 	{
