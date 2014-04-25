@@ -52,8 +52,7 @@ public class SandboxManagerImpl
 		return sandboxById.get(id);
 	}
 
-	@Override
-	public void register(Sandbox sandbox)
+	protected void register(Sandbox sandbox)
 	{
 		String  id  = sandbox.id();
 		Sandbox old = sandboxById.get(id);
@@ -70,5 +69,12 @@ public class SandboxManagerImpl
 	{
 		Collection<Sandbox> values = sandboxById.values();
 		return Collections.unmodifiableCollection(values);
+	}
+
+	@Override
+	public Sandbox resolve(String id)
+		throws Exception
+	{
+		throw new NotImplementedYet();
 	}
 }

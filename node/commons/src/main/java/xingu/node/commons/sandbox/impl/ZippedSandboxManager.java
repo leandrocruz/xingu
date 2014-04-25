@@ -9,10 +9,14 @@ import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.http.client.HttpClient;
+import xingu.http.client.HttpResponse;
 import xingu.node.commons.sandbox.Sandbox;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.Inject;
@@ -31,13 +35,16 @@ public class ZippedSandboxManager
 	implements Configurable, Initializable
 {
 	@Inject
-	private Factory						factory;
+	private Factory		factory;
 
-	private File						local;
-	
-	private String						remote;
+	@Inject("sandbox-manager")
+	private HttpClient	http;
 
-	private Logger						logger				= LoggerFactory.getLogger(getClass());
+	private File		local;
+
+	private String		remote;
+
+	private Logger		logger	= LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void configure(Configuration conf)
@@ -128,27 +135,30 @@ public class ZippedSandboxManager
 			File zip = new File(local, id + ".zip");
 			if(!zip.exists())
 			{
-				zip = getRemote(id);
+				throw new NotImplementedYet();
 			}
 			ZipUtils.explode(zip, src);
 		}
 		return src;
 	}
 
-	private File getRemote(String id)
+	
+	@Override
+	public Sandbox resolve(String id)
 		throws Exception
 	{
 		File   file = new File(local, id + ".zip");
 		String url  = remote + "/" + file.getName();
 		logger.info("Bundle '{}' not found on local repo. Downloading from '{}'", id, url);
 		
-//		HttpResponse res  = http.get(url).exec();
-//		InputStream  is   = res.getRawBody();
-//		byte[]       data = IOUtils.toByteArray(is);
-//		FileUtils.writeByteArrayToFile(file, data);
-//		return file;
-
-		throw new NotImplementedYet("Can't load remote packages");
+		HttpResponse res  = http.get(url).exec();
+		InputStream  is   = res.getRawBody();
+		byte[]       data = IOUtils.toByteArray(is);
+		FileUtils.writeByteArrayToFile(file, data);
+		
+		Sandbox sandbox = from(file);
+		register(sandbox);
+		
+		return sandbox;
 	}
-
 }
