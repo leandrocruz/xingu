@@ -9,7 +9,7 @@ import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 public class ClassLoaderManagerImpl
 	implements ClassLoaderManager
 {
-	private Map<String, NamedClassLoader> byId = new HashMap<String, NamedClassLoader>();
+	protected Map<String, NamedClassLoader> byId = new HashMap<String, NamedClassLoader>();
 	
 	@Override
 	public NamedClassLoader byId(String id)
