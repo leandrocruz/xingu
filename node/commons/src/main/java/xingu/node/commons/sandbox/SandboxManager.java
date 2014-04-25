@@ -4,11 +4,12 @@ import java.util.Collection;
 
 public interface SandboxManager
 {
-	void register(Sandbox sandbox);
-
 	Sandbox byId(String id);
 
 	Sandbox sandboxFor(Object obj);
+	
+	Sandbox resolve(String id)
+		throws Exception;
 	
 	Collection<Sandbox> getAll();
 }

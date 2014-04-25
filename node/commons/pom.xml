@@ -20,6 +20,11 @@
 		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
+			<artifactId>http-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xingu</groupId>
 			<artifactId>netty-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
