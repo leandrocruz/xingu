@@ -11,9 +11,7 @@ import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxManager;
 import br.com.ibnetwork.xingu.container.Container;
 import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
@@ -21,10 +19,7 @@ import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
 public class SandboxManagerImpl
 	implements SandboxManager, Initializable
 {
-	@Inject
-	private ClassLoaderManager		clm;
-
-	private Map<String, Sandbox>	sandboxById	= new HashMap<String, Sandbox>();
+	private Map<String, Sandbox> sandboxById = new HashMap<String, Sandbox>();
 
 	@Override
 	public void initialize()
@@ -52,7 +47,8 @@ public class SandboxManagerImpl
 		return sandboxById.get(id);
 	}
 
-	protected void register(Sandbox sandbox)
+	@Override
+	public void register(Sandbox sandbox)
 	{
 		String  id  = sandbox.id();
 		Sandbox old = sandboxById.get(id);
@@ -61,7 +57,6 @@ public class SandboxManagerImpl
 			throw new NotImplementedYet("Sandbox '"+id+"' can't be replaced");
 		}
 		sandboxById.put(id, sandbox);
-		clm.register(sandbox.classLoader());
 	}
 
 	@Override
@@ -69,12 +64,5 @@ public class SandboxManagerImpl
 	{
 		Collection<Sandbox> values = sandboxById.values();
 		return Collections.unmodifiableCollection(values);
-	}
-
-	@Override
-	public Sandbox resolve(String id)
-		throws Exception
-	{
-		throw new NotImplementedYet();
 	}
 }
