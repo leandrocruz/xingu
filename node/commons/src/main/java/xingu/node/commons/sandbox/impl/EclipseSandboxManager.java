@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
@@ -16,14 +17,23 @@ import br.com.ibnetwork.xingu.utils.classloader.eclipse.Workspace;
 public class EclipseSandboxManager
 	extends SandboxManagerImpl
 {
-	private Workspace workspace = null;
+	private Workspace	workspace	= null;
+
+	private String		workspaceDirectory;
 	
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		super.configure(conf);
+		workspaceDirectory = conf.getChild("workspace").getAttribute("dir");
+	}
 	
 	@Override
 	public void initialize()
 		throws Exception
 	{
-		workspace = new Workspace(new File("/home/leandro/dev/projects"));
+		workspace = new Workspace(new File(workspaceDirectory));
 		super.initialize();
 	}
 
