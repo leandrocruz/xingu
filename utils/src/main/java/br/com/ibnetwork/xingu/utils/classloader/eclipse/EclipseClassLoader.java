@@ -39,7 +39,7 @@ public class EclipseClassLoader
 	private Set<URL> get(Workspace workspace, File project)
 		throws Exception
 	{
-		Set<URL>     urls         = new HashSet<URL>();
+		Set<URL>      urls         = new HashSet<URL>();
 		SAXParser     master       = SAXParserFactory.newInstance().newSAXParser();
 	    File          dotClasspath = new File(project, ".classpath");
 		EclipseParser parser       = new EclipseParser();
@@ -50,6 +50,7 @@ public class EclipseClassLoader
 	    {
 			String kind   = entry.kind;
 			String path   = entry.path;
+			//System.out.println(kind + " " + path);
 			//String output = entry.output;
 			if("src".equals(kind))
 			{
