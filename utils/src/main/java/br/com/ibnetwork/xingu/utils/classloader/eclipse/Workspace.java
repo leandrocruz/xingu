@@ -15,8 +15,6 @@ public class Workspace
 {
 	private Pattern					pattern	= Pattern.compile("<projectDescription>\\s+<name>(.+)</name>");
 
-	private File					root;
-
 	private List<Project>			projects;
 
 	private Map<String, Project>	byPath	= new HashMap<String, Project>();
@@ -24,7 +22,6 @@ public class Workspace
 	public Workspace(File root)
 		throws Exception
 	{
-		this.root     = root;
 		this.projects = find(root);
 	}
 	

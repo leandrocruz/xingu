@@ -29,13 +29,13 @@ public class SandboxManagerImpl
 	implements Configurable, Initializable
 {
 	@Inject("sandbox-manager")
-	private HttpClient		http;
+	protected HttpClient	http;
 
-	private File			local;
+	protected File			local;
 
-	private String			remote;
+	protected String		remote;
 
-	private String			containerFile;
+	protected String		containerFile;
 
 	@Override
 	public void configure(Configuration conf)
@@ -60,7 +60,7 @@ public class SandboxManagerImpl
 			return;
 		}
 
-		File[] files = local.listFiles((FileFilter) new SuffixFileFilter(".zip"));
+		File[] files = getSandboxFiles();
 		for(File file : files)
 		{
 			logger.info("Loading Sandbox from '{}'", file);
@@ -77,7 +77,12 @@ public class SandboxManagerImpl
 		}
 	}
 
-	private File sourceDirectoryFor(String id)
+	protected File[] getSandboxFiles()
+	{
+		return local.listFiles((FileFilter) new SuffixFileFilter(".zip"));
+	}
+
+	protected File sourceDirectoryFor(String id)
 		throws Exception
 	{
 		File src = new File(local, id);
@@ -112,7 +117,7 @@ public class SandboxManagerImpl
 		return name.substring(0, idx);
 	}
 
-	private NamedClassLoader buildClassLoader(String id, File src, Sandbox parentSandbox)
+	protected NamedClassLoader buildClassLoader(String id, File src, Sandbox parentSandbox)
 		throws Exception
 	{
 		NamedClassLoader parent = parentSandbox.classLoader();

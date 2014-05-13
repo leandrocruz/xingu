@@ -19,4 +19,9 @@ public class Project
 	{
 		return name + " @" + root;
 	}
+
+	public File getRoot()
+	{
+		return root;
+	}
 }
