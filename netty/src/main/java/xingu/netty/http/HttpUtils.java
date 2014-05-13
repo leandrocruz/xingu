@@ -4,9 +4,6 @@ import static org.jboss.netty.buffer.ChannelBuffers.wrappedBuffer;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.HOST;
 
-
-
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,15 +24,6 @@ import java.util.zip.InflaterOutputStream;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.CharUtils;
-import xingu.netty.Deflater;
-import xingu.url.QueryString;
-import xingu.url.Url;
-import xingu.url.UrlParser;
-import xingu.url.impl.QueryStringImpl;
-import xingu.utils.NettyUtils;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -50,6 +38,21 @@ import org.jboss.netty.handler.codec.http.HttpMessage;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpVersion;
+import org.jboss.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import org.jboss.netty.handler.codec.http.multipart.FileUpload;
+import org.jboss.netty.handler.codec.http.multipart.HttpDataFactory;
+import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
+import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData;
+import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
+
+import xingu.netty.Deflater;
+import xingu.url.QueryString;
+import xingu.url.Url;
+import xingu.url.UrlParser;
+import xingu.url.impl.QueryStringImpl;
+import xingu.utils.NettyUtils;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.CharUtils;
 
 public class HttpUtils
 {
@@ -494,5 +497,30 @@ public class HttpUtils
 		
 		String[] pair = up.split(":");
 		return pair;
+	}
+
+	public static void whenMultipart(HttpRequest req)
+		throws Exception
+	{
+		HttpDataFactory         factory = new DefaultHttpDataFactory();
+		HttpPostRequestDecoder  decoder = new HttpPostRequestDecoder(factory, req);
+		List<InterfaceHttpData> items   = decoder.getBodyHttpDatas();
+		for (InterfaceHttpData item : items)
+		{
+			HttpDataType type = item.getHttpDataType();
+			String       name = item.getName();
+			System.out.println(type + " " + name);
+			
+			if(type == HttpDataType.FileUpload)
+			{
+				FileUpload upload      = (FileUpload) item;
+				Charset    charset     = upload.getCharset();
+				String     enc         = upload.getContentTransferEncoding();
+				String     contentType = upload.getContentType();
+				String     filename    = upload.getFilename();
+				System.out.println(charset + " " + enc + " " + contentType + " " + filename);
+			}
+		}
+		throw new NotImplementedYet();
 	}
 }
