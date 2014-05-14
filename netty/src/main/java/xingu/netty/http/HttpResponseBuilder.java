@@ -1,8 +1,10 @@
 package xingu.netty.http;
 
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CACHE_CONTROL;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.LOCATION;
+import static org.jboss.netty.handler.codec.http.HttpHeaders.Names.PRAGMA;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -101,6 +103,13 @@ public class HttpResponseBuilder
         withContentLength(0);
         return withHeader(LOCATION, location);
     }
+    
+	public HttpResponseBuilder noCache()
+	{
+		withHeader(CACHE_CONTROL, "private, max-age=0, no-cache");
+		withHeader(PRAGMA, "no-cache");
+		return this;
+	}
 
     public static HttpResponse redirect(String to)
     {
@@ -117,5 +126,4 @@ public class HttpResponseBuilder
     	response.setStatus(status);
     	return this;
     }
-    
 }
