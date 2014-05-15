@@ -59,7 +59,7 @@ public class SignalTaskImpl
 			logger.error("Error processing signal " + signal, t);
 			signal.setForward(false);
 			String trace = ExceptionUtils.getStackTrace(t);
-			reply        = new ExceptionSignal(signal, trace);
+			reply        = new ExceptionSignal(signal, "Error processing signal", trace);
 		}
 		if(reply != null)
 		{

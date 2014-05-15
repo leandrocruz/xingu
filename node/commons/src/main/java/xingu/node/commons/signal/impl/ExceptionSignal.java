@@ -11,6 +11,8 @@ public class ExceptionSignal
 {
 	private Signal		signal;
 
+	private String		message;
+
 	private String		trace;
 
 	private Throwable	cause;
@@ -18,10 +20,11 @@ public class ExceptionSignal
 	public ExceptionSignal()
 	{}
 
-	public ExceptionSignal(Signal signal, String trace)
+	public ExceptionSignal(Signal signal, String message, String trace)
 	{
-		this.signal = signal;
-		this.trace  = trace;
+		this.signal  = signal;
+		this.message = message;
+		this.trace   = trace;
 	}
 
 	/*
@@ -30,7 +33,8 @@ public class ExceptionSignal
 	public ExceptionSignal(Signal signal, Throwable cause)
 	{
 		this.signal = signal;
-		this.cause = cause;
+		this.message = cause.getMessage();
+		this.cause  = cause;
 	}
 
 	@Override
@@ -42,10 +46,14 @@ public class ExceptionSignal
 		return null;
 	}
 
+	/* @formatter:off */
 	public Signal getSignal(){return signal;}
 	public void setSignal(Signal signal){this.signal = signal;}
 	public String getTrace(){return trace;}
 	public void setTrace(String trace){this.trace = trace;}
 	public Throwable getCause(){return cause;}
 	public void setCause(Throwable cause){this.cause = cause;}
+	public String getMessage(){return message;}
+	public void setMessage(String message){this.message = message;}
+	/* @formatter:on */
 }
