@@ -50,8 +50,8 @@ public class EclipseClassLoader
 	    {
 			String kind   = entry.kind;
 			String path   = entry.path;
-			//System.out.println(kind + " " + path);
 			//String output = entry.output;
+			//System.out.println(kind + " " + path);
 			if("src".equals(kind))
 			{
 				if(path.startsWith(StringUtils.SLASH))
@@ -64,8 +64,8 @@ public class EclipseClassLoader
 			}
 			else if("var".equals(kind))
 			{
-				// a jar files
-				URL  url  = new File(path).toURI().toURL();
+				// a jar file
+				URL  url  = workspace.resolve(path);
 				urls.add(url);
 			}
 			else if("output".equals(kind))

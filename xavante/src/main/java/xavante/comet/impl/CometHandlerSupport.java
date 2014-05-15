@@ -97,7 +97,7 @@ public abstract class CometHandlerSupport
 			{
 				logger.error("Error Performing Behavior for Signal " + signal.getClass().getName(), t);
 				String trace = ExceptionUtils.getStackTrace(t);
-				reply = new ExceptionSignal(signal, trace);
+				reply = new ExceptionSignal(signal, t.getMessage(), trace);
 			}
 
 			if(reply != null)
@@ -162,7 +162,7 @@ public abstract class CometHandlerSupport
 		String encoded;
 		try
 		{
-			encoded = codec.encode(new ExceptionSignal(null, trace));
+			encoded = codec.encode(new ExceptionSignal(null, "Error Handing Comet Message", trace));
 		}
 		catch(Exception e)
 		{

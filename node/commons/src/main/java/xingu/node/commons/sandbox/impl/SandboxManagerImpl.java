@@ -70,9 +70,9 @@ public class SandboxManagerImpl
 				register(sandbox);
 				logger.info("Sandbox '{}' loaded", sandbox);
 			}
-			catch(Exception e)
+			catch(Throwable t)
 			{
-				logger.warn("Error loading Sandbox from: " + file, e);
+				logger.warn("Error loading Sandbox from: " + file, t);
 			}
 		}
 	}
