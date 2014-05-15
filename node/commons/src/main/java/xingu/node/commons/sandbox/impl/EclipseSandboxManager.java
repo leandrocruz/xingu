@@ -2,6 +2,8 @@ package xingu.node.commons.sandbox.impl;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
@@ -17,16 +19,25 @@ import br.com.ibnetwork.xingu.utils.classloader.eclipse.Workspace;
 public class EclipseSandboxManager
 	extends SandboxManagerImpl
 {
-	private Workspace	workspace	= null;
+	private Workspace			workspace;
 
-	private String		workspaceDirectory;
-	
+	private String				workspaceDirectory;
+
+	private Map<String, String>	classpathVariables	= new HashMap<String, String>();
+
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
 		super.configure(conf);
 		workspaceDirectory = conf.getChild("workspace").getAttribute("dir");
+		Configuration[] variables = conf.getChild("workspace").getChildren("var");
+		for(Configuration var : variables)
+		{
+			String name  = var.getAttribute("name");
+			String value = var.getAttribute("value");
+			classpathVariables.put(name, value);
+		}
 	}
 	
 	@Override
@@ -34,6 +45,11 @@ public class EclipseSandboxManager
 		throws Exception
 	{
 		workspace = new Workspace(new File(workspaceDirectory));
+		for(String name : classpathVariables.keySet())
+		{
+			String value = classpathVariables.get(name);
+			workspace.addClasspathVariable(name, value);
+		}
 		super.initialize();
 	}
 

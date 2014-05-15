@@ -1,6 +1,8 @@
 package br.com.ibnetwork.xingu.utils.classloader.eclipse;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +15,15 @@ import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class Workspace
 {
-	private Pattern					pattern	= Pattern.compile("<projectDescription>\\s+<name>(.+)</name>");
+	private static final String		M2_REPO				= "M2_REPO";
+
+	private Pattern					pattern				= Pattern.compile("<projectDescription>\\s+<name>(.+)</name>");
 
 	private List<Project>			projects;
 
-	private Map<String, Project>	byPath	= new HashMap<String, Project>();
+	private Map<String, Project>	byPath				= new HashMap<String, Project>();
+
+	private Map<String, String>		classPathVariables	= new HashMap<String, String>();
 
 	public Workspace(File root)
 		throws Exception
@@ -64,5 +70,21 @@ public class Workspace
 	public Project byPath(String path)
 	{
 		return byPath.get(path);
+	}
+
+	public URL resolve(String path)
+		throws MalformedURLException
+	{
+		if(path.startsWith(M2_REPO))
+		{
+			path = path.substring(M2_REPO.length() + 1);
+			path = classPathVariables.get(M2_REPO) + File.separator + path;
+		}
+		return new File(path).toURI().toURL();
+	}
+
+	public void addClasspathVariable(String name, String value)
+	{
+		classPathVariables.put(name, value);
 	}
 }
