@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<repo version="20140516.095500">
+	<bundles>
+		<bundle id="bundleA"
+				file="bundleA-1.0-SNAPSHOT.zip"
+				md5="1234" />
+
+		<bundle id="bundleB"
+				file="bundleB-1.0-SNAPSHOT.zip"
+				md5="1234" />
+	</bundles>
+</repo>

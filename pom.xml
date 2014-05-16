@@ -46,6 +46,7 @@
 		<module>maze</module>
 		<module>utils</module>
 		<module>url</module>
+		<module>update</module>
 		<module>inhaka</module>
 		<module>container</module>
 		<module>taster</module>		
