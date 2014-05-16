@@ -19,6 +19,7 @@ import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class RemoteUpdateManager
 	implements UpdateManager, Configurable
@@ -30,22 +31,19 @@ public class RemoteUpdateManager
 
 	protected String			remote;
 
-	protected String			containerFile;
-
-	private String				descriptorFile;
+	private String				bundlesFile;
 
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		containerFile        = conf.getChild("container").getAttribute("file", "pulga.xml");
 		conf                 = conf.getChild("repo");
-		String        desc   = conf.getAttribute("descriptor", "descriptor.xml");
+		String        desc   = conf.getAttribute("bundles", "bundles.xml");
 		String        remote = conf.getAttribute("remote");
 		String        local  = conf.getAttribute("local");
 		this.local          = new File(local);
 		this.remote         = remote;
-		this.descriptorFile = desc;
+		this.bundlesFile = desc;
 	}
 
 	private BundleDescriptors mergeDescriptors()
@@ -97,7 +95,7 @@ public class RemoteUpdateManager
 	private BundleDescriptors readDescriptors()
 		throws Exception
 	{
-		File file = new File(local, descriptorFile);
+		File file = new File(local, bundlesFile);
 		InputStream is = new FileInputStream(file);
 		return parse(is);
 	}
@@ -105,7 +103,7 @@ public class RemoteUpdateManager
 	private BundleDescriptors dowloadDescriptors()
 		throws Exception
 	{
-		String       uri      = remote + "/" + descriptorFile;
+		String       uri      = remote + "/" + bundlesFile;
 		HttpResponse response = http.get(uri).exec();
 		InputStream  is       = response.getRawBody();
 		return parse(is);
@@ -134,5 +132,18 @@ public class RemoteUpdateManager
 		throws Exception
 	{
 		return mergeDescriptors();
+	}
+
+	@Override
+	public BundleDescriptor byId(String id)
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public BundleDescriptor update(String id)
+		throws Exception
+	{
+		throw new NotImplementedYet();
 	}
 }

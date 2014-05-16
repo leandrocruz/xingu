@@ -1,5 +1,6 @@
 package xingu.update.impl;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.update.BundleDescriptor;
 
 public class BundleDescriptorImpl
@@ -26,4 +27,10 @@ public class BundleDescriptorImpl
 	public void setId(String id){this.id = id;}
 	public String getFile(){return file;}
 	public void setFile(String file){this.file = file;}
+
+	@Override
+	public boolean isLastVersion()
+	{
+		throw new NotImplementedYet();
+	}
 }

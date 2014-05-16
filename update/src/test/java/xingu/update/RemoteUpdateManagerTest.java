@@ -40,7 +40,7 @@ public class RemoteUpdateManagerTest
 		HttpRequest  request  = mock(HttpRequest.class);
 		HttpClient   http     = mock(HttpClient.class);
 		when(response.getRawBody()).thenReturn(is);
-		when(http.get("http://repo.com/repo/descriptor.xml")).thenReturn(request);
+		when(http.get("http://repo.com/repo/bundles.xml")).thenReturn(request);
 		when(request.exec()).thenReturn(response);
 
 		Configuration conf = this.buildFrom("<x><repo remote=\"http://repo.com/repo\" local=\""+repo+"\"/></x>");

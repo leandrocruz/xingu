@@ -5,4 +5,6 @@ public interface BundleDescriptor
 	String getId();
 
 	String getFile();
+
+	boolean isLastVersion();
 }
