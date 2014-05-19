@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import org.apache.commons.io.FilenameUtils;
 
-import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxDescriptor;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
@@ -71,10 +70,9 @@ public class RemoteSandboxManager
 	}
 
 	@Override
-	protected Sandbox load(String id)
+	protected SandboxDescriptor load(String id)
 		throws Exception
 	{
 		throw new NotImplementedYet("RemoteSandboxManager can't load sandboxes on the fly");
 	}
-
 }

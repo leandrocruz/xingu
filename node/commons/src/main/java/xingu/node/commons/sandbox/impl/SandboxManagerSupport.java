@@ -12,6 +12,7 @@ import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
 import br.com.ibnetwork.xingu.utils.classloader.impl.DirectoryClassLoader;
+import br.com.ibnetwork.xingu.utils.io.zip.ZipUtils;
 
 public abstract class SandboxManagerSupport
 	implements SandboxManager, Configurable, Initializable
@@ -52,24 +54,31 @@ public abstract class SandboxManagerSupport
 		register(new SandboxImpl(Sandbox.SYSTEM, container, cl));
 		
 		SandboxDescriptor[] descriptors = getSandboxDescriptors();
-		for(SandboxDescriptor desc : descriptors)
+		if(descriptors != null)
 		{
-			logger.info("Loading Sandbox from '{}'", desc);
-			try
+			for(SandboxDescriptor desc : descriptors)
 			{
-				Sandbox sandbox = toSandbox(desc);
-				register(sandbox);
-				logger.info("Sandbox '{}' loaded", sandbox);
-			}
-			catch(Throwable t)
-			{
-				logger.warn("Error loading Sandbox from: " + desc, t);
+				register(desc);
 			}
 		}
-
 	}
 
-	private Sandbox toSandbox(SandboxDescriptor desc)
+	private void register(SandboxDescriptor desc)
+	{
+		logger.info("Loading Sandbox from '{}'", desc);
+		try
+		{
+			Sandbox sandbox = toSandbox(desc);
+			register(sandbox);
+			logger.info("Sandbox '{}' loaded", sandbox);
+		}
+		catch(Throwable t)
+		{
+			logger.warn("Error loading Sandbox from: " + desc, t);
+		}
+	}
+
+	protected Sandbox toSandbox(SandboxDescriptor desc)
 		throws Exception
 	{
 		String           id        = desc.getId();
@@ -79,6 +88,20 @@ public abstract class SandboxManagerSupport
 		Container        container = buildContainer(cl, parent);
 
 		return new SandboxImpl(id, container, cl);
+	}
+	
+	protected File sourceDirectoryFor(SandboxDescriptor desc)
+		throws Exception
+	{
+		File   file    = desc.getFile();
+		String name    = file.getName();
+		String dirName = FilenameUtils.getBaseName(name);
+		File   dir     = new File(file.getParentFile(), dirName);
+		if(!dir.exists())
+		{
+			ZipUtils.explode(file, dir);
+		}
+		return dir;
 	}
 
 	protected NamedClassLoader buildClassLoader(String id, File src, Sandbox parentSandbox)
@@ -126,7 +149,8 @@ public abstract class SandboxManagerSupport
 		{
 			try
 			{
-				result = load(id);
+				SandboxDescriptor desc = load(id);
+				result = toSandbox(desc);
 				sandboxById.put(id, result);
 			}
 			catch(Exception e)
@@ -148,13 +172,12 @@ public abstract class SandboxManagerSupport
 		sandboxById.put(id, sandbox);
 	}
 
-	protected abstract Sandbox load(String id)
-		throws Exception;
+	protected SandboxDescriptor load(String id)
+		throws Exception
+	{
+		throw new NotImplementedYet("Can't load sandbox '"+id+"' on the fly");
+	}
 
 	protected abstract SandboxDescriptor[] getSandboxDescriptors()
 		throws Exception;
-	
-	protected abstract File sourceDirectoryFor(SandboxDescriptor desc)
-		throws Exception;
-
 }

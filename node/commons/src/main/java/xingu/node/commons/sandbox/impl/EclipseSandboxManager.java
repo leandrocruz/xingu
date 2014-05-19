@@ -66,13 +66,6 @@ public class EclipseSandboxManager
 	}
 
 	@Override
-	protected Sandbox load(String id)
-		throws Exception
-	{
-		return null;
-	}
-
-	@Override
 	protected SandboxDescriptor[] getSandboxDescriptors()
 		throws Exception
 	{
