@@ -4,14 +4,13 @@ public interface BundleDescriptor
 {
 	String getId();
 	
-	String getCurrentVersion();
+	String getVersion();
 
 	String getFile();
 	
 	String getHash(); //md5, sha, etc
 
-	String getLastVersion();
-	void setLastVersion(String version);
-
-	boolean isLastVersion();
+//	String getLastVersion();
+//	void setLastVersion(String version);
+//	boolean isLastVersion();
 }

@@ -1,7 +1,5 @@
 package xingu.update.impl;
 
-import org.apache.commons.lang3.StringUtils;
-
 import xingu.update.BundleDescriptor;
 
 public class BundleDescriptorImpl
@@ -13,16 +11,16 @@ public class BundleDescriptorImpl
 
 	private String	hash;
 
-	private String	currentVersion;
+	private String	version;
 	
-	private String	lastVersion;
+//	private String	lastVersion;
 
 	public BundleDescriptorImpl(String id, String version, String file, String hash)
 	{
-		this.id   = id;
-		this.file = file;
-		this.hash = hash;
-		this.currentVersion = version;
+		this.id      = id;
+		this.version = version;
+		this.file    = file;
+		this.hash    = hash;
 	}
 
 	@Override
@@ -35,16 +33,15 @@ public class BundleDescriptorImpl
 	public void setId(String id){this.id = id;}
 	@Override public String getFile(){return file;}
 	public void setFile(String file){this.file = file;}
-	@Override public String getCurrentVersion(){return currentVersion;}
-	public void setCurrentVersion(String version){this.currentVersion = version;}
+	@Override public String getVersion(){return version;}
+	public void setVersion(String version){this.version = version;}
 	@Override public String getHash(){return hash;}
 	public void setHash(String hash){this.hash = hash;}
-	@Override public String getLastVersion(){return lastVersion;}
-	@Override public void setLastVersion(String version){this.lastVersion = version;}
-
-	@Override
-	public boolean isLastVersion()
-	{
-		return StringUtils.equals(currentVersion, lastVersion);
-	}
+//	@Override public String getLastVersion(){return lastVersion;}
+//	@Override public void setLastVersion(String version){this.lastVersion = version;}
+//	@Override
+//	public boolean isLastVersion()
+//	{
+//		return StringUtils.equals(version, lastVersion);
+//	}
 }

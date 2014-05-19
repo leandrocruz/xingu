@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+	LOCAL
+-->
+
 <repo version="20140516.095500">
 	<bundles>
 		<bundle id="bundleA"

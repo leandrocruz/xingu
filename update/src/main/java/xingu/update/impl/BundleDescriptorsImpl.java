@@ -42,6 +42,28 @@ public class BundleDescriptorsImpl
 	}
 
 	@Override
+	public BundleDescriptor put(BundleDescriptor replacement)
+	{
+		String wanted = replacement.getId();
+		Iterator<BundleDescriptor> it = iterator();	
+		BundleDescriptor result = null;
+		while(it.hasNext())
+		{
+			BundleDescriptor desc = it.next();
+			String           id   = desc.getId();
+			if(wanted.equals(id))
+			{
+				it.remove();
+				result = desc;
+				break;
+			}
+		}
+
+		descriptors.add(replacement);
+		return result;
+	}
+
+	@Override
 	public int size()
 	{
 		return descriptors.size();
@@ -62,5 +84,4 @@ public class BundleDescriptorsImpl
 
 		return sb.toString();
 	}
-
 }

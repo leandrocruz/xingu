@@ -9,4 +9,7 @@ public interface BundleDescriptors
 	BundleDescriptor byId(String id);
 
 	int size();
+
+	BundleDescriptor put(BundleDescriptor replacement);
+
 }

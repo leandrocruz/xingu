@@ -12,6 +12,7 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import xingu.http.client.HttpClient;
@@ -21,6 +22,7 @@ import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class RemoteUpdateManager
 	implements UpdateManager, Configurable, Initializable
@@ -144,11 +146,11 @@ public class RemoteUpdateManager
 		else
 		{
 			//compare versions
-			String v1 = remote.getCurrentVersion();
-			String v2 = local.getCurrentVersion();
+			String v1 = remote.getVersion();
+			String v2 = local.getVersion();
 			if(v1.equals(v2))
 			{
-				return findLocalFile(remote);
+				return findLocalFile(remote).exists();
 			}
 			else
 			{
@@ -157,9 +159,10 @@ public class RemoteUpdateManager
 		}
 	}
 
-	private boolean findLocalFile(BundleDescriptor descriptor)
+	private File findLocalFile(BundleDescriptor descriptor)
 	{
-		return new File(local, descriptor.getFile()).exists();
+		String name = descriptor.getId() + File.separator + descriptor.getFile();
+		return new File(local, name);
 	}
 
 	@Override
@@ -179,12 +182,28 @@ public class RemoteUpdateManager
 			return local;
 		}
 
-		String       uri      = this.remote + "/" + id + "/" + remote.getFile();
-		HttpResponse response = http.get(uri).exec();
-		InputStream  is       = response.getRawBody();
+		File target = findLocalFile(remote);
+		if(target.exists())
+		{
+			throw new NotImplementedYet("Can't override local file: " + target);	
+		}
+
+		InputStream is   = getRemote(remote);
+		byte[]      data = IOUtils.toByteArray(is);
+		FileUtils.writeByteArrayToFile(target, data, false);
 		
-		//TODO: save payload
-		
-		return null;
+		localDescriptors.put(remote);
+
+		return remote;
+	}
+
+	private InputStream getRemote(BundleDescriptor remote)
+	{
+		String       file = remote.getFile();
+		String       id   = remote.getId();
+		String       uri  = this.remote + "/" + id + "/" + file;
+		HttpResponse res  = http.get(uri).exec();
+		InputStream  is   = res.getRawBody();
+		return is;
 	}
 }

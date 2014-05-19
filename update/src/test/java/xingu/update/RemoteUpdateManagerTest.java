@@ -36,20 +36,21 @@ public class RemoteUpdateManagerTest
 	protected void rebind(Binder binder)
 		throws Exception
 	{
-		HttpClient   http = mock(HttpClient.class);
-		File         repo = getFile("repo");
+		HttpClient http   = mock(HttpClient.class);
+		File       remote = getFile("remote");
+		File       repo   = getFile("repo");
 		
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundles.xml")
-			.to(new File(repo, "remote.xml"));
+			.to(new File(remote, "bundles.xml"));
 		
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundleA/bundleA.zip")
-			.to(new File(repo, "bundleA.zip"));
+			.to(new File(remote, "bundleA/bundleA.zip"));
 
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundleC/bundleC-1.0.zip")
-			.to(new File(repo, "bundleC-1.0.zip"));
+			.to(new File(remote, "bundleC/bundleC-1.0.zip"));
 
 		Configuration conf = this.buildFrom("<x><repo remote=\"http://repo.com/repo\" local=\""+repo+"\"/></x>");
 		binder.bind(UpdateManager.class).to(RemoteUpdateManager.class).with(conf);
@@ -60,6 +61,12 @@ public class RemoteUpdateManagerTest
 	public void testUpdates()
 		throws Exception
 	{
+		BundleDescriptor bundleA = updater.byId("bundleA");
+		assertEquals("1.0-SNAPSHOT", bundleA.getVersion());
+
+		BundleDescriptor bundleC = updater.byId("bundleC");
+		assertEquals(null, bundleC);
+		
 		BundleDescriptors updates = updater.getUpdates();
 		assertEquals(2, updates.size());
 		Iterator<BundleDescriptor> it = updates.iterator();
@@ -69,5 +76,11 @@ public class RemoteUpdateManagerTest
 			String id = descriptor.getId();
 			updater.update(id);
 		}
+
+		bundleA = updater.byId("bundleA");
+		assertEquals("1.1-SNAPSHOT", bundleA.getVersion());
+
+		bundleC = updater.byId("bundleC");
+		assertEquals("1.0", bundleC.getVersion());
 	}
 }
