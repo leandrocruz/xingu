@@ -8,9 +8,6 @@ public interface BundleDescriptor
 
 	String getFile();
 	
-	String getHash(); //md5, sha, etc
-
-//	String getLastVersion();
-//	void setLastVersion(String version);
-//	boolean isLastVersion();
+	String getHash();
+	void setHash(String hash);
 }

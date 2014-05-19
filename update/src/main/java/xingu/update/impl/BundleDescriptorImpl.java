@@ -12,8 +12,6 @@ public class BundleDescriptorImpl
 	private String	hash;
 
 	private String	version;
-	
-//	private String	lastVersion;
 
 	public BundleDescriptorImpl(String id, String version, String file, String hash)
 	{
@@ -36,12 +34,5 @@ public class BundleDescriptorImpl
 	@Override public String getVersion(){return version;}
 	public void setVersion(String version){this.version = version;}
 	@Override public String getHash(){return hash;}
-	public void setHash(String hash){this.hash = hash;}
-//	@Override public String getLastVersion(){return lastVersion;}
-//	@Override public void setLastVersion(String version){this.lastVersion = version;}
-//	@Override
-//	public boolean isLastVersion()
-//	{
-//		return StringUtils.equals(version, lastVersion);
-//	}
+	@Override public void setHash(String hash){this.hash = hash;}
 }

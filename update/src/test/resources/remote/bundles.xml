@@ -3,21 +3,21 @@
 	REMOTE
 -->
 
-<repo version="20140516.095500">
+<repo version="19700101.000000">
 	<bundles>
 		<bundle id="bundleA"
 				version="1.1-SNAPSHOT"
 				file="bundleA.zip"
-				hash="1234" />
+				hash="1276481102f218c981e0324180bafd9f" />
 
 		<bundle id="bundleB"
 				version="1.0-SNAPSHOT"
 				file="bundleB-1.0-SNAPSHOT.zip"
-				hash="1234" />
+				hash="1276481102f218c981e0324180bafd9f" />
 
 		<bundle id="bundleC"
 				version="1.0"
 				file="bundleC-1.0.zip"
-				hash="1234" />
+				hash="1276481102f218c981e0324180bafd9f" />
 	</bundles>
 </repo>

@@ -28,6 +28,7 @@ import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.MD5Utils;
 
 public class RemoteUpdateManager
 	implements UpdateManager, Configurable, Initializable
@@ -186,10 +187,18 @@ public class RemoteUpdateManager
 			throw new NotImplementedYet("Can't override local file: " + target);	
 		}
 
-		InputStream is   = getRemote(remote);
+		InputStream is   = toInputStream(remote);
 		byte[]      data = IOUtils.toByteArray(is);
-		FileUtils.writeByteArrayToFile(target, data, false);
+
+		String h1 = remote.getHash();
+		String h2 = MD5Utils.md5Hash(data);
+		if(!h1.equals(h2))
+		{
+			throw new NotImplementedYet("Hash mismatch for: " + id + " " + h1 + "/" + h2);
+		}
 		
+		remote.setHash(h2);
+		FileUtils.writeByteArrayToFile(target, data, false);
 		localDescriptors.put(remote);
 		writeConfig();
 
@@ -224,10 +233,10 @@ public class RemoteUpdateManager
 		FileUtils.write(file, config);
 	}
 
-	private InputStream getRemote(BundleDescriptor remote)
+	private InputStream toInputStream(BundleDescriptor desc)
 	{
-		String       file = remote.getFile();
-		String       id   = remote.getId();
+		String       file = desc.getFile();
+		String       id   = desc.getId();
 		String       uri  = this.remote + "/" + id + "/" + file;
 		HttpResponse res  = http.get(uri).exec();
 		InputStream  is   = res.getRawBody();
