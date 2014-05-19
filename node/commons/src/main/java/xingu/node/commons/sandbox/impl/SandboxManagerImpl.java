@@ -110,7 +110,8 @@ public class SandboxManagerImpl
 		return new SandboxImpl(id, container, cl);
 	}
 
-	private String bundleIdFrom(File file)
+	@Override
+	protected String bundleIdFrom(File file)
 	{
 		String name = file.getName();
 		int    idx  = name.lastIndexOf(".");

@@ -1,5 +1,6 @@
 package xingu.node.commons.sandbox.impl;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,9 +72,6 @@ public abstract class SandboxManagerSupport
 		return result;
 	}
 
-	protected abstract Sandbox load(String id)
-		throws Exception;
-
 	protected void register(Sandbox sandbox)
 	{
 		String  id  = sandbox.id();
@@ -83,5 +81,15 @@ public abstract class SandboxManagerSupport
 			throw new NotImplementedYet("Sandbox '"+id+"' can't be replaced");
 		}
 		sandboxById.put(id, sandbox);
+	}
+
+	protected abstract Sandbox load(String id)
+		throws Exception;
+
+	protected String bundleIdFrom(File file)
+	{
+		String name = file.getName();
+		int    idx  = name.lastIndexOf(".");
+		return name.substring(0, idx);
 	}
 }
