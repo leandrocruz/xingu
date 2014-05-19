@@ -2,8 +2,12 @@ package xingu.update.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
+import xingu.time.Time;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
@@ -30,6 +35,9 @@ public class RemoteUpdateManager
 	@Inject("update-manager")
 	protected HttpClient		http;
 
+	@Inject
+	protected Time				time;
+
 	protected File				local;
 
 	protected String			remote;
@@ -39,6 +47,8 @@ public class RemoteUpdateManager
 	private BundleDescriptors	localDescriptors;
 
 	private BundleDescriptors	remoteDescriptors;
+	
+	private static final DateFormat	format	= new SimpleDateFormat("yyyMMdd.HHmmss");
 
 	@Override
 	public void configure(Configuration conf)
@@ -60,19 +70,6 @@ public class RemoteUpdateManager
 		localDescriptors  = getLocalDescriptors();		
 		remoteDescriptors = getRemoteDescriptors();
 	}
-
-//	private BundleDescriptor merge(BundleDescriptor remote, BundleDescriptor local)
-//	{
-//		String id      = remote.getId();
-//		String version = local.getCurrentVersion();
-//		String file    = local.getFile();
-//		String hash    = local.getHash();
-//		String last    = remote.getCurrentVersion();
-//
-//		BundleDescriptor bundle = new BundleDescriptorImpl(id, version, file, hash);
-//		bundle.setLastVersion(last);
-//		return bundle;
-//	}
 
 	private BundleDescriptors getLocalDescriptors()
 		throws Exception
@@ -109,7 +106,8 @@ public class RemoteUpdateManager
 			String id      = c.getAttribute("id");
 			String file    = c.getAttribute("file");
 			String version = c.getAttribute("version");
-			list.add(new BundleDescriptorImpl(id, version, file, null /* hash */));
+			String hash    = c.getAttribute("hash");
+			list.add(new BundleDescriptorImpl(id, version, file, hash));
 		}
 
 		return new BundleDescriptorsImpl(list);
@@ -193,8 +191,37 @@ public class RemoteUpdateManager
 		FileUtils.writeByteArrayToFile(target, data, false);
 		
 		localDescriptors.put(remote);
+		writeConfig();
 
 		return remote;
+	}
+
+	private void writeConfig()
+		throws IOException
+	{
+		Date   date    = time.now().asDate();
+		String version = format.format(date);
+		
+		StringBuffer sb = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<repo version=\"")
+			.append(version)
+			.append("\">\n\t<bundles>\n");
+
+		Iterator<BundleDescriptor> it = localDescriptors.iterator();
+		while(it.hasNext())
+		{
+			BundleDescriptor desc = it.next();
+			sb
+				.append("\t\t<bundle id=\"").append(desc.getId()).append("\"\n")
+				.append("\t\t\tversion=\"").append(desc.getVersion()).append("\"\n")
+				.append("\t\t\tfile=\"").append(desc.getFile()).append("\"\n")
+				.append("\t\t\thash=\"").append(desc.getHash()).append("\" />\n");
+		}
+		
+		sb.append("\t</bundles>\n</repo>");
+		
+		String config = sb.toString();
+		File file = new File(local, bundlesFile);
+		FileUtils.write(file, config);
 	}
 
 	private InputStream getRemote(BundleDescriptor remote)

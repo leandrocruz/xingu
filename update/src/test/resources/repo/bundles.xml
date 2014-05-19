@@ -8,11 +8,11 @@
 		<bundle id="bundleA"
 				version="1.0-SNAPSHOT"
 				file="bundleA-1.0-SNAPSHOT.zip"
-				md5="1234" />
+				hash="1234" />
 
 		<bundle id="bundleB"
 				version="1.0-SNAPSHOT"
 				file="bundleB.zip"
-				md5="1234" />
+				hash="1234" />
 	</bundles>
 </repo>

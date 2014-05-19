@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-container</artifactId>
+			<artifactId>time</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>	
