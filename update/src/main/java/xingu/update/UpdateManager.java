@@ -9,5 +9,4 @@ public interface UpdateManager
 
 	BundleDescriptor update(String id)
 		throws Exception;
-	
 }

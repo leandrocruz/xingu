@@ -2,14 +2,17 @@
 <repo version="20140516.095500">
 	<bundles>
 		<bundle id="bundleA"
-				file="bundleA-1.1-SNAPSHOT.zip"
+				version="1.1-SNAPSHOT"
+				file="bundleA.zip"
 				md5="1234" />
 
 		<bundle id="bundleB"
+				version="1.0-SNAPSHOT"
 				file="bundleB-1.0-SNAPSHOT.zip"
 				md5="1234" />
 
 		<bundle id="bundleC"
+				version="1.0"
 				file="bundleC-1.0.zip"
 				md5="1234" />
 	</bundles>

@@ -1,5 +1,6 @@
 package xingu.update.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,12 +11,17 @@ public class BundleDescriptorsImpl
 	implements BundleDescriptors
 {
 	private final List<BundleDescriptor> descriptors;
-	
+
+	public BundleDescriptorsImpl()
+	{
+		descriptors = new ArrayList<BundleDescriptor>();
+	}
+
 	public BundleDescriptorsImpl(List<BundleDescriptor> descriptors)
 	{
 		this.descriptors = descriptors;
 	}
-	
+
 	@Override
 	public Iterator<BundleDescriptor> iterator()
 	{
