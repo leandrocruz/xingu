@@ -18,6 +18,8 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
@@ -34,22 +36,24 @@ public class RemoteUpdateManager
 	implements UpdateManager, Configurable, Initializable
 {
 	@Inject("update-manager")
-	protected HttpClient		http;
+	protected HttpClient			http;
 
 	@Inject
-	protected Time				time;
+	protected Time					time;
 
-	protected File				local;
+	protected File					local;
 
-	protected String			remote;
+	protected String				remote;
 
-	private String				bundlesFile;
+	private String					bundlesFile;
 
-	private BundleDescriptors	localDescriptors;
+	private BundleDescriptors		localDescriptors;
 
-	private BundleDescriptors	remoteDescriptors;
-	
+	private BundleDescriptors		remoteDescriptors;
+
 	private static final DateFormat	format	= new SimpleDateFormat("yyyMMdd.HHmmss");
+
+	private static final Logger		logger	= LoggerFactory.getLogger(RemoteUpdateManager.class);
 
 	@Override
 	public void configure(Configuration conf)
@@ -62,6 +66,9 @@ public class RemoteUpdateManager
 		this.local       = new File(local);
 		this.remote      = remote;
 		this.bundlesFile = desc;
+		
+		logger.info("Remote: '{}'", remote);
+		logger.info("Local: '{}'", local);
 	}
 
 	@Override
@@ -75,11 +82,13 @@ public class RemoteUpdateManager
 	private BundleDescriptors getLocalDescriptors()
 		throws Exception
 	{
+		logger.info("Loading local descriptors");
 		File file = new File(local, bundlesFile);
 		if(!file.exists())
 		{
 			return new BundleDescriptorsImpl();
 		}
+
 		InputStream is = new FileInputStream(file);
 		return parse(is);
 	}
@@ -87,6 +96,7 @@ public class RemoteUpdateManager
 	private BundleDescriptors getRemoteDescriptors()
 		throws Exception
 	{
+		logger.info("Loading remote descriptors");
 		String       uri      = remote + "/" + bundlesFile;
 		HttpRequest  req      = http.get(uri);
 		HttpResponse response = req.exec();
@@ -108,9 +118,11 @@ public class RemoteUpdateManager
 			String file    = c.getAttribute("file");
 			String version = c.getAttribute("version");
 			String hash    = c.getAttribute("hash");
+			logger.info("\t* Adding bundle: id#{} version#{} file#{} hash#{}", id, version, file, hash);
 			list.add(new BundleDescriptorImpl(id, version, file, hash));
 		}
 
+		logger.info("Loaded {} bundles", list.size());
 		return new BundleDescriptorsImpl(list);
 	}
 
@@ -129,6 +141,7 @@ public class RemoteUpdateManager
 			BundleDescriptor toAdd    = remote;
 			if(required)
 			{
+				logger.info("Bundle id#{} requires update", id);
 				result.add(toAdd);
 			}
 		}
@@ -149,19 +162,14 @@ public class RemoteUpdateManager
 			String v2 = local.getVersion();
 			if(v1.equals(v2))
 			{
-				return findLocalFile(remote).exists();
+				File file = getAbsoluteFile(local);
+				return !file.exists();
 			}
 			else
 			{
 				return true;
 			}
 		}
-	}
-
-	private File findLocalFile(BundleDescriptor descriptor)
-	{
-		String name = descriptor.getId() + File.separator + descriptor.getFile();
-		return new File(local, name);
 	}
 
 	@Override
@@ -181,7 +189,9 @@ public class RemoteUpdateManager
 			return local;
 		}
 
-		File target = findLocalFile(remote);
+		logger.info("Updating bundle id#{}", id);
+		
+		File target = getAbsoluteFile(remote);
 		if(target.exists())
 		{
 			throw new NotImplementedYet("Can't override local file: " + target);	
@@ -241,5 +251,18 @@ public class RemoteUpdateManager
 		HttpResponse res  = http.get(uri).exec();
 		InputStream  is   = res.getRawBody();
 		return is;
+	}
+
+	@Override
+	public BundleDescriptors getBundles()
+	{
+		return localDescriptors;
+	}
+
+	@Override
+	public File getAbsoluteFile(BundleDescriptor descriptor)
+	{
+		String name = descriptor.getId() + File.separator + descriptor.getFile();
+		return new File(local, name);
 	}
 }

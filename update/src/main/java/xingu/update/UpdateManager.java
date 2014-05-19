@@ -1,5 +1,7 @@
 package xingu.update;
 
+import java.io.File;
+
 public interface UpdateManager
 {
 	BundleDescriptors getUpdates()
@@ -9,4 +11,8 @@ public interface UpdateManager
 
 	BundleDescriptor update(String id)
 		throws Exception;
+
+	BundleDescriptors getBundles();
+
+	File getAbsoluteFile(BundleDescriptor descriptor);
 }
