@@ -148,13 +148,6 @@ public abstract class SandboxManagerSupport
 		sandboxById.put(id, sandbox);
 	}
 
-	protected String bundleIdFrom(File file)
-	{
-		String name = file.getName();
-		int    idx  = name.lastIndexOf(".");
-		return name.substring(0, idx);
-	}
-
 	protected abstract Sandbox load(String id)
 		throws Exception;
 

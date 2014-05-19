@@ -21,17 +21,10 @@ public class RemoteSandboxManager
 	private UpdateManager updater;
 
 	@Override
-	protected Sandbox load(String id)
-		throws Exception
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
 	protected SandboxDescriptor[] getSandboxDescriptors()
 		throws Exception
 	{
-		checkForUpdates();
+		doUpdate();
 		
 		BundleDescriptors   bundles = updater.getBundles();
 		SandboxDescriptor[] result  = new SandboxDescriptor[bundles.size()];
@@ -48,8 +41,8 @@ public class RemoteSandboxManager
 
 		return result;
 	}
-	
-	private void checkForUpdates()
+
+	private void doUpdate()
 		throws Exception
 	{
 		BundleDescriptors updates = updater.getUpdates();
@@ -76,4 +69,12 @@ public class RemoteSandboxManager
 		}
 		return dir;
 	}
+
+	@Override
+	protected Sandbox load(String id)
+		throws Exception
+	{
+		throw new NotImplementedYet("RemoteSandboxManager can't load sandboxes on the fly");
+	}
+
 }

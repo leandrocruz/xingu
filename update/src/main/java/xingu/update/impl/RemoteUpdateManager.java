@@ -194,7 +194,7 @@ public class RemoteUpdateManager
 		File target = getAbsoluteFile(remote);
 		if(target.exists())
 		{
-			throw new NotImplementedYet("Can't override local file: " + target);	
+			logger.warn("Overriding local file '{}'", target);	
 		}
 
 		InputStream is   = toInputStream(remote);
