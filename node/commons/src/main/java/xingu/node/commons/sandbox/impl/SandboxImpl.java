@@ -41,7 +41,7 @@ public class SandboxImpl
 	@Override
 	public String toString()
 	{
-		return "Sandbox '"+id+"' @ " + (System.identityHashCode(this));
+		return "id#" + id + " identity#" + (System.identityHashCode(this));
 	}
 
 	@Override

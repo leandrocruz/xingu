@@ -1,26 +1,36 @@
 package xavante.comet.impl;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xavante.XavanteMessage;
 import xavante.comet.CometClient;
 import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
 import xavante.comet.Registry;
+import xavante.ownership.OwnershipHandler;
 import xingu.codec.Codec;
 import xingu.node.commons.identity.Identity;
+import xingu.node.commons.signal.ErrorSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
 import xingu.node.commons.signal.impl.ExceptionSignal;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.FieldUtils;
 
 public abstract class CometHandlerSupport
 	implements CometHandler
 {
 	@Inject("xavante")
 	protected Codec				codec;
+
+	@Inject
+	private OwnershipHandler	ownership;
 
 	@Inject
 	protected Registry			registry;
@@ -74,10 +84,12 @@ public abstract class CometHandlerSupport
 		Object decoded = codec.decode(data);
 		if(decoded instanceof Signal)
 		{
-			Signal      signal         = (Signal) decoded;
-			String      id             = signal.getSignalId();
-			boolean     processEnabled = signal.isProcessEnabled();
-			Identity<?> owner          = findOwner(token, signal);
+			Signal signal = (Signal) decoded;
+			injectXavanteMessage(signal, msg);
+
+			String id = signal.getSignalId();
+			boolean processEnabled = signal.isProcessEnabled();
+			Identity<?> owner = ownership.findOwner(token, signal);
 
 			if(owner == null && !processEnabled)
 			{
@@ -85,19 +97,25 @@ public abstract class CometHandlerSupport
 				throw new NotImplementedYet("Owner is null on signal: '" + signal + "'");
 			}
 
-			signal.setOwner(owner);
-			verifyOwnership(signal);
-
 			Signal reply = null;
-			try
+			signal.setOwner(owner);
+			boolean isOwner = ownership.verifyOwnership(signal);
+			if(isOwner)
 			{
-				reply = performer.performBehavior(signal, null);
+				try
+				{
+					reply = performer.performBehavior(signal, null);
+				}
+				catch(Throwable t)
+				{
+					logger.error("Error Performing Behavior for Signal " + signal.getClass().getName(), t);
+					String trace = ExceptionUtils.getStackTrace(t);
+					reply = new ExceptionSignal(signal, t.getMessage(), trace);
+				}
 			}
-			catch(Throwable t)
+			else
 			{
-				logger.error("Error Performing Behavior for Signal " + signal.getClass().getName(), t);
-				String trace = ExceptionUtils.getStackTrace(t);
-				reply = new ExceptionSignal(signal, t.getMessage(), trace);
+				reply = new ErrorSignal("NOT_OWNER", "Not owner");
 			}
 
 			if(reply != null)
@@ -117,9 +135,22 @@ public abstract class CometHandlerSupport
 		}
 	}
 
-	protected abstract void verifyOwnership(Signal signal);
-
-	protected abstract Identity<?> findOwner(String token, Signal signal);
+	protected void injectXavanteMessage(Signal signal, CometMessage msg)
+		throws Exception
+	{
+        List<Field> fields = FieldUtils.getAllFields(signal.getClass());
+        for (Field field : fields)
+        {
+        	XavanteMessage inject = field.getAnnotation(XavanteMessage.class);
+            if(inject != null)
+            {
+                boolean before = field.isAccessible();
+                field.setAccessible(true);
+                field.set(signal, msg);
+                field.setAccessible(before);
+            }
+        }
+	}
 
 	private String drain(CometMessage msg)
 	{

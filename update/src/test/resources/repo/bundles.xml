@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+	LOCAL
+-->
+
+<repo version="19700101.000000">
+	<bundles>
+		<bundle id="bundleA"
+				version="1.0-SNAPSHOT"
+				file="bundleA-1.0-SNAPSHOT.zip"
+				hash="1276481102f218c981e0324180bafd9f" />
+
+		<bundle id="bundleB"
+				version="1.0-SNAPSHOT"
+				file="bundleB.zip"
+				hash="1276481102f218c981e0324180bafd9f" />
+	</bundles>
+</repo>
