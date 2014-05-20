@@ -2,16 +2,17 @@ package xingu.node.commons.signal.impl;
 
 import org.jboss.netty.channel.Channel;
 
+import xingu.node.commons.signal.ErrorSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.SignalBehavior;
 
 public class ExceptionSignal
-	extends SignalSupport
+	extends ErrorSignal
 	implements SignalBehavior<ExceptionSignal, BooleanSignal>
 {
 	private Signal		signal;
 
-	private String		message;
+	
 
 	private String		trace;
 
@@ -53,7 +54,5 @@ public class ExceptionSignal
 	public void setTrace(String trace){this.trace = trace;}
 	public Throwable getCause(){return cause;}
 	public void setCause(Throwable cause){this.cause = cause;}
-	public String getMessage(){return message;}
-	public void setMessage(String message){this.message = message;}
 	/* @formatter:on */
 }
