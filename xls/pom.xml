@@ -1,0 +1,22 @@
+<project	xmlns="http://maven.apache.org/POM/4.0.0"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>xingu</groupId>
+		<artifactId>xingu</artifactId>
+		<version>1.4.39-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>xingu</groupId>
+	<artifactId>xingu-xls</artifactId>
+	<packaging>jar</packaging>
+	<name>Xingu XLS</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.10-beta2</version>
+		</dependency>
+	</dependencies>	
+</project>
+

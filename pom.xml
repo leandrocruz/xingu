@@ -75,6 +75,7 @@
 		<module>tunnel</module>
 		<module>gc</module>
 		<module>xavante</module>
+		<module>xls</module>
 		<!--
 		<module>ibatis</module>
 		<module>dao</module>
