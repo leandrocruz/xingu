@@ -3,18 +3,22 @@ package xavante.comet;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class CometClient
+import xingu.node.commons.identity.Identity;
+
+public class CometSession
 {
 	public final String		id;
 
+	private Identity<?>		identity;
+
 	private Queue<String>	queue	= new ConcurrentLinkedQueue<String>();
 
-	public CometClient(String id)
+	public CometSession(String id)
 	{
 		this.id = id;
 	}
 
-	public String id()
+	public String getId()
 	{
 		return id;
 	}
@@ -42,5 +46,15 @@ public class CometClient
 	{
 		queue.offer(message);
 		notifyAll();
+	}
+
+	public Identity<?> getIdentity()
+	{
+		return identity;
+	}
+
+	public void setIdentity(Identity<?> identity)
+	{
+		this.identity = identity;
 	}
 }

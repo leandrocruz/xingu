@@ -8,11 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xavante.XavanteMessage;
-import xavante.comet.CometClient;
+import xavante.comet.CometSession;
 import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
-import xavante.comet.Registry;
-import xavante.ownership.OwnershipHandler;
+import xavante.comet.SessionManager;
 import xingu.codec.Codec;
 import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.ErrorSignal;
@@ -22,6 +21,7 @@ import xingu.node.commons.signal.impl.ExceptionSignal;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
+import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public abstract class CometHandlerSupport
 	implements CometHandler
@@ -30,15 +30,12 @@ public abstract class CometHandlerSupport
 	protected Codec				codec;
 
 	@Inject
-	private OwnershipHandler	ownership;
-
-	@Inject
-	protected Registry			registry;
+	protected SessionManager	sessions;
 
 	@Inject
 	protected BehaviorPerformer	performer;
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger				logger	= LoggerFactory.getLogger(getClass());
 	
 	@Override
 	public String onMessage(CometMessage msg)
@@ -66,8 +63,23 @@ public abstract class CometHandlerSupport
 	private String connect(CometMessage msg)
 		throws Exception
 	{
-		CometClient client = registry.newClient();
-		return "{\"type\": \"OK\", \"sessionId\":\"" + client.id() + "\"}";
+		String       token   = msg.getToken();
+		CometSession session = null;
+		
+		if(StringUtils.isNotEmpty(token))
+		{
+			session = sessions.byId(token);
+			if(session == null)
+			{
+				//server restart
+			}
+		}
+
+		if(session == null)
+		{
+			session = sessions.newSession();
+		}
+		return "{\"type\": \"OK\", \"sessionId\":\"" + session.getId() + "\"}";
 	}
 
 	private String send(CometMessage msg)
@@ -87,9 +99,10 @@ public abstract class CometHandlerSupport
 			Signal signal = (Signal) decoded;
 			injectXavanteMessage(signal, msg);
 
-			String id = signal.getSignalId();
-			boolean processEnabled = signal.isProcessEnabled();
-			Identity<?> owner = ownership.findOwner(token, signal);
+			String       id             = signal.getSignalId();
+			boolean      processEnabled = signal.isProcessEnabled();
+			CometSession session        = sessions.byId(token);
+			Identity<?>  owner          = session == null ? null : session.getIdentity();
 
 			if(owner == null && !processEnabled)
 			{
@@ -99,7 +112,7 @@ public abstract class CometHandlerSupport
 
 			Signal reply = null;
 			signal.setOwner(owner);
-			boolean isOwner = ownership.verifyOwnership(signal);
+			boolean isOwner = sessions.verifyOwnership(signal);
 			if(isOwner)
 			{
 				try
@@ -154,9 +167,9 @@ public abstract class CometHandlerSupport
 
 	private String drain(CometMessage msg)
 	{
-		String      hash     = msg.getToken();
-		CometClient client   = registry.byId(hash);
-		String[]    messages = client.drain();
+		String       hash     = msg.getToken();
+		CometSession session  = sessions.byId(hash);
+		String[]     messages = session.drain();
 		if(messages == null)
 		{
 			// Thread interrupted
