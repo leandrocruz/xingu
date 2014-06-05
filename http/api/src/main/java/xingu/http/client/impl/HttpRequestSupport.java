@@ -11,6 +11,7 @@ import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public abstract class HttpRequestSupport
 	implements HttpRequest
@@ -146,5 +147,25 @@ public abstract class HttpRequestSupport
 	public HttpRequest ndc(String ndc)
 	{
 		return this;
+	}
+	
+	
+	@Override
+	public HttpRequest field(String nameValue)
+	{
+		String[] parts = nameValue.split(":");
+		return field(parts[0], parts.length == 2 ? parts[1] : StringUtils.EMPTY);
+	}
+
+	@Override
+	public HttpRequest field(String name, int value)
+	{
+		return field(name, String.valueOf(value));
+	}
+
+	@Override
+	public HttpRequest field(String name, long value)
+	{
+		return field(name, String.valueOf(value));
 	}
 }
