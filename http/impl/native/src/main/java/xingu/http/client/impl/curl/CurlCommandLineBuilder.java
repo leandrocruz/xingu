@@ -30,11 +30,11 @@ public class CurlCommandLineBuilder
 
 	@Override
 	public List<String> buildLine(HttpRequest req, File file) 
-		throws UnsupportedEncodingException
+		throws Exception
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
-		result.add("-v"); // verbose
+		//result.add("-v"); // verbose
 		result.add("-k"); // ignore server certificate
 		result.add("-i");  
 		result.add("-o"); // output to a file
@@ -74,6 +74,7 @@ public class CurlCommandLineBuilder
 	}
 
 	private void placePostFields(HttpRequest req, List<String> result)
+		throws Exception
 	{
 		if(req.isMultipart())
 		{
@@ -164,6 +165,7 @@ public class CurlCommandLineBuilder
 	}
 
 	private void placeDataFields(HttpRequest req, List<String> result)
+		throws Exception
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();		
@@ -179,7 +181,9 @@ public class CurlCommandLineBuilder
 			for(NameValue f : fields)
 			{
 				i++;
-				sb.append(f.getName()).append("=").append(f.getValue());
+				String value = f.getValue();
+				value = URLEncoder.encode(value, "UTF-8");
+				sb.append(f.getName()).append("=").append(value);
 				if(i < len)
 				{
 					sb.append("&");

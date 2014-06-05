@@ -3,7 +3,6 @@ package xingu.http.client.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public abstract class CommandLineBuilderSupport
 	
 	@Override
 	public List<String> buildLine(HttpRequest request, File file)
-			throws UnsupportedEncodingException
+			throws Exception
 	{
 		throw new NotImplementedYet();
 	}
