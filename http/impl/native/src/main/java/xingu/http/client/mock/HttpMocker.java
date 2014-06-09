@@ -69,6 +69,9 @@ public class HttpMocker
 		when(req.ndc(any(String.class))).thenReturn(req);
 		when(req.withCookie(any(Cookie.class))).thenReturn(req);
 		when(req.field(any(String.class), any(String.class))).thenReturn(req);
+		when(req.field(any(String.class), any(Integer.class))).thenReturn(req);
+		when(req.field(any(String.class), any(Long.class))).thenReturn(req);
+		when(req.field(any(String.class))).thenReturn(req);
 		when(req.header(any(String.class), any(String.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
 		
@@ -88,6 +91,29 @@ public class HttpMocker
 		when(req.exec()).thenReturn(res);
 	}
 
+	public HttpMocker to(String... files)
+		throws Exception
+	{
+		HttpResponse res = toResponse(files[0]);
+		HttpResponse[] array = new HttpResponse[files.length];
+		for(int i = 1; i < files.length; i++)
+		{
+			String     file = files[i];
+			array[i-1]      = toResponse(file);
+		}
+
+		when(req.exec()).thenReturn(res, array);
+		return this;
+
+	}
+
+	private HttpResponse toResponse(String file)
+		throws Exception
+	{
+		File f = getFile(file);
+		return builder.responseFrom(req, f);
+	}
+	
 	public HttpMocker to(String file)
 		throws Exception
 	{
