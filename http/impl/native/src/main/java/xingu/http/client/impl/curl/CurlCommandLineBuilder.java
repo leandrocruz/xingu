@@ -154,7 +154,9 @@ public class CurlCommandLineBuilder
 			for(NameValue f : fields)
 			{
 				i++;
-				uri.append(f.getName()).append("=").append(f.getValue());
+				String value = f.getValue();
+				value = URLEncoder.encode(value, "UTF-8");
+				uri.append(f.getName()).append("=").append(value);
 				if(i < len)
 				{
 					uri.append("&");
