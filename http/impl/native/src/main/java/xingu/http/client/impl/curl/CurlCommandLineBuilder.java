@@ -9,12 +9,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilderSupport;
-import xingu.http.client.impl.NameValueImpl;
 import xingu.netty.http.HttpUtils;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 /*
  * See: http://curl.haxx.se/docs/manpage.html
@@ -144,26 +143,47 @@ public class CurlCommandLineBuilder
 	{
 		List<NameValue> fields = req.getFields();
 		int len = fields == null ? 0 : fields.size();
-		StringBuffer uri = new StringBuffer(req.getUri());
-
-		if(len > 0)
+		String uri = req.getUri();
+		
+		if(len == 0)
 		{
-			fields = urlEncode(fields, HttpUtils.DEFAULT_HTTP_CHARSET.name());
-			int i = 0;
-			uri.append("?");
-			for(NameValue f : fields)
+			result.add(uri);
+			return;
+		}
+		
+		String charset = HttpUtils.DEFAULT_HTTP_CHARSET.name();
+		StringBuffer buffer = new StringBuffer(uri);
+		int i = 0;
+
+		if(buffer.indexOf("?") > 0)
+		{
+			buffer.append("&");
+		}
+		else
+		{
+			buffer.append("?");
+		}
+		
+		for(NameValue field : fields)
+		{
+			i++;
+			String name    = field.getName();
+			String value   = field.getValue();
+			String encoded = URLEncoder.encode(value, charset);
+			
+			buffer
+				.append(name)
+				.append("=")
+				.append(encoded);
+			
+			if(i < len)
 			{
-				i++;
-				String value = f.getValue();
-				value = URLEncoder.encode(value, "UTF-8");
-				uri.append(f.getName()).append("=").append(value);
-				if(i < len)
-				{
-					uri.append("&");
-				}
+				buffer.append("&");
 			}
 		}
-		result.add(uri.toString());
+
+		String txt = buffer.toString();
+		result.add(txt);
 	}
 
 	private void placeDataFields(HttpRequest req, List<String> result)
@@ -193,21 +213,6 @@ public class CurlCommandLineBuilder
 			}
 			result.add(sb.toString());
 		}
-	}
-	
-	private List<NameValue> urlEncode(List<NameValue> fields, String codec) 
-		throws UnsupportedEncodingException
-	{
-		List<NameValue> escapedList = new ArrayList<NameValue>();
-		for(NameValue v : fields)
-		{
-			String		fieldName	 = v.getName();
-			String 		escapedValue = URLEncoder.encode(v.getValue(), codec);
-			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
-			
-			escapedList.add(escaped);
-		}
-		return escapedList;
 	}
 
 	private List<NameValue> escape(List<NameValue> fields)
