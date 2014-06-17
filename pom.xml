@@ -76,6 +76,7 @@
 		<module>gc</module>
 		<module>xavante</module>
 		<module>xls</module>
+		<module>pdf</module>
 		<!--
 		<module>ibatis</module>
 		<module>dao</module>
