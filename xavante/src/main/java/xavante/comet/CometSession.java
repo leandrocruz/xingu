@@ -3,6 +3,8 @@ package xavante.comet;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.lang3.StringUtils;
+
 import xingu.node.commons.identity.Identity;
 
 public class CometSession
@@ -56,5 +58,11 @@ public class CometSession
 	public void setIdentity(Identity<?> identity)
 	{
 		this.identity = identity;
+	}
+
+	@Override
+	public String toString()
+	{
+		return StringUtils.abbreviate(id, 8) + " owned by " + identity;
 	}
 }

@@ -20,4 +20,15 @@ public class UniqueIdIdentity
 	{
 		return id;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "#" + id;
+	}
+
+	public long getId()
+	{
+		return id;
+	}
 }
