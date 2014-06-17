@@ -2,16 +2,11 @@ package xingu.pdf;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Collections;
 
 import com.adobe.pdfjt.core.fontset.PDFFontSet;
-import com.adobe.pdfjt.core.types.ASCoordinate;
 import com.adobe.pdfjt.pdf.document.PDFDocument;
 import com.adobe.pdfjt.services.textextraction.TextExtractor;
 import com.adobe.pdfjt.services.textextraction.Word;
@@ -39,7 +34,6 @@ public class Teste
 		TextExtractor extractor = TextExtractor.newInstance(pdf,fontset);
 		WordsIterator it        = extractor.getWordsIterator();
 		
-		
 		while (it.hasNext())
 		{
 			Word word = it.next();
@@ -55,7 +49,7 @@ public class Teste
 			List<Word> words = line.getWords();
 			for(Word word : words)
 			{
-				System.out.println("\t'" + word.toString() + "' at " + word.bottomRight().y());
+				System.out.println("\t'" + word.toString() + "' at " + word.bottomRight());
 			}
 			System.out.println("");
 		}
@@ -68,7 +62,7 @@ public class Teste
 		Line   line = lineFor(y);
 		if(line == null)
 		{
-			line = new Line(new Region(y, .2));
+			line = new Line(new Region(y, 2.0));
 			lines.add(line);
 		}
 		line.add(word);
@@ -87,4 +81,3 @@ public class Teste
 		return null;
 	}
 }
-

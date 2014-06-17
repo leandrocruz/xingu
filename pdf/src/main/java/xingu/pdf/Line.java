@@ -18,7 +18,20 @@ public class Line
 	}
 
 	public void add(Word word)
+		throws Exception
 	{
+		double x = word.bottomRight().x();
+		int size = words.size() - 1;
+		for(int i = 0; i < size; i++)
+		{
+			Word w = words.get(i);
+			double other = w.bottomRight().x();
+			if(x < other)
+			{
+				words.add(i, word);
+				return;
+			}
+		}
 		words.add(word);
 	}
 
