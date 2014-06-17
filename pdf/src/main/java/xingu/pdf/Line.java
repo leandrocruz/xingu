@@ -20,19 +20,26 @@ public class Line
 	public void add(Word word)
 		throws Exception
 	{
-		double x = word.bottomRight().x();
-		int size = words.size() - 1;
+		int idx = indexFor(word);
+		words.add(idx, word);
+	}
+
+	private int indexFor(Word word)
+		throws Exception
+	{
+		double my   = word.bottomRight().x();
+		int    size = words.size() - 1;
 		for(int i = 0; i < size; i++)
 		{
 			Word w = words.get(i);
-			double other = w.bottomRight().x();
-			if(x < other)
+			double x = w.bottomRight().x();
+			if(my < x)
 			{
-				words.add(i, word);
-				return;
+				return i == 0 ? i : i - 1;
 			}
 		}
-		words.add(word);
+
+		return words.size();
 	}
 
 	public Region getRegion()

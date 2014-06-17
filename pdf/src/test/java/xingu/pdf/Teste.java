@@ -45,11 +45,11 @@ public class Teste
 		for(Line line : lines)
 		{
 			Region region = line.getRegion();
-			System.out.println((++i) + ". on Region " + region);
+			System.out.print((++i) + ". on Region " + region + ": ");
 			List<Word> words = line.getWords();
 			for(Word word : words)
 			{
-				System.out.println("\t'" + word.toString() + "' at " + word.bottomRight());
+				System.out.print(word.toString() + " ");
 			}
 			System.out.println("");
 		}
