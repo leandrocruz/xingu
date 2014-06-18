@@ -55,11 +55,8 @@ public class SampleFontLoaderUtil {
      */
     
     //Contains three font files specifically with JT, loaded as fallback fonts
-    private static final String DEFAULT_FONT_DIR = "src/test/resources/fonts";
     
-    private static final String[] DEFAULT_FONT_DIRS = {"c:/windows/fonts",
-        "/usr/share/fonts", "/Library/Fonts", "/System/Library/Fonts",
-        DEFAULT_FONT_DIR};
+    private static final String[] DEFAULT_FONT_DIRS = {"/opt/xingu/fonts"};
     
     private static boolean verbose = false;
 
