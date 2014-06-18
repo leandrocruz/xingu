@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-utils</artifactId>
+			<artifactId>xingu-creator</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

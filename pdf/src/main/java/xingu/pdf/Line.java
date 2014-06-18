@@ -3,6 +3,8 @@ package xingu.pdf;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ibnetwork.xingu.utils.StringUtils;
+
 import com.adobe.pdfjt.services.textextraction.Word;
 
 public class Line
@@ -67,5 +69,22 @@ public class Line
 	public int compareTo(Line other)
 	{
 		return (int) (other.region.center - region.center );
+	}
+
+	public String asText()
+	{
+		StringBuffer sb = new StringBuffer();
+		int i = 0;
+		int size = words.size();
+		for(Word word : words)
+		{
+			i++;
+			sb.append(word.toString());
+			if(i < size)
+			{
+				sb.append(StringUtils.SPACE);
+			}
+		}
+		return sb.toString();
 	}
 }

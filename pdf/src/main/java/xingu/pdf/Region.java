@@ -12,7 +12,7 @@ public class Region
 		this.radius = radius;
 	}
 
-	boolean inRadius(double point)
+	public boolean inRadius(double point)
 	{
 		return center - radius < point && center + radius > point;
 	}
