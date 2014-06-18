@@ -28,6 +28,7 @@ import com.adobe.pdfjt.pdf.document.PDFDocument;
 import com.adobe.pdfjt.pdf.graphics.font.impl.StandardFontUtils;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -275,13 +276,10 @@ public class SampleFontLoaderUtil {
          * SAMPLE code not intended for production systems but only to show how
          * to use the APIs.
          */
-        Font[] kozmin = loader.load(new File(DEFAULT_FONT_DIR + File.separator
-                + "KozMinPro-Regular.otf"), false, exceptions);
-        Font[] adobeThai = 
-                loader.load(new File(DEFAULT_FONT_DIR + File.separator
-                    + "AdobeThai-Regular.otf"), false, exceptions);
-        Font[] minion = loader.load(new File(DEFAULT_FONT_DIR + File.separator
-                + "MinionPro-Regular.otf"), false, exceptions);
+        
+        Font[] kozmin    = loader.load(asFile("fonts" + File.separator + "KozMinPro-Regular.otf"), false, exceptions);
+        Font[] adobeThai = loader.load(asFile("fonts" + File.separator + "AdobeThai-Regular.otf"), false, exceptions);
+        Font[] minion    = loader.load(asFile("fonts" + File.separator + "MinionPro-Regular.otf"), false, exceptions);
 
         /*
          * After loading we check for errors that may have occurred with the
@@ -318,7 +316,14 @@ public class SampleFontLoaderUtil {
         pdfFontSet.addFallbackFont(new Locale("th"), adobeThai);
     }
 
-    /**
+    private static File asFile(String name)
+	{
+    	ClassLoader cl  = Thread.currentThread().getContextClassLoader();
+    	URL         url = cl.getResource(name);
+    	return new File(url.getFile());
+	}
+
+	/**
      * Method to set the generic font family names
      * 
      * @param pdfFontSet PDFFontSet in which to set the family names
