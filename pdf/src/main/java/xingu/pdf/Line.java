@@ -21,25 +21,36 @@ public class Line
 		throws Exception
 	{
 		int idx = indexFor(word);
-		words.add(idx, word);
+		if(idx < 0)
+		{
+			words.add(word);
+		}
+		else
+		{
+			words.add(idx, word);
+		}
 	}
 
 	private int indexFor(Word word)
 		throws Exception
 	{
 		double my   = word.bottomRight().x();
-		int    size = words.size() - 1;
+		int    size = words.size();
+		if(size == 0)
+		{
+			return 0;
+		}
+
 		for(int i = 0; i < size; i++)
 		{
 			Word w = words.get(i);
 			double x = w.bottomRight().x();
 			if(my < x)
 			{
-				return i == 0 ? i : i - 1;
+				return i;
 			}
 		}
-
-		return words.size();
+		return -1;
 	}
 
 	public Region getRegion()
