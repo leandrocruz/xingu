@@ -10,7 +10,13 @@ public interface HttpRequest
 
 	HttpRequest header(String name, String value);
 
+	HttpRequest field(String nameValue);
+	
 	HttpRequest field(String name, String value);
+	
+	HttpRequest field(String name, int value);
+	
+	HttpRequest field(String name, long value);
 	
 	HttpRequest queryString(String name, String value);
 

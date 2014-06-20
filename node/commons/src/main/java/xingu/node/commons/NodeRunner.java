@@ -40,7 +40,6 @@ public class NodeRunner
 				{
 					lookup = arg.substring(LOOKUP_PARAM.length());
 				}
-
 			}
 		}
 		
