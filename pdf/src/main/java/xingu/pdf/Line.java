@@ -10,6 +10,8 @@ import com.adobe.pdfjt.services.textextraction.Word;
 public class Line
 	implements Comparable<Line>
 {
+	private int			number;
+
 	private Region		region;
 
 	private List<Word>	words	= new ArrayList<Word>();
@@ -65,12 +67,6 @@ public class Line
 		return words;
 	}
 
-	@Override
-	public int compareTo(Line other)
-	{
-		return (int) (other.region.center - region.center );
-	}
-
 	public String asText()
 	{
 		StringBuffer sb = new StringBuffer();
@@ -86,5 +82,32 @@ public class Line
 			}
 		}
 		return sb.toString();
+	}
+
+	public int getNumber()
+	{
+		return number;
+	}
+
+	public void setNumber(int number)
+	{
+		this.number = number;
+	}
+
+	@Override
+	public int compareTo(Line other)
+	{
+		return (int) (other.region.center - region.center );
+	}
+
+	@Override
+	public String toString()
+	{
+		return number + ". " + asText();
+	}
+
+	public Word getWord(int i)
+	{
+		return words.get(i);
 	}
 }
