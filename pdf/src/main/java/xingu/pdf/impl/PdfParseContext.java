@@ -6,35 +6,35 @@ import java.util.List;
 import xingu.pdf.Line;
 import xingu.pdf.Region;
 
-import com.adobe.pdfjt.pdf.document.PDFDocument;
 import com.adobe.pdfjt.services.textextraction.Word;
 
 public class PdfParseContext
 {
 	private List<Line> lines = new ArrayList<Line>();
-	
-	public PdfParseContext(PDFDocument pdf)
-	{}
 
 	public void processWord(Word word)
 		throws Exception
 	{
-		double y = word.bottomRight().y();
-		Line line = lineFor(y);
+		Line line = lineFor(word);
 		if(line == null)
 		{
-			line = new Line(new Region(y, 2.0));
+			double y = word.bottomRight().y();
+			line = new Line(new Region(y, 2.0), word.getPageNumber() - 1 /* ZERO BASED */);
 			lines.add(line);
 		}
 		line.add(word);
 	}
 
-	private Line lineFor(double y)
+	private Line lineFor(Word word)
+		throws Exception
 	{
+		double y    = word.bottomRight().y();
+		int    page = word.getPageNumber() - 1;
 		for(Line line : lines)
 		{
-			Region region = line.getRegion();
-			if(region.inRadius(y))
+			int    linePage = line.getPage();
+			Region region   = line.getRegion();
+			if(linePage == page && region.inRadius(y))
 			{
 				return line;
 			}

@@ -10,15 +10,18 @@ import com.adobe.pdfjt.services.textextraction.Word;
 public class Line
 	implements Comparable<Line>
 {
-	private int			number;
+	private int        number;
 
-	private Region		region;
+	private int        page;
 
-	private List<Word>	words	= new ArrayList<Word>();
+	private Region     region;
 
-	public Line(Region region)
+	private List<Word> words   = new ArrayList<Word>();
+
+	public Line(Region region, int page)
 	{
 		this.region = region;
+		this.page   = page;
 	}
 
 	public void add(Word word)
@@ -94,20 +97,32 @@ public class Line
 		this.number = number;
 	}
 
+	public Word getWord(int i)
+	{
+		return words.get(i);
+	}
+
+	public int getPage()
+	{
+		return page;
+	}
+
 	@Override
 	public int compareTo(Line other)
 	{
-		return (int) (other.region.center - region.center );
+		if(page == other.page)
+		{
+			return (int) (other.region.center - region.center );
+		}
+		else
+		{
+			return page - other.page;
+		}
 	}
 
 	@Override
 	public String toString()
 	{
-		return number + ". " + asText();
-	}
-
-	public Word getWord(int i)
-	{
-		return words.get(i);
+		return "[p#"+page+" w#"+words.size()+" "+number+"] " + asText();
 	}
 }
