@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -58,7 +59,26 @@ public class ExcelReader
 				for(int j = 0; j < cols; j++)
 				{
 					Cell   cell   = row.getCell(j);
-					String value  = cell.getStringCellValue();
+					int type = cell.getCellType();
+					String value = null;
+					switch(type)
+					{
+						case Cell.CELL_TYPE_BLANK:
+							value = StringUtils.EMPTY;
+							break;
+
+						case Cell.CELL_TYPE_NUMERIC:
+							value = String.valueOf(cell.getNumericCellValue());
+							break;
+
+						case Cell.CELL_TYPE_BOOLEAN:
+							value = String.valueOf(cell.getBooleanCellValue());
+							break;
+							
+						default:
+							value = cell.getStringCellValue();
+							break;
+					}
 					String name   = meta[j];
 					record.add(name, value.trim());
 				}
