@@ -16,7 +16,10 @@
 package xingu.pdf;
 
 import com.adobe.fontengine.font.Font;
+import com.adobe.fontengine.font.FontLoadingException;
+import com.adobe.fontengine.font.InvalidFontException;
 import com.adobe.fontengine.font.PDFFontDescription;
+import com.adobe.fontengine.font.UnsupportedFontException;
 import com.adobe.fontengine.fontmanagement.FontLoader;
 import com.adobe.fontengine.fontmanagement.postscript.PostscriptFontDescription;
 import com.adobe.fontengine.inlineformatting.css20.CSS20GenericFontFamily;
@@ -247,10 +250,14 @@ public class SampleFontLoaderUtil {
      *  
      * @param pdfFontSet The documents fontset
      * @throws PDFFontException Font Exception
+     * @throws UnsupportedFontException 
+     * @throws InvalidFontException 
+     * @throws FontLoadingException 
      */
     private static void loadFallBackFonts(PDFFontSet pdfFontSet)
-        throws PDFFontException {
-        /*
+        throws PDFFontException, FontLoadingException, InvalidFontException, UnsupportedFontException {
+
+    	/*
          * Note: The fonts loaded here aas locale fallbacks will NOT be correct
          * for your application. The only intent of this code is to show you how
          * to do so.
@@ -274,9 +281,9 @@ public class SampleFontLoaderUtil {
          * to use the APIs.
          */
         
-        Font[] kozmin    = loader.load(asFile("fonts" + File.separator + "KozMinPro-Regular.otf"), false, exceptions);
-        Font[] adobeThai = loader.load(asFile("fonts" + File.separator + "AdobeThai-Regular.otf"), false, exceptions);
-        Font[] minion    = loader.load(asFile("fonts" + File.separator + "MinionPro-Regular.otf"), false, exceptions);
+        Font[] kozmin    = loader.load(asFile("fonts" + File.separator + "KozMinPro-Regular.otf"));
+        Font[] adobeThai = loader.load(asFile("fonts" + File.separator + "AdobeThai-Regular.otf"));
+        Font[] minion    = loader.load(asFile("fonts" + File.separator + "MinionPro-Regular.otf"));
 
         /*
          * After loading we check for errors that may have occurred with the
@@ -313,11 +320,16 @@ public class SampleFontLoaderUtil {
         pdfFontSet.addFallbackFont(new Locale("th"), adobeThai);
     }
 
-    private static File asFile(String name)
+    private static URL asFile(String name)
+    	throws PDFFontException
 	{
     	ClassLoader cl  = Thread.currentThread().getContextClassLoader();
     	URL         url = cl.getResource(name);
-    	return new File(url.getFile());
+    	if(url == null)
+    	{
+    		throw new PDFFontException("Can't load font '"+name+"'");
+    	}
+    	return url;
 	}
 
 	/**
