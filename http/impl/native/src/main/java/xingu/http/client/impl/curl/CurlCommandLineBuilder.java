@@ -34,6 +34,7 @@ public class CurlCommandLineBuilder
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
 		//result.add("-v"); // verbose
+		result.add("-3"); //ssl
 		result.add("-k"); // ignore server certificate
 		result.add("-i");  
 		result.add("-o"); // output to a file
