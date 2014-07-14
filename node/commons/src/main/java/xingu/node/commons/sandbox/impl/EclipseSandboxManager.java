@@ -25,8 +25,8 @@ public class EclipseSandboxManager
 	private String				workspaceDirectory;
 
 	private Map<String, String>	classpathVariables	= new HashMap<String, String>();
-	
-	private File local;
+
+	private File				local				= new File("/opt/oystr/server/repo/bots");
 
 	@Override
 	public void configure(Configuration conf)
