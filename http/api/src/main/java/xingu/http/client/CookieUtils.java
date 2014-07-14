@@ -11,6 +11,13 @@ public class CookieUtils
 {
 	public static final Cookie[] EMPTY = new Cookie[]{};
 
+	public static Cookies toCookies(String input)
+	{
+		CookieDecoder decoder = new CookieDecoder();
+		Set<Cookie>   decoded = decoder.decode(input);
+		return new CookiesImpl(decoded);
+	}
+	
 	public static Cookies getCookies(HttpResponse res)
 	{
 		StringBuffer  sb      = new StringBuffer();
