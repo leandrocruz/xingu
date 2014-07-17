@@ -3,7 +3,9 @@ package xingu.xls;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -18,74 +20,146 @@ public class ExcelReader
 		throws Exception
 	{
 		String file  = args[0];
-		String count = args[1];
-		List<Record> records = ExcelReader.read(file, Integer.valueOf(count), 0);
-		
-		int i = 0;
-		for(Record record : records)
-		{
-			System.out.println((i++) + ". " + record.get("NOME") + " ("+record.get("DOCUMENTO")+") em " + record.get("COMARCA"));
-		}
+		List<Record> records = ExcelReader.read(file, 0, true);
+		System.out.println(records.size() + " Registros encontrados");
 	}
 
-	public static List<Record> read(String fileName, int cols, int sheetNumber)
+	public static List<Record> read(String fileName)
+		throws Exception
+	{
+		return read(fileName, 0, true);
+	}
+
+	public static List<Record> read(InputStream is)
+		throws Exception
+	{
+		return read(is, 0, true);
+	}
+
+	public static List<Record> read(String fileName, int sheetNumber, boolean readHeader)
+		throws Exception
+	{
+		InputStream is = new FileInputStream(fileName);
+		return read(is, sheetNumber, readHeader);
+	}
+
+	public static List<Record> read(InputStream is, int sheetNumber, boolean readHeader)
 		throws Exception
 	{
 		List<Record> result = new ArrayList<Record>();
-		InputStream  is     = new FileInputStream(fileName);
 		Workbook     wb     = new HSSFWorkbook(is);
 		Sheet        sheet  = wb.getSheetAt(sheetNumber);
 		
-		String[] meta = new String[cols];
-		int i = 0;
-		for(Row row : sheet)
+		int    end    = sheet.getLastRowNum();
+		Header header = null;
+		
+		for(int i = 0; i < end; i++)
 		{
-			if(i == 0)
+			Row row = sheet.getRow(i);
+			if(header == null && readHeader)
 			{
-				for(int j = 0; j < cols; j++)
-				{
-					Cell    cell  = row.getCell(j);
-					if(cell == null)
-					{
-						throw new Exception("Row '"+(j+1)+"' is  null. Maybe you should check the 'cols' argument");
-					}
-					String  value = cell.getStringCellValue();
-					meta[j]       = value.trim();
-				}				
+				header = readHeader(row);
+				continue;
 			}
-			else
+
+			Record record = toRecord(header, row);
+			if(record != null)
 			{
-				Record record = new Record();
-				for(int j = 0; j < cols; j++)
-				{
-					Cell   cell   = row.getCell(j);
-					int type = cell.getCellType();
-					String value = null;
-					switch(type)
-					{
-						case Cell.CELL_TYPE_BLANK:
-							value = StringUtils.EMPTY;
-							break;
-
-						case Cell.CELL_TYPE_NUMERIC:
-							value = String.valueOf(cell.getNumericCellValue());
-							break;
-
-						case Cell.CELL_TYPE_BOOLEAN:
-							value = String.valueOf(cell.getBooleanCellValue());
-							break;
-							
-						default:
-							value = cell.getStringCellValue();
-							break;
-					}
-					String name   = meta[j];
-					record.add(name, value.trim());
-				}
 				result.add(record);
 			}
-			i++;
 		}
 		return result;
+	}
+
+	public static Header readHeader(Row row)
+	{
+		Header result = new Header();
+		short  start  = row.getFirstCellNum();
+		short  end    = row.getLastCellNum();
+
+		for(int i = start; i < end; i++)
+		{
+			Cell   cell  = row.getCell(i);
+			String value = valueFrom(cell);
+			value = StringUtils.trimToNull(value);
+			if(value != null)
+			{
+				result.add(i, value);
+			}
+		}
+
+		return result;
+	}
+
+	public static Record toRecord(Header header, Row row)
+		throws Exception
+	{
+		if(row == null)
+		{
+			return null;
+		}
+
+		short start = row.getFirstCellNum();
+		short end   = row.getLastCellNum();
+
+		if(start < 0 || end < 0)
+		{
+			return null;
+		}
+		
+		Record record = new Record();
+		for(int i = start; i < end; i++)
+		{
+			Cell cell = row.getCell(i);
+			if(cell != null)
+			{
+				String value = valueFrom(cell);
+				String name  = header != null ? header.nameFor(i) : String.valueOf(i);
+				System.out.print("[" + name + "] " + value + "\t");
+				record.add(name, value.trim());
+			}
+		}
+		System.out.println("");
+		
+		return record;
+	}
+
+	public static String valueFrom(Cell cell)
+	{
+		if(cell == null)
+		{
+			return null;
+		}
+		
+		int  type = cell.getCellType();
+		switch(type)
+		{
+			case Cell.CELL_TYPE_BLANK:
+				return StringUtils.EMPTY;
+
+			case Cell.CELL_TYPE_NUMERIC:
+				return String.valueOf(cell.getNumericCellValue());
+
+			case Cell.CELL_TYPE_BOOLEAN:
+				return String.valueOf(cell.getBooleanCellValue());
+				
+			default:
+				return cell.getStringCellValue();
+		}
+	}
+}
+
+class Header {
+
+	private Map<Integer, String> nameByColumn = new HashMap<Integer, String>();
+	
+	public String nameFor(int col)
+	{
+		return nameByColumn.get(col);
+	}
+
+	public void add(int col, String name)
+	{
+		nameByColumn.put(col, name);
 	}
 }
