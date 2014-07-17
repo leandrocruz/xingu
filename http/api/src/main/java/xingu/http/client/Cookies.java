@@ -10,6 +10,7 @@ public interface Cookies
 	Cookie byName(String name);
 	
 	Cookie replace(String name, String content);
+	void replace(String name, Cookie replacement);
 	
 	Cookie startingWith(String name);
 	

@@ -75,6 +75,15 @@ public class CookiesImpl
 	@Override
 	public Cookie replace(String name, String content)
 	{
+		DefaultCookie cookie = new DefaultCookie(name, content);
+		replace(name, cookie);
+		
+		return cookie;
+	}
+
+	@Override
+	public void replace(String name, Cookie replacement)
+	{
 		Cookie toRemove = null;
 		for(Cookie c : set)
 		{
@@ -87,8 +96,7 @@ public class CookiesImpl
 		if(toRemove != null)
 		{
 			set.remove(toRemove);
-			set.add(new DefaultCookie(name, content));
+			set.add(replacement);
 		}
-		return null;
 	}
 }
