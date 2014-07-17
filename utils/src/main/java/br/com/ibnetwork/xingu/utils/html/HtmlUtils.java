@@ -15,6 +15,43 @@ public class HtmlUtils
      */
     public static Pattern HTML_TAG_PATTERN = Pattern.compile("<\\s*([a-zA-Z0-9]+)\\s*[^>]*>", Pattern.DOTALL);
     
+    public static String[] extractInlineJavascripṔarams(String functionName, String input)
+    {
+		Pattern p = Pattern.compile("<a href=\"javascript:"+functionName+"(.*);\">");
+		Matcher m = p.matcher(input);
+		if(m.find())
+		{
+			String parameters = m.group(1);
+			System.out.println(parameters);
+			parameters = parameters.substring(1, parameters.length() - 1);
+			String[] parts = parameters.split(",");
+			for(int i = 0; i < parts.length; i++)
+			{
+				String string = parts[i];
+				String value = string.trim();
+				value = stripQuotes(value);
+				System.out.println(value);
+				parts[i] = value;
+			}
+			return parts;
+		}
+		return null;
+    }
+
+	private static String stripQuotes(String value)
+	{
+		if(value.startsWith("'") || value.startsWith("\""))
+		{
+			value = value.substring(1);
+		}
+		
+		if(value.endsWith("'") || value.endsWith("\""))
+		{
+			value = value.substring(0, value.length() - 1);
+		}
+		return value;
+	}
+
     public static List<ExtractedTag> extractTags(String content)
     {
     	boolean empty = StringUtils.isEmpty(content);
