@@ -69,13 +69,13 @@ public class HttpMocker
 		when(req.getUri()).thenReturn(uri);
 		when(req.ndc(any(String.class))).thenReturn(req);
 		when(req.withCookie(any(Cookie.class))).thenReturn(req);
+		when(req.withCookies(any(Cookies.class))).thenReturn(req);
 		when(req.field(any(String.class), any(String.class))).thenReturn(req);
 		when(req.field(any(String.class), any(Integer.class))).thenReturn(req);
 		when(req.field(any(String.class), any(Long.class))).thenReturn(req);
 		when(req.field(any(String.class))).thenReturn(req);
 		when(req.header(any(String.class), any(String.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
-		when(req.withCookies(any(Cookies.class))).thenReturn(req);
 
 		return req;
 	}
