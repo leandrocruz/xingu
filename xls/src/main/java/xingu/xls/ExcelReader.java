@@ -53,7 +53,7 @@ public class ExcelReader
 		int    end    = sheet.getLastRowNum();
 		Header header = null;
 		
-		for(int i = 0; i < end; i++)
+		for(int i = 0; i <= end; i++)
 		{
 			Row row = sheet.getRow(i);
 			if(header == null && readHeader)
@@ -77,7 +77,7 @@ public class ExcelReader
 		short  start  = row.getFirstCellNum();
 		short  end    = row.getLastCellNum();
 
-		for(int i = start; i < end; i++)
+		for(int i = start; i <= end; i++)
 		{
 			Cell   cell  = row.getCell(i);
 			String value = valueFrom(cell);
@@ -108,7 +108,7 @@ public class ExcelReader
 		}
 		
 		Record record = new Record();
-		for(int i = start; i < end; i++)
+		for(int i = start; i <= end; i++)
 		{
 			Cell cell = row.getCell(i);
 			if(cell != null)
