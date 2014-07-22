@@ -116,6 +116,10 @@ public abstract class SandboxManagerSupport
 	{
 		Container   parent = parentSandbox.container();
 		URL         url    = cl.getResource(containerFile);
+		if(url == null)
+		{
+			throw new NotImplementedYet("Can't find '"+containerFile+"' using this classloader");
+		}
 		InputStream is     = url.openStream();
 		Container   pulga  = new Pulga(parent, is, cl);
 		pulga.configure();
