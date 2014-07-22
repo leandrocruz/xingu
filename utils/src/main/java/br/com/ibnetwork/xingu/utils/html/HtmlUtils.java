@@ -15,7 +15,7 @@ public class HtmlUtils
      */
     public static Pattern HTML_TAG_PATTERN = Pattern.compile("<\\s*([a-zA-Z0-9]+)\\s*[^>]*>", Pattern.DOTALL);
     
-    public static String[] extractInlineJavascripṔarams(String functionName, String input)
+    public static String[] extractInlineJavascriptParams(String functionName, String input)
     {
 		Pattern p = Pattern.compile("<a href=\"javascript:"+functionName+"(.*);\">");
 		Matcher m = p.matcher(input);
