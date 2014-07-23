@@ -9,4 +9,6 @@ public interface SandboxManager
 	Sandbox sandboxFor(Object obj);
 	
 	Collection<Sandbox> getAll();
+	
+	<T> T lookup(String id, Class<T> clazz);
 }

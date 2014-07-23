@@ -182,6 +182,18 @@ public abstract class SandboxManagerSupport
 		throw new NotImplementedYet("Can't load sandbox '"+id+"' on the fly");
 	}
 
+	@Override
+	public <T> T lookup(String id, Class<T> clazz)
+	{
+		Sandbox sandbox = byId(id);
+		if(sandbox == null)
+		{
+			throw new NotImplementedYet("Can't load sandbox '"+id+"'");
+		}
+		Container container = sandbox.container();
+		return container.lookup(clazz);
+	}
+
 	protected abstract SandboxDescriptor[] getSandboxDescriptors()
 		throws Exception;
 }
