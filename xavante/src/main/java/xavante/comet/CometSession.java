@@ -13,7 +13,7 @@ public class CometSession
 
 	private Identity<?>		identity;
 
-	private Queue<String>	queue	= new ConcurrentLinkedQueue<String>();
+	private Queue<Object>	queue	= new ConcurrentLinkedQueue<Object>();
 
 	public CometSession(String id)
 	{
@@ -25,7 +25,7 @@ public class CometSession
 		return id;
 	}
 
-	public synchronized String[] drain()
+	public synchronized Object[] drain()
 	{
 		if(queue.isEmpty())
 		{
@@ -39,12 +39,12 @@ public class CometSession
 			}
 		}
 		
-		String[] messages = queue.toArray(new String[]{});
+		Object[] messages = queue.toArray();
 		queue.clear();
 		return messages;
 	}
 
-	public synchronized void offer(String message)
+	public synchronized void offer(Object message)
 	{
 		queue.offer(message);
 		notifyAll();

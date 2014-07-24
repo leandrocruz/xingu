@@ -1,7 +1,10 @@
 package xavante.comet.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -67,5 +70,22 @@ public class SessionManagerImpl
 	{
 		CometSession session = byId(sessionId);
 		session.setIdentity(identity);
+	}
+
+	@Override
+	public List<CometSession> byOwner(Identity<?> identity)
+	{
+		List<CometSession> result = new ArrayList<CometSession>();
+		Set<String>        keys   = sessionById.keySet();
+		for(String key : keys)
+		{
+			CometSession session = sessionById.get(key);
+			Identity<?>  id      = session.getIdentity();
+			if(id != null && id.equals(identity))
+			{
+				result.add(session);
+			}
+		}
+		return result;
 	}
 }
