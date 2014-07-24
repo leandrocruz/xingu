@@ -31,4 +31,22 @@ public class UniqueIdIdentity
 	{
 		return id;
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof UniqueIdIdentity)
+		{
+			UniqueIdIdentity other = (UniqueIdIdentity) obj;
+			return other.id == id;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (int) id;
+	}
 }
