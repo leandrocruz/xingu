@@ -25,7 +25,7 @@ public class SignalHandlerImpl
 		long    id      = session.getId();
 		signal.setSessionId(id);
 
-		Waiter<Signal> waiter = findWaiter(signal);
+		Waiter<Signal> waiter = waiters.findWaiter(signal);
 		if(waiter != null)
 		{
 			synchronized(waiter)
