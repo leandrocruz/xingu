@@ -12,6 +12,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxDescriptor;
+import br.com.ibnetwork.xingu.container.Environment;
+import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.eclipse.EclipseClassLoader;
 import br.com.ibnetwork.xingu.utils.classloader.eclipse.Project;
@@ -20,25 +22,34 @@ import br.com.ibnetwork.xingu.utils.classloader.eclipse.Workspace;
 public class EclipseSandboxManager
 	extends SandboxManagerSupport
 {
+	@Inject
+	private Environment			env;
+
 	private Workspace			workspace;
 
 	private String				workspaceDirectory;
 
-	private Map<String, String>	classpathVariables	= new HashMap<String, String>();
+	private File				local;
 
-	private File				local				= new File("/opt/oystr/server/repo/bots");
+	private Map<String, String>	classpathVariables	= new HashMap<String, String>();
 
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
 		super.configure(conf);
+		
+		String dir = conf.getChild("repo").getAttribute("dir");
+		this.local = new File(dir);
+		
 		workspaceDirectory = conf.getChild("workspace").getAttribute("dir");
+		workspaceDirectory = env.replaceVars(workspaceDirectory);
 		Configuration[] variables = conf.getChild("workspace").getChildren("var");
 		for(Configuration var : variables)
 		{
 			String name  = var.getAttribute("name");
 			String value = var.getAttribute("value");
+			value = env.replaceVars(value);
 			classpathVariables.put(name, value);
 		}
 	}
