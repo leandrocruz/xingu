@@ -35,6 +35,9 @@ public class SignalHandlerImpl
 		}
 		else
 		{
+			/*
+			 * If signals replies are 'late', there is no waiter anymore and they are processed here!
+			 */
 			processor.process(signal, channel);
 		}
 	}
