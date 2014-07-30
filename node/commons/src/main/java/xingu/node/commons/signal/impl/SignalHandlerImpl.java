@@ -25,15 +25,20 @@ public class SignalHandlerImpl
 		long    id      = session.getId();
 		signal.setSessionId(id);
 
-		Waiter<Signal> waiter = waiters.findWaiter(signal);
+		Waiter<Signal> waiter  = waiters.popWaiter(signal);
+		boolean        process = waiter == null ? true : waiter.isLate;
 		if(waiter != null)
 		{
 			synchronized(waiter)
 			{
 				waiter.notify(signal);
 			}
+
+			/*processing of late signals when there is a waiter */
+			signal.setLate(waiter.isLate);
 		}
-		else
+
+		if(process)
 		{
 			/*
 			 * If signals replies are 'late', there is no waiter anymore and they are processed here!

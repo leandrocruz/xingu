@@ -37,4 +37,7 @@ public interface Signal
 
 	boolean isSync();
 	boolean isProcessEnabled();
+	
+	boolean isLate();
+	void setLate(boolean late);
 }

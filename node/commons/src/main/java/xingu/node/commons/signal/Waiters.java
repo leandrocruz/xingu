@@ -18,7 +18,7 @@ public class Waiters<T>
 		waiters.remove(waiter);
 	}
 
-	public synchronized Waiter<T> findWaiter(T t)
+	public synchronized Waiter<T> popWaiter(T t)
 	{
 		Iterator<Waiter<T>> it = waiters.iterator();
 		while(it.hasNext())
@@ -36,6 +36,16 @@ public class Waiters<T>
 	public T waitForReply(Waiter<T> waiter, long timeout)
 	{
 	    waiter.waitFor(timeout);
-	    return waiter.reply;
+	    T reply = waiter.reply;
+		if(reply != null)
+		{
+			/* Remove if no timeout. On timeout , we will need it further to mark signals as late */
+			remove(waiter);
+	    }
+		else
+		{
+			waiter.isLate = true;
+		}
+	    return reply;
 	}
 }

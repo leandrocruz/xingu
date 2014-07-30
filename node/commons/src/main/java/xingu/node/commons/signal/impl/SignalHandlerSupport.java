@@ -74,11 +74,8 @@ public class SignalHandlerSupport
 		}
 		catch(Exception e)
 		{
-			return new ExceptionSignal(signal, e);
-		}
-		finally
-		{
 			waiters.remove(waiter);
+			return new ExceptionSignal(signal, e);
 		}
 
 		return reply;
@@ -96,7 +93,7 @@ public class SignalHandlerSupport
 		boolean success = future.isSuccess();
 		if(success)
 		{
-			Signal reply = waiters.waitForReply(waiter, queryTimeout);
+			Signal reply = waiters.waitForReply(waiter, queryTimeout); /* removed the waiter when not timed out */
 			if(reply != null)
 			{
 				return reply;
