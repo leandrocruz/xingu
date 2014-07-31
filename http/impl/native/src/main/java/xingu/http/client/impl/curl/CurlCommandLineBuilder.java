@@ -6,6 +6,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 
@@ -20,11 +23,26 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
  */
 public class CurlCommandLineBuilder
 	extends CommandLineBuilderSupport
+	implements Configurable
 {
+	List<String> params = new ArrayList<String>();
+	
 	@Override
 	public String name()
 	{
 		return "curl";
+	}
+
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		Configuration[] params = conf.getChild("params").getChildren("param");
+		for(Configuration param : params)
+		{
+			String value = param.getAttribute("value");
+			this.params.add(value);
+		}
 	}
 
 	@Override
@@ -33,13 +51,16 @@ public class CurlCommandLineBuilder
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
-		//result.add("-v"); // verbose
-		result.add("-3"); //ssl
+		result.add("-i");
 		result.add("-k"); // ignore server certificate
-		result.add("-i");  
 		result.add("-o"); // output to a file
 		result.add(file.toString());
-		
+
+		for(String param : params)
+		{
+			result.add(param);
+		}
+
 		String authUser  = req.getAuthenticationUser();
 		String authPwd	 = req.getAuthenticationPassword();
 		if(StringUtils.isNotEmpty(authUser) && StringUtils.isNotEmpty(authPwd))
