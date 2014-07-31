@@ -33,7 +33,7 @@ public class CookieUtils
 				sb.append(value).append(";");
 			}
 		}
-		
+
 		String      buffer  = sb.toString();
 		Set<Cookie> decoded = decoder.decode(buffer);
 		return new CookiesImpl(decoded);
@@ -53,5 +53,25 @@ public class CookieUtils
 	public static String getCookieNameAndValue(Cookie cookie)
 	{
 		return cookie.getName() + "=" + cookie.getValue();
+	}
+
+	public static Cookies mergeCookies(Cookies first, Cookies second)
+	{
+		Set<Cookie> currentSet = first.set();
+		Set<Cookie> toMergeSet = second.set();
+		for(Cookie cookie : toMergeSet)
+		{
+			Cookie current = first.byName(cookie.getName());
+			if(current == null)
+			{
+				currentSet.add(cookie);
+			}
+			else
+			{
+				currentSet.remove(current);
+				currentSet.add(cookie);
+			}
+		}
+		return new CookiesImpl(currentSet);
 	}
 }
