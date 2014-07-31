@@ -29,6 +29,8 @@ public class SignalSupport
 
 	protected boolean			processEnabled	= true;
 
+	private boolean	late;
+
     /* @formatter:off */
 	@Override public String getSignalId() {return signalId;}
 	@Override public void setSignalId(String id){this.signalId = id;}
@@ -50,6 +52,7 @@ public class SignalSupport
     @Override public void setAddress(NetworkAddress address) {this.address = address;}
     @Override public boolean isSync() {return sync;}
     @Override public boolean isProcessEnabled() {return processEnabled;}
+    @Override public boolean isLate(){return late;}
+    @Override public void setLate(boolean late){this.late = late;}
     /* @formatter:on */
-
 }

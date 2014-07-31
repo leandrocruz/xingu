@@ -166,10 +166,11 @@ public abstract class CometHandlerSupport
 	}
 
 	private String drain(CometMessage msg)
+		throws Exception
 	{
 		String       hash     = msg.getToken();
 		CometSession session  = sessions.byId(hash);
-		String[]     messages = session.drain();
+		Object[]     messages = session.drain();
 		if(messages == null)
 		{
 			// Thread interrupted
@@ -179,16 +180,18 @@ public abstract class CometHandlerSupport
 		return sb.toString();
 	}
 
-	private StringBuffer toString(String[] messages)
+	private StringBuffer toString(Object[] messages)
+		throws Exception
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append("{\"len\":").append(messages.length).append(", \"data\": [");
 
 		int i = 0;
-		for(String msg : messages)
+		for(Object msg : messages)
 		{
 			i++;
-			sb.append(msg);
+			String encoded = codec.encode(msg);
+			sb.append(encoded);
 			if(i < messages.length)
 			{
 				sb.append(", ");

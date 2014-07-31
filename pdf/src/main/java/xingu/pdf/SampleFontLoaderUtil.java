@@ -77,8 +77,8 @@ public class SampleFontLoaderUtil {
      * @return PDFFontSet
      * @throws Exception buildSampleFontSet throws a general exception
      */
-    public static PDFFontSet buildSampleFontSet() throws Exception {
-        return buildSampleFontSet(new String[0]);
+    public static PDFFontSet buildSampleFontSet(ClassLoader cl) throws Exception {
+        return buildSampleFontSet(cl, new String[0]);
     }
     
     public static void setVerbose(boolean newVerbose)
@@ -95,7 +95,7 @@ public class SampleFontLoaderUtil {
      * @return PDFFontSet
      * @throws Exception General Exception
      */
-    public static PDFFontSet buildSampleFontSet(String [] userFontDirs) 
+    public static PDFFontSet buildSampleFontSet(ClassLoader cl, String [] userFontDirs) 
         throws Exception {
 
         /*
@@ -195,7 +195,7 @@ public class SampleFontLoaderUtil {
          * fallback fonts that are provided during the construction of the
          * PDFFontSet.
          */
-        loadFallBackFonts(pdfFontSetImpl);
+        loadFallBackFonts(cl, pdfFontSetImpl);
 
         /*
          * Set the generic font family names in the fontset.
@@ -254,7 +254,7 @@ public class SampleFontLoaderUtil {
      * @throws InvalidFontException 
      * @throws FontLoadingException 
      */
-    private static void loadFallBackFonts(PDFFontSet pdfFontSet)
+    private static void loadFallBackFonts(ClassLoader cl, PDFFontSet pdfFontSet)
         throws PDFFontException, FontLoadingException, InvalidFontException, UnsupportedFontException {
 
     	/*
@@ -281,9 +281,9 @@ public class SampleFontLoaderUtil {
          * to use the APIs.
          */
         
-        Font[] kozmin    = loader.load(asFile("fonts" + File.separator + "KozMinPro-Regular.otf"));
-        Font[] adobeThai = loader.load(asFile("fonts" + File.separator + "AdobeThai-Regular.otf"));
-        Font[] minion    = loader.load(asFile("fonts" + File.separator + "MinionPro-Regular.otf"));
+        Font[] adobeThai = loader.load(asFile(cl, "fonts" + File.separator + "AdobeThai-Regular.otf"));
+        Font[] kozmin    = loader.load(asFile(cl, "fonts" + File.separator + "KozMinPro-Regular.otf"));
+        Font[] minion    = loader.load(asFile(cl, "fonts" + File.separator + "MinionPro-Regular.otf"));
 
         /*
          * After loading we check for errors that may have occurred with the
@@ -320,11 +320,10 @@ public class SampleFontLoaderUtil {
         pdfFontSet.addFallbackFont(new Locale("th"), adobeThai);
     }
 
-    private static URL asFile(String name)
+    private static URL asFile(ClassLoader cl, String name)
     	throws PDFFontException
 	{
-    	ClassLoader cl  = Thread.currentThread().getContextClassLoader();
-    	URL         url = cl.getResource(name);
+		URL url = cl.getResource(name);
     	if(url == null)
     	{
     		throw new PDFFontException("Can't load font '"+name+"'");

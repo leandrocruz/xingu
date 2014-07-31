@@ -1,8 +1,5 @@
 package xingu.node.commons.signal.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.avalon.framework.configuration.Configurable;
@@ -18,6 +15,7 @@ import xingu.node.commons.session.SessionManager;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalWaiter;
 import xingu.node.commons.signal.Waiter;
+import xingu.node.commons.signal.Waiters;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
 import br.com.ibnetwork.xingu.idgenerator.Generator;
@@ -37,7 +35,7 @@ public class SignalHandlerSupport
 
 	protected long					queryTimeout;
 
-	protected List<Waiter<Signal>>	waiters	= Collections.synchronizedList(new ArrayList<Waiter<Signal>>());
+	protected Waiters<Signal>		waiters	= new Waiters<Signal>();
 
 	protected Generator<String>		idGen;
 
@@ -45,9 +43,9 @@ public class SignalHandlerSupport
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		String       tm = conf.getChild("query").getAttribute("timeout", "5m");
-		queryTimeout    = TimeUtils.toMillis(tm);
-		idGen           = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
+		String tm = conf.getChild("query").getAttribute("timeout", "5m");
+		queryTimeout = TimeUtils.toMillis(tm);
+		idGen        = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
 
 	public Signal query(Signal signal, Channel channel)
@@ -76,11 +74,8 @@ public class SignalHandlerSupport
 		}
 		catch(Exception e)
 		{
-			return new ExceptionSignal(signal, e);
-		}
-		finally
-		{
 			waiters.remove(waiter);
+			return new ExceptionSignal(signal, e);
 		}
 
 		return reply;
@@ -98,7 +93,7 @@ public class SignalHandlerSupport
 		boolean success = future.isSuccess();
 		if(success)
 		{
-			Signal reply = waitForReply(signal, waiter);
+			Signal reply = waiters.waitForReply(waiter, queryTimeout); /* removed the waiter when not timed out */
 			if(reply != null)
 			{
 				return reply;
@@ -129,23 +124,5 @@ public class SignalHandlerSupport
 			signal.setSignalId(id);
 		}
 		return id;
-	}
-
-	protected Waiter<Signal> findWaiter(Signal signal)
-	{
-		for(Waiter<Signal> waiter : waiters)
-		{
-			if(waiter.waitingOn(signal))
-			{
-				return waiter;
-			}
-		}
-		return null;
-	}
-
-	protected Signal waitForReply(Signal signal, Waiter<Signal> waiter)
-	{
-	    waiter.waitFor(queryTimeout);
-	    return waiter.reply;
 	}
 }

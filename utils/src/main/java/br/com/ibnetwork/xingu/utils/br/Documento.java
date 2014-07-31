@@ -11,6 +11,9 @@ public class Documento
 
 	public static enum Type { UNKNOWN, CPF, CNPJ } ;
 	
+	public Documento()
+	{}
+	
 	public Documento(String value)
 	{
 		if(StringUtils.isEmpty(value))

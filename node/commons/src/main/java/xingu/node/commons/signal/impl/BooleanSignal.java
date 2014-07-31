@@ -9,6 +9,9 @@ public class BooleanSignal
 {
 	private Boolean bool;
 
+	public BooleanSignal()
+	{}
+
 	public BooleanSignal(Boolean bool)
 	{
 		this.bool = bool;

@@ -74,7 +74,7 @@ public abstract class SandboxManagerSupport
 		}
 		catch(Throwable t)
 		{
-			logger.warn("Error loading Sandbox from: " + desc, t);
+			logger.error("Error loading Sandbox from: " + desc, t);
 		}
 	}
 

@@ -23,10 +23,10 @@ public class ArrayUtils
 
     public static Object resizeArray(Object oldArray, int newSize)
     {
-        int oldSize = Array.getLength(oldArray);
-        Class<?> elementType = oldArray.getClass().getComponentType();
-        Object newArray = Array.newInstance(elementType, newSize);
-        int preserveLength = Math.min(oldSize, newSize);
+        int      oldSize        = Array.getLength(oldArray);
+        Class<?> elementType    = oldArray.getClass().getComponentType();
+        Object   newArray       = Array.newInstance(elementType, newSize);
+        int      preserveLength = Math.min(oldSize, newSize);
         if (preserveLength > 0)
         {
 			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
@@ -47,12 +47,12 @@ public class ArrayUtils
 
 	public static String toString(Object[] array, String separator)
 	{
-		return toString(array,separator,null,false,null,false);
+		return toString(array, separator, null, false, null, false);
 	}
 
 	public static String toString(Object[] array, String separator,String valueIfNull, String printNull, String valueIfEmpty, String printEmpty)
 	{
-		boolean printWhenNull = BooleanUtils.toBoolean(printNull);
+		boolean printWhenNull  = BooleanUtils.toBoolean(printNull);
 		boolean printWhenEmpty = BooleanUtils.toBoolean(printEmpty);
 		return toString(array,separator,valueIfNull,printWhenNull,valueIfEmpty,printWhenEmpty);
 	}
@@ -181,4 +181,12 @@ public class ArrayUtils
     	}
     	return true;
     }
+
+	public static String[] merge(String[] a, String[] b)
+	{
+		String[] result = new String[a.length + b.length];
+		System.arraycopy(a, 0, result, 0, a.length);
+		System.arraycopy(b, 0, result, a.length, b.length);
+		return result;
+	}
 }

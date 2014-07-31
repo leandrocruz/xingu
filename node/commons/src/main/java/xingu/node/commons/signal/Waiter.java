@@ -4,6 +4,8 @@ public abstract class Waiter<T>
 {
 	public T		reply;
 
+	public boolean	isLate		= false;
+
 	private long	startTime;
 
 	private long	stopTime;

@@ -24,12 +24,13 @@ public class PdfParserImpl
 	public Pdf parse(String file)
 		throws Exception
 	{
-		PDFDocument     pdf       = ApplicationUtils.loadPDFDocument(file);
-		PdfParseContext ctx       = new PdfParseContext();
+		PDFDocument     pdf         = ApplicationUtils.loadPDFDocument(file);
+		PdfParseContext ctx         = new PdfParseContext();
 
-		PDFFontSet      fontset   = SampleFontLoaderUtil.buildSampleFontSet();
-		TextExtractor   extractor = TextExtractor.newInstance(pdf, fontset);
-		WordsIterator   it        = extractor.getWordsIterator();
+		ClassLoader     classLoader = this.getClass().getClassLoader();
+		PDFFontSet      fontset     = SampleFontLoaderUtil.buildSampleFontSet(classLoader);
+		TextExtractor   extractor   = TextExtractor.newInstance(pdf, fontset);
+		WordsIterator   it          = extractor.getWordsIterator();
 
 		while(it.hasNext())
 		{
