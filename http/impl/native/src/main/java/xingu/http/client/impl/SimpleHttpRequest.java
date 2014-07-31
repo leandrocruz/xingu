@@ -40,9 +40,9 @@ public class SimpleHttpRequest
 	private String				certificate;
 
 	private String				certificatePassword;
-	
+
 	private String				authUser;
-	
+
 	private String				authPassword;
 
 	private boolean				multipart;
@@ -81,6 +81,14 @@ public class SimpleHttpRequest
 	@Override
 	public HttpRequest field(String name, String value)
 	{
+		if(name == null)
+		{
+			throw new NotImplementedYet("Name cannot be null.");
+		}
+		if(value == null)
+		{
+			throw new NotImplementedYet("Value cannot be null.");
+		}
 		fields.add(new NameValueImpl(name, value));
 		return this;
 	}
@@ -109,13 +117,13 @@ public class SimpleHttpRequest
 	{
 		return fields;
 	}
-	
+
 	@Override
 	public List<NameValue> getHeaders()
 	{
 		return headers;
 	}
-	
+
 	@Override
 	public List<NameValue> getUploadFiles()
 	{
@@ -145,7 +153,7 @@ public class SimpleHttpRequest
 			File         file = getOutputFile();
 			List<String> cmd  = builder.buildLine(this, file);
 			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
-			
+
 			result = pm.exec(cmd);
 			if(result == 0)
 			{
@@ -173,7 +181,7 @@ public class SimpleHttpRequest
 		{
 			File    root    = new File(tmp, ndc);
 			root.mkdirs();
-			
+
 			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
 				@Override
 				public Integer getParam(String name)
@@ -215,14 +223,14 @@ public class SimpleHttpRequest
 		cookies.addAll(c.set());
 		return this;
 	}
-	
+
 	@Override
 	public HttpRequest withUserAgent(String ua)
 	{
 		this.ua = ua;
 		return this;
 	}
-	
+
 	public HttpRequest multipart(boolean multipart)
 	{
 		this.multipart = multipart;
@@ -235,7 +243,7 @@ public class SimpleHttpRequest
 		upload.add(new NameValueImpl(name, filePath));
 		return this;
 	}
-	
+
 	@Override
 	public HttpRequest withAuthentication(String user, String password)
 	{
@@ -243,7 +251,7 @@ public class SimpleHttpRequest
 		this.authPassword 	= password;
 		return this;
 	}
-	
+
 	@Override
 	public String getAuthenticationUser()
 	{
@@ -255,13 +263,13 @@ public class SimpleHttpRequest
 	{
 		return authPassword;
 	}
-	
+
 	@Override
 	public String getUserAgent()
 	{
 		return ua;
 	}
-	
+
 	public boolean isMultipart()
 	{
 		return multipart;
