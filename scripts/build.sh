@@ -19,6 +19,7 @@ INITSCRIPT=$BUILDDIR/build/$APP_NAME.sh
 RESOURCES="$BUILDDIR/src/main/resources"
 PULGA="$RESOURCES/pulga.xml"
 LOGBACK="$RESOURCES/logback.xml"
+FILESDIR="$BUILDDIR/files"
 cd $BUILDDIR
 mvn dependency:copy-dependencies
 find . -name "*.jar"
@@ -43,6 +44,10 @@ if [ -f $LOGBACK ];then
 	cp $LOGBACK  $CFGDIR
 fi
 mkdir -p $MAZEDIR
+if [ -f $FILESDIR ];then
+	cp -R $FILESDIR/* $CFGDIR
+fi
+
 if [ -f $MAZEJAR ];then
 	cp $MAZEJAR $MAZEDIR
 fi
