@@ -4,6 +4,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.adobe.pdfjt.services.textextraction.Word;
 
 import xingu.pdf.Line;
@@ -117,5 +119,22 @@ public class PdfImpl
 	public int getPageCount()
 	{
 		return pageCount;
+	}
+
+	@Override
+	public String getText()
+	{
+		StringBuffer buffer = new StringBuffer();
+		List<Line>   lines  = getLines();
+		for(Line line : lines)
+		{
+			String asText = line.asText();
+			if(StringUtils.isEmpty(asText))
+			{
+				continue;
+			}
+			buffer.append(asText).append("\n");
+		}
+		return buffer.toString();
 	}
 }

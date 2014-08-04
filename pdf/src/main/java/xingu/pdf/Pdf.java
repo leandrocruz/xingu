@@ -19,4 +19,6 @@ public interface Pdf
 		throws Exception;
 	
 	int getPageCount();
+
+	String getText();
 }
