@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.ibnetwork.xingu.utils.StringUtils;
 
+import com.adobe.pdfjt.core.types.ASCoordinate;
 import com.adobe.pdfjt.services.textextraction.Word;
 
 public class Line
@@ -27,6 +28,13 @@ public class Line
 	public void add(Word word)
 		throws Exception
 	{
+		boolean vertical = isVertical(word);
+		if(vertical)
+		{
+			//System.err.println(word + " (" + angle + ")");
+			return;
+		}
+
 		int idx = indexFor(word);
 		if(idx < 0)
 		{
@@ -36,6 +44,15 @@ public class Line
 		{
 			words.add(idx, word);
 		}
+	}
+
+	private boolean isVertical(Word word)
+		throws Exception
+	{
+		ASCoordinate br = word.bottomRight();
+		ASCoordinate tl = word.topLeft();
+		double    angle = tl.angleTo(br);
+		return angle > 0;
 	}
 
 	private int indexFor(Word word)
