@@ -3,17 +3,14 @@ package xingu.node.commons.sandbox.impl;
 import java.io.File;
 import java.util.Iterator;
 
-import org.apache.commons.io.FilenameUtils;
-
 import xingu.node.commons.sandbox.SandboxDescriptor;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.io.zip.ZipUtils;
 
-public class RemoteSandboxManager
+public class FixedSandboxManager
 	extends SandboxManagerSupport
 {
 	@Inject
@@ -52,21 +49,6 @@ public class RemoteSandboxManager
 			String id = desc.getId();
 			updater.update(id);
 		}
-	}
-
-	@Override
-	protected File sourceDirectoryFor(SandboxDescriptor desc)
-		throws Exception
-	{
-		File   file    = desc.getFile();
-		String name    = file.getName();
-		String dirName = FilenameUtils.getBaseName(name);
-		File   dir     = new File(file.getParentFile(), dirName);
-		if(!dir.exists())
-		{
-			ZipUtils.explode(file, dir);
-		}
-		return dir;
 	}
 
 	@Override

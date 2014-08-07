@@ -178,6 +178,8 @@ public abstract class UpdateManagerSupport
 		
 		remote.setHash(h2);
 		FileUtils.writeByteArrayToFile(target, data, false);
+		logger.info("Wrote id#{} file#{}", id, target);
+
 		localDescriptors.put(remote);
 		writeConfig();
 
@@ -210,6 +212,7 @@ public abstract class UpdateManagerSupport
 		String config = sb.toString();
 		File file = new File(local, bundlesFile);
 		FileUtils.write(file, config);
+		logger.info("Wrote config {}", file);
 	}
 
 	@Override
