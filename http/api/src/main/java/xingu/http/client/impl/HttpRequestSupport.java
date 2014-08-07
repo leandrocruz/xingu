@@ -97,6 +97,10 @@ public abstract class HttpRequestSupport
 	@Override
 	public HttpRequest withCookie(Cookie cookie)
 	{
+		if(cookie == null)
+		{
+			throw new NotImplementedYet("Cookie is null");
+		}
 		cookies.add(cookie);
 		return this;
 	}
