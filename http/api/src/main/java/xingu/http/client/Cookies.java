@@ -17,4 +17,8 @@ public interface Cookies
 	List<String> names();
 	
 	Set<Cookie> set();
+
+	int size();
+
+	void add(Cookie cookie);
 }

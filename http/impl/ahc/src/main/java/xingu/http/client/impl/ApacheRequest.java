@@ -20,7 +20,6 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.CookieUtils;
 import xingu.http.client.HttpException;
-import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 
@@ -29,101 +28,52 @@ public class ApacheRequest
 {
 	private HttpUriRequest		req;
 
-	private List<NameValuePair>	params	= new ArrayList<NameValuePair>();
-
-	private List<NameValuePair>	files	= new ArrayList<NameValuePair>();
-
-	private List<Cookie>		cookies	= new ArrayList<Cookie>();
-
-	private boolean				isMultipart;
-
 	public ApacheRequest(HttpUriRequest req)
 	{
+		super(req.getURI().toString(), req.getMethod());
 		this.req = req;
-	}
-
-	@Override
-	public HttpRequest header(String name, String value)
-	{
-		req.addHeader(name, value);
-		return this;
-	}
-
-	@Override
-	public HttpRequest field(String name, String value)
-	{
-		params.add(new BasicNameValuePair(name, value));
-		return this;
-	}
-
-	@Override
-	public String getUri()
-	{
-		return req.getURI().toString();
-	}
-
-	@Override
-	public List<NameValue> getFields()
-	{
-		return null;
-	}
-
-	@Override
-	public HttpRequest multipart(boolean isMultipartFormData)
-	{
-		this.isMultipart = isMultipartFormData;
-		return this;
-	}
-
-	@Override
-	public HttpRequest upload(String name, String filePath)
-	{
-		files.add(new BasicNameValuePair(name, filePath));
-		return this;
-	}
-
-	@Override
-	public HttpRequest withCookie(Cookie cookie)
-	{
-		cookies.add(cookie);
-		return this;
-	}
-
-	@Override
-	public String toString()
-	{
-		return req.getMethod() + " " + req.getURI();
 	}
 
 	@Override
 	public HttpResponse exec()
 		throws HttpException
 	{
-		String method = req.getMethod();
-		if("POST".equals(method))
+		for(NameValue nv : headers)
+		{
+			req.addHeader(nv.getName(), nv.getValue());
+		}
+		
+		boolean isPost = isPost();
+		if(isPost)
 		{
 			HttpPost   post   = ((HttpPost) req);
 			HttpEntity entity = null;
-			if(isMultipart)
+			if(multipart)
 			{
 				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-				for(NameValuePair pair : files)
+				for(NameValue nv : attachments)
 				{
-					String name = pair.getName();
-					String path = pair.getValue();
+					String name = nv.getName();
+					String path = nv.getValue();
 					builder.addPart(name, new FileBody(new File(path)));
+					
 				}
 				entity = builder.build();
 			}
 			else
 			{
+				List<NameValuePair>	params	= new ArrayList<NameValuePair>();
+				for(NameValue nv : fields)
+				{
+					params.add(new BasicNameValuePair(nv.getName(), nv.getValue()));
+				}
 				entity = new UrlEncodedFormEntity(params, Consts.UTF_8);
 			}
 			
 			post.setEntity(entity);
 		}
 		
-		for(Cookie cookie : cookies)
+		for(Cookie cookie : cookies.set())
 		{
 			String cookieNameAndValue = CookieUtils.getCookieNameAndValue(cookie);
 			req.addHeader("Cookie", cookieNameAndValue);

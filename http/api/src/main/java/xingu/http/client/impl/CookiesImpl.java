@@ -99,4 +99,16 @@ public class CookiesImpl
 			set.add(replacement);
 		}
 	}
+
+	@Override
+	public int size()
+	{
+		return set.size();
+	}
+
+	@Override
+	public void add(Cookie cookie)
+	{
+		set.add(cookie);
+	}
 }

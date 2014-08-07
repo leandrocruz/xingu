@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilderSupport;
@@ -99,10 +100,10 @@ public class WgetCommandLineBuilder
 
 	private void placeCookies(HttpRequest req, List<String> result)
 	{
-		List<Cookie> cookies = req.getCookies();
-		if(cookies != null && cookies.size() > 0)
+		Cookies cookies = req.getCookies();
+		if(cookies != null && cookies.set().size() > 0)
 		{
-			for(Cookie c : cookies)
+			for(Cookie c : cookies.set())
 			{
 				result.add("--header='Cookie: " + c.getName() + "=" + c.getValue() + "'");
 			}

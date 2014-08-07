@@ -19,14 +19,14 @@ public class SimpleHttpClient
 	public HttpRequest get(String uri)
 		throws HttpException
 	{
-		return factory.create(SimpleHttpRequest.class, uri, false);
+		return factory.create(SimpleHttpRequest.class, uri, "GET");
 	}
 
 	@Override
 	public HttpRequest post(String uri)
 		throws HttpException
 	{
-		return factory.create(SimpleHttpRequest.class, uri, true);
+		return factory.create(SimpleHttpRequest.class, uri, "POST");
 	}
 
 	@Override

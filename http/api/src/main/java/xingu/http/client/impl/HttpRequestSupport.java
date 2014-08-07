@@ -1,14 +1,12 @@
 package xingu.http.client.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
-import org.jboss.netty.handler.codec.http.HttpHeaders;
 
 import xingu.http.client.Cookies;
-import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
-import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.StringUtils;
@@ -16,140 +14,207 @@ import br.com.ibnetwork.xingu.utils.StringUtils;
 public abstract class HttpRequestSupport
 	implements HttpRequest
 {
-	@Override
-	public String getAuthenticationUser()
+	protected String			method;
+
+	protected String			uri;
+
+	protected String			ua;
+
+	protected String			certificate;
+
+	protected String			certificatePassword;
+
+	protected String			authUser;
+
+	protected String			authPassword;
+
+	protected boolean			multipart;
+
+	protected String			ndc;
+
+	protected Cookies			cookies	= new CookiesImpl();
+
+	protected List<NameValue>	fields	= new ArrayList<NameValue>();
+
+	protected List<NameValue>	attachments	= new ArrayList<NameValue>();
+
+	protected List<NameValue>	headers	= new ArrayList<NameValue>();
+
+	public HttpRequestSupport(String uri, String method)
 	{
-		throw new NotImplementedYet();
+		this.uri    = uri;
+		this.method = method;
+
 	}
 
 	@Override
-	public String getAuthenticationPassword()
+	public String getUri()
 	{
-		throw new NotImplementedYet();
-	}
-	
-	@Override
-	public HttpRequest withAuthentication(String user, String password)
-	{
-		throw new NotImplementedYet();
-	}
-	
-	@Override
-	public HttpRequest withCertificate(String certificate)
-	{
-		throw new NotImplementedYet();
+		return uri;
 	}
 
 	@Override
-	public HttpRequest withCertificate(String certificate, String password)
+	public String getMethod()
 	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public HttpRequest withCookie(Cookie cookie)
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public HttpRequest withCookies(Cookies cookie)
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public HttpRequest withUserAgent(String ua)
-	{
-		this.header(HttpHeaders.Names.USER_AGENT, ua);
-		return this;
-	}
-
-	@Override
-	public String getCertificate()
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public List<NameValue> getFields()
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public List<NameValue> getHeaders()
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public List<Cookie> getCookies()
-	{
-		throw new NotImplementedYet();
+		return method;
 	}
 
 	@Override
 	public boolean isPost()
 	{
-		throw new NotImplementedYet();
+		return "POST".equalsIgnoreCase(method);
 	}
 
 	@Override
-	public boolean isMultipart()
+	public HttpRequest header(String name, String value)
 	{
-		throw new NotImplementedYet();
+		headers.add(new NameValueImpl(name, value));
+		return this;
 	}
 
 	@Override
-	public HttpRequest queryString(String name, String filePath)
+	public HttpRequest field(String name, String value)
 	{
-		throw new NotImplementedYet();
+		if(name == null)
+		{
+			throw new NotImplementedYet("Name cannot be null.");
+		}
+		if(value == null)
+		{
+			throw new NotImplementedYet("Value cannot be null.");
+		}
+		fields.add(new NameValueImpl(name, value));
+		return this;
+	}
+
+	@Override
+	public HttpRequest withCertificate(String certificate)
+	{
+		this.certificate = certificate;
+		return this;
+	}
+
+	@Override
+	public HttpRequest withCookie(Cookie cookie)
+	{
+		cookies.add(cookie);
+		return this;
+	}
+
+	@Override
+	public HttpRequest withCookies(Cookies cookies)
+	{
+		this.cookies = cookies;
+		return this;
+	}
+	
+	@Override
+	public String getCertificate()
+	{
+		return certificate;
+	}
+
+	@Override
+	public List<NameValue> getFields()
+	{
+		return fields;
+	}
+
+	@Override
+	public List<NameValue> getHeaders()
+	{
+		return headers;
+	}
+
+	@Override
+	public List<NameValue> getAttachments()
+	{
+		return attachments;
+	}
+
+	@Override
+	public Cookies getCookies()
+	{
+		return cookies;
+	}
+
+	@Override
+	public HttpRequest withCertificate(String certificate, String password)
+	{
+		this.certificatePassword = password;
+		return withCertificate(certificate);
 	}
 
 	@Override
 	public String getCertificatePassword()
 	{
-		throw new NotImplementedYet();
+		return certificatePassword;
+	}
+
+	@Override
+	public HttpRequest withUserAgent(String ua)
+	{
+		this.ua = ua;
+		return this;
+	}
+
+	public HttpRequest multipart(boolean multipart)
+	{
+		this.multipart = multipart;
+		return this;
+	}
+
+	@Override
+	public HttpRequest withAttachment(String name, String filePath)
+	{
+		attachments.add(new NameValueImpl(name, filePath));
+		return this;
+	}
+
+	@Override
+	public HttpRequest withAuthentication(String user, String password)
+	{
+		this.authUser 		= user;
+		this.authPassword 	= password;
+		return this;
+	}
+
+	@Override
+	public String getAuthenticationUser()
+	{
+		return authUser;
+	}
+
+	@Override
+	public String getAuthenticationPassword()
+	{
+		return authPassword;
 	}
 
 	@Override
 	public String getUserAgent()
 	{
-		throw new NotImplementedYet();
-	}
-	
-	public HttpRequest multipart(boolean isMultipartFormData)
-	{
-		throw new NotImplementedYet();
+		return ua;
 	}
 
-	@Override
-	public HttpRequest upload(String name, String filePath)
+	public boolean isMultipart()
 	{
-		throw new NotImplementedYet();
-	}
-	
-	@Override
-	public List<NameValue> getUploadFiles()
-	{
-		throw new NotImplementedYet();
-	}
-
-	@Override
-	public HttpResponse exec()
-		throws HttpException
-	{
-		throw new NotImplementedYet();
+		return multipart;
 	}
 
 	@Override
 	public HttpRequest ndc(String ndc)
 	{
+		this.ndc = ndc;
 		return this;
 	}
-	
-	
+
+	//@Override
+	public HttpRequest queryString(String name, String value)
+	{
+		throw new NotImplementedYet();
+	}
+
 	@Override
 	public HttpRequest field(String nameValue)
 	{
@@ -167,5 +232,11 @@ public abstract class HttpRequestSupport
 	public HttpRequest field(String name, long value)
 	{
 		return field(name, String.valueOf(value));
+	}
+
+	@Override
+	public String toString()
+	{
+		return method + " " + uri;
 	}
 }
