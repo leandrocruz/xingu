@@ -85,12 +85,10 @@ public class EclipseSandboxManager
 			@Override
 			public boolean accept(File file)
 			{
-				String name = file.getName();
-				if(name.endsWith(".xml"))
-				{
-					return !"bundles.xml".equals(name);
-				}
-				return false;
+				String  name     = file.getName();
+				boolean isXml    = name.endsWith(".xml");
+				boolean isBundle = "bundles.xml".equals(name);
+				return isXml && !isBundle;
 			}
 		});
 		
