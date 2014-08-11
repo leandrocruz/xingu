@@ -101,9 +101,9 @@ public class WgetCommandLineBuilder
 	private void placeCookies(HttpRequest req, List<String> result)
 	{
 		Cookies cookies = req.getCookies();
-		if(cookies != null && cookies.set().size() > 0)
+		if(cookies != null && cookies.getBuffer().size() > 0)
 		{
-			for(Cookie c : cookies.set())
+			for(Cookie c : cookies.getBuffer())
 			{
 				result.add("--header='Cookie: " + c.getName() + "=" + c.getValue() + "'");
 			}

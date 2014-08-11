@@ -2,20 +2,15 @@ package xingu.http.client.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.netty.handler.codec.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.http.client.ConnectionRefused;
-import xingu.http.client.Cookies;
 import xingu.http.client.HttpException;
-import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
-import xingu.http.client.NameValue;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
@@ -53,7 +48,14 @@ public class SimpleHttpRequest
 			result = pm.exec(cmd);
 			if(result == 0)
 			{
-				return builder.responseFrom(this, file);
+				HttpResponse res  = builder.responseFrom(this, file);
+				int          code = res.getCode();
+				if(expectedCode > 0 && code != expectedCode)
+				{
+					throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
+				}
+
+				return res;
 			}
 		}
 		catch(Exception e)

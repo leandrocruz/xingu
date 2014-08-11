@@ -262,7 +262,7 @@ public class CurlCommandLineBuilder
 			int i = 0;
 			result.add("--cookie");
 			StringBuffer sb = new StringBuffer();
-			for(Cookie c : cookies.set())
+			for(Cookie c : cookies.getBuffer())
 			{
 				if(c == null 
 						|| StringUtils.isEmpty(c.getName())

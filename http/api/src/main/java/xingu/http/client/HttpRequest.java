@@ -48,4 +48,6 @@ public interface HttpRequest
 
 	HttpResponse exec()
 		throws HttpException;
+
+	HttpRequest expects(int code);
 }

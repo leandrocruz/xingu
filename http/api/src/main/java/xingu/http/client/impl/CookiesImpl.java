@@ -13,26 +13,31 @@ import xingu.http.client.Cookies;
 public class CookiesImpl
 	implements Cookies
 {
-	private Set<Cookie> set;
+	private Set<Cookie> buffer;
 	
+	public CookiesImpl()
+	{
+		buffer = new HashSet<Cookie>();
+	}
+
 	public CookiesImpl(Cookie... cookies)
 	{
-		set = new HashSet<Cookie>();
+		buffer = new HashSet<Cookie>();
 		for(Cookie c : cookies)
 		{
-			set.add(c);
+			buffer.add(c);
 		}
 	}
 	
 	public CookiesImpl(Set<Cookie> cookies)
 	{
-		this.set = cookies;
+		this.buffer = cookies;
 	}
 
 	@Override
 	public Cookie byName(String name)
 	{
-		for(Cookie c : set)
+		for(Cookie c : buffer)
 		{
 			if(c.getName().equals(name))
 			{
@@ -45,7 +50,7 @@ public class CookiesImpl
 	@Override
 	public Cookie startingWith(String name)
 	{
-		for(Cookie c : set)
+		for(Cookie c : buffer)
 		{
 			if(c.getName().startsWith(name))
 			{
@@ -56,16 +61,21 @@ public class CookiesImpl
 	}
 
 	@Override
-	public Set<Cookie> set()
+	public Set<Cookie> getBuffer()
 	{
-		return set;
+		return buffer;
+	}
+
+	public void setBuffer(Set<Cookie> data)
+	{
+		this.buffer = data;
 	}
 
 	@Override
 	public List<String> names()
 	{
 		List<String> result = new ArrayList<String>();
-		for(Cookie c : set)
+		for(Cookie c : buffer)
 		{
 			result.add(c.getName());
 		}
@@ -85,7 +95,7 @@ public class CookiesImpl
 	public void replace(String name, Cookie replacement)
 	{
 		Cookie toRemove = null;
-		for(Cookie c : set)
+		for(Cookie c : buffer)
 		{
 			if(c.getName().startsWith(name))
 			{
@@ -95,20 +105,20 @@ public class CookiesImpl
 		}
 		if(toRemove != null)
 		{
-			set.remove(toRemove);
-			set.add(replacement);
+			buffer.remove(toRemove);
+			buffer.add(replacement);
 		}
 	}
 
 	@Override
 	public int size()
 	{
-		return set.size();
+		return buffer.size();
 	}
 
 	@Override
 	public void add(Cookie cookie)
 	{
-		set.add(cookie);
+		buffer.add(cookie);
 	}
 }

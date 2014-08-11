@@ -73,7 +73,7 @@ public class ApacheRequest
 			post.setEntity(entity);
 		}
 		
-		for(Cookie cookie : cookies.set())
+		for(Cookie cookie : cookies.getBuffer())
 		{
 			String cookieNameAndValue = CookieUtils.getCookieNameAndValue(cookie);
 			req.addHeader("Cookie", cookieNameAndValue);
@@ -83,7 +83,13 @@ public class ApacheRequest
 		try
 		{
 			org.apache.http.HttpResponse res = client.execute(req);
-			return ApacheHttpResponseBuilder.build(req, res);
+			HttpResponse build = ApacheHttpResponseBuilder.build(req, res);
+			int code = build.getCode();
+			if(expectedCode > 0 && code != expectedCode)
+			{
+				throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
+			}
+			return build;
 		}
 		catch(Exception e)
 		{

@@ -57,8 +57,8 @@ public class CookieUtils
 
 	public static Cookies mergeCookies(Cookies first, Cookies second)
 	{
-		Set<Cookie> currentSet = first.set();
-		Set<Cookie> toMergeSet = second.set();
+		Set<Cookie> currentSet = first.getBuffer();
+		Set<Cookie> toMergeSet = second.getBuffer();
 		for(Cookie cookie : toMergeSet)
 		{
 			Cookie current = first.byName(cookie.getName());

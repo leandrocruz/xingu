@@ -16,7 +16,7 @@ public interface Cookies
 	
 	List<String> names();
 	
-	Set<Cookie> set();
+	Set<Cookie> getBuffer();
 
 	int size();
 

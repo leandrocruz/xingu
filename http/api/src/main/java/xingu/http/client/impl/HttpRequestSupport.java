@@ -32,13 +32,15 @@ public abstract class HttpRequestSupport
 
 	protected String			ndc;
 
-	protected Cookies			cookies	= new CookiesImpl();
+	protected int				expectedCode;
 
-	protected List<NameValue>	fields	= new ArrayList<NameValue>();
+	protected Cookies			cookies		= new CookiesImpl();
+
+	protected List<NameValue>	fields		= new ArrayList<NameValue>();
 
 	protected List<NameValue>	attachments	= new ArrayList<NameValue>();
 
-	protected List<NameValue>	headers	= new ArrayList<NameValue>();
+	protected List<NameValue>	headers		= new ArrayList<NameValue>();
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -236,6 +238,13 @@ public abstract class HttpRequestSupport
 	public HttpRequest field(String name, long value)
 	{
 		return field(name, String.valueOf(value));
+	}
+
+	@Override
+	public HttpRequest expects(int code)
+	{
+		this.expectedCode = code;
+		return this;
 	}
 
 	@Override

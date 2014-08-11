@@ -14,7 +14,6 @@ import xingu.http.client.NameValue;
 
 public class ApacheHttpResponseBuilder
 {
-
 	public static HttpResponse build(HttpUriRequest req, org.apache.http.HttpResponse res)
 		throws IOException
 	
