@@ -21,6 +21,7 @@ public abstract class CommandSupport
 	}
 
 	protected boolean checkArgs(String[] args)
+		throws Exception
 	{
 		return args != null;
 	}
