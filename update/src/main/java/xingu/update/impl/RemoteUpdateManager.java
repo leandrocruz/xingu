@@ -38,11 +38,12 @@ public class RemoteUpdateManager
 	protected BundleDescriptors getRemoteDescriptors()
 		throws Exception
 	{
-		logger.info("Loading remote descriptors");
-		String       uri      = remote + "/" + bundlesFile;
-		HttpRequest  req      = http.get(uri);
-		HttpResponse response = req.exec();
-		InputStream  is       = response.getRawBody();
+		String uri = remote + "/" + bundlesFile;
+		logger.info("Loading remote descriptors from {}", uri);
+
+		HttpRequest  req = http.get(uri);
+		HttpResponse res = req.exec();
+		InputStream  is  = res.getRawBody();
 		return parse(is);
 	}
 	
