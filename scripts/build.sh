@@ -44,7 +44,7 @@ if [ -f $LOGBACK ];then
 	cp $LOGBACK  $CFGDIR
 fi
 mkdir -p $MAZEDIR
-if [ -f $FILESDIR ];then
+if [ -d $FILESDIR ];then
 	cp -R $FILESDIR/* $CFGDIR
 fi
 
