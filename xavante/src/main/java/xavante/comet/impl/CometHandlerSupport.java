@@ -82,7 +82,7 @@ public abstract class CometHandlerSupport
 		return "{\"type\": \"OK\", \"sessionId\":\"" + session.getId() + "\"}";
 	}
 
-	private String send(CometMessage msg)
+	protected String send(CometMessage msg)
 		throws Exception
 	{
 		/*
@@ -165,7 +165,7 @@ public abstract class CometHandlerSupport
         }
 	}
 
-	private String drain(CometMessage msg)
+	protected String drain(CometMessage msg)
 		throws Exception
 	{
 		String       hash     = msg.getToken();
