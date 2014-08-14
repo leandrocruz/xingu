@@ -50,4 +50,6 @@ public interface HttpRequest
 		throws HttpException;
 
 	HttpRequest expects(int code);
+	
+	HttpRequest expects(int code, String errorMessage);
 }

@@ -85,10 +85,7 @@ public class ApacheRequest
 			org.apache.http.HttpResponse res = client.execute(req);
 			HttpResponse build = ApacheHttpResponseBuilder.build(req, res);
 			int code = build.getCode();
-			if(expectedCode > 0 && code != expectedCode)
-			{
-				throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
-			}
+			checkCode(code);
 			return build;
 		}
 		catch(Exception e)

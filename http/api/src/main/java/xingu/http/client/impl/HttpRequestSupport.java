@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
@@ -33,6 +34,8 @@ public abstract class HttpRequestSupport
 	protected String			ndc;
 
 	protected int				expectedCode;
+
+	protected String			messageIfCodeMismatch;
 
 	protected Cookies			cookies		= new CookiesImpl();
 
@@ -245,6 +248,26 @@ public abstract class HttpRequestSupport
 	{
 		this.expectedCode = code;
 		return this;
+	}
+	
+	@Override
+	public HttpRequest expects(int code, String errorMessage)
+	{
+		this.expectedCode = code;
+		this.messageIfCodeMismatch = errorMessage;
+		return this;
+	}
+
+	protected void checkCode(int code)
+	{
+		if(expectedCode > 0 && code != expectedCode)
+		{
+			if(messageIfCodeMismatch != null)
+			{
+				throw new HttpException(messageIfCodeMismatch);
+			}
+			throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
+		}
 	}
 
 	@Override

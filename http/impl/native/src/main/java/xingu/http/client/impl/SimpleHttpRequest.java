@@ -50,10 +50,7 @@ public class SimpleHttpRequest
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
 				int          code = res.getCode();
-				if(expectedCode > 0 && code != expectedCode)
-				{
-					throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
-				}
+				checkCode(code);
 
 				return res;
 			}
