@@ -172,6 +172,23 @@ public class ObjectInspectorTest
 	}
 
 	@Test
+	public void testNodeFactory()
+		throws Exception
+	{
+		String xml = 
+				"<obj id=\"1\" class=\"test\">"
+						+ "<string id=\"2\" field=\"name\" value=\"NAME\"/>"
+						+ "<int id=\"3\" field=\"value\" value=\"99\"/>"
+						+ "<int id=\"4\" field=\"ghost\" value=\"99\"/>"
+				+ "</obj>";
+		TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
+		registry.register(new WithNodeFactoryTypeHandler());
+		WithNodeFactory decoded = (WithNodeFactory) decode(xml, registry);
+		assertEquals("NAME", decoded.name);
+		assertEquals(99, decoded.value);
+	}
+
+	@Test
 	@Ignore
 	public void testEmptyArray()
 		throws Exception

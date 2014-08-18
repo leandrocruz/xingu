@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils.inspector.impl;
 
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ import br.com.ibnetwork.xingu.utils.ArrayUtils;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import br.com.ibnetwork.xingu.utils.inspector.NodeFactory;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.type.ObjectType;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
@@ -128,7 +130,12 @@ public class XmlReader
 		Node value = stack.pop();
 		if(stack.empty())
 		{
-			return value.payload;
+			Object payload = value.payload;
+			if(payload instanceof NodeFactory)
+			{
+				return ((NodeFactory) payload).create();
+			}
+			return payload;
 		}
 		
 		Node target = stack.peek();
@@ -191,7 +198,11 @@ class Node
 	{
 		if(value.field != null)
 		{
-			FieldUtils.setField(payload, value.field, value.payload);
+			Field field = FieldUtils.getField(payload.getClass(), value.field);
+			if(field != null)
+			{
+				FieldUtils.setField(payload, field, value.payload);
+			}
 		}
 		else
 		{

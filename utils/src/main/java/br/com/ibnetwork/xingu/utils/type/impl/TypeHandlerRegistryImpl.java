@@ -23,6 +23,9 @@ public class TypeHandlerRegistryImpl
 		_register(new FloatTypeHandler());
 		_register(new DoubleTypeHandler());
 		_register(new DateTypeHandler());
+		_register(new EmptySetTypeHandler());
+		_register(new EmptyMapTypeHandler());
+		_register(new EmptyListTypeHandler());
 	}
 
 	@Override
