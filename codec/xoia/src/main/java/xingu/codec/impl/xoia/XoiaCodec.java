@@ -1,24 +1,64 @@
 package xingu.codec.impl.xoia;
 
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+
 import xingu.codec.Codec;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
 import br.com.ibnetwork.xingu.utils.inspector.impl.SimpleObjectInspector;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlEmitter;
 import br.com.ibnetwork.xingu.utils.inspector.impl.XmlReader;
+import br.com.ibnetwork.xingu.utils.type.ObjectType;
+import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
+import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 import br.com.ibnetwork.xingu.utils.type.TypeHandlerRegistry;
 import br.com.ibnetwork.xingu.utils.type.impl.TypeHandlerRegistryImpl;
 
 public class XoiaCodec
-	implements Codec
+	implements Codec, Configurable
 {
 	@Inject
 	private ClassLoaderManager clm;
+	
+	@Inject
+	private Factory factory;
 
 	private TypeHandlerRegistry registry = new TypeHandlerRegistryImpl();
-	
+
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		Configuration[] handlers = conf.getChild("handlers").getChildren("handler");
+		for(Configuration handlerConf : handlers)
+		{
+			TypeHandler handler = toTypeHandler(handlerConf);
+			registry.register(handler);
+		}
+	}
+
+	private TypeHandler toTypeHandler(Configuration conf)
+		throws ConfigurationException
+	{
+		String   className = conf.getAttribute("class");
+		String   forName   = conf.getAttribute("for");
+		String   name      = conf.getAttribute("name");
+		String   typeName  = conf.getAttribute("type", null);
+		Class<?> forClass  = ObjectUtils.loadClass(forName);
+		Type     type      = typeName == null ? ObjectType.Type.OBJECT : ObjectType.Type.valueOf(typeName);
+		
+		@SuppressWarnings("unchecked")
+		Class<? extends TypeHandler> clazz = (Class<? extends TypeHandler>) ObjectUtils.loadClass(className);
+		
+		return factory.create(clazz, forClass, name, type);
+	}
+
 	@Override
 	public String encode(Object object)
 		throws Exception
