@@ -130,12 +130,7 @@ public class XmlReader
 		Node value = stack.pop();
 		if(stack.empty())
 		{
-			Object payload = value.payload;
-			if(payload instanceof NodeFactory)
-			{
-				return ((NodeFactory) payload).create();
-			}
-			return payload;
+			return value.resolve();
 		}
 		
 		Node target = stack.peek();
@@ -193,15 +188,27 @@ class Node
 		this.type        = attrs.getValue("type");
 	}
 	
+	public Object resolve()
+	{
+		if(payload instanceof NodeFactory)
+		{
+			return ((NodeFactory) payload).create();
+		}
+		return payload;
+	}
+
 	public void attach(Node value)
 		throws Exception
 	{
+		//System.out.println("Attaching: " + value.field + "=" + value.value);
+
+		Object toAdd = value.resolve();
 		if(value.field != null)
 		{
 			Field field = FieldUtils.getField(payload.getClass(), value.field);
 			if(field != null)
 			{
-				FieldUtils.setField(payload, field, value.payload);
+				FieldUtils.setField(payload, field, toAdd);
 			}
 		}
 		else
@@ -214,7 +221,7 @@ class Node
 					
 					int len = Array.getLength(payload);
 					payload = ArrayUtils.resizeArray(payload, len + 1);
-					Array.set(payload, len, value.payload);
+					Array.set(payload, len, toAdd);
 					
 					return;
 					
@@ -222,7 +229,7 @@ class Node
 					
 					@SuppressWarnings("unchecked")
 					Collection<Object> coll = (Collection<Object>) payload;
-					coll.add(value.payload);
+					coll.add(toAdd);
 					
 					return;
 				
@@ -230,12 +237,12 @@ class Node
 					
 					if(entry == null)
 					{
-						entry = new MapEntry(value.payload);
+						entry = new MapEntry(toAdd);
 						return;
 					}
 					else
 					{
-						entry.set(value.payload);
+						entry.set(toAdd);
 					}
 					
 					Map map = (Map) payload;
