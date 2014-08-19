@@ -75,6 +75,8 @@ public class HttpMocker
 		when(req.field(any(String.class), any(Long.class))).thenReturn(req);
 		when(req.field(any(String.class))).thenReturn(req);
 		when(req.header(any(String.class), any(String.class))).thenReturn(req);
+		when(req.expects(any(Integer.class))).thenReturn(req);
+		when(req.expects(any(Integer.class), any(String.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
 
 		return req;
