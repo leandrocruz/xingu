@@ -11,9 +11,10 @@ public class CookieUtils
 {
 	public static final Cookie[] EMPTY = new Cookie[]{};
 
+	private static CookieDecoder decoder = new CookieDecoder();
+
 	public static Cookies toCookies(String input)
 	{
-		CookieDecoder decoder = new CookieDecoder();
 		Set<Cookie>   decoded = decoder.decode(input);
 		return new CookiesImpl(decoded);
 	}
@@ -22,7 +23,6 @@ public class CookieUtils
 	{
 		StringBuffer  sb      = new StringBuffer();
 		NameValue[]   headers = res.getHeaders();
-		CookieDecoder decoder = new CookieDecoder();
 
 		for(NameValue header : headers)
 		{
