@@ -17,6 +17,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +164,8 @@ public abstract class UpdateManagerSupport
 		File target = getAbsoluteFile(remote);
 		if(target.exists())
 		{
-			logger.warn("Overriding local file '{}'", target);	
+			logger.warn("Overriding local file '{}'", target);
+			clean(target);	
 		}
 
 		InputStream is   = toInputStream(remote);
@@ -184,6 +186,20 @@ public abstract class UpdateManagerSupport
 		writeConfig();
 
 		return remote;
+	}
+
+	private void clean(File target)
+	{
+		File parent = target.getParentFile();
+		String name = target.getName();
+		name = FilenameUtils.getBaseName(name);
+		File dir = new File(parent, name);
+		
+		logger.info("Deleting directory '{}'", dir);
+		FileUtils.deleteQuietly(dir);
+		
+		logger.info("Deleting file '{}'", target);
+		FileUtils.deleteQuietly(target);
 	}
 
 	private void writeConfig()
