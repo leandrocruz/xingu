@@ -66,7 +66,7 @@ public class FieldInjector
 			}
 			catch(Exception t)
 			{
-				log.error("Error injecting dependency '"+type.getName()+"' on '"+obj+"'", t);
+				//log.error("Error injecting dependency '"+type.getName()+"' on '"+obj+"'");
 			    throw t;
 			}
 		}

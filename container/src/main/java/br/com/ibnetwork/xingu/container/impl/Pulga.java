@@ -225,8 +225,8 @@ public class Pulga
             }
             catch (Exception e)
             {
-                String msg = "Error initializing component: " + role + "[" + key + "]";
-                log.info(msg, e);
+                String msg = "Error initializing component: " + role.getName() + "[" + key + "]";
+                //log.info(msg);
                 throw new ContainerException(msg, e);
             }
             log.debug("Binding ["+role.getSimpleName()+":"+key+"] to ["+impl+"] is ready");
