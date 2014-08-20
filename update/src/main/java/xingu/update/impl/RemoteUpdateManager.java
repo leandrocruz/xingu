@@ -53,8 +53,11 @@ public class RemoteUpdateManager
 		String       file = desc.getFile();
 		String       id   = desc.getId();
 		String       uri  = this.remote + "/" + id + "/" + file;
-		HttpResponse res  = http.get(uri).exec();
-		InputStream  is   = res.getRawBody();
-		return is;
+
+		logger.info("Downloading '{}'", uri);
+		HttpResponse res = http.get(uri).exec();
+		logger.info("Download done '{}'", uri);
+		
+		return res.getRawBody();
 	}
 }
