@@ -3,9 +3,11 @@ package xavante.dispatcher.impl;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
+import xavante.Xavante;
 import xavante.XavanteRequest;
 import xavante.XavanteRequestFactory;
 import xavante.dispatcher.DefaultRequestHandler;
@@ -15,6 +17,7 @@ import xingu.url.Url;
 import xingu.url.UrlParser;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class RequestDispatcherImpl
@@ -53,16 +56,44 @@ public class RequestDispatcherImpl
 		Url    url  = UrlParser.parse(uri);
 		String path = url.getPath();
 
+		RequestHandler handler = byPath(path);
+
+		String fixed = fixPath(url, handler);
+		req.setUri(fixed);
+		
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel, url);
+		handler.handle(xeq);
+	}
+
+	private String fixPath(Url url, RequestHandler handler)
+	{
 		/*
 		 * Fixes badly formed HTTP 1.0 requests, also
 		 * normalizes the path using StringUtils.normalizedPath()
 		 */
-		String pqsf = url.getPathQueryStringAndFragment();
-		req.setUri(pqsf);
+		String fixed = url.getPathQueryStringAndFragment();
 
-		RequestHandler handler = byPath(path);
-		XavanteRequest xeq     = XavanteRequestFactory.build(req, channel, url);
-		handler.handle(xeq);
+		/*
+		 * Removes the context/handler path from the original path
+		 */
+		String  handlerPath = handler.getConfiguredPath();
+		boolean root        = Xavante.isRoot(handlerPath);
+		if(!root)
+		{
+			int len = handlerPath.length();
+			fixed = fixed.substring(len);
+			if(StringUtils.EMPTY.equals(fixed))
+			{
+				fixed = Xavante.SLASH;
+			}
+		}
+		
+		if(!fixed.startsWith(Xavante.SLASH))
+		{
+			fixed = Xavante.SLASH + fixed;
+		}
+		
+		return fixed;
 	}
 
 	@Override

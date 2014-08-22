@@ -31,7 +31,7 @@ public class MessageFactoryImpl
 		HttpRequest req = xeq.getRequest();
 		Channel channel = xeq.getChannel();
 
-		String path = xeq.getPath();
+		String path = req.getUri();
 		int    len  = path.length();
 		SocketAddress remoteAddress = channel.getRemoteAddress();
 		SocketAddress localAddress  = channel.getLocalAddress();
