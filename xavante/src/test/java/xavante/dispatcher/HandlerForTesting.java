@@ -1,12 +1,18 @@
 package xavante.dispatcher;
 
 import xavante.XavanteRequest;
+import xavante.dispatcher.impl.RequestHandlerSupport;
 
 public class HandlerForTesting
-	implements RequestHandler
+	extends RequestHandlerSupport
 {
 	public boolean executed = false;
-	
+
+	public HandlerForTesting(String path)
+	{
+		super(path);
+	}
+
 	@Override
 	public void handle(XavanteRequest req)
 		throws Exception

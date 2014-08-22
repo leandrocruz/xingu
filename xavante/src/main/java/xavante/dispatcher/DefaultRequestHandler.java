@@ -21,29 +21,34 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 import xavante.Xavante;
 import xavante.XavanteRequest;
-import xavante.dispatcher.impl.RequestHandlerSupport;
 import xingu.netty.http.HttpResponseBuilder;
 
 public class DefaultRequestHandler
-	extends RequestHandlerSupport
+	implements RequestHandler
 {
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss Z");
 
 	private static Map<String, String> mimeByExtension = new HashMap<String, String>();
 	
 	static {
-		mimeByExtension.put("html",		"text/html");
-		mimeByExtension.put("htm", 		"text/html");
-		mimeByExtension.put("txt", 		"text/plain");
-		mimeByExtension.put("css", 		"text/css");
-		mimeByExtension.put("jpg",		"image/jpeg");
-		mimeByExtension.put("gif", 		"image/gif");
-		mimeByExtension.put("png",		"image/png");
-		mimeByExtension.put("js", 		"application/javascript");
-		mimeByExtension.put("json",		"application/json");
-		mimeByExtension.put("xml",		"application/xml");
-		mimeByExtension.put("pdf",		"application/pdf");
-		mimeByExtension.put("zip",		"application/zip");
+		mimeByExtension.put("html",	"text/html");
+		mimeByExtension.put("htm", 	"text/html");
+		mimeByExtension.put("txt", 	"text/plain");
+		mimeByExtension.put("css", 	"text/css");
+		mimeByExtension.put("jpg",	"image/jpeg");
+		mimeByExtension.put("gif", 	"image/gif");
+		mimeByExtension.put("png",	"image/png");
+		mimeByExtension.put("js", 	"application/javascript");
+		mimeByExtension.put("json",	"application/json");
+		mimeByExtension.put("xml",	"application/xml");
+		mimeByExtension.put("pdf",	"application/pdf");
+		mimeByExtension.put("zip",	"application/zip");
+	}
+
+	@Override
+	public String getConfiguredPath()
+	{
+		return null;
 	}
 	
 	@Override

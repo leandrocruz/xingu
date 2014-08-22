@@ -23,6 +23,11 @@ public class LongPollingCometHandler
 	@Inject
 	private MessageFactory factory;
 
+	public LongPollingCometHandler(String path)
+	{
+		super(path);
+	}
+
 	@Override
 	public void handle(XavanteRequest xeq)
 		throws Exception
