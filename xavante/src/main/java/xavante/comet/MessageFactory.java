@@ -1,12 +1,12 @@
 package xavante.comet;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
+
+import xavante.XavanteRequest;
 
 public interface MessageFactory
 {
-	CometMessage build(HttpRequest req, HttpResponse resp, Channel channel)
+	CometMessage build(XavanteRequest xeq, HttpResponse resp)
 		throws Exception;
 
 	int getMessageIdLength();

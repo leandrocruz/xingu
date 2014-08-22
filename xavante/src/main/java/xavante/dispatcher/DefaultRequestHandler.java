@@ -12,7 +12,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -21,6 +20,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 import xavante.Xavante;
+import xavante.XavanteRequest;
 import xavante.dispatcher.impl.RequestHandlerSupport;
 import xingu.netty.http.HttpResponseBuilder;
 
@@ -47,11 +47,12 @@ public class DefaultRequestHandler
 	}
 	
 	@Override
-	public void handle(HttpRequest req, Channel channel)
+	public void handle(XavanteRequest xeq)
 		throws Exception
 	{
-		String uri  = req.getUri();
-		boolean isRoot = Xavante.isRoot(uri);
+		HttpRequest request = xeq.getRequest();
+		String      uri     = request.getUri();
+		boolean     isRoot  = Xavante.isRoot(uri);
 		if(isRoot)
 		{
 			uri = "/index.html";
@@ -99,8 +100,8 @@ public class DefaultRequestHandler
 				.withContent(content)
 				.build();
 
-		String conn = req.getHeader(HttpHeaders.Names.CONNECTION);
-		ChannelFuture future = channel.write(res);
+		String conn = request.getHeader(HttpHeaders.Names.CONNECTION);
+		ChannelFuture future = xeq.write(res);
 		if(HttpHeaders.Values.CLOSE.equalsIgnoreCase(conn))
 		{
 			future.addListener(ChannelFutureListener.CLOSE);

@@ -1,46 +1,47 @@
 package xavante.dispatcher.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 
-import xavante.Xavante;
+import xavante.XavanteRequest;
+import xavante.XavanteRequestFactory;
 import xavante.dispatcher.DefaultRequestHandler;
 import xavante.dispatcher.RequestDispatcher;
 import xavante.dispatcher.RequestHandler;
+import xingu.url.Url;
+import xingu.url.UrlParser;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class RequestDispatcherImpl
 	implements RequestDispatcher, Configurable
 {
 	@Inject
-	private Factory						 factory;
+	private Factory						factory;
 
-	private RequestHandler				 deflt			= new DefaultRequestHandler();
+	private Entry[]		handlers;
 
-	private Map<String, RequestHandler>	 handlerByPath	= new HashMap<String, RequestHandler>();
+	private static final RequestHandler	deflt	= new DefaultRequestHandler();
 
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
 		Configuration[] handlers = conf.getChild("handlers").getChildren("handler");
+		this.handlers = new Entry[handlers.length];
+		
+		int i = 0;
 		for(Configuration h : handlers)
 		{
 			String         path      = h.getAttribute("path");
 			String         className = h.getAttribute("class");
 			Class<?>       clazz     = ObjectUtils.loadClass(className);
 			RequestHandler handler   = (RequestHandler) factory.create(clazz);
-			handlerByPath.put(path, handler);
+			this.handlers[i++] = new Entry(path, handler);
 		}
 	}
 
@@ -49,40 +50,39 @@ public class RequestDispatcherImpl
 		throws Exception
 	{
 		RequestHandler handler = deflt;
-		String         path    = Xavante.SLASH;
 		String         uri     = req.getUri();
-		for(String key : handlerByPath.keySet())
+		Url            url     = UrlParser.parse(uri);
+		String         path    = url.getPath();
+
+		for(Entry entry : handlers)
 		{
-			if(uri.startsWith(key))
+			if(path.startsWith(entry.path))
 			{
-				handler = handlerByPath.get(key);
-				path    = key;
+				handler = entry.handler;
 				break;
 			}
 		}
 
-		fixPath(req, path);
-		handler.handle(req, channel);
+		/*
+		 * Fixes badly formed HTTP 1.0 requests, also
+		 * normalizes the path
+		 */
+		req.setUri(path);
+		
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel, url);
+		handler.handle(xeq);
 	}
+}
 
-	private void fixPath(HttpRequest req, String path)
+class Entry
+{
+	String path;
+	
+	RequestHandler handler;
+	
+	public Entry(String path, RequestHandler handler)
 	{
-		String uri = req.getUri();
-		if(!uri.startsWith(path))
-		{
-			throw new NotImplementedYet();
-		}
-
-		int len = path.length();
-		uri     = uri.substring(len);
-		if(StringUtils.EMPTY.equals(uri))
-		{
-			uri = Xavante.SLASH;
-		}
-		else if(!uri.startsWith(Xavante.SLASH))
-		{
-			uri = Xavante.SLASH + uri;
-		}
-		req.setUri(uri);
+		this.path    = path;
+		this.handler = handler;
 	}
 }

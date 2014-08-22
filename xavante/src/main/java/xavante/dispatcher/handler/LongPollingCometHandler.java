@@ -2,12 +2,11 @@ package xavante.dispatcher.handler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
-import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
+import xavante.XavanteRequest;
 import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
 import xavante.comet.MessageFactory;
@@ -25,7 +24,7 @@ public class LongPollingCometHandler
 	private MessageFactory factory;
 
 	@Override
-	public void handle(HttpRequest req, Channel channel)
+	public void handle(XavanteRequest xeq)
 		throws Exception
 	{
 		/*
@@ -39,7 +38,7 @@ public class LongPollingCometHandler
 		String reply = null;
 		try
 		{
-			CometMessage msg = factory.build(req, resp, channel);
+			CometMessage msg = factory.build(xeq, resp);
 			reply            = handler.onMessage(msg);
 		}
 		catch(Throwable t)
@@ -58,6 +57,6 @@ public class LongPollingCometHandler
 			}
 		}
 		
-		channel.write(resp).addListener(ChannelFutureListener.CLOSE);
+		xeq.write(resp).addListener(ChannelFutureListener.CLOSE);
 	}
 }

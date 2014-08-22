@@ -14,6 +14,8 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.junit.Test;
 
+import xavante.XavanteRequest;
+import xavante.XavanteRequestFactory;
 import xavante.comet.impl.MessageFactoryImpl;
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;
@@ -47,8 +49,9 @@ public class MessageFactoryTest
 		Channel      channel = mock(Channel.class);
 		
 		when(req.getUri()).thenReturn("/xxx");
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel);
 		
-		CometMessage msg = factory.build(req, resp, channel);
+		CometMessage msg = factory.build(xeq, resp);
 		assertEquals("xxx", msg.getCommand());
 		assertEquals(null, msg.getToken());
 		assertEquals(null, msg.getSequence());
@@ -66,7 +69,8 @@ public class MessageFactoryTest
 		String token = RandomStringUtils.randomAlphanumeric(MessageFactoryImpl.ID_LEN);
 		when(req.getUri()).thenReturn("/yyy/" + token);
 		
-		CometMessage msg = factory.build(req, resp, channel);
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel);
+		CometMessage msg = factory.build(xeq, resp);
 		assertEquals("yyy", msg.getCommand());
 		assertEquals(token, msg.getToken());
 		assertEquals(null, msg.getSequence());
@@ -84,7 +88,8 @@ public class MessageFactoryTest
 		String token = RandomStringUtils.randomAlphanumeric(MessageFactoryImpl.ID_LEN);
 		when(req.getUri()).thenReturn("/zzz/" + token + "/1000");
 		
-		CometMessage msg = factory.build(req, resp, channel);
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel);
+		CometMessage   msg = factory.build(xeq, resp);
 		assertEquals("zzz", msg.getCommand());
 		assertEquals(token, msg.getToken());
 		assertEquals("1000", msg.getSequence());
@@ -110,7 +115,8 @@ public class MessageFactoryTest
 		byte[] bytes   = encoded.getBytes(charset);
 		when(req.getContent()).thenReturn(ChannelBuffers.wrappedBuffer(bytes));
 		
-		CometMessage msg = factory.build(req, resp, channel);
+		XavanteRequest xeq = XavanteRequestFactory.build(req, channel);
+		CometMessage msg = factory.build(xeq, resp);
 		assertEquals("aaa", msg.getCommand());
 		assertEquals(token, msg.getToken());
 		assertEquals("1", msg.getSequence());

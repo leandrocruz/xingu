@@ -1,17 +1,14 @@
 package xavante.dispatcher.impl;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.handler.codec.http.HttpRequest;
-
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-
+import xavante.XavanteRequest;
 import xavante.dispatcher.RequestHandler;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class RequestHandlerSupport
 	implements RequestHandler
 {
 	@Override
-	public void handle(HttpRequest req, Channel channel)
+	public void handle(XavanteRequest req)
 		throws Exception
 	{
 		throw new NotImplementedYet();

@@ -11,6 +11,7 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
+import xavante.XavanteRequest;
 import xavante.comet.CometMessage;
 import xavante.comet.MessageFactory;
 import xingu.netty.http.HttpUtils;
@@ -24,11 +25,14 @@ public class MessageFactoryImpl
 	public static final int CMD_LEN = 3;
 
 	@Override
-	public CometMessage build(HttpRequest req, HttpResponse resp, Channel channel)
+	public CometMessage build(XavanteRequest xeq, HttpResponse resp)
 		throws Exception
 	{
-		String        path          = req.getUri();
-		int           len           = path.length();
+		HttpRequest req = xeq.getRequest();
+		Channel channel = xeq.getChannel();
+
+		String path = xeq.getPath();
+		int    len  = path.length();
 		SocketAddress remoteAddress = channel.getRemoteAddress();
 		SocketAddress localAddress  = channel.getLocalAddress();
 
