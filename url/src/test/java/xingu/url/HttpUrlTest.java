@@ -118,6 +118,11 @@ public class HttpUrlTest
         assertEquals(null, hostAndPort.getPath());
         assertEquals(null, hostAndQuery.getPath());
         assertEquals(null, hostPortAndQuery.getPath());
+        
+        assertEquals("/path", UrlParser.parse("http://x.com/path").getPath());
+        assertEquals("/path", UrlParser.parse("http://x.com/path/").getPath());
+        assertEquals("/path", UrlParser.parse("http://x.com/path//").getPath());
+        assertEquals("/path", UrlParser.parse("http://x.com/path///").getPath());
     }
 
     @Test

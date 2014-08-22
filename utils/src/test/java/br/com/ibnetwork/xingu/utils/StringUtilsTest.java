@@ -9,6 +9,30 @@ import org.junit.Test;
 
 public class StringUtilsTest
 {
+	@Test
+	public void testNormalizePath()
+	{
+        assertEquals("/path",		StringUtils.normalizePath("/path"));
+        assertEquals("/path",		StringUtils.normalizePath("/path/"));
+        assertEquals("/path",		StringUtils.normalizePath("/path//"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path//a"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path//a/"));
+        assertEquals("/path",		StringUtils.normalizePath("/path///"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path/a//"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path//a/"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path///a"));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path///a/"));
+        assertEquals("/path/a/b/c", StringUtils.normalizePath("/path///a/b//c/"));
+        assertEquals("/path", 		StringUtils.normalizePath("/path/.."));
+        assertEquals("/path", 		StringUtils.normalizePath("/path/../"));
+        assertEquals("/path", 		StringUtils.normalizePath("/path/../.."));
+        assertEquals("/path/a", 	StringUtils.normalizePath("/path/../../a"));
+        assertEquals("/path/a/b", 	StringUtils.normalizePath("/path/../../a/b"));
+        assertEquals("/path/a/b", 	StringUtils.normalizePath("/path/../../a/..b"));
+        assertEquals("/path/a/b", 	StringUtils.normalizePath("/path/../../a/../b"));
+        assertEquals("/path/a/b/c", StringUtils.normalizePath("/path/../../a/../../b/c"));
+	}
+
     @Test
     public void testJoin()
     {

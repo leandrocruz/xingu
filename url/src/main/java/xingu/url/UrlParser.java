@@ -131,7 +131,8 @@ public class UrlParser
 		}
 		if (portEnd < pathEnd)
 		{
-			return input.substring(portEnd, pathEnd);
+			String path = input.substring(portEnd, pathEnd);
+			return StringUtils.normalizePath(path);
 		}
 		return null;
 	}

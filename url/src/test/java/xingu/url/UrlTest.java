@@ -26,7 +26,7 @@ public class UrlTest
         assertEquals("http://www.x.com/dir1?c=3", urlFrom(url).addParam("c", "3").toString());
         
         url = "http://www.x.com/dir1/";
-        assertEquals("http://www.x.com/dir1/?c=3", urlFrom(url).addParam("c", "3").toString());
+        assertEquals("http://www.x.com/dir1?c=3", urlFrom(url).addParam("c", "3").toString());
         
         url = "http://www.x.com/dir1/dir2";
         assertEquals("http://www.x.com/dir1/dir2?c=3", urlFrom(url).addParam("c", "3").toString());
@@ -41,7 +41,6 @@ public class UrlTest
         url = "http://www.x.com/dir1/dir2?a=1&b";
         url = "http://www.x.com/dir1/dir2?a=1&b=";
         url = "http://www.x.com/dir1/dir2?a=1&b=2";
-
     }
     
     @Test

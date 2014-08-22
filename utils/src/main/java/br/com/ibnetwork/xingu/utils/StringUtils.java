@@ -413,4 +413,50 @@ public class StringUtils
 		while(start < size);
 		return sb.toString();
 	}
+
+	public static String normalizePath(String path)
+	{
+		char[]       array = path.toCharArray();
+		StringBuffer sb    = new StringBuffer();
+		
+		boolean skipNextPathChar = false;
+		int     idx  = 0;
+
+		for(int i = 0; i < array.length; i++)
+		{
+			char c = array[i];
+			boolean isPathChar = isPathChar(c);
+			if(isPathChar)
+			{
+				if(skipNextPathChar)
+					continue;
+
+				skipNextPathChar = true;
+			}
+			else
+			{
+				skipNextPathChar = false;
+			}
+			
+			idx++;
+			sb.append(c);
+		}
+
+		if(idx > 1)
+		{
+			char last = sb.charAt(idx - 1);
+			if(isPathChar(last))
+			{
+				return sb.substring(0, idx - 1);
+			}
+		}
+
+		return sb.toString();
+	}
+
+	public static boolean isPathChar(char c)
+	{
+		return c == '/' || c == '.';
+	}
+
 }
