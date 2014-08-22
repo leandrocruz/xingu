@@ -1,7 +1,6 @@
 package xingu.url.impl;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import xingu.url.DomainName;
 import xingu.url.QueryString;
@@ -129,8 +128,8 @@ public class SimpleUrl
 			return null;
 		}
 		
-		Pattern pattern = Pattern.compile("^(.*/)([^/]*)$");
-		Matcher matcher = pattern.matcher(path);
+		
+		Matcher matcher = filenamePattern.matcher(path);
 		if (matcher.matches())
 		{
 			return matcher.group(2);
@@ -147,8 +146,7 @@ public class SimpleUrl
 			return null;
 		}
 
-		Pattern pattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$");
-		Matcher matcher = pattern.matcher(fileName);
+		Matcher matcher = extensionPattern.matcher(fileName);
 		if (matcher.matches())
 		{
 			return matcher.group(1);
@@ -266,6 +264,20 @@ public class SimpleUrl
 			sb.append(":").append(port);
 		}
 
+		String pqsf = getPathQueryStringAndFragment();
+		if(StringUtils.isNotEmpty(pqsf))
+		{
+			sb.append(pqsf);
+		}
+
+		String result = sb.toString();
+		return result;
+	}
+
+	@Override
+	public String getPathQueryStringAndFragment()
+	{
+		StringBuffer sb = new StringBuffer();
 		String path = getPath();
 		if (path != null && !"/".equals(path))
 		{
@@ -290,8 +302,7 @@ public class SimpleUrl
 			sb.append(fragment);
 		}
 
-		String result = sb.toString();
-		return result;
+		return sb.toString();
 	}
 
 	@Override

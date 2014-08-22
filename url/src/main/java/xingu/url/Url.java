@@ -1,10 +1,15 @@
 package xingu.url;
 
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 public interface Url
     extends Serializable
 {
+	Pattern filenamePattern = Pattern.compile("^(.*/)([^/]*)$");
+	
+	Pattern extensionPattern = Pattern.compile("^[^.]+(?:\\.([^.]+))+$");
+	
     String getScheme();
 
     String getHost();
@@ -47,4 +52,6 @@ public interface Url
 	String getExtension();
 
 	String getFilename();
+
+	String getPathQueryStringAndFragment();
 }
