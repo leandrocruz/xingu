@@ -6,7 +6,9 @@ import xavante.dispatcher.impl.RequestHandlerSupport;
 public class HandlerForTesting
 	extends RequestHandlerSupport
 {
-	public boolean executed = false;
+	public boolean			executed	= false;
+
+	public XavanteRequest	req;
 
 	public HandlerForTesting(String path)
 	{
@@ -18,5 +20,6 @@ public class HandlerForTesting
 		throws Exception
 	{
 		executed = true;
+		this.req = req;
 	}
 }

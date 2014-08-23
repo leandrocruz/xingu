@@ -17,10 +17,10 @@ public class UrlTest
     public void testAddParameter()
     {
         String url = "http://www.x.com";
-        assertEquals("http://www.x.com?c=3", urlFrom(url).addParam("c", "3").toString());
+        assertEquals("http://www.x.com/?c=3", urlFrom(url).addParam("c", "3").toString());
         
         url = "http://www.x.com/";
-        assertEquals("http://www.x.com?c=3", urlFrom(url).addParam("c", "3").toString());
+        assertEquals("http://www.x.com/?c=3", urlFrom(url).addParam("c", "3").toString());
         
         url = "http://www.x.com/dir1";
         assertEquals("http://www.x.com/dir1?c=3", urlFrom(url).addParam("c", "3").toString());
@@ -60,7 +60,7 @@ public class UrlTest
         
         assertEquals(-1, url.getPort());
         assertEquals("http", url.getScheme());
-        assertNull(url.getPath());
+        assertEquals("/", url.getPath());
         assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertNull(url.getFragment());
     }
@@ -112,7 +112,7 @@ public class UrlTest
         assertEquals("http", url.getScheme());
         assertTrue(url.getDomainName().isLocalHost());
         assertEquals(-1, url.getPort());
-        assertNull(url.getPath());
+        assertEquals("/", url.getPath());
         assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertNull(url.getFragment());
     }
@@ -131,7 +131,7 @@ public class UrlTest
         assertTrue(url.isIp());
         assertEquals(null, url.getDomainName());
         assertEquals(-1, url.getPort());
-        assertEquals(null, url.getPath());
+        assertEquals("/", url.getPath());
         assertEquals(QueryStringImpl.EMPTY, url.getQueryString());
         assertEquals(null, url.getFragment());
     }
@@ -153,7 +153,7 @@ public class UrlTest
     @Test
     public void testToString()
     {
-        String spec = "http://www.kidux.com.br";
+        String spec = "http://www.kidux.com.br/";
         Url url = urlFrom(spec);
         assertEquals(spec, url.toString());
     }

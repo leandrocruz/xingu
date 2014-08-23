@@ -279,10 +279,7 @@ public class SimpleUrl
 	{
 		StringBuffer sb = new StringBuffer();
 		String path = getPath();
-		if (path != null && !"/".equals(path))
-		{
-			sb.append(path);
-		}
+		sb.append(path);
 
 		QueryString q = getQueryString();
 		if (q != null)

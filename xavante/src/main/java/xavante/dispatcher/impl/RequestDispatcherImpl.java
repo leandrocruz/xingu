@@ -57,14 +57,18 @@ public class RequestDispatcherImpl
 
 		RequestHandler handler = byPath(path);
 
-		String fixed = fixPath(url, handler);
-		req.setUri(fixed);
-		
+		String fixed = fixHttp1_0AndRemovedHandlerPath(url, handler);
+		if(!uri.equals(fixed))
+		{
+			url = UrlParser.parse(fixed);
+			req.setUri(fixed);
+		}
+
 		XavanteRequest xeq = XavanteRequestFactory.build(req, channel, url);
 		handler.handle(xeq);
 	}
 
-	private String fixPath(Url url, RequestHandler handler)
+	private String fixHttp1_0AndRemovedHandlerPath(Url url, RequestHandler handler)
 	{
 		/*
 		 * Fixes badly formed HTTP 1.0 requests, also
@@ -76,15 +80,19 @@ public class RequestDispatcherImpl
 		 * Removes the context/handler path from the original path
 		 */
 		String  handlerPath = handler.getConfiguredPath();
-		boolean root        = Xavante.isRoot(handlerPath);
-		if(!root)
+		if(handlerPath != null /* !DefaultRequestHandler */)
 		{
-			int len = handlerPath.length();
-			fixed = fixed.substring(len);
-			if(StringUtils.EMPTY.equals(fixed))
+			boolean root = Xavante.isRoot(handlerPath);
+			if(!root)
 			{
-				fixed = Xavante.SLASH;
+				int len = handlerPath.length();
+				fixed = fixed.substring(len);
+				if(StringUtils.EMPTY.equals(fixed))
+				{
+					fixed = Xavante.SLASH;
+				}
 			}
+			
 		}
 		
 		if(!fixed.startsWith(Xavante.SLASH))

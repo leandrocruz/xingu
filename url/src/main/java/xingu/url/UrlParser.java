@@ -25,6 +25,9 @@ public class UrlParser
     public static final String HTTP = "http://";
     
     public static final String HTTPS = "https://";
+    
+    public static final String SLASH = "/";
+    
 
 	public static Url parse(String spec)
 	{
@@ -112,29 +115,12 @@ public class UrlParser
 
 	private String getPath()
 	{
-		if (pathEnd == -1)
-		{
-			return null;
-		}
-		if (portEnd == pathEnd)
-		{
-			if (portEnd < input.length())
-			{
-				char c = input.charAt(portEnd);
-				return c == '/' ? "/" : null;
-			}
-			return null;
-		}
-		if (portEnd + 1 == pathEnd || pathEnd + 1 == queryEnd)
-		{
-			return null;
-		}
 		if (portEnd < pathEnd)
 		{
 			String path = input.substring(portEnd, pathEnd);
 			return StringUtils.normalizePath(path);
 		}
-		return null;
+		return SLASH;
 	}
 
 	private String getQuery()

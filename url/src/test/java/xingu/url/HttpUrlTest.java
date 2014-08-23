@@ -114,10 +114,10 @@ public class HttpUrlTest
         assertEquals(PATH, completeUrl.getPath());
         assertEquals(PATH, hostAndPath.getPath());
         assertEquals(PATH, hostPathAndQuery.getPath());
-        assertEquals(null, hostOnly.getPath());
-        assertEquals(null, hostAndPort.getPath());
-        assertEquals(null, hostAndQuery.getPath());
-        assertEquals(null, hostPortAndQuery.getPath());
+        assertEquals("/", hostOnly.getPath());
+        assertEquals("/", hostAndPort.getPath());
+        assertEquals("/", hostAndQuery.getPath());
+        assertEquals("/", hostPortAndQuery.getPath());
         
         assertEquals("/path", UrlParser.parse("http://x.com/path").getPath());
         assertEquals("/path", UrlParser.parse("http://x.com/path/").getPath());
