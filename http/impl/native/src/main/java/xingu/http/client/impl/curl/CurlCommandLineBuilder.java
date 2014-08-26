@@ -11,6 +11,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
+import org.jboss.netty.handler.codec.http.HttpHeaders;
 
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
@@ -110,13 +111,13 @@ public class CurlCommandLineBuilder
 	}
 
 	private void placeMultipartFields(HttpRequest req, List<String> result)
+		throws Exception
 	{
 		// TODO: try to work with only one list
 		List<NameValue> uploadFields = req.getAttachments();
 		int len = uploadFields == null ? 0 : uploadFields.size();
 		if(len > 0)
 		{
-			uploadFields = escape(uploadFields);
 			for(NameValue f : uploadFields)
 			{
 				result.add("-F");
@@ -128,11 +129,14 @@ public class CurlCommandLineBuilder
 		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
 		{
-			fields = escape(fields);
+			String charset = req.getCharset();
 			for(NameValue f : fields)
 			{
 				result.add("-F");
-				result.add(f.getName() + "=" + f.getValue());
+				String name  = f.getName();
+				String value = f.getValue();
+				value = URLEncoder.encode(value, charset);
+				result.add(name + "=" + value);
 			}
 		}
 	}
@@ -156,7 +160,14 @@ public class CurlCommandLineBuilder
 			for(NameValue f : fields)
 			{
 				result.add("-H");
-				result.add(f.getName() + ": " + f.getValue());
+				String name  = f.getName();
+				String value = f.getValue();
+				result.add(name + ": " + value);
+				if(name.startsWith(HttpHeaders.Names.CONTENT_TYPE))
+				{
+					String charset = HttpUtils.charset(value, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+					req.setCharset(charset);
+				}
 			}
 		}
 	}
@@ -217,18 +228,17 @@ public class CurlCommandLineBuilder
 
 		if(len > 0)
 		{
-			fields = escape(fields);
-			
 			int i = 0;
-
+			String charset = req.getCharset();
 			result.add("--data");
 			StringBuffer sb = new StringBuffer();
 			for(NameValue f : fields)
 			{
 				i++;
+				String name  = f.getName();
 				String value = f.getValue();
-				value = URLEncoder.encode(value, "UTF-8");
-				sb.append(f.getName()).append("=").append(value);
+				value = URLEncoder.encode(value, charset);
+				sb.append(name).append("=").append(value);
 				if(i < len)
 				{
 					sb.append("&");
@@ -236,21 +246,6 @@ public class CurlCommandLineBuilder
 			}
 			result.add(sb.toString());
 		}
-	}
-
-	private List<NameValue> escape(List<NameValue> fields)
-	{
-		return fields;
-//		List<NameValue> escapedList = new ArrayList<NameValue>();
-//		for(NameValue v : fields)
-//		{
-//			String		fieldName	 = v.getName();
-//			String 		escapedValue = v.getValue().replace(" ", "\\ ");
-//			NameValue	escaped 	 = new NameValueImpl(fieldName, escapedValue);
-//			
-//			escapedList.add(escaped);
-//		}
-//		return escapedList;
 	}
 
 	private void placeCookies(HttpRequest req, List<String> result)

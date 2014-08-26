@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pulga>
+
+	<component	role="xingu.http.client.HttpClient"
+				class="xingu.http.client.impl.SimpleHttpClient" />
+
+	<component	role="xingu.http.client.impl.CommandLineBuilder"
+				class="xingu.http.client.impl.curl.CurlCommandLineBuilder" />
+				
+	<component	role="xingu.process.ProcessManager"
+				class="xingu.process.impl.SimpleProcessManager" />	
+</pulga>

@@ -9,17 +9,22 @@ import xingu.http.client.Cookies;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.NameValue;
+import xingu.netty.http.HttpUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public abstract class HttpRequestSupport
 	implements HttpRequest
 {
+	protected String			ndc;
+
 	protected String			method;
 
 	protected String			uri;
 
 	protected String			ua;
+	
+	protected String			charset;
 
 	protected String			certificate;
 
@@ -30,8 +35,6 @@ public abstract class HttpRequestSupport
 	protected String			authPassword;
 
 	protected boolean			multipart;
-
-	protected String			ndc;
 
 	protected int				expectedCode;
 
@@ -268,6 +271,18 @@ public abstract class HttpRequestSupport
 			}
 			throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
 		}
+	}
+
+	@Override
+	public void setCharset(String charset)
+	{
+		this.charset = charset;
+	}
+
+	@Override
+	public String getCharset()
+	{
+		return charset != null ? charset : HttpUtils.DEFAULT_HTTP_CHARSET_NAME;
 	}
 
 	@Override

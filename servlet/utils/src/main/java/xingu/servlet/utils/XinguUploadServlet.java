@@ -72,8 +72,8 @@ public class XinguUploadServlet
 
 		sb.append("<h4>Info</h4>\n");
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-
-		sb.append("CHARSET: ").append(request.getCharacterEncoding()).append("<br/>\n");
+		String  charset     = request.getCharacterEncoding();
+		sb.append("Charset: ").append(charset).append("<br/>\n");
 		sb.append("isMultipart: ").append(isMultipart).append("<br/>\n");
 
 		Map<String, String[]> params = request.getParameterMap();
@@ -104,7 +104,7 @@ public class XinguUploadServlet
 				String value;
 				if(formField)
 				{
-					value = fi.getString("utf-8");
+					value = fi.getString(charset != null ? charset : "ISO-8859-1");
 				}
 				else
 				{
