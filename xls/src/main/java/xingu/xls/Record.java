@@ -16,4 +16,9 @@ public class Record
 	{
 		map.put(name, value);
 	}
+
+	public Map<String, String> toMap()
+	{
+		return map;
+	}
 }
