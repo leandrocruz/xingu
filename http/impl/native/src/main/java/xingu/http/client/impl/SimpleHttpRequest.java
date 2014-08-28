@@ -74,7 +74,7 @@ public class SimpleHttpRequest
 		File  tmp         = org.apache.commons.io.FileUtils.getTempDirectory();
 		if(StringUtils.isNotEmpty(ndc))
 		{
-			File    root    = new File(tmp, ndc);
+			File    root    = new File(tmp, "xingu-http-client" + File.separator + ndc);
 			root.mkdirs();
 
 			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
