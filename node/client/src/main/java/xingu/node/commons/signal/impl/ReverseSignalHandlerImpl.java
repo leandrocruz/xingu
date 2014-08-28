@@ -9,6 +9,7 @@ import xingu.node.commons.signal.ReverseSignalHandler;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalHandler;
 import br.com.ibnetwork.xingu.container.Inject;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class ReverseSignalHandlerImpl
 	implements ReverseSignalHandler
@@ -24,6 +25,10 @@ public class ReverseSignalHandlerImpl
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
+		if(channel == null)
+		{
+			throw new NotImplementedYet("Not connected. Channel is null");
+		}
 		return signals.query(signal, null, channel);
 	}
 
