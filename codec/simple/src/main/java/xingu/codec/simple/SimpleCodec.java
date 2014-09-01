@@ -4,11 +4,13 @@ import java.io.StringWriter;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.strategy.Strategy;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.codec.Codec;
 import xingu.codec.impl.CodecSupport;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class SimpleCodec
 	extends CodecSupport
@@ -20,7 +22,8 @@ public class SimpleCodec
 	public void initialize()
 		throws Exception
 	{
-		serializer = new Persister();
+		Strategy strategy = new AnnotationStrategy();
+		serializer = new Persister(strategy);
 	}
 
 	@Override
