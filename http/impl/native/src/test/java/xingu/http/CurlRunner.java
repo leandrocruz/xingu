@@ -34,7 +34,8 @@ public class CurlRunner
 		URL file = Thread.currentThread().getContextClassLoader().getResource("pulga-curl.xml");
 		HttpResponse res = http
 				.post("localhost:8080")
-				.header(HttpHeaders.Names.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=ISO-8859-1")
+				.header(HttpHeaders.Names.CONTENT_TYPE, "multipart/form-data; charset=ISO-8859-1")
+				//.header(HttpHeaders.Names.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=ISO-8859-1")
 				.multipart(true)
 				.withAttachment("curriculum", file.getFile())
 				.field("name", "Léandro Cabra Macho!")
@@ -43,6 +44,4 @@ public class CurlRunner
 		String body = res.getBody("utf8");
 		System.out.println(body);
 	}
-
-	
 }

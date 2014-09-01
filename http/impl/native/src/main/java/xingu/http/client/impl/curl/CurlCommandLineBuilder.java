@@ -129,14 +129,22 @@ public class CurlCommandLineBuilder
 		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
 		{
-			String charset = req.getCharset();
 			for(NameValue f : fields)
 			{
 				result.add("-F");
 				String name  = f.getName();
 				String value = f.getValue();
-				value = URLEncoder.encode(value, charset);
-				result.add(name + "=" + value);
+				String type  = f.getContentType();
+				if(type == null)
+				{
+					result.add(name + "=" + value);
+				}
+				else
+				{
+					result.add(name + "=" + value + ";type=" + type);	
+				}
+				// value = URLEncoder.encode(value, charset);
+				
 			}
 		}
 	}

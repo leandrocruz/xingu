@@ -5,4 +5,6 @@ public interface NameValue
 	String getName();
 	
 	String getValue();
+	
+	String getContentType();
 }

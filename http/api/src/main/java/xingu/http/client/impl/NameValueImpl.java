@@ -33,6 +33,10 @@ public class NameValueImpl
 	{
 		return name + ": " + value;
 	}
-	
-	
+
+	@Override
+	public String getContentType()
+	{
+		return null;
+	}
 }

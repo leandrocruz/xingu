@@ -2,8 +2,6 @@ package xingu.servlet.utils;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
@@ -100,15 +97,22 @@ public class XinguUploadServlet
 			for(FileItem fi : fileItems)
 			{
 				boolean formField = fi.isFormField();
-				sb.append(fi.getFieldName()).append(" = [");
+				String fieldName = fi.getFieldName();
+				sb.append(fieldName).append(" = [");
 				String value;
 				if(formField)
 				{
-					value = fi.getString(charset != null ? charset : "ISO-8859-1");
+					String partCharset = fi.getHeaders().getHeader("Content-Type");
+					if(partCharset == null)
+					{
+						partCharset = "ISO-8859-1";
+					}
+					System.out.println(fieldName + " " + partCharset);
+					value = fi.getString(partCharset);
 				}
 				else
 				{
-					value = fi.getFieldName() + " (" + fi.getSize() + ")";
+					value = fieldName + " (" + fi.getSize() + ")";
 				}
 				sb.append(value).append("]<br/>\n");
 			}
