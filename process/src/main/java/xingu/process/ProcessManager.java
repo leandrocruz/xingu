@@ -1,7 +1,6 @@
 package xingu.process;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.util.List;
 
 public interface ProcessManager
@@ -12,6 +11,6 @@ public interface ProcessManager
 	int exec(List<String> line, File baseDir)
 		throws Exception;
 
-	int exec(List<String> line, File baseDir, OutputStream os)
+	int exec(List<String> line, File baseDir, File output, File error)
 		throws Exception;
 }
