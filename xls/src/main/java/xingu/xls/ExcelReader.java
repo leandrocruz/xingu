@@ -142,7 +142,10 @@ public class ExcelReader
 
 			case Cell.CELL_TYPE_BOOLEAN:
 				return String.valueOf(cell.getBooleanCellValue());
-				
+
+			case Cell.CELL_TYPE_ERROR:
+				return "ERR";
+
 			default:
 				return cell.getStringCellValue();
 		}
