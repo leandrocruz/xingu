@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
 import br.com.ibnetwork.xingu.utils.inspector.ObjectVisitor;
-import br.com.ibnetwork.xingu.utils.type.TypeHandler;
+import br.com.ibnetwork.xingu.utils.printer.xml.XmlPrinter;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
-import br.com.ibnetwork.xingu.utils.xml.XmlPrinter;
+import br.com.ibnetwork.xingu.utils.type.TypeHandler;
 
 public class XmlEmitter
 	implements ObjectVisitor<String>

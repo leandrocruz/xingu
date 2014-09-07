@@ -1,4 +1,4 @@
-package br.com.ibnetwork.xingu.utils.xml;
+package br.com.ibnetwork.xingu.utils.printer.xml;
 
 import org.apache.commons.lang3.StringUtils;
 

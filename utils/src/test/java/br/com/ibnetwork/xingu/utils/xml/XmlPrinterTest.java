@@ -1,8 +1,10 @@
 package br.com.ibnetwork.xingu.utils.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import br.com.ibnetwork.xingu.utils.printer.xml.XmlPrinter;
 
 public class XmlPrinterTest
 {
