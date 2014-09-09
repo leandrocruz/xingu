@@ -146,6 +146,9 @@ public class ExcelReader
 			case Cell.CELL_TYPE_ERROR:
 				return "ERR";
 
+			case Cell.CELL_TYPE_FORMULA:
+				return "FORMULA";
+
 			default:
 				return cell.getStringCellValue();
 		}
