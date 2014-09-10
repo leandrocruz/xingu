@@ -46,8 +46,8 @@ public class KeyPairImpl
         throws ConfigurationException
     {
         id = conf.getAttribute("id");
-        publicKeyFile = env.replaceVars(conf.getChild("publicKey").getAttribute("file", ""));
-        secretKeyFile = env.replaceVars(conf.getChild("secretKey").getAttribute("file", ""));
+        publicKeyFile = env.replaceVars(conf.getChild("publicKey").getAttribute("file", null));
+        secretKeyFile = env.replaceVars(conf.getChild("secretKey").getAttribute("file", null));
         privateKeyPassword = conf.getChild("privateKey").getAttribute("password", "");
     }
     
@@ -74,6 +74,11 @@ public class KeyPairImpl
     private PubKey loadPublicKey() 
         throws Exception
     {
+    	if(publicKeyFile == null)
+    	{
+    		return null;
+    	}
+
         String path = findFile(publicKeyFile);
         if(path == null)
         {
@@ -90,12 +95,17 @@ public class KeyPairImpl
         {
             return null;
         }
-        long keyId = publicKey().keyId();
+        PubKey key = publicKey();
+		long keyId = key == null ? -1 : key.keyId();
         return crypto.readPrivateKey(path, keyId, privateKeyPassword);
     }
     
     private String findFile(String fileName)
     {
+    	if(fileName == null)
+    	{
+    		return null;
+    	}
         String path = FSUtils.loadFromClasspath(fileName);
         if(path == null)
         {
