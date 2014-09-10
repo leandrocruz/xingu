@@ -60,7 +60,7 @@ public class RSACrypto
     public PrivateKey readPrivateKey(InputStream is, long id, String passphrase)
         throws Exception
     {
-        //RSA private keys are encoded with PKCS8
+        //RSA private keys are encoded with PKCS8 (DER)
         byte[] encodedKey = IOUtils.toByteArray(is);
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encodedKey);
         PrivateKey key = keyFactory.generatePrivate(spec);
