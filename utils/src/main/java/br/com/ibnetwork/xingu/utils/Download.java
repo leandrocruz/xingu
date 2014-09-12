@@ -39,18 +39,43 @@ public class Download
 		return file;
 	}
 
-	public static File get(String location)
+	public static InputStream toInputStream(String location)
 		throws Exception
 	{
 		URL url = new URL(location);
-		InputStream is = (InputStream) url.getContent();
-		File file = File.createTempFile("download-", ".tmp");
-		byte[] data = IOUtils.toByteArray(is);
-		IOUtils.closeQuietly(is);
-		OutputStream os = new FileOutputStream(file);
-		IOUtils.write(data, os);
-		IOUtils.closeQuietly(os);
-		return file;
+		return (InputStream) url.getContent();
 	}
 
+	public static byte[] toByteArray(String location)
+		throws Exception
+	{
+		InputStream is = null;
+		try
+		{
+			is = toInputStream(location);
+			return IOUtils.toByteArray(is);
+		}
+		finally
+		{
+			IOUtils.closeQuietly(is);
+		}
+	}
+
+	public static File get(String location)
+		throws Exception
+	{
+		byte[] data = toByteArray(location);
+		OutputStream os = null;
+		try
+		{
+			File file = File.createTempFile("download-", ".tmp");
+			os = new FileOutputStream(file);
+			IOUtils.write(data, os);
+			return file;
+		}
+		finally
+		{
+			IOUtils.closeQuietly(os);
+		}
+	}
 }
