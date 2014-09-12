@@ -1,7 +1,5 @@
 package br.com.ibnetwork.xingu.idgenerator.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,17 +9,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import xingu.time.Time;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.idgenerator.GeneratorException;
+import br.com.ibnetwork.xingu.utils.DateFormats;
 
 public class TimestampInMemoryGenerator
 	extends GeneratorSupport<String>
 {
-	
 	@Inject
 	private Time					time;
 
 	private Set<String>				set		= new HashSet<String>();
-
-	private static final DateFormat	format	= new SimpleDateFormat("yyyMMdd.HHmmss");
 
 	public TimestampInMemoryGenerator(String generatorId, int grabSize)
 	{
@@ -33,7 +29,7 @@ public class TimestampInMemoryGenerator
 		throws GeneratorException
 	{
 		Date   now    = time.now().asDate();
-		String result = format.format(now) + "-" + RandomStringUtils.randomAlphanumeric(16);
+		String result = DateFormats.yyyyMMdd_HHmmss.format(now) + "-" + RandomStringUtils.randomAlphanumeric(16);
 
 		if(set.contains(result))
 		{
