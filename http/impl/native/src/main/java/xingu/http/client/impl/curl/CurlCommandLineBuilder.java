@@ -1,8 +1,6 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,43 +61,15 @@ public class CurlCommandLineBuilder
 			result.add(param);
 		}
 
-		String authUser  = req.getAuthenticationUser();
-		String authPwd	 = req.getAuthenticationPassword();
-		if(StringUtils.isNotEmpty(authUser) && StringUtils.isNotEmpty(authPwd))
-		{
-			result.add("--user");
-			result.add(authUser + ":" + authPwd);
-		}
-		
-		String certificate = req.getCertificate();
-		if(StringUtils.isNotEmpty(certificate))
-		{
-			result.add("--cert");
-			result.add(certificate);
-		}
+		placeAuth		(req, result);
+		placeCertificate(req, result);
+		placeCookies	(req, result);
+		placeUserAgent	(req, result);
+		placeHeaders	(req, result);
 
-		placeCookies(req, 	result);
-		placeUserAgent(req, result);
-		placeHeaders(req, 	result);
-
-		if(req.isPost())
-		{
-			placePostFields(req, result);			
-		}
-		else
-		{
-			placeQueryStringFields(req, result);
-		}
-		
-		result.add("--compressed");
-		
-		return result;
-	}
-
-	private void placePostFields(HttpRequest req, List<String> result)
-		throws Exception
-	{
-		if(req.isMultipart())
+		boolean isPost      = req.isPost();
+		boolean isMultipart = req.isMultipart();
+		if(isPost && isMultipart)
 		{
 			placeMultipartFields(req, result);
 		}
@@ -107,7 +77,38 @@ public class CurlCommandLineBuilder
 		{
 			placeDataFields(req, result);
 		}
-		result.add(req.getUri());
+
+		if(!isPost)
+		{
+			result.add("--get");
+		}
+
+		String uri = req.getUri();
+		result.add(uri);
+
+		result.add("--compressed");
+
+		return result;
+	}
+
+	private void placeDataFields(HttpRequest req, List<String> result)
+		throws Exception
+	{
+		List<NameValue> fields = req.getFields();
+		int len = fields == null ? 0 : fields.size();		
+
+		if(len > 0)
+		{
+			//String charset = req.getCharset();
+			for(NameValue f : fields)
+			{
+				String name    = f.getName();
+				String value   = f.getValue();
+				//String encoded = URLEncoder.encode(value, charset);
+				result.add("--data-urlencode");
+				result.add(name+"="+value);
+			}
+		}
 	}
 
 	private void placeMultipartFields(HttpRequest req, List<String> result)
@@ -149,6 +150,27 @@ public class CurlCommandLineBuilder
 		}
 	}
 
+	private void placeCertificate(HttpRequest req, List<String> result)
+	{
+		String certificate = req.getCertificate();
+		if(StringUtils.isNotEmpty(certificate))
+		{
+			result.add("--cert");
+			result.add(certificate);
+		}
+	}
+
+	private void placeAuth(HttpRequest req, List<String> result)
+	{
+		String authUser  = req.getAuthenticationUser();
+		String authPwd	 = req.getAuthenticationPassword();
+		if(StringUtils.isNotEmpty(authUser) && StringUtils.isNotEmpty(authPwd))
+		{
+			result.add("--user");
+			result.add(authUser + ":" + authPwd);
+		}
+	}
+
 	private void placeUserAgent(HttpRequest req, List<String> result)
 	{
 		String ua = req.getUserAgent();
@@ -177,82 +199,6 @@ public class CurlCommandLineBuilder
 					req.setCharset(charset);
 				}
 			}
-		}
-	}
-
-	private void placeQueryStringFields(HttpRequest req, List<String> result) 
-		throws UnsupportedEncodingException
-	{
-		List<NameValue> fields = req.getFields();
-		int len = fields == null ? 0 : fields.size();
-		String uri = req.getUri();
-		
-		if(len == 0)
-		{
-			result.add(uri);
-			return;
-		}
-		
-		String charset = HttpUtils.DEFAULT_HTTP_CHARSET.name();
-		StringBuffer buffer = new StringBuffer(uri);
-		int i = 0;
-
-		if(buffer.indexOf("?") > 0)
-		{
-			buffer.append("&");
-		}
-		else
-		{
-			buffer.append("?");
-		}
-		
-		for(NameValue field : fields)
-		{
-			i++;
-			String name    = field.getName();
-			String value   = field.getValue();
-			String encoded = URLEncoder.encode(value, charset);
-			
-			buffer
-				.append(name)
-				.append("=")
-				.append(encoded);
-			
-			if(i < len)
-			{
-				buffer.append("&");
-			}
-		}
-
-		String txt = buffer.toString();
-		result.add(txt);
-	}
-
-	private void placeDataFields(HttpRequest req, List<String> result)
-		throws Exception
-	{
-		List<NameValue> fields = req.getFields();
-		int len = fields == null ? 0 : fields.size();		
-
-		if(len > 0)
-		{
-			int i = 0;
-			String charset = req.getCharset();
-			result.add("--data");
-			StringBuffer sb = new StringBuffer();
-			for(NameValue f : fields)
-			{
-				i++;
-				String name  = f.getName();
-				String value = f.getValue();
-				value = URLEncoder.encode(value, charset);
-				sb.append(name).append("=").append(value);
-				if(i < len)
-				{
-					sb.append("&");
-				}
-			}
-			result.add(sb.toString());
 		}
 	}
 
