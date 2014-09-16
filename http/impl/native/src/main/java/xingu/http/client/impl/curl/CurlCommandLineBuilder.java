@@ -114,7 +114,6 @@ public class CurlCommandLineBuilder
 	private void placeMultipartFields(HttpRequest req, List<String> result)
 		throws Exception
 	{
-		// TODO: try to work with only one list
 		List<NameValue> uploadFields = req.getAttachments();
 		int len = uploadFields == null ? 0 : uploadFields.size();
 		if(len > 0)
@@ -144,8 +143,6 @@ public class CurlCommandLineBuilder
 				{
 					result.add(name + "=" + value + ";type=" + type);	
 				}
-				// value = URLEncoder.encode(value, charset);
-				
 			}
 		}
 	}
