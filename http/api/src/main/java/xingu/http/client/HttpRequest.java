@@ -19,6 +19,7 @@ public interface HttpRequest
 	List<NameValue> getFields();
 	HttpRequest field(String nameValue);
 	HttpRequest field(String name, String value);
+	HttpRequest field(String name, String value, String type);
 	HttpRequest field(String name, int value);
 	HttpRequest field(String name, long value);
 	

@@ -10,10 +10,19 @@ public class NameValueImpl
 
 	private String	value;
 
+	private String	type;
+
 	public NameValueImpl(String name, String value)
 	{
 		this.name  = name;
 		this.value = value;
+	}
+
+	public NameValueImpl(String name, String value, String type)
+	{
+		this.name  = name;
+		this.value = value;
+		this.type  = type;
 	}
 
 	@Override
@@ -29,14 +38,14 @@ public class NameValueImpl
 	}
 
 	@Override
-	public String toString()
+	public String getType()
 	{
-		return name + ": " + value;
+		return type;
 	}
 
 	@Override
-	public String getContentType()
+	public String toString()
 	{
-		return null;
+		return name + ": " + value + (type == null ? "" : "("+type+")");
 	}
 }

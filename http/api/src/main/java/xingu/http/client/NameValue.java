@@ -6,5 +6,5 @@ public interface NameValue
 	
 	String getValue();
 	
-	String getContentType();
+	String getType();
 }

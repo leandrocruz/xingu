@@ -83,6 +83,12 @@ public abstract class HttpRequestSupport
 	@Override
 	public HttpRequest field(String name, String value)
 	{
+		return field(name, value, null);
+	}
+
+	@Override
+	public HttpRequest field(String name, String value, String type)
+	{
 		if(name == null)
 		{
 			throw new NotImplementedYet("Name cannot be null.");
@@ -91,7 +97,7 @@ public abstract class HttpRequestSupport
 		{
 			throw new NotImplementedYet("Value cannot be null.");
 		}
-		fields.add(new NameValueImpl(name, value));
+		fields.add(new NameValueImpl(name, value, type));
 		return this;
 	}
 

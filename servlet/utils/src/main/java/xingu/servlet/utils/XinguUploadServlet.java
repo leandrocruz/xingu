@@ -36,7 +36,7 @@ public class XinguUploadServlet
 		try
 		{
 			String result = process(request, response);
-			response.addHeader("Content-Type:", "text/html; charset=utf8");
+			response.addHeader("Content-Type:", "text/html; charset=utf-8");
 			ServletOutputStream os = response.getOutputStream();
 			IOUtils.write(result, os);
 			os.close();
@@ -54,7 +54,7 @@ public class XinguUploadServlet
 		String       form = IOUtils.toString(is);
 		StringBuffer sb   = new StringBuffer(form);
 		
-		sb.append("<h4>Headers</h4>");
+		sb.append("<h4>Headers</h4>\n");
 		Enumeration<String> names = request.getHeaderNames();
 		while(names.hasMoreElements())
 		{
@@ -107,8 +107,8 @@ public class XinguUploadServlet
 					{
 						partCharset = "ISO-8859-1";
 					}
-					System.out.println(fieldName + " " + partCharset);
 					value = fi.getString(partCharset);
+					System.out.println("[" + partCharset + "] " + fieldName + "=" + value);
 				}
 				else
 				{

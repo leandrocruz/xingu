@@ -135,7 +135,7 @@ public class CurlCommandLineBuilder
 				result.add("-F");
 				String name  = f.getName();
 				String value = f.getValue();
-				String type  = f.getContentType();
+				String type  = f.getType();
 				if(type == null)
 				{
 					result.add(name + "=" + value);
