@@ -7,15 +7,26 @@ public class BooleanTypeHandler
 {
 	public BooleanTypeHandler()
 	{
-		super(Boolean.class, "bool", Type.PRIMITIVE);
+		super(Boolean.class, "boolean", Type.PRIMITIVE);
 	}
 
 	@Override
 	public Object toObject(String value)
 	{
-		return Boolean.valueOf(value);
+		switch(value)
+		{
+			case "1":
+			case "true":
+			case "y":
+			case "s":
+			case "sim":
+				return Boolean.TRUE;
+
+			default:
+				return Boolean.FALSE;
+		}
 	}
-	
+
 	@Override
 	public String toString(Object obj)
 	{
