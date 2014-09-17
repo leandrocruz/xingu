@@ -84,8 +84,7 @@ public class ApacheRequest
 		{
 			org.apache.http.HttpResponse res = client.execute(req);
 			HttpResponse build = ApacheHttpResponseBuilder.build(req, res);
-			int code = build.getCode();
-			checkCode(code);
+			check(build);
 			return build;
 		}
 		catch(Exception e)

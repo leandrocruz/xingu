@@ -6,9 +6,10 @@ import java.util.List;
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Cookies;
-import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
+import xingu.http.client.ResponseInspector;
 import xingu.netty.http.HttpUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.StringUtils;
@@ -16,37 +17,35 @@ import br.com.ibnetwork.xingu.utils.StringUtils;
 public abstract class HttpRequestSupport
 	implements HttpRequest
 {
-	protected String			ndc;
+	protected String				ndc;
 
-	protected String			method;
+	protected String				method;
 
-	protected String			uri;
+	protected String				uri;
 
-	protected String			ua;
-	
-	protected String			charset;
+	protected String				ua;
 
-	protected String			certificate;
+	protected String				charset;
 
-	protected String			certificatePassword;
+	protected String				certificate;
 
-	protected String			authUser;
+	protected String				certificatePassword;
 
-	protected String			authPassword;
+	protected String				authUser;
 
-	protected boolean			multipart;
+	protected String				authPassword;
 
-	protected int				expectedCode;
+	protected boolean				multipart;
 
-	protected String			messageIfCodeMismatch;
+	protected Cookies				cookies		= new CookiesImpl();
 
-	protected Cookies			cookies		= new CookiesImpl();
+	protected List<NameValue>		fields		= new ArrayList<NameValue>();
 
-	protected List<NameValue>	fields		= new ArrayList<NameValue>();
+	protected List<NameValue>		attachments	= new ArrayList<NameValue>();
 
-	protected List<NameValue>	attachments	= new ArrayList<NameValue>();
+	protected List<NameValue>		headers		= new ArrayList<NameValue>();
 
-	protected List<NameValue>	headers		= new ArrayList<NameValue>();
+	private List<ResponseInspector>	inspectors	= new ArrayList<ResponseInspector>();
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -255,27 +254,30 @@ public abstract class HttpRequestSupport
 	@Override
 	public HttpRequest expects(int code)
 	{
-		this.expectedCode = code;
-		return this;
+		ResponseCodeInspector inspector = ResponseCodeInspector.forCode(code, null);
+		return expects(inspector);
 	}
 	
 	@Override
-	public HttpRequest expects(int code, String errorMessage)
+	public HttpRequest expects(int code, String messageIfError)
 	{
-		this.expectedCode = code;
-		this.messageIfCodeMismatch = errorMessage;
+		ResponseCodeInspector inspector = ResponseCodeInspector.forCode(code, messageIfError);
+		return expects(inspector);
+	}
+
+	@Override
+	public HttpRequest expects(ResponseInspector inspector)
+	{
+		inspectors.add(inspector);
 		return this;
 	}
 
-	protected void checkCode(int code)
+	protected void check(HttpResponse res)
+		throws Exception
 	{
-		if(expectedCode > 0 && code != expectedCode)
+		for(ResponseInspector inspector: inspectors)
 		{
-			if(messageIfCodeMismatch != null)
-			{
-				throw new HttpException(messageIfCodeMismatch);
-			}
-			throw new HttpException("Expected response code mismatch: " + expectedCode + " != " + code);
+			inspector.throwErrorIf(res);
 		}
 	}
 

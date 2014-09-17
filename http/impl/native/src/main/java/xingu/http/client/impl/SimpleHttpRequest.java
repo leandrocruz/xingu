@@ -49,9 +49,7 @@ public class SimpleHttpRequest
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
-				int          code = res.getCode();
-				checkCode(code);
-
+				check(res);
 				return res;
 			}
 		}

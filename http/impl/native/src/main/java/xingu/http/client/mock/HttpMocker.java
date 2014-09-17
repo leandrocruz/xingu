@@ -16,6 +16,7 @@ import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
+import xingu.http.client.ResponseInspector;
 import xingu.http.client.impl.CommandLineBuilder;
 
 public class HttpMocker
@@ -78,6 +79,7 @@ public class HttpMocker
 		when(req.header(any(String.class), any(String.class))).thenReturn(req);
 		when(req.expects(any(Integer.class))).thenReturn(req);
 		when(req.expects(any(Integer.class), any(String.class))).thenReturn(req);
+		when(req.expects(any(ResponseInspector.class))).thenReturn(req);
 		when(req.withAttachment(any(String.class), any(String.class))).thenReturn(req);
 		when(req.multipart(any(Boolean.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);

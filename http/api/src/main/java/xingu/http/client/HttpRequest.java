@@ -51,7 +51,8 @@ public interface HttpRequest
 		throws HttpException;
 
 	HttpRequest expects(int code);
-	HttpRequest expects(int code, String errorMessage);
+	HttpRequest expects(int code, String messageIfError);
+	HttpRequest expects(ResponseInspector inspector);
 
 	void setCharset(String charset);
 	String getCharset();
