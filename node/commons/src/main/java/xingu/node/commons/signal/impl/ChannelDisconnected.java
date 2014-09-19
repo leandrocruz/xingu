@@ -2,8 +2,8 @@ package xingu.node.commons.signal.impl;
 
 import org.jboss.netty.channel.Channel;
 
-public class ChannelDisconnected
-	extends SignalSupport
+public class ChannelDisconnected<T>
+	extends SignalSupport<T>
 {
 	private Channel	channel;
 
