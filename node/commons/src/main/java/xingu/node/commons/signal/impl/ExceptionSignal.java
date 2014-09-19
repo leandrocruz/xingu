@@ -6,13 +6,11 @@ import xingu.node.commons.signal.ErrorSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.SignalBehavior;
 
-public class ExceptionSignal
-	extends ErrorSignal
-	implements SignalBehavior<ExceptionSignal, BooleanSignal>
+public class ExceptionSignal<T>
+	extends ErrorSignal<T>
+	implements SignalBehavior<ExceptionSignal<T>>
 {
-	private Signal		signal;
-
-	
+	private Signal<?>	signal;
 
 	private String		trace;
 
@@ -21,7 +19,7 @@ public class ExceptionSignal
 	public ExceptionSignal()
 	{}
 
-	public ExceptionSignal(Signal signal, String message, String trace)
+	public ExceptionSignal(Signal<?> signal, String message, String trace)
 	{
 		this.signal  = signal;
 		this.message = message;
@@ -31,11 +29,11 @@ public class ExceptionSignal
 	/*
 	 * Don't use this over the wire
 	 */
-	public ExceptionSignal(Signal signal, Throwable cause)
+	public ExceptionSignal(Signal<?> signal, Throwable cause)
 	{
-		this.signal = signal;
+		this.signal  = signal;
 		this.message = cause.getMessage();
-		this.cause  = cause;
+		this.cause   = cause;
 	}
 
 	@Override
@@ -48,8 +46,8 @@ public class ExceptionSignal
 	}
 
 	/* @formatter:off */
-	public Signal getSignal(){return signal;}
-	public void setSignal(Signal signal){this.signal = signal;}
+	public Signal<?> getSignal(){return signal;}
+	public void setSignal(Signal<?> signal){this.signal = signal;}
 	public String getTrace(){return trace;}
 	public void setTrace(String trace){this.trace = trace;}
 	public Throwable getCause(){return cause;}

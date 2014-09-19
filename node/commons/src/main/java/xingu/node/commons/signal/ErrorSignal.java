@@ -2,8 +2,8 @@ package xingu.node.commons.signal;
 
 import xingu.node.commons.signal.impl.SignalSupport;
 
-public class ErrorSignal
-	extends SignalSupport
+public class ErrorSignal<T>
+	extends SignalSupport<T>
 {
 	protected boolean	error	= true;
 

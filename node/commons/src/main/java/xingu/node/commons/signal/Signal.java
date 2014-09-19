@@ -5,7 +5,7 @@ import java.io.Serializable;
 import xingu.node.commons.identity.Identity;
 import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 
-public interface Signal
+public interface Signal<T>
 	extends Serializable
 {
 	String getSignalId();
@@ -14,11 +14,11 @@ public interface Signal
 	long getSessionId();
 	void setSessionId(long sessionId);
 
-	Identity<?> getIdentity();
-	void setIdentity(Identity<?> identity);
+	Identity<T> getIdentity();
+	void setIdentity(Identity<T> identity);
 
-	Identity<?> getOwner();
-	void setOwner(Identity<?> owner);
+	Identity<T> getOwner();
+	void setOwner(Identity<T> owner);
 
 	long cTime(); /* Client Time */
 	void cTime(long time);

@@ -4,14 +4,14 @@ import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.Signal;
 import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
 
-public class SignalSupport
-	implements Signal
+public class SignalSupport<T>
+	implements Signal<T>
 {
 	protected String			signalId;
 
-	protected Identity<?>		owner;
+	protected Identity<T>		owner;
 
-	protected Identity<?>		identity;
+	protected Identity<T>		identity;
 
 	protected long				sessionId;
 
@@ -34,10 +34,10 @@ public class SignalSupport
     /* @formatter:off */
 	@Override public String getSignalId() {return signalId;}
 	@Override public void setSignalId(String id){this.signalId = id;}
-	@Override public Identity<?> getIdentity(){return identity;}
-	@Override public void setIdentity(Identity<?> identity){this.identity = identity;}
-	@Override public Identity<?> getOwner() {return owner;}
-	@Override public void setOwner(Identity<?> owner){this.owner = owner;}
+	@Override public Identity<T> getIdentity(){return identity;}
+	@Override public void setIdentity(Identity<T> identity){this.identity = identity;}
+	@Override public Identity<T> getOwner() {return owner;}
+	@Override public void setOwner(Identity<T> owner){this.owner = owner;}
     @Override public long getSessionId() {return sessionId;}
     @Override public void setSessionId(long sessionId) {this.sessionId = sessionId;}
     @Override public long cTime() {return cTime;}

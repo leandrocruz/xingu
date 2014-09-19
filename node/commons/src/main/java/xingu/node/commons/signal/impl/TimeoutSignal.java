@@ -3,20 +3,20 @@ package xingu.node.commons.signal.impl;
 import xingu.node.commons.signal.Signal;
 
 
-public class TimeoutSignal
-	extends SignalSupport
+public class TimeoutSignal<T>
+	extends SignalSupport<T>
 {
-	private Signal	signal;
+	private Signal<?>	signal;
 
 	private long	timeout;
 
-	public TimeoutSignal(Signal signal, long timeout)
+	public TimeoutSignal(Signal<?> signal, long timeout)
 	{
 		this.signal  = signal;
 		this.timeout = timeout;
 	}
 	
-	public Signal getSignal()
+	public Signal<?> getSignal()
 	{
 		return signal;
 	}

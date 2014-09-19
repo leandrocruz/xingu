@@ -6,6 +6,6 @@ import xingu.node.commons.signal.Signal;
 
 public interface BehaviorPerformer
 {
-	Signal performBehavior(Signal signal, Channel channel)
+	Signal<?> performBehavior(Signal<?> signal, Channel channel)
 		throws Exception;
 }

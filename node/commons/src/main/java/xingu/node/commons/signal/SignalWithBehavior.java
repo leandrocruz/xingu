@@ -6,8 +6,8 @@ import xingu.node.commons.signal.behavior.SignalBehavior;
 import xingu.node.commons.signal.impl.SignalSupport;
 
 public class SignalWithBehavior
-	extends SignalSupport
-	implements SignalBehavior<SignalWithBehavior, SignalWithBehavior>
+	extends SignalSupport<Void>
+	implements SignalBehavior<SignalWithBehavior>
 {
 	private int value;
 	
@@ -20,7 +20,7 @@ public class SignalWithBehavior
 	}
 	
 	@Override
-	public SignalWithBehavior perform(SignalWithBehavior signal, Channel channel)
+	public Signal<?> perform(SignalWithBehavior signal, Channel channel)
 		throws Exception
 	{
 		value++;

@@ -15,11 +15,11 @@ public class BehaviorPerformerImpl
 	private BehaviorResolver resolver;
 
 	@Override
-	public Signal performBehavior(Signal signal, Channel channel)
+	public Signal<?> performBehavior(Signal<?> signal, Channel channel)
 		throws Exception
 	{
-		SignalBehavior<Signal, Signal> behavior = resolver.behaviorFor(signal);
-		Signal reply = behavior.perform(signal, channel);
+		SignalBehavior<Signal<?>> behavior = resolver.behaviorFor(signal);
+		Signal<?> reply = behavior.perform(signal, channel);
 		return reply;
 	}
 }

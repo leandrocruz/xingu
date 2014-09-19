@@ -4,5 +4,5 @@ import xingu.node.commons.signal.Signal;
 
 public interface BehaviorResolver
 {
-	<T extends Signal, S extends Signal> SignalBehavior<T, S> behaviorFor(Signal signal);
+	<T extends Signal<?>> SignalBehavior<T> behaviorFor(Signal<?> signal);
 }

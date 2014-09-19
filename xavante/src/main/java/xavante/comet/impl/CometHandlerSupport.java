@@ -82,6 +82,7 @@ public abstract class CometHandlerSupport
 		return "{\"type\": \"OK\", \"sessionId\":\"" + session.getId() + "\"}";
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected String send(CometMessage msg)
 		throws Exception
 	{
@@ -99,12 +100,12 @@ public abstract class CometHandlerSupport
 			Signal signal = (Signal) decoded;
 			injectXavanteMessage(signal, msg);
 
-			String       id             = signal.getSignalId();
-			boolean      processEnabled = signal.isProcessEnabled();
-			CometSession session        = sessions.byId(token);
-			Identity<?>  owner          = session == null ? null : session.getIdentity();
+			String       id      = signal.getSignalId();
+			boolean      enabled = signal.isProcessEnabled();
+			CometSession session = sessions.byId(token);
+			Identity     owner   = session == null ? null : session.getIdentity();
 
-			if(owner == null && !processEnabled)
+			if(owner == null && !enabled)
 			{
 				/* All signals require an owner, except for Login */
 				throw new NotImplementedYet("Owner is null on signal: '" + signal + "'");
@@ -112,6 +113,7 @@ public abstract class CometHandlerSupport
 
 			Signal reply = null;
 			signal.setOwner(owner);
+			
 			boolean isOwner = sessions.verifyOwnership(signal);
 			if(isOwner)
 			{
@@ -148,7 +150,7 @@ public abstract class CometHandlerSupport
 		}
 	}
 
-	protected void injectXavanteMessage(Signal signal, CometMessage msg)
+	protected void injectXavanteMessage(Signal<?> signal, CometMessage msg)
 		throws Exception
 	{
         List<Field> fields = FieldUtils.getAllFields(signal.getClass());

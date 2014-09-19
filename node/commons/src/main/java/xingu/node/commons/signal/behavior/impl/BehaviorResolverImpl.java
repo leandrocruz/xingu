@@ -43,7 +43,7 @@ public class BehaviorResolverImpl
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public <T extends Signal, S extends Signal> SignalBehavior<T, S> behaviorFor(Signal signal)
+	public <T extends Signal<?>> SignalBehavior<T> behaviorFor(Signal<?> signal)
 	{
 		if(signal instanceof SignalBehavior)
 		{

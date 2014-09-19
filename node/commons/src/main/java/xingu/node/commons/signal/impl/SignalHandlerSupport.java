@@ -88,12 +88,12 @@ public class SignalHandlerSupport
 		return channel.write(signal);
 	}
 
-	protected Signal backFromTheFuture(ChannelFuture future, Signal signal, Waiter<Signal> waiter)
+	protected Signal<?> backFromTheFuture(ChannelFuture future, Signal<?> signal, Waiter<Signal> waiter)
 	{
 		boolean success = future.isSuccess();
 		if(success)
 		{
-			Signal reply = waiters.waitForReply(waiter, queryTimeout); /* removed the waiter when not timed out */
+			Signal<?> reply = waiters.waitForReply(waiter, queryTimeout); /* removed the waiter when not timed out */
 			if(reply != null)
 			{
 				return reply;
