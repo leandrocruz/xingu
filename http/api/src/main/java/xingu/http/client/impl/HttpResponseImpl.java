@@ -23,6 +23,8 @@ public class HttpResponseImpl
 
 	private InputStream	raw;
 
+	private Document	doc;
+
 	@Override
 	public String getBody()
 		throws IOException
@@ -49,12 +51,18 @@ public class HttpResponseImpl
 	public Document getDocument(String charset)
 		throws IOException
 	{
+		if(doc != null)
+		{
+			return doc;
+		}
+		
 		InputStream is = null;
 		try
 		{
 			is         = getRawBody();
 			String url = getUri();
-			return Jsoup.parse(is, charset, url);
+			doc = Jsoup.parse(is, charset, url);
+			return doc;
 		}
 		finally
 		{
