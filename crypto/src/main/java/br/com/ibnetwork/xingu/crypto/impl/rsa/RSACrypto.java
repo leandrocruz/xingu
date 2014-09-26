@@ -19,6 +19,10 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FSUtils;
 import br.com.ibnetwork.xingu.utils.MD5Utils;
 
+/*
+ * See
+ * - http://codeartisan.blogspot.com.br/2009/05/public-key-cryptography-in-java.html
+ */
 public class RSACrypto
     extends CryptoSupport
     implements Initializable
