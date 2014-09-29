@@ -23,11 +23,14 @@
 	</dependencies>
 	<modules>
 		<module>api</module>
+		<!-- xml -->
 		<module>xoia</module>		
-		<module>gson</module>
-		<module>flexjson</module>
 		<module>xstream</module>
 		<module>skaringa</module>
 		<module>simple</module>
+		<!-- json -->		
+		<module>flexjson</module>		
+		<module>gson</module>
+		<module>jackson</module>
 	</modules>
 </project>
