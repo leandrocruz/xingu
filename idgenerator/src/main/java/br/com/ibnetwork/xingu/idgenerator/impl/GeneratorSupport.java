@@ -19,7 +19,7 @@ public abstract class GeneratorSupport<T>
 	public GeneratorSupport(String generatorId, int grabSize)
 	{
 	    this.generatorId = generatorId;
-	    this.grabSize = grabSize;
+	    this.grabSize    = grabSize;
 	}
 	
 	@Override
