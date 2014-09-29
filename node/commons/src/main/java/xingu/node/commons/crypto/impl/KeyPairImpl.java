@@ -1,6 +1,8 @@
 package xingu.node.commons.crypto.impl;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.security.PrivateKey;
 
 import org.apache.avalon.framework.activity.Initializable;
@@ -16,6 +18,7 @@ import br.com.ibnetwork.xingu.container.Environment;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.crypto.Crypto;
 import br.com.ibnetwork.xingu.crypto.PubKey;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FSUtils;
 
 public class KeyPairImpl
@@ -55,14 +58,14 @@ public class KeyPairImpl
     public void initialize()
         throws Exception
     {
-        if(findFile(publicKeyFile) == null)
-        {
-            logger.warn("Public key not found: {}", publicKeyFile);
-        }
-        if(findFile(secretKeyFile) == null)
-        {
-            logger.warn("Secret key not found: {}", secretKeyFile);
-        }
+//        if(findFile(publicKeyFile) == null)
+//        {
+//            logger.warn("Public key not found: {}", publicKeyFile);
+//        }
+//        if(findFile(secretKeyFile) == null)
+//        {
+//            logger.warn("Secret key not found: {}", secretKeyFile);
+//        }
     }
 
     @Override
@@ -71,51 +74,45 @@ public class KeyPairImpl
         return id;
     }
 
+    private InputStream toInputStream(String location)
+    	throws Exception
+	{
+		if(location == null)
+    	{
+    		return null;
+    	}
+
+		URL url = Thread.currentThread().getContextClassLoader().getResource(location);
+		if(url == null)
+		{
+			return null;
+		}
+		return url.openStream();
+	}
+
     private PubKey loadPublicKey() 
         throws Exception
     {
-    	if(publicKeyFile == null)
-    	{
-    		return null;
-    	}
-
-        String path = findFile(publicKeyFile);
-        if(path == null)
+    	InputStream is = toInputStream(publicKeyFile);
+        if(is == null)
         {
             return null;
         }
-        return crypto.readPublicKey(path);
+        return crypto.readPublicKey(is);
     }
 
-    private PrivateKey loadPrivateKey() 
+	private PrivateKey loadPrivateKey() 
         throws Exception
     {
-        String path = findFile(secretKeyFile);
-        if(path == null)
+    	InputStream is = toInputStream(secretKeyFile);
+        if(is == null)
         {
             return null;
         }
+
         PubKey key = publicKey();
 		long keyId = key == null ? -1 : key.keyId();
-        return crypto.readPrivateKey(path, keyId, privateKeyPassword);
-    }
-    
-    private String findFile(String fileName)
-    {
-    	if(fileName == null)
-    	{
-    		return null;
-    	}
-        String path = FSUtils.loadFromClasspath(fileName);
-        if(path == null)
-        {
-            File file = new File(fileName);
-            if(file.exists())
-            {
-                path = file.getAbsolutePath();
-            }
-        }
-        return path;
+        return crypto.readPrivateKey(is, keyId, privateKeyPassword);
     }
 
     @Override
@@ -139,9 +136,35 @@ public class KeyPairImpl
         }
         return publicKey;
     }
-    
-    @Override
-    public void publicKey(PubKey key)
+
+    private String findFile(String fileName)
+    	throws Exception
+    {
+    	if(fileName == null)
+    	{
+    		return null;
+    	}
+    	if(fileName.startsWith("/"))
+    	{
+    		String path = FSUtils.loadFromClasspath(fileName);
+    		if(path == null)
+    		{
+    			File file = new File(fileName);
+    			if(file.exists())
+    			{
+    				path = file.getAbsolutePath();
+    			}
+    		}
+    		return path;
+    	}
+    	else
+    	{
+    		throw new NotImplementedYet();
+    	}
+    }
+
+    //@Override
+    private void publicKey(PubKey key)
     {
         this.publicKey = key;
         try
