@@ -42,7 +42,7 @@ public abstract class GeneratorSupport<T>
 	    state = increment(state);
 		callsSinceLastGrab++;
 
-	    if(callsSinceLastGrab >= grabSize)
+	    if(grabSize > 0 && callsSinceLastGrab >= grabSize)
 		{
             updateState(state);
 			callsSinceLastGrab = 0;
