@@ -64,11 +64,18 @@ public class RSACrypto
     public PrivateKey readPrivateKey(InputStream is, long id, String passphrase)
         throws Exception
     {
-        //RSA private keys are encoded with PKCS8 (DER)
-        byte[] encodedKey = IOUtils.toByteArray(is);
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encodedKey);
-        PrivateKey key = keyFactory.generatePrivate(spec);
-        return key;
+    	try
+    	{
+    		//RSA private keys are encoded with PKCS8 (DER)
+    		byte[] encodedKey = IOUtils.toByteArray(is);
+    		PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encodedKey);
+    		PrivateKey key = keyFactory.generatePrivate(spec);
+    		return key;
+    	}
+    	finally
+    	{
+    		IOUtils.closeQuietly(is);
+    	}
     }
 
     @Override
@@ -83,11 +90,18 @@ public class RSACrypto
     public PubKey readPublicKey(InputStream is) 
         throws Exception
     {
-        //RSA public keys are encoded with X509
-        byte[] encodedKey = IOUtils.toByteArray(is);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(encodedKey);
-        PublicKey key = keyFactory.generatePublic(spec);
-        return wrapp(key);
+    	try
+    	{
+    		byte[] encodedKey = IOUtils.toByteArray(is);
+    		//RSA public keys are encoded with X509
+    		X509EncodedKeySpec spec = new X509EncodedKeySpec(encodedKey);
+    		PublicKey key = keyFactory.generatePublic(spec);
+    		return wrapp(key);
+    	}
+    	finally
+    	{
+    		IOUtils.closeQuietly(is);
+    	}
     }
 
     private PubKey wrapp(PublicKey key)
