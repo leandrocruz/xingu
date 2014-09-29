@@ -52,6 +52,7 @@
 		<module>taster</module>		
 		<module>time</module>
 		<module>codec</module>
+		<module>settings</module>
 		<module>http</module>		
 		<module>servlet</module>
 		<module>exception</module>		
