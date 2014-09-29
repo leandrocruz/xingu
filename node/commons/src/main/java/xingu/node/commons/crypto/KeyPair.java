@@ -6,13 +6,13 @@ import br.com.ibnetwork.xingu.crypto.PubKey;
 
 public interface KeyPair
 {
-    String id();
+	String id();
 
-    PubKey publicKey()
-        throws Exception;
+	PubKey publicKey()
+		throws Exception;
 
-    void publicKey(PubKey pubKey);
-    
-    PrivateKey privateKey() 
-        throws Exception;
+	PrivateKey privateKey()
+		throws Exception;
+
+	// void publicKey(PubKey pubKey);
 }
