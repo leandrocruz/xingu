@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.jboss.netty.handler.codec.http.HttpMessage;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpVersion;
+import org.jboss.netty.handler.codec.http.multipart.Attribute;
 import org.jboss.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import org.jboss.netty.handler.codec.http.multipart.FileUpload;
 import org.jboss.netty.handler.codec.http.multipart.HttpDataFactory;
@@ -499,28 +501,62 @@ public class HttpUtils
 		return pair;
 	}
 
-	public static void whenMultipart(HttpRequest req)
+	public static List<InterfaceHttpData> whenMultipart(HttpRequest req)
 		throws Exception
 	{
 		HttpDataFactory         factory = new DefaultHttpDataFactory();
 		HttpPostRequestDecoder  decoder = new HttpPostRequestDecoder(factory, req);
 		List<InterfaceHttpData> items   = decoder.getBodyHttpDatas();
+		return items;
+	}
+
+	public static List<Attribute> attributesFrom(List<InterfaceHttpData> items)
+	{
+		List<Attribute> result = new ArrayList<Attribute>();
+		for(InterfaceHttpData item : items)
+		{
+			HttpDataType type = item.getHttpDataType();
+			switch(type)
+			{
+				case Attribute:
+					Attribute attr = (Attribute) item;
+					result.add(attr);
+					break;
+				
+				default:
+					break;
+			}
+		}
+		return result;
+	}
+
+	public static final void print(List<InterfaceHttpData> items)
+		throws Exception
+	{
 		for (InterfaceHttpData item : items)
 		{
 			HttpDataType type = item.getHttpDataType();
 			String       name = item.getName();
-			System.out.println(type + " " + name);
-			
-			if(type == HttpDataType.FileUpload)
+			System.out.println("Type: " + type + ", Name: " + name);
+			switch(type)
 			{
-				FileUpload upload      = (FileUpload) item;
-				Charset    charset     = upload.getCharset();
-				String     enc         = upload.getContentTransferEncoding();
-				String     contentType = upload.getContentType();
-				String     filename    = upload.getFilename();
-				System.out.println(charset + " " + enc + " " + contentType + " " + filename);
+				case FileUpload:
+					FileUpload upload      = (FileUpload) item;
+					Charset    charset     = upload.getCharset();
+					String     enc         = upload.getContentTransferEncoding();
+					String     contentType = upload.getContentType();
+					String     filename    = upload.getFilename();
+					System.out.println(charset + " " + enc + " " + contentType + " " + filename);
+					break;
+
+				case Attribute:
+					Attribute attr = (Attribute) item;
+					System.out.println(attr.getName() + " = " + attr.getValue());
+					break;
+
+				default:
+					break;
 			}
 		}
-		throw new NotImplementedYet();
 	}
 }
