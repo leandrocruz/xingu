@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils;
 
 import java.nio.charset.Charset;
 import java.text.Collator;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -222,7 +223,46 @@ public class StringUtils
 
     public static String trim(String str) 
     {
-        return str == null ? null : str.trim();
+    	return str == null ? null : str.trim();
+    }
+
+    public static String unicodeTrim(String str) 
+    {
+    	if(str == null)
+    	{
+    		return null;
+    	}
+    	
+    	int firstNonWhitespaceChar = -1;
+    	int lastNonWhitespaceChar  = -1;
+    	
+		String normalized = Normalizer.normalize(str, java.text.Normalizer.Form.NFD);
+		int len = normalized.length();
+		StringBuffer sb = new StringBuffer();
+		for (int offset = 0; offset < len;)
+		{
+			int codePoint = normalized.codePointAt(offset);
+			offset += Character.charCount(codePoint);
+
+			boolean whitespace = Character.isWhitespace(codePoint);
+			if(whitespace)
+			{
+				lastNonWhitespaceChar = offset;
+			}
+			else
+			{
+				lastNonWhitespaceChar = -1;
+			}
+			
+			char[] chars = Character.toChars(codePoint);
+			boolean alphabetic = Character.isAlphabetic(codePoint);
+			if(alphabetic)
+			{
+				sb.append(chars);
+				continue;
+			}
+		}
+		return sb.toString();
     }
 
     public static int toInt(String str)
