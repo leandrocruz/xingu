@@ -2,6 +2,7 @@ package br.com.ibnetwork.xingu.utils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -9,6 +10,20 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ArrayUtils
 {
+	public static final Object toArrayOf(Collection<?> collection, Class<?> typeOfArray)
+	{
+		int    size  = collection.size();
+		Object array = Array.newInstance(typeOfArray, size);
+
+		int i = 0;
+		for(Object item : collection)
+		{
+			Array.set(array, i++, item);
+		}
+		
+		return array;
+	}
+
 	public static String[] toStringArray(Object[] array)
 	{
 		String[] result = new String[array.length];
