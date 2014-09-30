@@ -1,9 +1,9 @@
 package br.com.ibnetwork.xingu.utils.type;
 
-import java.util.Map;
+import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 
 public interface ObjectPopulator
 {
-	void populate(Object obj, Map<String, String> map)
+	void populate(Object obj, FluidMap<String> map)
 		throws Exception;
 }

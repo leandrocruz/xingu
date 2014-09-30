@@ -1,7 +1,5 @@
 package br.com.ibnetwork.xingu.utils.type.impl;
 
-import java.lang.reflect.Field;
-
 import br.com.ibnetwork.xingu.utils.type.ObjectPopulator;
 import br.com.ibnetwork.xingu.utils.type.ObjectType;
 import br.com.ibnetwork.xingu.utils.type.ObjectType.Type;
@@ -27,10 +25,9 @@ public class SimpleObjectPopulator
 	}
 
 	@Override
-	protected Object convert(Field field, Param param, String value)
+	protected Object convert(Class<?> clazz, Param param, String value)
 		throws Exception
 	{
-		Class<?>    clazz   = field.getType();
 		Type        type    = ObjectType.typeFor(clazz);
 		TypeHandler handler = registry.handlerFor(clazz, type);
 		return handler.toObject(value);
