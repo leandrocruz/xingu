@@ -2,9 +2,9 @@ package br.com.ibnetwork.xingu.utils;
 
 public class NameValue<V>
 {
-	String	name;
+	public String	name;
 
-	V		value;
+	public V		value;
 
 	public NameValue(String name, V value)
 	{
