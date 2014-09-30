@@ -27,7 +27,7 @@ public class SettingsManagerImpl
 	private Time	time;
 
 	private File	root;
-	
+
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
@@ -58,7 +58,7 @@ public class SettingsManagerImpl
 
 	private File baseDirectoryFor(long owner)
 	{
-		File dir    = new File(root, String.valueOf(owner));
+		File dir = new File(root, String.valueOf(owner));
 		return dir;
 	}
 
@@ -91,7 +91,12 @@ public class SettingsManagerImpl
 	public void store(long owner, Settings conf)
 		throws Exception
 	{
-		File        dir         = baseDirectoryFor(owner);
+		File dir = baseDirectoryFor(owner);
+		if(!dir.exists())
+		{
+			dir.mkdirs();
+		}
+
 		Date        now         = time.now().asDate();
 		String      name        = DateFormats.yyyyMMdd_HHmmss.format(now);
 		File        target      = new File(dir, name);
