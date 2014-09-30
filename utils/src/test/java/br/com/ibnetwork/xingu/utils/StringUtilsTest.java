@@ -5,10 +5,20 @@ import static org.junit.Assert.assertEquals;
 import java.text.Collator;
 import java.util.Locale;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringUtilsTest
 {
+	@Test
+	@Ignore
+	public void testTrim()
+	{
+		assertEquals("", StringUtils.trim("\u00A0"));
+		assertEquals("start\u00A0end", StringUtils.trim("start\u00A0end"));
+		assertEquals("start\u00A0end", StringUtils.trim("\u00A0start\u00A0end\u00A0"));
+	}
+	
 	@Test
 	public void testNormalizePath()
 	{
