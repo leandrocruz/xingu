@@ -80,7 +80,7 @@ public class MessageFactoryImpl
 			msg.setData(data);
 		}
 		
-		ChannelBuffer buffer        = req.getContent();
+		ChannelBuffer buffer = req.getContent();
 		if(buffer != null)
 		{
 			int readable = buffer.readableBytes();
