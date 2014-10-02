@@ -39,8 +39,24 @@ public class ExcelReader
 	public static List<Record> read(String fileName, int sheetNumber, boolean readHeader)
 		throws Exception
 	{
-		InputStream is = new FileInputStream(fileName);
-		return read(is, sheetNumber, readHeader);
+		InputStream is = null;
+		try
+		{
+			is = new FileInputStream(fileName);
+			return read(is, sheetNumber, readHeader);
+		}
+		finally
+		{
+			if(is != null)
+			{
+				try
+				{
+					is.close();
+				}
+				catch(Throwable t)
+				{}
+			}
+		}
 	}
 
 	public static List<Record> read(InputStream is, int sheetNumber, boolean readHeader)
@@ -115,11 +131,11 @@ public class ExcelReader
 			{
 				String value = valueFrom(cell);
 				String name  = header != null ? header.nameFor(i) : String.valueOf(i);
-				System.out.print("[" + name + "] " + value + "\t");
+				//System.out.print("[" + name + "] " + value + "\t");
 				record.add(name, value.trim());
 			}
 		}
-		System.out.println("");
+		//System.out.println("");
 		
 		return record;
 	}
