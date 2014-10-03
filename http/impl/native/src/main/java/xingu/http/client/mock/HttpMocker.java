@@ -17,7 +17,7 @@ import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.ResponseInspector;
-import xingu.http.client.impl.CommandLineBuilder;
+import xingu.http.client.impl.curl.CurlResponseParser;
 
 public class HttpMocker
 {
@@ -25,17 +25,9 @@ public class HttpMocker
 
 	private HttpClient			http;
 
-	private CommandLineBuilder	builder;
-
 	public HttpMocker(HttpClient http)
 	{
-		this(http, null);
-	}
-
-	public HttpMocker(HttpClient http, CommandLineBuilder builder)
-	{
-		this.http    = http;
-		this.builder = builder;
+		this.http = http;
 	}
 
 	public HttpMocker get(String uri)
@@ -120,7 +112,7 @@ public class HttpMocker
 		throws Exception
 	{
 		File f = getFile(file);
-		return builder.responseFrom(req, f);
+		return CurlResponseParser.responseFrom(req.getUri(), f);
 	}
 	
 	public HttpMocker to(String file)
@@ -132,7 +124,7 @@ public class HttpMocker
 			return this;
 		}
 
-		HttpResponse res = builder.responseFrom(req, f);
+		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), f);
 		when(req.exec()).thenReturn(res);
 		return this;
 	}
