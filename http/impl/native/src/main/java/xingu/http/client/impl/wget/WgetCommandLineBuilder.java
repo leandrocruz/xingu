@@ -9,12 +9,13 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
-import xingu.http.client.impl.CommandLineBuilderSupport;
+import xingu.http.client.impl.CommandLineBuilder;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class WgetCommandLineBuilder
-	extends CommandLineBuilderSupport
+	implements CommandLineBuilder
 {
 	@Override
 	public String name()
@@ -108,5 +109,12 @@ public class WgetCommandLineBuilder
 				result.add("--header='Cookie: " + c.getName() + "=" + c.getValue() + "'");
 			}
 		}
+	}
+
+	@Override
+	public HttpResponse responseFrom(HttpRequest req, File file)
+		throws Exception
+	{
+		throw new NotImplementedYet();
 	}
 }

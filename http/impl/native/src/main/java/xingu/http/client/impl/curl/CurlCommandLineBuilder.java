@@ -13,8 +13,9 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
+import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
-import xingu.http.client.impl.CommandLineBuilderSupport;
+import xingu.http.client.impl.CommandLineBuilder;
 import xingu.netty.http.HttpUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
@@ -22,8 +23,7 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
  * See: http://curl.haxx.se/docs/manpage.html
  */
 public class CurlCommandLineBuilder
-	extends CommandLineBuilderSupport
-	implements Configurable
+	implements CommandLineBuilder, Configurable
 {
 	List<String> params = new ArrayList<String>();
 	
@@ -226,5 +226,13 @@ public class CurlCommandLineBuilder
 			}
 			result.add(sb.toString());
 		}
+	}
+
+	@Override
+	public HttpResponse responseFrom(HttpRequest req, File file)
+		throws Exception
+	{
+		String uri = req.getUri();
+		return CurlResponseParser.responseFrom(uri, file);
 	}
 }
