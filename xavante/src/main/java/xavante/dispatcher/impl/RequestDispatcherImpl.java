@@ -39,10 +39,11 @@ public class RequestDispatcherImpl
 		int i = 0;
 		for(Configuration h : handlers)
 		{
-			String         path      = h.getAttribute("path");
-			String         className = h.getAttribute("class");
+			String        path          = h.getAttribute("path");
+			String        className     = h.getAttribute("class");
+			Configuration handlerConfig = h.getChild("conf");
 			Class<?>       clazz     = ObjectUtils.loadClass(className);
-			RequestHandler handler   = (RequestHandler) factory.create(clazz, path);
+			RequestHandler handler   = (RequestHandler) factory.create(clazz, handlerConfig, path);
 			this.handlers[i++] = new Entry(path, handler);
 		}
 	}
