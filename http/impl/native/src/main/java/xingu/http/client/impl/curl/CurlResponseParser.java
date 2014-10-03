@@ -42,9 +42,15 @@ public class CurlResponseParser
 	public static HttpResponse responseFrom(String uri, File file)
 		throws Exception
 	{
-		InputStream   is     = new FileInputStream(file);
+		InputStream is = new FileInputStream(file);
+		return responseFrom(uri, is);
+	}
+	public static HttpResponse responseFrom(String uri, InputStream is)
+		throws Exception
+	{
 		byte[]        data   = IOUtils.toByteArray(is);
 		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
+		IOUtils.closeQuietly(is);
 
 		/* Parsing State */
 		int    i    = 0;
