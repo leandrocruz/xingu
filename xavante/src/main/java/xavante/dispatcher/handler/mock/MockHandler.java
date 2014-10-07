@@ -110,6 +110,7 @@ public class MockHandler
 		}
 
 		InputStream raw = res.getRawBody();
+		raw.reset();
 		byte[] array = IOUtils.toByteArray(raw);
 		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(array);
 		result.setContent(buffer);
