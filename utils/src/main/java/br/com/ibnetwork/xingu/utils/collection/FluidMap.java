@@ -114,6 +114,11 @@ public class FluidMap<T>
 		return true;
 	}
 
+	public Set<String> keySet()
+	{
+		return map.keySet();
+	}
+
 	@Override
 	public String toString()
 	{

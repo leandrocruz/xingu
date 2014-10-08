@@ -103,6 +103,7 @@ public class XavanteChannelHandler
 		}
 		catch(Throwable t)
 		{
+			Xavante.logger.error("Error handling dispatch: " + t.getMessage(), t);
 			HttpResponse res = toInternalServerError(t);
 			channel.write(res).addListener(ChannelFutureListener.CLOSE);
 		}

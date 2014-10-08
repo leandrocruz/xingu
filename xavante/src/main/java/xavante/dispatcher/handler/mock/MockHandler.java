@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelFutureListener;
@@ -24,6 +24,9 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 
 import xavante.XavanteRequest;
+import xavante.dispatcher.handler.mock.matcher.ExactValueMatcher;
+import xavante.dispatcher.handler.mock.matcher.RegexpValueMatcher;
+import xavante.dispatcher.handler.mock.matcher.ValueMatcher;
 import xavante.dispatcher.impl.RequestHandlerSupport;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
@@ -161,7 +164,11 @@ public class MockHandler
 		throws Exception
 	{
 		ReponseBuilder builder = builderFor(xeq);
-		HttpResponse   res     = builder.handle(xeq);
+		if(builder == null)
+		{
+			throw new NotImplementedYet("Can't find a matching reponse builder");
+		}
+		HttpResponse res = builder.handle(xeq);
 		return toNettyResponse(res);
 	}
 
@@ -176,17 +183,67 @@ public class MockHandler
 		{
 			return null;
 		}
+		
+		FluidMap<String> parameters = null;
+		HttpMethod method = xeq.getRequest().getMethod();
+		if(HttpMethod.GET.equals(method))
+		{
+			Map<String, String> map = url.getQueryString().toMap();
+			parameters = new FluidMap<>(map);
+		}
+		else if(HttpMethod.POST.equals(method))
+		{
+			parameters = HttpUtils.parsePostData(req);
+		}
 
-		FluidMap<String> parameters = HttpUtils.parsePostData(req);
 		for(ReponseBuilder builder : list)
 		{
-			FluidMap<String> my = builder.getParameters();
-			boolean match = parameters.subsetOf(my);
+			FluidMap<String> toMatch = builder.getParameters();
+			boolean match = match(parameters, toMatch);
 			if(match)
 			{
 				return builder;
 			}
+			
 		}
 		return null;
+	}
+
+	private boolean match(FluidMap<String> parameters, FluidMap<String> toMatch)
+	{
+		Set<String> keys = parameters.keySet();
+		for(String key : keys)
+		{
+			List<String> values        = toMatch.getAll(key);
+			List<String> valuesToMatch = parameters.getAll(key);
+			boolean compatible = values == null ? valuesToMatch == null : false || values != null ? valuesToMatch != null : false;  
+			if(!compatible)
+			{
+				return false;
+			}
+
+			for(String value : valuesToMatch)
+			{
+				System.out.println("Matching: " + key + " = " + value);
+				
+				ValueMatcher matcher = from(value);
+				boolean      match   = matcher.matchAny(valuesToMatch);
+				if(!match)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private ValueMatcher from(String value)
+	{
+		if(value.startsWith("regexp:"))
+		{
+			value = value.substring("regexp:".length());
+			return new RegexpValueMatcher(value);
+		}
+		return new ExactValueMatcher(value);
 	}
 }
