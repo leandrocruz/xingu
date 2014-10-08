@@ -3,19 +3,23 @@ package xavante.dispatcher.handler.mock;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jboss.netty.handler.codec.http.HttpMethod;
+import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 
@@ -25,14 +29,16 @@ import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.curl.CurlResponseParser;
 import xingu.netty.http.HttpResponseBuilder;
+import xingu.netty.http.HttpUtils;
 import xingu.url.Url;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 
 public class MockHandler
 	extends RequestHandlerSupport
 	implements Configurable
 {
-	private Map<String, ReponseBuilder> builderByPath = new HashMap<String, ReponseBuilder>();
+	private Map<String, List<ReponseBuilder>> buildersByPath = new HashMap<String, List<ReponseBuilder>>();
 	
 	private File root;
 	
@@ -55,7 +61,13 @@ public class MockHandler
 			{
 				ReponseBuilder builder = toBuilder(configuration);
 				String         path    = builder.getPath();
-				builderByPath.put(path, builder);
+				List<ReponseBuilder> list = buildersByPath.get(path);
+				if(list == null)
+				{
+					list = new ArrayList<ReponseBuilder>();
+					buildersByPath.put(path, list);
+				}
+				list.add(builder);
 			}
 			catch(Exception e)
 			{
@@ -67,12 +79,21 @@ public class MockHandler
 	private ReponseBuilder toBuilder(Configuration conf)
 		throws Exception
 	{
-		String       path = conf.getAttribute("path");
-		String       to   = conf.getAttribute("to");
+		String path  = conf.getAttribute("path");
+		String to    = conf.getAttribute("to");
+		Configuration[] children = conf.getChildren("param");
+		FluidMap<String> map = new FluidMap<String>();
+		for(Configuration child : children)
+		{
+			String name  = child.getAttribute("name");
+			String value = child.getAttribute("value");
+			map.add(name, value);
+		}
+		
 		File         file = new File(root, to);
 		InputStream  is   = new FileInputStream(file);
 		HttpResponse res  = CurlResponseParser.responseFrom("", is);
-		return new ReponseBuilderImpl(path, res);
+		return new ReponseBuilderImpl(path, map, res);
 	}
 
 	@Override
@@ -139,16 +160,33 @@ public class MockHandler
 	private org.jboss.netty.handler.codec.http.HttpResponse handleGetOrPost(XavanteRequest xeq)
 		throws Exception
 	{
-		Url            url     = xeq.getUrl();
-		ReponseBuilder builder = builderFor(url);
+		ReponseBuilder builder = builderFor(xeq);
 		HttpResponse   res     = builder.handle(xeq);
 		return toNettyResponse(res);
 	}
 
-	private ReponseBuilder builderFor(Url url)
+	private ReponseBuilder builderFor(XavanteRequest xeq)
 		throws Exception
 	{
-		String path = url.getPath();
-		return builderByPath.get(path);
+		HttpRequest req  = xeq.getRequest();
+		Url         url  = xeq.getUrl();
+		String      path = url.getPath();
+		List<ReponseBuilder> list = buildersByPath.get(path);
+		if(list == null)
+		{
+			return null;
+		}
+
+		FluidMap<String> parameters = HttpUtils.parsePostData(req);
+		for(ReponseBuilder builder : list)
+		{
+			FluidMap<String> my = builder.getParameters();
+			boolean match = parameters.subsetOf(my);
+			if(match)
+			{
+				return builder;
+			}
+		}
+		return null;
 	}
 }
