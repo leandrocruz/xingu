@@ -83,4 +83,40 @@ public class FluidMap<T>
 	{
 		return map.isEmpty();
 	}
+
+	public boolean subsetOf(FluidMap<T> other)
+	{
+		if(isEmpty())
+		{
+			return other.isEmpty();
+		}
+
+		Set<String> keys = map.keySet();
+		for(String key : keys)
+		{
+			List<T> list = getAll(key);
+			List<T> otherList = other.getAll(key);
+			boolean match = list == null ? otherList == null : false || list != null ? otherList != null : false;  
+			if(!match)
+			{
+				return false;
+			}
+
+			for(T t : list)
+			{
+				boolean contains = otherList.contains(t);
+				if(!contains)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return map.toString();
+	}
 }
