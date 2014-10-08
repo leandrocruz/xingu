@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ import xingu.url.impl.QueryStringImpl;
 import xingu.utils.NettyUtils;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.CharUtils;
+import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 
 public class HttpUtils
 {
@@ -499,6 +501,49 @@ public class HttpUtils
 		
 		String[] pair = up.split(":");
 		return pair;
+	}
+
+	public static FluidMap<String> parsePostData(HttpRequest req)
+		throws Exception
+	{
+		FluidMap<String> map = new FluidMap<String>();
+		ChannelBuffer buffer = req.getContent();
+		if(buffer == null)
+		{
+			return map;
+		}
+		int readable = buffer.readableBytes();
+		if(readable <= 0)
+		{
+			return map;
+		}
+
+		boolean multipart = HttpUtils.isMultipartFormData(req);
+		if(multipart)
+		{
+			List<InterfaceHttpData> items = HttpUtils.whenMultipart(req);
+			List<Attribute> attributes = HttpUtils.attributesFrom(items);
+			for(Attribute attr : attributes)
+			{
+				map.add(attr.getName(), attr.getValue());
+			}
+			return map;
+		}
+
+		if(true)
+		{
+			throw new NotImplementedYet();
+		}
+		String  cType        = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
+		String  csName       = HttpUtils.charset(cType, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+		Charset charset      = Charset.forName(csName);
+		String  data         = buffer.toString(charset);
+		boolean isUrlEncoded = HttpUtils.isUrlEncoded(cType);
+		if(isUrlEncoded)
+		{
+			data = URLDecoder.decode(data, csName);
+		}
+		return map;
 	}
 
 	public static List<InterfaceHttpData> whenMultipart(HttpRequest req)
