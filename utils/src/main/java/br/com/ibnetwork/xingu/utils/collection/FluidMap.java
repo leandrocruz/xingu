@@ -124,4 +124,20 @@ public class FluidMap<T>
 	{
 		return map.toString();
 	}
+
+	public void add(FluidMap<T> map)
+	{
+		if(map != null && !map.isEmpty())
+		{
+			Set<String> keys = map.keySet();
+			for(String key : keys)
+			{
+				List<T> values = map.getAll(key);
+				for(T t : values)
+				{
+					add(key, t);
+				}
+			}
+		}
+	}
 }
