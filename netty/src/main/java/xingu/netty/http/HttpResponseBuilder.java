@@ -40,15 +40,23 @@ public class HttpResponseBuilder
         return response;
     }
 
+	public HttpResponseBuilder withHeaderIf(boolean condition, String name, Object value)
+	{
+		if(condition)
+		{
+			String old = response.getHeader(name);
+			if(StringUtils.isNotEmpty(old))
+			{
+				response.removeHeader(name);
+			}
+			response.addHeader(name, value);
+		}
+        return this;
+	}
+
     public HttpResponseBuilder withHeader(String name, Object value)
     {
-        String old = response.getHeader(name);
-        if(StringUtils.isNotEmpty(old))
-        {
-            response.removeHeader(name);
-        }
-        response.addHeader(name, value);
-        return this;
+    	return withHeaderIf(true, name, value);
     }
 
     public HttpResponseBuilder withContentType(String name)
