@@ -85,19 +85,29 @@ public class QueryStringImpl
     {
         return map().size();
     }
-	
+
     @Override
 	public FluidMap<String> toMap()
 	{
-		return map();
-//		Map<String, String> result = new HashMap<String, String>();
-//        Set<String> keys = map().keySet();
-//        for (String key : keys)
-//        {
-//        	String decoded = getDecoded(key);
-//        	result.put(key, decoded);
-//        }
-//		return result;
+    	return toMap(DEFAULT_HTTP_CHARSET_NAME);
+	}
+    
+    @Override
+	public FluidMap<String> toMap(String charset)
+	{
+		FluidMap<String> map = map().copy();
+		Set<String> keys = map.keySet();
+		for(String key : keys)
+		{
+			List<String> values = map.getAll(key);
+			for(int i = 0; i < values.size(); i++)
+			{
+				String value = values.get(i);
+				String replacement = decode(value, charset);
+				values.set(i, replacement);
+			}
+		}
+		return map;
 	}
 
     private FluidMap<String> map()

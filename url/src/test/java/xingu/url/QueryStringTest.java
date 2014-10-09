@@ -2,6 +2,7 @@ package xingu.url;
 
 import static org.junit.Assert.*;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import xingu.url.impl.QueryStringImpl;
@@ -55,6 +56,7 @@ public class QueryStringTest
     
     @Test
     public void testDecoding()
+    	throws Exception
     {
     	
        /*  ISO-8859-1
@@ -64,8 +66,12 @@ public class QueryStringTest
     	*              escape(document.title) = "Cinemas%2C%20S%E9ries%20%26%20Livros"
     	*/
     	
-    	QueryString encoded = new QueryStringImpl("a=%D0%9F%D1%80%D0%B0%D0%B2%D0%B4%D0%B0.%D0%A0%D1%83%3A%20%D0%90%D0%BD%D0%B0%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0%20%D0%B8%20%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8");
-    	System.out.println(encoded.getDecoded("a", "UTF-8"));
+    	String      charset = "UTF-8";
+		String      input   = "Cinemas, Séries & Livros";
+		String      value   = new String(input.getBytes(charset));
+    	String      encoded = URLEncoder.encode(value, charset);
+    	QueryString qs      = new QueryStringImpl("a="+encoded);
+    	assertEquals(input, qs.getDecoded("a", charset));
     }
     
     @Test

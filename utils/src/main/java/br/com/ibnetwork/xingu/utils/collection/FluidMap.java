@@ -140,4 +140,16 @@ public class FluidMap<T>
 			}
 		}
 	}
+
+	public FluidMap<T> copy()
+	{
+		FluidMap<T> copy = new FluidMap<T>();
+		if(map == null || map.isEmpty())
+		{
+			return copy;
+		}
+		copy.add(this);
+		
+		return copy;
+	}
 }
