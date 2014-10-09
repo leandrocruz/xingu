@@ -2,6 +2,8 @@ package br.com.ibnetwork.xingu.utils.io.zip;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,6 +28,18 @@ public class ZipUtils
 		return to;
 	}
 
+	public static byte[] gzip(byte[] in)
+		throws IOException
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		OutputStream          os   = new BufferedOutputStream(new GZIPOutputStream(baos));
+		InputStream           is   = new BufferedInputStream(new ByteArrayInputStream(in));
+		IOUtils.copy(is, os);
+		IOUtils.closeQuietly(is);
+		IOUtils.closeQuietly(os);
+		return baos.toByteArray();
+	}
+	
 	public static void gzip(File file, File to)
 		throws IOException
 	{
