@@ -1,12 +1,12 @@
 package xingu.url.impl;
 
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import xingu.url.QueryString;
 import br.com.ibnetwork.xingu.utils.StringUtils;
+import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 
 public class QueryStringImpl
     implements QueryString
@@ -15,7 +15,7 @@ public class QueryStringImpl
     
     private String value;
     
-    private transient Map<String, String> map;
+    private transient FluidMap<String> map;
     
     public static final QueryString EMPTY = new QueryStringImpl("");
     
@@ -36,13 +36,17 @@ public class QueryStringImpl
         String value = map().get(name);
         return value;
     }
-    
+	
+    public List<String> getAll(String key)
+	{
+		return map.getAll(key);
+	}
+	
 	@Override
 	public Set<String> names()
 	{
 		return map.keySet();
 	}
-
 
     @Override
     public String getDecoded(String name)
@@ -81,12 +85,26 @@ public class QueryStringImpl
     {
         return map().size();
     }
+	
+    @Override
+	public FluidMap<String> toMap()
+	{
+		return map();
+//		Map<String, String> result = new HashMap<String, String>();
+//        Set<String> keys = map().keySet();
+//        for (String key : keys)
+//        {
+//        	String decoded = getDecoded(key);
+//        	result.put(key, decoded);
+//        }
+//		return result;
+	}
 
-    private Map<String, String> map()
+    private FluidMap<String> map()
     {
         if (map == null)
         {
-            map = new HashMap<String, String>();
+            map = new FluidMap<String>();
             if(StringUtils.isNotEmpty(value))
             {
                 String[] pairs = value.split("&");
@@ -95,7 +113,7 @@ public class QueryStringImpl
                     String[] split = pair.split("=");
                     String key = split[0];
                     String value = split.length > 1 ? split[1] : null;
-                    map.put(key, value);
+                    map.add(key, value);
                 }
             }
         }
@@ -119,7 +137,7 @@ public class QueryStringImpl
     @Override
     public QueryString add(String name, String value)
     {
-        map().put(name, value);
+        map().add(name, value);
         return this;
     }
 
@@ -165,17 +183,4 @@ public class QueryStringImpl
         }
         return true;
     }
-
-	@Override
-	public Map<String, String> toMap()
-	{
-		Map<String, String> result = new HashMap<String, String>();
-        Set<String> keys = map().keySet();
-        for (String key : keys)
-        {
-        	String decoded = getDecoded(key);
-        	result.put(key, decoded);
-        }
-		return result;
-	}
 }

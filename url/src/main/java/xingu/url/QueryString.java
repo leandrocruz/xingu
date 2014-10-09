@@ -1,8 +1,9 @@
 package xingu.url;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Set;
+
+import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 
 public interface QueryString
     extends Serializable
@@ -19,5 +20,5 @@ public interface QueryString
 
     String getDecoded(String name, String encoding);
     
-    Map<String, String> toMap();
+    FluidMap<String> toMap();
 }
