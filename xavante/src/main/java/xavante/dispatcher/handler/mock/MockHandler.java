@@ -188,8 +188,7 @@ public class MockHandler
 		HttpMethod method = xeq.getRequest().getMethod();
 		if(HttpMethod.GET.equals(method))
 		{
-			Map<String, String> map = url.getQueryString().toMap();
-			parameters = new FluidMap<>(map);
+			parameters = url.getQueryString().toMap();
 		}
 		else if(HttpMethod.POST.equals(method))
 		{
