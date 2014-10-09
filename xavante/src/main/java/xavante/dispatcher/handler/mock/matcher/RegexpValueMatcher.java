@@ -8,14 +8,11 @@ import java.util.regex.Pattern;
 public class RegexpValueMatcher
 	implements ValueMatcher
 {
-	private String	value;
-
 	private Pattern pattern;
 	
 	public RegexpValueMatcher(String value)
 	{
 		pattern = Pattern.compile(value);
-		this.value = value;
 	}
 
 	@Override
@@ -45,7 +42,6 @@ public class RegexpValueMatcher
 				it.remove();
 				return value;
 			}
-
 		}
 		return null;
 	}

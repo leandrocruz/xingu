@@ -211,34 +211,45 @@ public class MockHandler
 
 	private boolean match(FluidMap<String> parameters, FluidMap<String> toMatch)
 	{
-		Set<String> keys = parameters.keySet();
-		for(String key : keys)
+		Set<String> names = parameters.keySet();
+		for(String name : names)
 		{
-			List<String> values        = toMatch.getAll(key);
-			List<String> valuesToMatch = parameters.getAll(key);
-			boolean compatible = values == null ? valuesToMatch == null : false || values != null ? valuesToMatch != null && values.size() == valuesToMatch.size() : false;  
-			if(!compatible)
-			{
-				return false;
-			}
-
-			for(String value : values)
-			{
-				System.out.println("Matching: " + key + " = " + value);
-				
-				ValueMatcher matcher = from(value);
-				String       match   = matcher.getMatch(valuesToMatch);
-				if(match == null)
-				{
-					return false;
-				}
-			}
-			
-			if(!valuesToMatch.isEmpty())
+			boolean match = parameterMatch(parameters, toMatch, name);
+			if(!match)
 			{
 				return false;
 			}
 		}
+
+		return true;
+	}
+
+	private boolean parameterMatch(FluidMap<String> parameters, FluidMap<String> toMatch, String name)
+	{
+		List<String> values        = toMatch.getAll(name);
+		List<String> valuesToMatch = parameters.getAll(name);
+		boolean compatible = values == null ? valuesToMatch == null : false || values != null ? valuesToMatch != null && values.size() == valuesToMatch.size() : false;  
+		if(!compatible)
+		{
+			return false;
+		}
+
+		for(String value : values)
+		{
+			ValueMatcher matcher = from(value);
+			String       match   = matcher.getMatch(valuesToMatch); //removes elements from valuesToMatch
+			if(match == null)
+			{
+				return false;
+			}
+		}
+		
+		if(!valuesToMatch.isEmpty())
+		{
+			// All received values must match!
+			return false;
+		}
+		
 		return true;
 	}
 
