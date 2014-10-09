@@ -7,7 +7,7 @@ import org.junit.Test;
 public class BooleanUtilsTest
 {
 	@Test
-	public void testToPercent()
+	public void testToBoolean()
 		throws Exception
 	{
 		assertEquals(true, BooleanUtils.toBoolean("1"));
