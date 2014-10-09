@@ -5,4 +5,6 @@ import java.util.List;
 public interface ValueMatcher
 {
 	boolean matchAny(List<String> values);
+	
+	String getMatch(List<String> values);
 }

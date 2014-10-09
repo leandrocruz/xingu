@@ -216,22 +216,27 @@ public class MockHandler
 		{
 			List<String> values        = toMatch.getAll(key);
 			List<String> valuesToMatch = parameters.getAll(key);
-			boolean compatible = values == null ? valuesToMatch == null : false || values != null ? valuesToMatch != null : false;  
+			boolean compatible = values == null ? valuesToMatch == null : false || values != null ? valuesToMatch != null && values.size() == valuesToMatch.size() : false;  
 			if(!compatible)
 			{
 				return false;
 			}
 
-			for(String value : valuesToMatch)
+			for(String value : values)
 			{
 				System.out.println("Matching: " + key + " = " + value);
 				
 				ValueMatcher matcher = from(value);
-				boolean      match   = matcher.matchAny(valuesToMatch);
-				if(!match)
+				String       match   = matcher.getMatch(valuesToMatch);
+				if(match == null)
 				{
 					return false;
 				}
+			}
+			
+			if(!valuesToMatch.isEmpty())
+			{
+				return false;
 			}
 		}
 		return true;
