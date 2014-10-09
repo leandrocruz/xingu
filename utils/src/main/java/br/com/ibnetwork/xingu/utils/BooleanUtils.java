@@ -4,7 +4,7 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class BooleanUtils
 {
-	public Boolean toBoolean(Object value)
+	public static Boolean toBoolean(Object value)
 	{
 		if(value instanceof String)
 		{
@@ -14,6 +14,7 @@ public class BooleanUtils
 				case "true":
 				case "y":
 				case "s":
+				case "yes":
 				case "sim":
 					return Boolean.TRUE;
 					
