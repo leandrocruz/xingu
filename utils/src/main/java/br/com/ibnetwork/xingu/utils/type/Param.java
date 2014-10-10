@@ -12,4 +12,6 @@ public @interface Param
 	String name();
 	
 	boolean encrypted() default false;
+
+	String format() default "";
 }

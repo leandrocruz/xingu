@@ -1,5 +1,7 @@
 package br.com.ibnetwork.xingu.utils.type;
 
+import java.util.Date;
+
 
 public class SimpleObject
 {
@@ -8,6 +10,9 @@ public class SimpleObject
 	private String		stringField;
 
 	private String[]	arrayOfStrings;
+	
+	@Param(name="date", format="ddMMyyyy")
+	private Date		date;
 
 	public int getIntField()
 	{
@@ -37,5 +42,15 @@ public class SimpleObject
 	public void setArrayOfStrings(String[] arrayOfStrings)
 	{
 		this.arrayOfStrings = arrayOfStrings;
+	}
+
+	public Date getDate()
+	{
+		return date;
+	}
+
+	public void setDate(Date date)
+	{
+		this.date = date;
 	}
 }

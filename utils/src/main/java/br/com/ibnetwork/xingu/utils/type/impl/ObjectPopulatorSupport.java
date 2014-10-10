@@ -2,7 +2,13 @@ package br.com.ibnetwork.xingu.utils.type.impl;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.FieldUtils;
@@ -36,7 +42,16 @@ public abstract class ObjectPopulatorSupport
 					case OBJECT:
 					case PRIMITIVE:
 						String value     = map.get(name);
-						Object converted = convert(clazz, param, value);
+						Object converted = null;
+						if(Date.class.isAssignableFrom(clazz) && param != null)
+						{
+							converted = toDate(clazz, param, value);
+						}
+						else
+						{
+							converted = convert(clazz, param, value);
+						}
+
 						if(converted != null)
 						{
 							FieldUtils.set(field, obj, converted);
@@ -68,6 +83,25 @@ public abstract class ObjectPopulatorSupport
 				}
 			}
 		}
+	}
+
+	private Object toDate(Class<?> clazz, Param param, String value)
+		throws ParseException
+	{
+		String format = param.format();
+		if(StringUtils.isNotEmpty(format))
+		{
+			try
+			{
+				DateFormat df = new SimpleDateFormat(format);
+				return df.parse(value);
+			}
+			catch(Throwable t)
+			{
+				throw new NotImplementedYet("Can't parse date '"+value+"'. Format is '"+format+"'");
+			}
+		}
+		return null;
 	}
 
 	protected abstract Object convert(Class<?> clazz, Param param, String value)
