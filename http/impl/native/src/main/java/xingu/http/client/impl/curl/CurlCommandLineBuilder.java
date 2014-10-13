@@ -102,10 +102,18 @@ public class CurlCommandLineBuilder
 			//String charset = req.getCharset();
 			for(NameValue f : fields)
 			{
-				String name    = f.getName();
-				String value   = f.getValue();
+				String name  = f.getName();
+				String value = f.getValue();
+				String type  = f.getType();
+				if("raw".equals(type))
+				{
+					result.add("--data");
+				}
+				else
+				{
+					result.add("--data-urlencode");
+				}
 				//String encoded = URLEncoder.encode(value, charset);
-				result.add("--data-urlencode");
 				result.add(name+"="+value);
 			}
 		}
