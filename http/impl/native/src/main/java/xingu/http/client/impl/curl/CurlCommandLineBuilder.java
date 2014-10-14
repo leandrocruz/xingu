@@ -1,6 +1,7 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,8 +106,14 @@ public class CurlCommandLineBuilder
 				String name  = f.getName();
 				String value = f.getValue();
 				String type  = f.getType();
-				if("raw".equals(type))
+				if(type != null && type.startsWith("enc"))
 				{
+					int idx = type.indexOf(":");
+					if(idx >= 0)
+					{
+						String encoding = type.substring(idx + 1);
+						value = URLEncoder.encode(value, encoding);
+					}
 					result.add("--data");
 				}
 				else
