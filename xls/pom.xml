@@ -13,6 +13,11 @@
 	<name>Xingu XLS</name>
 	<dependencies>
 		<dependency>
+			<groupId>xingu</groupId>
+			<artifactId>xingu-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.10-beta2</version>
