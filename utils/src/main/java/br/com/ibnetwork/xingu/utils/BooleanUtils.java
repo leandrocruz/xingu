@@ -8,23 +8,46 @@ public class BooleanUtils
 	{
 		if(value instanceof String)
 		{
-			switch((String)value)
-			{
-				case "1":
-				case "true":
-				case "y":
-				case "s":
-				case "yes":
-				case "sim":
-					return Boolean.TRUE;
-					
-				default:
-					return Boolean.FALSE;
-			}
+			String input = (String) value;
+			return toBoolean(input);
+		}
+		else if(value instanceof Number)
+		{
+			Number input = (Number) value;
+			return toBoolean(input);
 		}
 		else
 		{
 			throw new NotImplementedYet();
+		}
+	}
+
+	public static Boolean toBoolean(Number value)
+	{
+		throw new NotImplementedYet();
+	}
+
+	public static Boolean toBoolean(String value)
+	{
+		switch(value)
+		{
+			case "1":
+			case "true":
+			case "y":
+			case "s":
+			case "yes":
+			case "sim":
+				return Boolean.TRUE;
+
+			case "0":
+			case "false":
+			case "n":
+			case "no":
+			case "não":
+				return Boolean.FALSE;
+
+			default:
+				return null;
 		}
 	}
 }
