@@ -11,12 +11,16 @@ import org.junit.Test;
 public class StringUtilsTest
 {
 	@Test
-	@Ignore
-	public void testTrim()
+	public void testFlat()
 	{
-		assertEquals("", StringUtils.trim("\u00A0"));
-		assertEquals("start\u00A0end", StringUtils.trim("start\u00A0end"));
-		assertEquals("start\u00A0end", StringUtils.trim("\u00A0start\u00A0end\u00A0"));
+		String noBreakSpace = "\u00A0";
+		assertEquals("", StringUtils.flat(""));
+		assertEquals("", StringUtils.flat(" "));
+		assertEquals("", StringUtils.flat(noBreakSpace));
+		assertEquals("start end", StringUtils.flat("start"+noBreakSpace+"end"));
+		assertEquals("start end", StringUtils.flat(noBreakSpace+"start"+noBreakSpace+"end"+noBreakSpace));
+		assertEquals("a ce", StringUtils.flat("á"+noBreakSpace+"çé"));
+		//assertEquals("my-name-is", StringUtils.flat("my-name-is"));
 	}
 	
 	@Test

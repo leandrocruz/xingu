@@ -226,43 +226,52 @@ public class StringUtils
     	return str == null ? null : str.trim();
     }
 
-    public static String unicodeTrim(String str) 
+    public static String flat(String str)
     {
     	if(str == null)
     	{
     		return null;
     	}
     	
-    	int firstNonWhitespaceChar = -1;
-    	int lastNonWhitespaceChar  = -1;
-    	
 		String normalized = Normalizer.normalize(str, java.text.Normalizer.Form.NFD);
 		int len = normalized.length();
 		StringBuffer sb = new StringBuffer();
-		for (int offset = 0; offset < len;)
+		
+		int spaceCount = 0;
+		
+		for (int i = 0; i < len;)
 		{
-			int codePoint = normalized.codePointAt(offset);
-			offset += Character.charCount(codePoint);
-
+			int     codePoint  = normalized.codePointAt(i);
 			boolean whitespace = Character.isWhitespace(codePoint);
-			if(whitespace)
+			boolean space      = Character.isSpaceChar(codePoint);
+			boolean alphabetic = Character.isAlphabetic(codePoint);
+			int     offset     = Character.charCount(codePoint);
+			String  name       = Character.getName(codePoint);
+			int     type       = Character.getType(codePoint);
+			
+			System.out.println("at: " + i + " type: " + type + " offset: " + offset + " name: '" + name + "'");
+			
+			i += offset;
+			if(alphabetic)
 			{
-				lastNonWhitespaceChar = offset;
+				spaceCount = 0;
+				char[] chars = Character.toChars(codePoint);
+				sb.append(chars);
+			}
+			else if(space || whitespace)
+			{
+				spaceCount++;
+				if(spaceCount == 1)
+				{
+					sb.append(SPACE);
+				}
 			}
 			else
 			{
-				lastNonWhitespaceChar = -1;
-			}
-			
-			char[] chars = Character.toChars(codePoint);
-			boolean alphabetic = Character.isAlphabetic(codePoint);
-			if(alphabetic)
-			{
-				sb.append(chars);
-				continue;
+				
 			}
 		}
-		return sb.toString();
+		return sb.toString().trim();
     }
 
     public static int toInt(String str)
