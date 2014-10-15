@@ -5,11 +5,23 @@ import static org.junit.Assert.assertEquals;
 import java.text.Collator;
 import java.util.Locale;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringUtilsTest
 {
+	@Test
+	public void testNormalizeWhiteSpace()
+	{
+		String noBreakSpace = "\u00A0";
+		assertEquals("", StringUtils.normalizeWhiteSpace(""));
+		assertEquals("", StringUtils.normalizeWhiteSpace(" "));
+		assertEquals("", StringUtils.normalizeWhiteSpace("\n\t "));
+		assertEquals("", StringUtils.normalizeWhiteSpace(noBreakSpace));
+		assertEquals("start end", StringUtils.normalizeWhiteSpace("start"+noBreakSpace+"end"));
+		assertEquals("start end", StringUtils.normalizeWhiteSpace("\n\t"+noBreakSpace+"start"+noBreakSpace+"end"+noBreakSpace));
+		assertEquals("Sentença é!", StringUtils.normalizeWhiteSpace("Sentença é!"));
+	}
+
 	@Test
 	public void testFlat()
 	{

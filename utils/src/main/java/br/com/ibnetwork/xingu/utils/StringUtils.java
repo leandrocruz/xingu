@@ -246,10 +246,11 @@ public class StringUtils
 			boolean space      = Character.isSpaceChar(codePoint);
 			boolean alphabetic = Character.isAlphabetic(codePoint);
 			int     offset     = Character.charCount(codePoint);
+			/*
 			String  name       = Character.getName(codePoint);
 			int     type       = Character.getType(codePoint);
-			
 			System.out.println("at: " + i + " type: " + type + " offset: " + offset + " name: '" + name + "'");
+			*/
 			
 			i += offset;
 			if(alphabetic)
@@ -272,6 +273,47 @@ public class StringUtils
 			}
 		}
 		return sb.toString().trim();
+    }
+
+    public static String normalizeWhiteSpace(String str)
+    {
+    	if(str == null)
+    	{
+    		return null;
+    	}
+    	
+		String normalized = Normalizer.normalize(str, java.text.Normalizer.Form.NFD);
+		int len = normalized.length();
+		StringBuffer sb = new StringBuffer();
+		
+		int spaceCount = 0;
+		
+		for (int i = 0; i < len;)
+		{
+			int     codePoint  = normalized.codePointAt(i);
+			boolean whitespace = Character.isWhitespace(codePoint);
+			boolean space      = Character.isSpaceChar(codePoint);
+			int     offset     = Character.charCount(codePoint);
+			
+			i += offset;
+			if(space || whitespace)
+			{
+				spaceCount++;
+				if(spaceCount == 1)
+				{
+					sb.append(SPACE);
+				}
+			}
+			else
+			{
+				spaceCount = 0;
+				char[] chars = Character.toChars(codePoint);
+				sb.append(chars);
+			}
+		}
+		
+		String result = sb.toString().trim();
+		return Normalizer.normalize(result, java.text.Normalizer.Form.NFC);
     }
 
     public static int toInt(String str)
