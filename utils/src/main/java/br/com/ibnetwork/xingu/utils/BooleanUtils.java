@@ -29,6 +29,11 @@ public class BooleanUtils
 
 	public static Boolean toBoolean(String value)
 	{
+		return toBoolean(value, null);
+	}
+	
+	public static Boolean toBoolean(String value, Boolean whenMissing)
+	{
 		switch(value)
 		{
 			case "1":
@@ -39,7 +44,6 @@ public class BooleanUtils
 			case "sim":
 				return Boolean.TRUE;
 			
-			case "":
 			case "0":
 			case "false":
 			case "n":
@@ -48,7 +52,7 @@ public class BooleanUtils
 				return Boolean.FALSE;
 
 			default:
-				return null;
+				return whenMissing;
 		}
 	}
 }
