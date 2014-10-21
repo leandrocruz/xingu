@@ -38,7 +38,8 @@ public class BooleanUtils
 			case "yes":
 			case "sim":
 				return Boolean.TRUE;
-
+			
+			case "":
 			case "0":
 			case "false":
 			case "n":
