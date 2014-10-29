@@ -26,6 +26,7 @@ public class TypeHandlerRegistryImpl
 		_register(new EmptySetTypeHandler());
 		_register(new EmptyMapTypeHandler());
 		_register(new EmptyListTypeHandler());
+		_register(new EnumTypeHandler());
 	}
 
 	@Override
@@ -60,6 +61,9 @@ public class TypeHandlerRegistryImpl
 	{
 		switch(type)
 		{
+			case ENUM:
+				return "enum"; //must match EnumTypeHandler.name
+						
 			case ARRAY:
 				return clazz.getComponentType().getName() + "[]";
 			

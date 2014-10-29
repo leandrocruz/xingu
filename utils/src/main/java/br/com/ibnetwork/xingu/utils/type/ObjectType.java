@@ -9,6 +9,7 @@ public class ObjectType
 {
 	public static enum Type {
 		PRIMITIVE,
+		ENUM,
 		OBJECT, 
 		ARRAY, 
 		COLLECTION,
@@ -47,6 +48,11 @@ public class ObjectType
 		if(clazz.isArray())
 		{
 			return Type.ARRAY;
+		}
+
+		if(clazz.isEnum())
+		{
+			return Type.ENUM;
 		}
 
 		if(Map.class.isAssignableFrom(clazz))

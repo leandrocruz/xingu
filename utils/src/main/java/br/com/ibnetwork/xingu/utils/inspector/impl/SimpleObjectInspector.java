@@ -83,7 +83,7 @@ public class SimpleObjectInspector
 		}
 		
 
-		boolean isPrimitive = type == Type.PRIMITIVE;
+		boolean isPrimitive = (type == Type.PRIMITIVE || type == Type.ENUM);
 		if(!isPrimitive)
 		{
 			visitor.onNodeStart(obj, id, handler, field);
@@ -107,6 +107,7 @@ public class SimpleObjectInspector
 				visitObject(obj, visitor);
 				break;
 				
+			case ENUM:				
 			case PRIMITIVE:
 				visitor.onPrimitive(obj, id, handler, field);
 				break;

@@ -38,6 +38,7 @@ public class XmlEmitter
 		Type type = handler.type();
 		switch(type)
 		{
+			case ENUM:
 			case ARRAY:
 			case COLLECTION:
 			case MAP:
