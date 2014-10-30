@@ -73,7 +73,11 @@ public class SimpleHttpRequest
 		if(StringUtils.isNotEmpty(ndc))
 		{
 			File    root    = new File(tmp, "xingu-http-client" + File.separator + ndc);
-			root.mkdirs();
+			boolean created = root.mkdirs();
+			if(!created)
+			{
+				throw new NotImplementedYet("Can't create directory: " + root);
+			}
 
 			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
 				@Override
