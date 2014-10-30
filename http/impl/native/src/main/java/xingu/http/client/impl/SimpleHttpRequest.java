@@ -15,6 +15,7 @@ import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.io.FileNamer;
+import br.com.ibnetwork.xingu.utils.io.FileUtils;
 import br.com.ibnetwork.xingu.utils.io.SerialFileContainer;
 
 public class SimpleHttpRequest
@@ -72,13 +73,7 @@ public class SimpleHttpRequest
 		File  tmp         = org.apache.commons.io.FileUtils.getTempDirectory();
 		if(StringUtils.isNotEmpty(ndc))
 		{
-			File    root    = new File(tmp, "xingu-http-client" + File.separator + ndc);
-			boolean created = root.mkdirs();
-			if(!created)
-			{
-				throw new NotImplementedYet("Can't create directory: " + root);
-			}
-
+			File root = FileUtils.createOrError(tmp, "xingu-http-client" + File.separator + ndc);
 			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
 				@Override
 				public Integer getParam(String name)

@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public class FileUtils
@@ -201,6 +202,21 @@ public class FileUtils
 		IOUtils.closeQuietly(os);
 		IOUtils.closeQuietly(is);
 
+		return file;
+	}
+
+	public static File createOrError(File parent, String name)
+		throws IOException
+	{
+		File file = new File(parent, name);
+		if(!file.exists())
+		{
+			boolean created = file.mkdirs();
+			if(!created)
+			{
+				throw new NotImplementedYet("Can't create directory: " + file);
+			}
+		}
 		return file;
 	}
 }
