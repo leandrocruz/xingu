@@ -94,7 +94,7 @@ public abstract class HttpRequestSupport
 		}
 		if(value == null)
 		{
-			throw new NotImplementedYet("Value cannot be null.");
+			value = "";
 		}
 		fields.add(new NameValueImpl(name, value, type));
 		return this;
