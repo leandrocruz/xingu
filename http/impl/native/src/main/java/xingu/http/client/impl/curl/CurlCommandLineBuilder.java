@@ -109,9 +109,9 @@ public class CurlCommandLineBuilder
 				if(type != null && type.startsWith("enc"))
 				{
 					int idx = type.indexOf(":");
-					if(idx >= 0)
+					String encoding = type.substring(idx + 1);
+					if(!"no".equals(encoding))
 					{
-						String encoding = type.substring(idx + 1);
 						value = URLEncoder.encode(value, encoding);
 					}
 					result.add("--data");
@@ -120,7 +120,6 @@ public class CurlCommandLineBuilder
 				{
 					result.add("--data-urlencode");
 				}
-				//String encoded = URLEncoder.encode(value, charset);
 				result.add(name+"="+value);
 			}
 		}
@@ -140,6 +139,12 @@ public class CurlCommandLineBuilder
 			}
 		}
 
+		/*
+		 * See:
+		 * - http://www.ietf.org/rfc/rfc2388.txt
+		 * - http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
+		 * - http://curl.haxx.se/docs/manpage.html#-F
+		 */
 		List<NameValue> fields = req.getFields();
 		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
@@ -150,13 +155,23 @@ public class CurlCommandLineBuilder
 				String name  = f.getName();
 				String value = f.getValue();
 				String type  = f.getType();
-				if(type == null)
+				if(type != null && type.startsWith("enc"))
 				{
+					int idx = type.indexOf(":");
+					String encoding = type.substring(idx + 1);
+					if(!"no".equals(encoding))
+					{
+						value = URLEncoder.encode(value, encoding);
+					}
 					result.add(name + "=" + value);
+				}
+				else if(type != null)
+				{
+					result.add(name + "=" + value + ";type=" + type);
 				}
 				else
 				{
-					result.add(name + "=" + value + ";type=" + type);	
+					result.add(name + "=" + value);
 				}
 			}
 		}
