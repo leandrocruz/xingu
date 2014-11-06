@@ -56,4 +56,6 @@ public interface HttpRequest
 
 	void setCharset(String charset);
 	String getCharset();
+
+	HttpRequest name(String name);
 }

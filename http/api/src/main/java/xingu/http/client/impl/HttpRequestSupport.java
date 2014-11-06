@@ -19,6 +19,8 @@ public abstract class HttpRequestSupport
 {
 	protected String				ndc;
 
+	protected String				name;
+
 	protected String				method;
 
 	protected String				uri;
@@ -291,6 +293,13 @@ public abstract class HttpRequestSupport
 	public String getCharset()
 	{
 		return charset != null ? charset : HttpUtils.DEFAULT_HTTP_CHARSET_NAME;
+	}
+
+	@Override
+	public HttpRequest name(String name)
+	{
+		this.name = name;
+		return this;
 	}
 
 	@Override

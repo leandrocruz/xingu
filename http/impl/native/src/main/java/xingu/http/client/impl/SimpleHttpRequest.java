@@ -78,17 +78,16 @@ public class SimpleHttpRequest
 				@Override
 				public Integer getParam(String name)
 				{
-					String pre = impl + "-http-response-";
-					String s   = name.substring(pre.length());
-					int    idx = s.indexOf(".");
-					s          = s.substring(0, idx);
+					int    start = name.indexOf("-") + 1;
+					int    end   = name.indexOf("-", start);
+					String s     = name.substring(start, end);
 					return Integer.parseInt(s);
 				}
 
 				@Override
 				public String getName(Integer i)
 				{
-					return impl + "-http-response-" + i + ".html";
+					return impl + "-" + i + "-" + (name == null ? "http-response" : name) +".html";
 				}
 			});
 			return container.next();
