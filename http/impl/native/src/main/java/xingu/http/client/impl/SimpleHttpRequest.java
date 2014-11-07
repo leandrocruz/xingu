@@ -87,7 +87,7 @@ public class SimpleHttpRequest
 				@Override
 				public String getName(Integer i)
 				{
-					return impl + "-" + i + "-" + (name == null ? "http-response" : name) +".html";
+					return "res-" + i + "-" + br.com.ibnetwork.xingu.utils.StringUtils.orEmpty(name) + ".html";
 				}
 			});
 			return container.next();
