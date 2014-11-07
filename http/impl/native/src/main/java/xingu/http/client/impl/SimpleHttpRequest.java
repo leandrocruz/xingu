@@ -8,12 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xingu.http.client.ConnectionRefused;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpResponse;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.io.FileNamer;
 import br.com.ibnetwork.xingu.utils.io.FileUtils;
 import br.com.ibnetwork.xingu.utils.io.SerialFileContainer;
@@ -46,7 +44,7 @@ public class SimpleHttpRequest
 			List<String> cmd  = builder.buildLine(this, file);
 			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 
-			result = pm.exec(cmd);
+			result = execCmd(cmd, 3);
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
@@ -59,11 +57,31 @@ public class SimpleHttpRequest
 			throw new HttpException(e);
 		}
 
-		if(7 == result /* TODO: curl specific */)
+		throw new HttpException(impl + " error: " + result);
+	}
+	
+	public int execCmd(List<String> cmd, int retryCount)
+		throws Exception
+	{
+		int result = pm.exec(cmd);
+		if(result == 0)
 		{
-			throw new ConnectionRefused("Failed connect to '"+this.getUri()+"'");
+			return 0;
 		}
-		throw new NotImplementedYet("ERROR executing "+impl+" processes: " + result);
+
+		/* 
+		 * 6  - Couldn't resolve host. 
+		 * 7  - Failed to connect to host 
+		 * 28 - Operation timeout
+		 */
+		if(retryCount > 0
+				&& (6 == result || 7 == result || 28 == result))
+		{
+			logger.info("retrying: " + result);
+			return execCmd(cmd, retryCount - 1);
+		}
+
+		return result;
 	}
 
 	private File getOutputFile()

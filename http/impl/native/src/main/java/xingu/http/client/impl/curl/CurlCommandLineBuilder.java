@@ -53,7 +53,7 @@ public class CurlCommandLineBuilder
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
 		result.add("-m");
-		result.add("120");
+		result.add("60");
 		result.add("-i");
 		result.add("-k"); // ignore server certificate
 		result.add("-o"); // output to a file
