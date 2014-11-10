@@ -75,6 +75,7 @@ public class HttpMocker
 		when(req.withAttachment(any(String.class), any(String.class))).thenReturn(req);
 		when(req.multipart(any(Boolean.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
+		when(req.name(any(String.class))).thenReturn(req);
 
 		return req;
 	}
