@@ -71,7 +71,6 @@ public class DaemonThreadFactory
     	{
     		throw new IllegalStateException("DaemonThreadFactory interrupted already");
     	}
-    	interrupted = true;
     	
         for(Thread t : threads)
         {
@@ -79,9 +78,12 @@ public class DaemonThreadFactory
             {
             	//System.out.println("Interrupting " + t.getId() + " '" + t.getState() + "'");
                 t.interrupt();
+                interrupted = true;
             }
             catch(Throwable error)
-            {}
+            {
+            	error.printStackTrace();
+            }
         }
     }
 }

@@ -34,18 +34,14 @@ public class Waiters<T>
 	}
 	
 	public T waitForReply(Waiter<T> waiter, long timeout)
+		throws InterruptedException
 	{
-	    waiter.waitFor(timeout);
-	    T reply = waiter.reply;
-		if(reply != null)
-		{
-			/* Remove if no timeout. On timeout , we will need it further to mark signals as late */
-			remove(waiter);
-	    }
-		else
+		waiter.waitFor(timeout);
+		T reply = waiter.reply;
+		if(reply == null)
 		{
 			waiter.isLate = true;
 		}
-	    return reply;
+		return reply;
 	}
 }
