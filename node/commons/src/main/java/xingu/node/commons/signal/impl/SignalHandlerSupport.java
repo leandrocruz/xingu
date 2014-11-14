@@ -61,7 +61,7 @@ public class SignalHandlerSupport
 		touch(channel, signal);
 		Waiter<Signal> waiter = new SignalWaiter(signal);
 		waiters.add(waiter);
-		
+
 		try
 		{
 			ChannelFuture future = deliver(signal, channel);
@@ -72,10 +72,17 @@ public class SignalHandlerSupport
 			future.awaitUninterruptibly();
 			reply = backFromTheFuture(future, signal, waiter); /* pretty cool don't you think? */
 		}
-		catch(Exception e)
+		catch(InterruptedException e)
+		{
+			throw e;
+		}
+		catch(Throwable t)
+		{
+			return new ExceptionSignal(signal, t);
+		}
+		finally
 		{
 			waiters.remove(waiter);
-			return new ExceptionSignal(signal, e);
 		}
 
 		return reply;
@@ -89,6 +96,7 @@ public class SignalHandlerSupport
 	}
 
 	protected Signal<?> backFromTheFuture(ChannelFuture future, Signal<?> signal, Waiter<Signal> waiter)
+		throws InterruptedException
 	{
 		boolean success = future.isSuccess();
 		if(success)

@@ -31,6 +31,7 @@ public abstract class Waiter<T>
 	}
 
 	public void waitFor(long timeout)
+		throws InterruptedException
 	{
 		if(notified)
 		{
@@ -44,7 +45,7 @@ public abstract class Waiter<T>
 			}
 			catch(InterruptedException e)
 			{
-				return;
+				throw e;
 			}
 		}
 		if(stopTime == 0)
