@@ -13,7 +13,7 @@ public class EmptyListTypeHandler
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		return Collections.emptyList();

@@ -25,7 +25,7 @@ public class EnumTypeHandler
 
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		throw new NotImplementedYet();

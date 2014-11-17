@@ -69,9 +69,17 @@ public class TypeHandlerSupport
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
-		return clazz.newInstance();
+		if(cl != null)
+		{
+			String className = clazz.getName();
+			return cl.loadClass(className).newInstance();
+		}
+		else
+		{
+			return clazz.newInstance();
+		}
 	}
 }

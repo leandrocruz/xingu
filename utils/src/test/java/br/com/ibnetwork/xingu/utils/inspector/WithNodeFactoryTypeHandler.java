@@ -17,7 +17,7 @@ public class WithNodeFactoryTypeHandler
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		return this;

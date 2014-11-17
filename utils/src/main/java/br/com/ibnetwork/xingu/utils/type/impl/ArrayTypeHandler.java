@@ -13,7 +13,7 @@ public class ArrayTypeHandler
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		Class<?> target = clazz().getComponentType();

@@ -13,7 +13,7 @@ public class EmptySetTypeHandler
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		return Collections.emptySet();

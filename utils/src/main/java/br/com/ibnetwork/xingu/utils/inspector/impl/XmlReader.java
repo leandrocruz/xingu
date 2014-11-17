@@ -101,13 +101,15 @@ public class XmlReader
 			return handler.toObject(node.value);
 		}
 		
+		NamedClassLoader cl = clm.byId(node.classLoader);
 		if(handler == null)
 		{
-			NamedClassLoader cl    = clm.byId(node.classLoader);
-			Class<?>          clazz = cl.loadClass(node.clazz);
-			handler                 = registry.handlerFor(clazz, Type.OBJECT);
+			Class<?> clazz 	= cl.loadClass(node.clazz);
+			handler 		= registry.handlerFor(clazz, Type.OBJECT);
 		}
-		return handler.newInstance();
+		
+		ClassLoader loader = cl.getClassLoader();
+		return handler.newInstance(loader);
 	}
 
 	@Override

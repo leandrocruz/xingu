@@ -15,6 +15,6 @@ public interface TypeHandler
 
 	Object toObject(String value);
 
-	Object newInstance()
+	Object newInstance(ClassLoader cl)
 		throws Exception;
 }

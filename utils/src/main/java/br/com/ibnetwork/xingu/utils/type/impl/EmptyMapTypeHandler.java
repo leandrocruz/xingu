@@ -13,7 +13,7 @@ public class EmptyMapTypeHandler
 	}
 
 	@Override
-	public Object newInstance()
+	public Object newInstance(ClassLoader cl)
 		throws Exception
 	{
 		return Collections.emptyMap();
