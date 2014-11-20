@@ -101,6 +101,10 @@ public class XavanteChannelHandler
 		{
 			dispatcher.dispatch(req, channel);
 		}
+//		catch(InterruptedException e)
+//		{
+//			throw e;
+//		}
 		catch(Throwable t)
 		{
 			Xavante.logger.error("Error handling dispatch: " + t.getMessage(), t);
@@ -117,6 +121,7 @@ public class XavanteChannelHandler
 		sb.append(trace);
 		return HttpResponseBuilder
 				.builder(HttpResponseStatus.INTERNAL_SERVER_ERROR)
+				.withHeader("Access-Control-Allow-Origin", "*")
 				.withContent(sb.toString())
 				.build();
 	}

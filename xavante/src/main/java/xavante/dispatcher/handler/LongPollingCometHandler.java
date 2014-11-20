@@ -46,6 +46,10 @@ public class LongPollingCometHandler
 			CometMessage msg = factory.build(xeq, resp);
 			reply            = handler.onMessage(msg);
 		}
+		catch(InterruptedException e)
+		{
+			throw e;
+		}
 		catch(Throwable t)
 		{
 			reply = handler.onError(t);

@@ -54,6 +54,10 @@ public abstract class CometHandlerSupport
 		{
 			return send(msg);
 		}
+		else if("rsm".equalsIgnoreCase(cmd))
+		{
+			return resume(msg);
+		}
 		else
 		{
 			throw new NotImplementedYet("Can't execute '" + cmd + "'");
@@ -165,6 +169,21 @@ public abstract class CometHandlerSupport
                 field.setAccessible(before);
             }
         }
+	}
+
+	protected String resume(CometMessage msg)
+		throws Exception
+	{
+		String       token   = msg.getToken();
+		CometSession session = sessions.byId(token);
+		if(session != null)
+		{
+			return "{\"type\": \"OK\", \"sessionId\":\"" + session.getId() + "\"}";
+		}
+		else
+		{
+			return "{}";
+		}
 	}
 
 	protected String drain(CometMessage msg)
