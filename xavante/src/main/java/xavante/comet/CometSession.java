@@ -26,6 +26,7 @@ public class CometSession
 	}
 
 	public synchronized Object[] drain()
+		throws Exception
 	{
 		if(queue.isEmpty())
 		{
@@ -35,7 +36,7 @@ public class CometSession
 			}
 			catch (InterruptedException e)
 			{
-				return null;
+				throw e;
 			}
 		}
 		
