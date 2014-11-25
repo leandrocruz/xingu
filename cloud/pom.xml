@@ -12,7 +12,9 @@
 	<packaging>pom</packaging>
 	<name>Xingu Cloud</name>
 	<modules>
+		<module>api</module>
 		<module>google</module>
+		<module>aws</module>
 	</modules>
 </project>
 

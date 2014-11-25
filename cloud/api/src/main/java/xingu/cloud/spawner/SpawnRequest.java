@@ -1,4 +1,4 @@
-package xingu.cloud.vm;
+package xingu.cloud.spawner;
 
 public interface SpawnRequest
 {
@@ -8,7 +8,9 @@ public interface SpawnRequest
 	
 	String getGroup();
 	
-	String getName();
+	String getNamePattern();
+
+	String getIdPattern();
 	
 	String getMachineType();
 	

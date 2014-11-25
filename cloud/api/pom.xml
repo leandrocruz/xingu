@@ -8,29 +8,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>xingu-cloud-google</artifactId>
+	<artifactId>xingu-cloud-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Xingu Cloud - Google</name>
+	<name>Xingu Cloud - API</name>
 	<dependencies>
 		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
+			<groupId>avalon-framework</groupId>
+			<artifactId>avalon-framework-api</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-cloud-api</artifactId>
+			<artifactId>netty-utils</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-process</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-java6</artifactId>
-			<version>1.18.0-rc</version>
 		</dependency>	
 	</dependencies>
 </project>

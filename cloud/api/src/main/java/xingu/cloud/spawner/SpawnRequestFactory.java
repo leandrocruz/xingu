@@ -1,4 +1,4 @@
-package xingu.cloud.vm;
+package xingu.cloud.spawner;
 
 public class SpawnRequestFactory
 {
@@ -9,8 +9,9 @@ public class SpawnRequestFactory
 
 	private SpawnRequestImpl req = new SpawnRequestImpl();
 
-	public SpawnRequest get()
+	public SpawnRequest get(int count)
 	{
+		req.count = count;
 		return req;
 	}
 
@@ -31,14 +32,19 @@ public class SpawnRequestFactory
 		req.group = group;
 		return this;
 	}
-
-	public SpawnRequestFactory withName(String name)
+	
+	public SpawnRequestFactory withNamePattern(String pattern)
 	{
-		req.name = name;
+		req.namePattern = pattern;
 		return this;
 	}
 
-	
+	public SpawnRequestFactory withIdPattern(String pattern)
+	{
+		req.idPattern = pattern;
+		return this;
+	}
+
 	public SpawnRequestFactory withMachineType(String machineType)
 	{
 		req.machineType = machineType;
@@ -60,11 +66,15 @@ public class SpawnRequestFactory
 
 		String	group;
 
-		String	name;
+		String	namePattern;
+		
+		String	idPattern;
 
 		String	machineType;
 
 		String	image;
+
+		int		count;
 		
 		@Override
 		public String getZone()
@@ -85,9 +95,9 @@ public class SpawnRequestFactory
 		}
 
 		@Override
-		public String getName()
+		public String getNamePattern()
 		{
-			return name;
+			return namePattern;
 		}
 
 		@Override
@@ -105,7 +115,13 @@ public class SpawnRequestFactory
 		@Override
 		public int getCount()
 		{
-			return 0;
+			return count;
+		}
+
+		@Override
+		public String getIdPattern()
+		{
+			return idPattern;
 		}
 	}
 }

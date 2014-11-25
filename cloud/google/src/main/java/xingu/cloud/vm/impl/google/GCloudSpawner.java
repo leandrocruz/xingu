@@ -4,59 +4,81 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xingu.cloud.vm.SpawnRequest;
-import xingu.cloud.vm.Spawner;
-import xingu.cloud.vm.VirtualMachine;
+import xingu.cloud.spawner.SpawnRequest;
+import xingu.cloud.spawner.Spawner;
+import xingu.cloud.spawner.Surrogate;
+import xingu.cloud.spawner.impl.SpawnerSupport;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class GCloudSpawner
-	implements Spawner
+	extends SpawnerSupport
+	implements Spawner, Configurable
 {
 	@Inject
 	private ProcessManager	pm;
 
-	private String			bin		= "/home/leandro/bin/gcloud";
+	private String			bin;
 
 	private final Logger	logger	= LoggerFactory.getLogger(getClass());
+
+	@Override
+	public void configure(Configuration conf)
+		throws ConfigurationException
+	{
+		bin = conf.getChild("gcloud").getAttribute("path", "/usr/local/bin/gcloud");
+	}
 	
 	@Override
-	public List<VirtualMachine> spawn(SpawnRequest req)
+	protected Surrogate spawn(String id, String name, SpawnRequest req)
 		throws Exception
 	{
-		List<String> cmd  = buildLine(req);
+		List<String> cmd = buildLine(id, name, req);
 		logger.info("Executing command: {}", StringUtils.join(cmd, " "));
+
 		File baseDir = org.apache.commons.io.FileUtils.getTempDirectory();
 		File output  = File.createTempFile("gcloud-output-", ".txt");
 		File error   = File.createTempFile("gcloud-error-", ".txt");
 		int  result  = pm.exec(cmd, baseDir, output, error);
-		
 		if(result != 0)
 		{
-			throw new NotImplementedYet("Error executing gcloud");
+			String data = FileUtils.readFileToString(error);
+			throw new NotImplementedYet("Error executing gcloud: " + data);
 		}
-		
-		String outputData = FileUtils.readFileToString(output);
-		return parse(outputData);
+
+		String data = FileUtils.readFileToString(output);
+		return parse(name, data);
 	}
 
-	private List<VirtualMachine> parse(String data)
+	private Surrogate parse(String nameToMatch, String data)
 	{
-		return null;
+		String[] lines = data.split("\n");
+		for(String line : lines)
+		{
+			if(line.startsWith(nameToMatch))
+			{
+				String[] parts      = StringUtils.split(line);
+				String   name       = parts[0];
+				String   externalIp = parts[4];
+				return new GCloudSurrogate(name, externalIp);
+			}
+		}
+		throw new NotImplementedYet("Error parsing gcloud output for '"+nameToMatch+"' : " + data);
 	}
 
-	private List<String> buildLine(SpawnRequest req)
+	private List<String> buildLine(String id, String name, SpawnRequest req)
 	{
 		String zone        = req.getZone();
 		String project     = req.getProject();
-		String group       = req.getGroup();
-		String name        = req.getName();
 		String machineType = req.getMachineType();
 		String image       = req.getImage();
 		
@@ -74,6 +96,8 @@ public class GCloudSpawner
 		params.add(machineType);
 		params.add("--image");
 		params.add(image);
+		params.add("--metadata");
+		params.add("instanceId=" + id);
 		 
 		return params;
 	}

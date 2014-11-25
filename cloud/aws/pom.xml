@@ -8,30 +8,26 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>xingu-cloud-google</artifactId>
+	<artifactId>xingu-cloud-aws</artifactId>
 	<packaging>jar</packaging>
-	<name>Xingu Cloud - Google</name>
+	<name>Xingu Cloud - AWS</name>
 	<dependencies>
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
 		<dependency>
 			<groupId>xingu</groupId>
 			<artifactId>xingu-cloud-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-process</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
+			<groupId>avalon-framework</groupId>
+			<artifactId>avalon-framework-impl</artifactId>
+			<version>4.2.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-java6</artifactId>
-			<version>1.18.0-rc</version>
-		</dependency>	
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 	</dependencies>
 </project>
 

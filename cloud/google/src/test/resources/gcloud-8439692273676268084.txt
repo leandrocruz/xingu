@@ -1,3 +1,3 @@
 Created [https://www.googleapis.com/compute/v1/projects/oystrbots-test/zones/us-central1-a/instances/oystr-sample].
 NAME         ZONE          MACHINE_TYPE INTERNAL_IP    EXTERNAL_IP    STATUS
-oystr-sample us-central1-a f1-micro     10.240.106.231 146.148.64.154 RUNNING
+oystr-sample-0 us-central1-a f1-micro     10.240.106.231 146.148.64.154 RUNNING
