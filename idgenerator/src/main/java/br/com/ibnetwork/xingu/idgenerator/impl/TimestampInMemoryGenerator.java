@@ -19,7 +19,7 @@ public class TimestampInMemoryGenerator
 
 	private Set<String>				set		= new HashSet<String>();
 	
-	private int suffixSize = 16;
+	private int suffixSize = 6;
 
 	public TimestampInMemoryGenerator()
 	{
@@ -42,7 +42,7 @@ public class TimestampInMemoryGenerator
 		throws GeneratorException
 	{
 		Date   now    = time.now().asDate();
-		String result = DateFormats.yyyyMMdd_HHmmss.format(now) + "-" + RandomStringUtils.randomAlphanumeric(suffixSize);
+		String result = DateFormats.yyyyMMdd_HHmmss.format(now) + "-" + RandomStringUtils.randomAlphanumeric(suffixSize).toLowerCase();
 
 		if(set.contains(result))
 		{
