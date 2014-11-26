@@ -1,5 +1,10 @@
 package xingu.cloud.spawner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.ibnetwork.xingu.utils.NameValue;
+
 public class SpawnRequestFactory
 {
 	public static SpawnRequestFactory builder()
@@ -57,6 +62,12 @@ public class SpawnRequestFactory
 		return this;
 	}
 
+	public SpawnRequestFactory withMeta(String name, String value)
+	{
+		req.addMeta(name, value);
+		return this;
+	}
+
 	class SpawnRequestImpl 
 		implements SpawnRequest
 	{
@@ -76,6 +87,19 @@ public class SpawnRequestFactory
 
 		int		count;
 		
+		List<NameValue<String>> meta = new ArrayList<>();
+
+		public void addMeta(String name, String value)
+		{
+			meta.add(new NameValue<String>(name, value));
+		}
+
+		@Override
+		public List<NameValue<String>> getMeta()
+		{
+			return meta;
+		}
+
 		@Override
 		public String getZone()
 		{

@@ -17,8 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
-import xingu.cloud.spawner.impl.Entry;
 import xingu.cloud.spawner.impl.SpawnerSupport;
+import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
@@ -76,6 +76,13 @@ public class EC2Spawner
 	{}
 
 	@Override
+	public synchronized void release(Surrogate surrogate)
+	{
+		String id = surrogate.getId();
+		logger.info("Releasing Surrogate s#{}", id);
+	}
+
+	@Override
 	public List<Surrogate> spawn(SpawnRequest reqX)
 		throws Exception
 	{
@@ -105,7 +112,7 @@ public class EC2Spawner
 			EC2Surrogate surrogate = new EC2Surrogate(instance);
 			String       id        = surrogate.getId();
 			logger.info("Creating surrogate #{} from image '{}'", id, imageId);
-			surrogateById.put(id, new Entry(surrogate));
+			surrogateById.put(id, surrogate);
 			surrogates.add(surrogate);
 		}
 		
@@ -116,5 +123,12 @@ public class EC2Spawner
 	{
 		byte[] data = Base64.encodeBase64(userData.getBytes());
 		return new String(data);
+	}
+
+	@Override
+	protected Surrogate spawn(String id, SpawnRequest req)
+		throws Exception
+	{
+		throw new NotImplementedYet();
 	}
 }

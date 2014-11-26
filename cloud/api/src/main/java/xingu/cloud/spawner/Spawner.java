@@ -13,17 +13,11 @@ public interface Spawner
 	List<Surrogate> spawn(SpawnRequest req)
 		throws Exception;
 
+	void release(Surrogate surrogate)
+		throws Exception;
+
 	Surrogate attach(String id, Channel channel);
+	
 	void dettach(Surrogate surrogate);
 	
-	void release(Surrogate surrogate, String bundle);
-
-	@Deprecated
-	List<Surrogate> get(int count, String bundle);
-	
-	@Deprecated
-	int getLockCount(String bundle);
-
-	@Deprecated
-	int getSurrogateCount();
 }

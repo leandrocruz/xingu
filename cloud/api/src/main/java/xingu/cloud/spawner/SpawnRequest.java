@@ -1,5 +1,9 @@
 package xingu.cloud.spawner;
 
+import java.util.List;
+
+import br.com.ibnetwork.xingu.utils.NameValue;
+
 public interface SpawnRequest
 {
 	String getZone();
@@ -17,4 +21,6 @@ public interface SpawnRequest
 	String getImage();
 
 	int getCount();
+	
+	List<NameValue<String>> getMeta();
 }

@@ -19,6 +19,7 @@ import xingu.cloud.spawner.impl.SpawnerSupport;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import br.com.ibnetwork.xingu.utils.NameValue;
 
 public class GCloudSpawner
 	extends SpawnerSupport
@@ -37,14 +38,97 @@ public class GCloudSpawner
 	{
 		bin = conf.getChild("gcloud").getAttribute("path", "/usr/local/bin/gcloud");
 	}
+
+	/**
+	 * See: https://cloud.google.com/sdk/gcloud/reference/compute/instances/delete
+	 */
 	
 	@Override
-	protected Surrogate spawn(String id, String name, SpawnRequest req)
+	public void release(Surrogate surrogate)
 		throws Exception
 	{
-		List<String> cmd = buildLine(id, name, req);
-		logger.info("Executing command: {}", StringUtils.join(cmd, " "));
+		String id = surrogate.getId();
+		logger.info("Releasing Surrogate s#{}", id);
+		
+		GCloudSurrogate instance = GCloudSurrogate.class.cast(surrogate);
+		String zone = instance.getZone();
+		
+		List<String> cmd = new ArrayList<String>();
+		cmd.add(bin);
+		cmd.add("compute");
+		cmd.add("instances");
+		cmd.add("delete");
+		cmd.add(id);
+		cmd.add("--zone");
+		cmd.add(zone);
 
+		String result = execute(cmd);
+		parseRelease(result);
+	}
+	
+	private void parseRelease(String result)
+	{}
+
+	@Override
+	protected Surrogate spawn(String id, SpawnRequest req)
+		throws Exception
+	{
+		String zone        = req.getZone();
+		String project     = req.getProject();
+		String machineType = req.getMachineType();
+		String image       = req.getImage();
+		
+		List<String> cmd = new ArrayList<String>();
+		cmd.add(bin);
+		cmd.add("compute");
+		cmd.add("instances");
+		cmd.add("create");
+		cmd.add(id);
+		cmd.add("--zone");
+		cmd.add(zone);
+		cmd.add("--project");
+		cmd.add(project);
+		cmd.add("--machine-type");
+		cmd.add(machineType);
+		cmd.add("--image");
+		cmd.add(image);
+		cmd.add("--format");
+		cmd.add("json");
+		cmd.add("--metadata");
+		cmd.add("instanceId=" + id);
+		
+		List<NameValue<String>> meta = req.getMeta();
+		for(NameValue<String> item : meta)
+		{
+			cmd.add("--metadata");
+			cmd.add(item.name + "=" + item.value);
+		}
+
+		String result = execute(cmd);
+		return parseSpawn(id, result);
+	}
+
+	private Surrogate parseSpawn(String nameToMatch, String data)
+	{
+		String[] lines = data.split("\n");
+		for(String line : lines)
+		{
+			if(line.startsWith(nameToMatch))
+			{
+				String[] parts   = StringUtils.split(line);
+				String   name    = parts[0];
+				String   zone    = parts[1];
+				String   address = parts[4];
+				return new GCloudSurrogate(name, address, zone);
+			}
+		}
+		throw new NotImplementedYet("Error parsing gcloud output for '"+nameToMatch+"' : " + data);
+	}
+
+	private String execute(List<String> cmd)
+		throws Exception
+	{
+		logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 		File baseDir = org.apache.commons.io.FileUtils.getTempDirectory();
 		File output  = File.createTempFile("gcloud-output-", ".txt");
 		File error   = File.createTempFile("gcloud-error-", ".txt");
@@ -55,50 +139,7 @@ public class GCloudSpawner
 			throw new NotImplementedYet("Error executing gcloud: " + data);
 		}
 
-		String data = FileUtils.readFileToString(output);
-		return parse(name, data);
+		return FileUtils.readFileToString(output);
 	}
 
-	private Surrogate parse(String nameToMatch, String data)
-	{
-		String[] lines = data.split("\n");
-		for(String line : lines)
-		{
-			if(line.startsWith(nameToMatch))
-			{
-				String[] parts      = StringUtils.split(line);
-				String   name       = parts[0];
-				String   externalIp = parts[4];
-				return new GCloudSurrogate(name, externalIp);
-			}
-		}
-		throw new NotImplementedYet("Error parsing gcloud output for '"+nameToMatch+"' : " + data);
-	}
-
-	private List<String> buildLine(String id, String name, SpawnRequest req)
-	{
-		String zone        = req.getZone();
-		String project     = req.getProject();
-		String machineType = req.getMachineType();
-		String image       = req.getImage();
-		
-		List<String> params = new ArrayList<String>();
-		params.add(bin);
-		params.add("compute");
-		params.add("instances");
-		params.add("create");
-		params.add(name);
-		params.add("--zone");
-		params.add(zone);
-		params.add("--project");
-		params.add(project);
-		params.add("--machine-type");
-		params.add(machineType);
-		params.add("--image");
-		params.add(image);
-		params.add("--metadata");
-		params.add("instanceId=" + id);
-		 
-		return params;
-	}
 }
