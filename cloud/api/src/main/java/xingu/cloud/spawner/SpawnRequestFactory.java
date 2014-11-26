@@ -14,6 +14,24 @@ public class SpawnRequestFactory
 
 	private SpawnRequestImpl req = new SpawnRequestImpl();
 
+	public SpawnRequestFactory copy()
+	{
+		SpawnRequestFactory result = new SpawnRequestFactory();
+		result.req.count       = req.count;
+		result.req.region      = req.region;
+		result.req.namespace   = req.namespace;
+		result.req.group       = req.group;
+		result.req.machineType = req.machineType;
+		result.req.image       = req.image;
+		result.req.idPattern   = req.idPattern;
+		List<NameValue<String>> meta = req.getMeta();
+		for(NameValue<String> nv : meta)
+		{
+			result.req.addMeta(nv.name, nv.value);
+		}
+		return result;
+	}
+
 	public SpawnRequest get(int count)
 	{
 		req.count = count;
@@ -35,12 +53,6 @@ public class SpawnRequestFactory
 	public SpawnRequestFactory withGroup(String group)
 	{
 		req.group = group;
-		return this;
-	}
-	
-	public SpawnRequestFactory withNamePattern(String pattern)
-	{
-		req.namePattern = pattern;
 		return this;
 	}
 
@@ -77,8 +89,6 @@ public class SpawnRequestFactory
 
 		String	group;
 
-		String	namePattern;
-		
 		String	idPattern;
 
 		String	machineType;
@@ -116,12 +126,6 @@ public class SpawnRequestFactory
 		public String getGroup()
 		{
 			return group;
-		}
-
-		@Override
-		public String getNamePattern()
-		{
-			return namePattern;
 		}
 
 		@Override

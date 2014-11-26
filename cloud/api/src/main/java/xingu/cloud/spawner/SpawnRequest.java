@@ -12,8 +12,6 @@ public interface SpawnRequest
 	
 	String getGroup();
 	
-	String getNamePattern();
-
 	String getIdPattern();
 	
 	String getMachineType();

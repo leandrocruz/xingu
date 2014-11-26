@@ -136,13 +136,11 @@ public abstract class LockingSpawnerSupport
 		List<Surrogate> result = new ArrayList<>(count);
 		for(int i = 0; i < count; i++)
 		{
-			String namePattern = req.getNamePattern();
-			String name        = String.format(namePattern, i);
 			String idPattern   = req.getIdPattern();
 			String id          = String.format(idPattern, i);
 			
 			logger.info("Spawning surrogate s#{}", id);
-			Surrogate surrogate = spawn(id, name, req);
+			Surrogate surrogate = spawn(id, id, req);
 			logger.info("Surrogate s#{} spawned", id);
 			
 			Entry entry = new Entry(surrogate);
