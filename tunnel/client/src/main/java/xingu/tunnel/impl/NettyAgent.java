@@ -30,7 +30,7 @@ public class NettyAgent
 	public void start()
 		throws Exception
 	{
-		connector.connect(new OnConnect(){
+		connector.connect("127.0.0.1", new int[]{9000}, new OnConnect(){
 
 			@Override
 			public void onSuccess(Channel channel)

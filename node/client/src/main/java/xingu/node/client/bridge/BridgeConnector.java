@@ -6,7 +6,7 @@ import org.jboss.netty.channel.Channel;
 
 public interface BridgeConnector
 {
-	Future<Channel> connect(OnConnect onConnect);
+	Future<Channel> connect(String host, int[] ports, OnConnect onConnect);
 	
 	Channel getAcceptedChannel();
 }

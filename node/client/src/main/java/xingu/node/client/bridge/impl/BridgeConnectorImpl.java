@@ -39,7 +39,6 @@ import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.client.bridge.OnConnect;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
-import br.com.ibnetwork.xingu.utils.StringUtils;
 import br.com.ibnetwork.xingu.utils.TimeUtils;
 
 public class BridgeConnectorImpl
@@ -56,10 +55,6 @@ public class BridgeConnectorImpl
 
 	private ClientBootstrap			bootstrap;
 
-	private String					host;
-
-	private int[]					ports;
-
 	protected int					foundPort	= 0;
 
 	protected Semaphore				sem			= new Semaphore(0);
@@ -73,25 +68,9 @@ public class BridgeConnectorImpl
 		throws ConfigurationException
 	{
     	conf = conf.getChild("connection");
-        host = conf.getAttribute("address", "127.0.0.1");
-        ports = readPorts(conf);
         acquirePortTimeout = TimeUtils.toMillis(conf.getAttribute("acquirePortTimeout","30s")); 
         connectionTimeout = TimeUtils.toMillis(conf.getAttribute("connectionTimeout","10s"));
         useTcpNoDeplay = conf.getAttributeAsBoolean("useTcpNoDeplay", true);
-	}
-
-	private int[] readPorts(Configuration conf)
-	{
-        String ports = conf.getAttribute("ports", "8899");
-        String[] availablePorts = ports.split(",");
-        int size = availablePorts.length;
-        int[] result = new int[size];
-        for (int i=0 ; i<size ; i++)
-        {
-        	String value = availablePorts[i].trim();
-        	result[i] = StringUtils.toInt(value, 0); 
-        }
-		return result;
 	}
 
 	@Override
@@ -127,7 +106,7 @@ public class BridgeConnectorImpl
 	}
 
 	@Override
-	public Future<Channel> connect(final OnConnect onConnect)
+	public Future<Channel> connect(final String host, final int[] ports, final OnConnect onConnect)
 	{
 		Callable<Channel> task = new Callable<Channel>(){
 
@@ -140,7 +119,7 @@ public class BridgeConnectorImpl
 		    	for (int i = 0; i < size; i++)
 				{
 					int     port    = ports[i];
-					Channel channel = tryPort(port);
+					Channel channel = tryPort(host, port);
 					if(channel != null)
 					{
 						BridgeConnectorImpl.this.acceptedChannel = channel;
@@ -164,7 +143,7 @@ public class BridgeConnectorImpl
 		return Executors.newSingleThreadExecutor(tf);
 	}
 
-	private Channel tryPort(int port)
+	private Channel tryPort(String host, int port)
 	{
 		long start = System.currentTimeMillis();
 		
