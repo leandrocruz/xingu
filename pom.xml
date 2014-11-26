@@ -79,6 +79,7 @@
 		<module>xavante</module>
 		<module>xls</module>
 		<module>pdf</module>
+		<module>cloud</module>
 		<!--
 		<module>ibatis</module>
 		<module>dao</module>
