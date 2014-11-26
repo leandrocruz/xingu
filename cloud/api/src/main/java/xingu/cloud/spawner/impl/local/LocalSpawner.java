@@ -1,8 +1,11 @@
 package xingu.cloud.spawner.impl.local;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Surrogate;
@@ -12,12 +15,19 @@ public class LocalSpawner
 	extends SpawnerSupport
 {
 	@Override
-	protected Surrogate spawn(String id, SpawnRequest req)
+	protected List<Surrogate> spawn(SpawnRequest req, String... ids)
 		throws Exception
 	{
-		File file = new File("/tmp/spawn");
-		FileUtils.writeStringToFile(file, id);
-		return new LocalSurrogate(id);
+		String all  = StringUtils.join(ids, ",");
+		File   file = new File("/tmp/spawn");
+		FileUtils.writeStringToFile(file, all);
+
+		List<Surrogate> result = new ArrayList<>(ids.length);
+		for(String id : ids)
+		{
+			result.add(new LocalSurrogate(id));
+		}
+		return result;
 	}
 
 	@Override

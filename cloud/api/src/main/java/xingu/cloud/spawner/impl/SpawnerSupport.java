@@ -55,25 +55,26 @@ public abstract class SpawnerSupport
 		throws Exception
 	{
 		int count = req.getCount();
-		List<Surrogate> result = new ArrayList<>(count);
+		String[] ids = new String[count];
 		for(int i = 0; i < count; i++)
 		{
-			String namePattern = req.getNamePattern();
-			String name        = String.format(namePattern, i);
-			String idPattern   = req.getIdPattern();
-			String id          = String.format(idPattern, i);
-			
-			logger.info("Spawning surrogate s#{}", id);
-			Surrogate surrogate = spawn(id, req);
-			logger.info("Surrogate s#{} spawned", id);
-			
-			surrogateById.put(id, surrogate);
-			result.add(surrogate);
+			String pattern = req.getIdPattern();
+			String id      = String.format(pattern, i);
+			ids[i] = id;
 		}
-		return result;
+
+		logger.info("Spawning {} surrogates", count);
+		List<Surrogate> surrogates = spawn(req, ids);
+		for(Surrogate surrogate : surrogates)
+		{
+			String id = surrogate.getId();
+			logger.info("Surrogate s#{} spawned", id);
+			surrogateById.put(id, surrogate);
+		}
+		return surrogates;
 	}
 
-	protected abstract Surrogate spawn(String id, SpawnRequest req)
+	protected abstract List<Surrogate> spawn(SpawnRequest req, String... ids)
 		throws Exception;
 
 	@Override
