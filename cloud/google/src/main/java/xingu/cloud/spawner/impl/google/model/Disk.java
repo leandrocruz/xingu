@@ -1,4 +1,4 @@
-package xingu.cloud.spawner.impl.google;
+package xingu.cloud.spawner.impl.google.model;
 
 import java.util.List;
 

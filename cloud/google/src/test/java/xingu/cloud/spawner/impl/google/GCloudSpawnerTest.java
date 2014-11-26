@@ -1,4 +1,4 @@
-package xingu.cloud.vm;
+package xingu.cloud.spawner.impl.google;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +22,7 @@ import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.XinguTestCase;
 
-public class SpawnerTest
+public class GCloudSpawnerTest
 	extends XinguTestCase
 {
 	@Inject
