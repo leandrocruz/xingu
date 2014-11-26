@@ -14,7 +14,7 @@ import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.SpawnRequestFactory;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
-import xingu.cloud.vm.impl.google.GCloudSpawner;
+import xingu.cloud.spawner.impl.google.GCloudSpawner;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;

@@ -1,4 +1,4 @@
-package xingu.cloud.vm.impl.google;
+package xingu.cloud.spawner.impl.google;
 
 import br.com.ibnetwork.xingu.utils.ip.IPUtils;
 import xingu.cloud.spawner.impl.SurrogateSupport;

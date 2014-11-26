@@ -1,4 +1,4 @@
-package xingu.cloud.vm.impl.google;
+package xingu.cloud.spawner.impl.google;
 
 import java.io.File;
 import java.util.ArrayList;
