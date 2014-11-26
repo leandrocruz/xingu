@@ -1,0 +1,69 @@
+[
+  {
+    "canIpForward": false,
+    "creationTimestamp": "2014-11-26T10:23:27.990-08:00",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "persistent-disk-0",
+        "index": 0,
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1410-utopic"
+        ],
+        "mode": "READ_WRITE",
+        "source": "oystr-nebers-2",
+        "type": "PERSISTENT"
+      }
+    ],
+    "id": "612882572132718883",
+    "kind": "compute#instance",
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "fingerprint": "8GqiCIHQ7DU=",
+      "items": [
+        {
+          "key": "startup-script-url",
+          "value": "http://repo.oystr.com.br/client/client-run.sh"
+        }
+      ],
+      "kind": "compute#metadata"
+    },
+    "name": "oystr-nebers-2",
+    "networkInterfaces": [
+      {
+        "accessConfigs": [
+          {
+            "kind": "compute#accessConfig",
+            "name": "external-nat",
+            "natIP": "130.211.143.135",
+            "type": "ONE_TO_ONE_NAT"
+          }
+        ],
+        "name": "nic0",
+        "network": "default",
+        "networkIP": "10.240.95.54"
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "MIGRATE"
+    },
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/oystrbots-test/zones/us-central1-a/instances/oystr-nebers-2",
+    "serviceAccounts": [
+      {
+        "email": "1096155671009-compute@developer.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only"
+        ]
+      }
+    ],
+    "status": "RUNNING",
+    "tags": {
+      "fingerprint": "42WmSpB8rSM="
+    },
+    "zone": "us-central1-a"
+  }
+]

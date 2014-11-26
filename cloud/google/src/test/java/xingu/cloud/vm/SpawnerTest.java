@@ -15,6 +15,8 @@ import xingu.cloud.spawner.SpawnRequestFactory;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
 import xingu.cloud.spawner.impl.google.GCloudSpawner;
+import xingu.codec.Codec;
+import xingu.codec.impl.JacksonCodec;
 import xingu.process.ProcessManager;
 import br.com.ibnetwork.xingu.container.Binder;
 import br.com.ibnetwork.xingu.container.Inject;
@@ -30,10 +32,11 @@ public class SpawnerTest
 	protected void rebind(Binder binder)
 		throws Exception
 	{
-		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("gcloud-8439692273676268084.txt");
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("create.json");
 		String output = IOUtils.toString(is);
 		binder.bind(Spawner.class).to(GCloudSpawner.class);
 		binder.bind(ProcessManager.class).to(new FakeProcessManager(0, output, null));
+		binder.bind(Codec.class, "gcloud").to(JacksonCodec.class);
 	}
 
 	@Test
@@ -51,16 +54,15 @@ public class SpawnerTest
 	{
 		SpawnRequest req = SpawnRequestFactory
 				.builder()
-				.withZone("us-central1-a")
-				.withProject("oystrbots-test")
-				.withGroup("sample")
-				.withNamePattern("oystr-sample-%d")
-				.withIdPattern("id-%d")
-				.withMachineType("f1-micro")
-				.withImage("debian-7")
+				.withIdPattern("xxx")
 				.get(1);
 
-		List<Surrogate> machines = spawner.spawn(req);
-		assertEquals("146.148.64.154", machines.get(0).getIp().getAddress());
+		List<Surrogate> surrogates = spawner.spawn(req);
+		assertEquals(1, surrogates.size());
+
+		Surrogate surrogate = surrogates.get(0);
+		assertEquals("130.211.143.135", surrogate.getIp().getAddress());
+		assertEquals("oystr-nebers-2", surrogate.getId());
+		assertEquals("us-central1-a", surrogate.getRegion());
 	}
 }

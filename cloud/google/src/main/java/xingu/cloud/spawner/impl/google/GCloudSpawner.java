@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
@@ -21,14 +22,19 @@ import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.utils.NameValue;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class GCloudSpawner
 	extends SpawnerSupport
-	implements Spawner, Configurable
+	implements Spawner, Configurable, Initializable
 {
 	@Inject
 	private ProcessManager	pm;
 
 	private String			bin;
+
+	private ObjectMapper	mapper;
 
 	private final Logger	logger	= LoggerFactory.getLogger(getClass());
 
@@ -37,6 +43,13 @@ public class GCloudSpawner
 		throws ConfigurationException
 	{
 		bin = conf.getChild("gcloud").getAttribute("path", "/usr/local/bin/gcloud");
+	}
+
+	@Override
+	public void initialize()
+		throws Exception
+	{
+		mapper = new ObjectMapper();
 	}
 
 	/**
@@ -51,7 +64,7 @@ public class GCloudSpawner
 		logger.info("Releasing Surrogate s#{}", id);
 		
 		GCloudSurrogate instance = GCloudSurrogate.class.cast(surrogate);
-		String zone = instance.getZone();
+		String zone = instance.getRegion();
 		
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(bin);
@@ -61,6 +74,7 @@ public class GCloudSpawner
 		cmd.add(id);
 		cmd.add("--zone");
 		cmd.add(zone);
+		cmd.add("--quiet");
 
 		String result = execute(cmd);
 		parseRelease(result);
@@ -70,11 +84,11 @@ public class GCloudSpawner
 	{}
 
 	@Override
-	protected Surrogate spawn(String id, SpawnRequest req)
+	protected List<Surrogate> spawn(SpawnRequest req, String... ids)
 		throws Exception
 	{
-		String zone        = req.getZone();
-		String project     = req.getProject();
+		String zone        = req.getRegion();
+		String project     = req.getNamespace();
 		String machineType = req.getMachineType();
 		String image       = req.getImage();
 		
@@ -83,7 +97,10 @@ public class GCloudSpawner
 		cmd.add("compute");
 		cmd.add("instances");
 		cmd.add("create");
-		cmd.add(id);
+		for(String id : ids)
+		{
+			cmd.add(id);
+		}
 		cmd.add("--zone");
 		cmd.add(zone);
 		cmd.add("--project");
@@ -94,8 +111,6 @@ public class GCloudSpawner
 		cmd.add(image);
 		cmd.add("--format");
 		cmd.add("json");
-		cmd.add("--metadata");
-		cmd.add("instanceId=" + id);
 		
 		List<NameValue<String>> meta = req.getMeta();
 		for(NameValue<String> item : meta)
@@ -105,24 +120,30 @@ public class GCloudSpawner
 		}
 
 		String result = execute(cmd);
-		return parseSpawn(id, result);
+		return parseSpawn(result);
 	}
 
-	private Surrogate parseSpawn(String nameToMatch, String data)
+	private List<Surrogate> parseSpawn(String in)
+		throws Exception
 	{
-		String[] lines = data.split("\n");
-		for(String line : lines)
+		List<CreateJsonReply> result = mapper.readValue(in, new TypeReference<List<CreateJsonReply>>(){});
+		List<Surrogate> surrogates = new ArrayList<>(result.size());
+		for(CreateJsonReply reply : result)
 		{
-			if(line.startsWith(nameToMatch))
-			{
-				String[] parts   = StringUtils.split(line);
-				String   name    = parts[0];
-				String   zone    = parts[1];
-				String   address = parts[4];
-				return new GCloudSurrogate(name, address, zone);
-			}
+			Surrogate surrogate = toSurrogate(reply);
+			surrogates.add(surrogate);
 		}
-		throw new NotImplementedYet("Error parsing gcloud output for '"+nameToMatch+"' : " + data);
+		return surrogates;
+	}
+
+	private Surrogate toSurrogate(CreateJsonReply reply)
+	{
+		NetworkInterface iface0        = reply.getNetworkInterfaces().get(0);
+		AccessConfig     accessConfig0 = iface0.getAccessConfigs().get(0);
+		String address = accessConfig0.getNatIP();
+		String name    = reply.getName();
+		String zone    = reply.getZone();
+		return new GCloudSurrogate(name, address, zone);
 	}
 
 	private String execute(List<String> cmd)
@@ -141,5 +162,4 @@ public class GCloudSpawner
 
 		return FileUtils.readFileToString(output);
 	}
-
 }

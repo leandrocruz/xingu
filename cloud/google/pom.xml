@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
+			<artifactId>codec-jackson</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 		<dependency>
