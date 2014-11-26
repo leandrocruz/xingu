@@ -20,15 +20,15 @@ public class SpawnRequestFactory
 		return req;
 	}
 
-	public SpawnRequestFactory withZone(String zone)
+	public SpawnRequestFactory withRegion(String region)
 	{
-		req.zone = zone;
+		req.region = region;
 		return this;
 	}
 
-	public SpawnRequestFactory withProject(String project)
+	public SpawnRequestFactory withNamespace(String ns)
 	{
-		req.project = project;
+		req.namespace = ns;
 		return this;
 	}
 
@@ -71,9 +71,9 @@ public class SpawnRequestFactory
 	class SpawnRequestImpl 
 		implements SpawnRequest
 	{
-		String	zone;
+		String	region; // google : zone
 
-		String	project;
+		String	namespace; // google: project
 
 		String	group;
 
@@ -101,15 +101,15 @@ public class SpawnRequestFactory
 		}
 
 		@Override
-		public String getZone()
+		public String getRegion()
 		{
-			return zone;
+			return region;
 		}
 
 		@Override
-		public String getProject()
+		public String getNamespace()
 		{
-			return project;
+			return namespace;
 		}
 
 		@Override

@@ -8,6 +8,8 @@ public interface Surrogate
 {
 	String getId();
 
+	String getRegion();
+
 	IPAddress getIp();
 	
 	Channel getChannel();

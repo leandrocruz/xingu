@@ -6,9 +6,9 @@ import br.com.ibnetwork.xingu.utils.NameValue;
 
 public interface SpawnRequest
 {
-	String getZone();
+	String getRegion();
 	
-	String getProject();
+	String getNamespace();
 	
 	String getGroup();
 	

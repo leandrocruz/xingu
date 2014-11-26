@@ -13,9 +13,11 @@ public class SurrogateSupport
 {
 	protected final String		id;
 
-	protected transient Channel	channel;
+	protected String			region;
 
 	protected IPAddress			ip;
+
+	protected transient Channel	channel;
 
 	public SurrogateSupport(String id)
 	{
@@ -35,6 +37,12 @@ public class SurrogateSupport
 	}
 
 	@Override
+	public String getRegion()
+	{
+		return region;
+	}
+
+	@Override
 	public synchronized Channel getChannel()
 	{
 		return channel;
@@ -44,12 +52,6 @@ public class SurrogateSupport
 	public synchronized boolean isAttached()
 	{
 		return channel != null;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Surrogate #" + id + (ip == null ? " not attached" : " at " + ip.getAddress());
 	}
 
 	@Override
@@ -73,5 +75,11 @@ public class SurrogateSupport
 		}
 		wait(timeToWait);
 		return isAttached();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Surrogate #" + id + (ip == null ? " not attached" : " at " + ip.getAddress());
 	}
 }
