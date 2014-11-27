@@ -25,7 +25,7 @@ public class CreateJsonReply
 
 	private String					selfLink;
 
-	private boolean				canIpForward;
+	private boolean					canIpForward;
 
 	private Scheduling				scheduling;
 

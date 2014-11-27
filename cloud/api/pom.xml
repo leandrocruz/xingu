@@ -24,7 +24,7 @@
 		</dependency>	
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>netty-utils</artifactId>
+			<artifactId>http-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
 	</dependencies>
