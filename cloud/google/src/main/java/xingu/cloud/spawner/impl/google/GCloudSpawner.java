@@ -116,10 +116,13 @@ public class GCloudSpawner
 		cmd.add("json");
 		
 		List<NameValue<String>> meta = req.getMeta();
-		for(NameValue<String> item : meta)
+		if(meta.size() > 0)
 		{
 			cmd.add("--metadata");
-			cmd.add(item.name + "=" + item.value);
+			for(NameValue<String> item : meta)
+			{
+				cmd.add(item.name + "=" + item.value);
+			}
 		}
 
 		String result = execute(cmd);
