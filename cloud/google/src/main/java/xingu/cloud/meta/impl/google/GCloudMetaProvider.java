@@ -12,7 +12,7 @@ public class GCloudMetaProvider
 	@Inject("gcloud")
 	private HttpClient			http;
 
-	public static final String	BASE_URL	= "http://metadata.google.internal/computeMetadata/v1/instance";
+	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1/instance";
 
 	@Override
 	public String getInstanceId()

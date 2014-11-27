@@ -19,7 +19,7 @@ public class LocalSpawner
 		throws Exception
 	{
 		String all  = StringUtils.join(ids, ",");
-		File   file = new File("/tmp/spawn");
+		File file = new File("/tmp/oystr/meta");
 		FileUtils.writeStringToFile(file, all);
 
 		List<Surrogate> result = new ArrayList<>(ids.length);

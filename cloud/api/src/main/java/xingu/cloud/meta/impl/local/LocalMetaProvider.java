@@ -10,12 +10,11 @@ import xingu.cloud.meta.MetaProvider;
 public class LocalMetaProvider
 	implements MetaProvider
 {
-
 	@Override
 	public String getInstanceId()
 		throws Exception
 	{
-		File file = new File("/tmp/spawn");
+		File file = new File("/tmp/oystr/meta");
 		String id = FileUtils.readFileToString(file);
 		return StringUtils.trim(id);
 	}
@@ -33,5 +32,4 @@ public class LocalMetaProvider
 	{
 		return null;
 	}
-
 }
