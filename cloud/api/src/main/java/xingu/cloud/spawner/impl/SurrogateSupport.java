@@ -13,40 +13,31 @@ public class SurrogateSupport
 {
 	protected final String		id;
 
+	protected boolean			finished;
+
 	protected String			region;
 
 	protected IPAddress			ip;
 
 	protected transient Channel	channel;
 
+	protected String			waitStatus	= "pre-wait";
+
 	public SurrogateSupport(String id)
 	{
 		this.id = id;
 	}
 
-	@Override
-	public String getId()
-	{
-		return id;
-	}
+	@Override public String getId(){return id;}
+	@Override public IPAddress getIp(){return ip;}
+	@Override public String getRegion(){return region;}
+	@Override public boolean isFinished(){return finished;}
+	@Override public void setFinished(boolean finished){this.finished = finished;}
+	@Override public synchronized Channel getChannel(){return channel;}
 
-	@Override
-	public IPAddress getIp()
-	{
-		return ip;
-	}
-
-	@Override
-	public String getRegion()
-	{
-		return region;
-	}
-
-	@Override
-	public synchronized Channel getChannel()
-	{
-		return channel;
-	}
+	/* Don't remove. Required by the GUI */
+	public String getWaitStatus(){return waitStatus;}
+	public void setWaitStatus(String waitStatus){this.waitStatus = waitStatus;}
 
 	@Override
 	public synchronized boolean isAttached()
@@ -73,7 +64,9 @@ public class SurrogateSupport
 		{
 			return true;
 		}
+		waitStatus = "waiting";
 		wait(timeToWait);
+		waitStatus = "after-wait";
 		return isAttached();
 	}
 

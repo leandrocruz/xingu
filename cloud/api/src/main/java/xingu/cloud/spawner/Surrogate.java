@@ -16,7 +16,10 @@ public interface Surrogate
 	void setChannel(Channel channel);
 	
 	boolean isAttached();
-	
+
+	boolean isFinished();
+	void setFinished(boolean finished);
+
 	boolean waitReady(long timeToWait)
 		throws InterruptedException;
 }
