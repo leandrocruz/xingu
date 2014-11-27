@@ -86,11 +86,19 @@ public class HttpMocker
 		return this;
 	}
 
-	public void to(File file)
+	public void toBody(File file)
 		throws Exception
 	{
 		HttpResponse res = asResponse(file);
 		when(req.exec()).thenReturn(res);
+	}
+
+	public HttpMocker to(File file)
+		throws Exception
+	{
+		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), file);
+		when(req.exec()).thenReturn(res);
+		return this;
 	}
 
 	public HttpMocker to(String... files)

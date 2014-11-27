@@ -42,15 +42,15 @@ public class RemoteUpdateManagerTest
 		
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundles.xml")
-			.to(new File(remote, "bundles.xml"));
+			.toBody(new File(remote, "bundles.xml"));
 		
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundleA/bundleA.zip")
-			.to(new File(remote, "bundleA/bundleA.zip"));
+			.toBody(new File(remote, "bundleA/bundleA.zip"));
 
 		new HttpMocker(http)
 			.get("http://repo.com/repo/bundleC/bundleC-1.0.zip")
-			.to(new File(remote, "bundleC/bundleC-1.0.zip"));
+			.toBody(new File(remote, "bundleC/bundleC-1.0.zip"));
 
 		Configuration conf = this.buildFrom("<x><repo remote=\"http://repo.com/repo\" local=\""+repo+"\"/></x>");
 		binder.bind(UpdateManager.class).to(RemoteUpdateManager.class).with(conf);
