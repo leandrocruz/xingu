@@ -1,4 +1,4 @@
-package xingu.http;
+package xingu.utils;
 
 public class Tuple<K,V>
 {
