@@ -52,7 +52,7 @@ public class SurrogateSupport
 		InetSocketAddress inet = (InetSocketAddress) channel.getRemoteAddress();
 		String            addr = inet.getAddress().getHostAddress();
 		ip                     = IPUtils.buildIPv4From(addr);
-		unlock();
+		notifyWaitReady();
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class SurrogateSupport
 	}
 
 	@Override
-	public synchronized void unlock()
+	public synchronized void notifyWaitReady()
 	{
 		notify();
 	}
