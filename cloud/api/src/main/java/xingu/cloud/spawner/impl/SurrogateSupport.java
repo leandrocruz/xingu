@@ -46,13 +46,13 @@ public class SurrogateSupport
 	}
 
 	@Override
-	public synchronized void setChannel(Channel channel)
+	public void setChannel(Channel channel)
 	{
 		this.channel           = channel;
 		InetSocketAddress inet = (InetSocketAddress) channel.getRemoteAddress();
 		String            addr = inet.getAddress().getHostAddress();
 		ip                     = IPUtils.buildIPv4From(addr);
-		notify();
+		unlock();
 	}
 
 	@Override
@@ -74,5 +74,11 @@ public class SurrogateSupport
 	public String toString()
 	{
 		return "Surrogate #" + id + (ip == null ? " not attached" : " at " + ip.getAddress());
+	}
+
+	@Override
+	public synchronized void unlock()
+	{
+		notify();
 	}
 }

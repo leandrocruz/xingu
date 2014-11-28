@@ -22,4 +22,6 @@ public interface Surrogate
 
 	boolean waitReady(long timeToWait)
 		throws InterruptedException;
+
+	void unlock();
 }
