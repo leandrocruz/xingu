@@ -38,6 +38,15 @@ public class LocalSpawner
 	{
 		String id = surrogate.getId();
 		logger.info("Releasing Surrogate s#{}", id);
+		
+//		boolean attached = surrogate.isAttached();
+//		if(attached)
+//		{
+//			Channel       channel = surrogate.getChannel();
+//			ChannelFuture future  = channel.write(new TerminateSurrogate<Long>());
+//			future.addListener(ChannelFutureListener.CLOSE);
+//		}
+
 	}
 
 }
