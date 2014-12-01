@@ -61,7 +61,8 @@ public class CookieUtils
 		Set<Cookie> toMergeSet = second.getBuffer();
 		for(Cookie cookie : toMergeSet)
 		{
-			Cookie current = first.byName(cookie.getName());
+			String name    = cookie.getName();
+			Cookie current = first.byName(name);
 			if(current == null)
 			{
 				currentSet.add(cookie);
