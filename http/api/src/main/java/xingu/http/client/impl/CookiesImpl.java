@@ -121,4 +121,10 @@ public class CookiesImpl
 	{
 		buffer.add(cookie);
 	}
+
+	@Override
+	public String toString()
+	{
+		return names().toString();
+	}
 }
