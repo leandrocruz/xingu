@@ -40,6 +40,7 @@ public class NodeChannelHandler
 	{
 		Channel channel = e.getChannel();
 		bridge.on(new ChannelDisconnected(channel), channel);
+		ctx.sendUpstream(e);
 	}
 
 	@Override
