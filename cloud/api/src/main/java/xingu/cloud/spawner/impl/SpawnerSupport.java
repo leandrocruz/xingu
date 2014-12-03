@@ -129,18 +129,19 @@ public abstract class SpawnerSupport
 	public Surrogate attach(String id, Channel channel)
 	{
 		Surrogate surrogate = surrogateById.get(id);
-		logger.info("Attaching surrogate s#{} to addr#{}", id, channel.getRemoteAddress());
 		if(surrogate == null)
 		{
 			release(channel);
 			return null;
 		}
+		logger.info("Attaching surrogate s#{} to addr#{}", id, channel.getRemoteAddress());
 		surrogate.setChannel(channel);
 		return surrogate;
 	}
 	
 	protected void release(Channel channel)
 	{
+		logger.info("Releasing channel#{}", channel.getRemoteAddress());
 		channel.write("close").addListener(ChannelFutureListener.CLOSE);
 	}
 
