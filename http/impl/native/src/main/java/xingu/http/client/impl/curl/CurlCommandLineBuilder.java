@@ -26,7 +26,9 @@ import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 public class CurlCommandLineBuilder
 	implements CommandLineBuilder, Configurable
 {
-	List<String> params = new ArrayList<String>();
+	private List<String> params = new ArrayList<String>();
+	
+	private boolean encodeParameterNames;
 	
 	@Override
 	public String name()
@@ -38,6 +40,7 @@ public class CurlCommandLineBuilder
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
+		encodeParameterNames = conf.getChild("params").getAttributeAsBoolean("encodeParameterNames", false);
 		Configuration[] params = conf.getChild("params").getChildren("param");
 		for(Configuration param : params)
 		{
@@ -114,6 +117,10 @@ public class CurlCommandLineBuilder
 					String encoding = type.substring(idx + 1);
 					if(!"no".equals(encoding))
 					{
+						if(encodeParameterNames)
+						{
+							name  = URLEncoder.encode(name, encoding);
+						}
 						value = URLEncoder.encode(value, encoding);
 					}
 					result.add("--data");
