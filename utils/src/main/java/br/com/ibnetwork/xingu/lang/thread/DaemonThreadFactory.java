@@ -67,18 +67,13 @@ public class DaemonThreadFactory
     
     public synchronized void interruptAllThreads()
     {
-    	if(interrupted)
-    	{
-    		throw new IllegalStateException("DaemonThreadFactory interrupted already");
-    	}
-    	
+    	interrupted = true;
         for(Thread t : threads)
         {
             try
             {
             	//System.out.println("Interrupting " + t.getId() + " '" + t.getState() + "'");
                 t.interrupt();
-                interrupted = true;
             }
             catch(Throwable error)
             {
