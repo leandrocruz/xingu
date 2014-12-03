@@ -1,11 +1,11 @@
 package xingu.cloud.spawner.impl.local;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jboss.netty.channel.Channel;
 
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Surrogate;
@@ -17,20 +17,20 @@ public class LocalSpawner
 	private File root = new File("/tmp/oystr/meta");
 
 	@Override
-	protected List<Surrogate> spawn(SpawnRequest req, String... ids)
+	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
 		throws Exception
 	{
 		FileUtils.writeStringToFile(new File(root, "host"), "127.0.0.1");
 		FileUtils.writeStringToFile(new File(root, "port"), "8899");
 		
+		String[] ids = new String[surrogates.size()];
+		int i = 0;
+		for(Surrogate surrogate : surrogates)
+		{
+			ids[i++] = surrogate.getId();
+		}
 		String all  = StringUtils.join(ids, ",");
 		FileUtils.writeStringToFile(new File(root, "instance-ids"), all);
-		List<Surrogate> result = new ArrayList<>(ids.length);
-		for(String id : ids)
-		{
-			result.add(new LocalSurrogate(id));
-		}
-		return result;
 	}
 
 	@Override
@@ -39,14 +39,11 @@ public class LocalSpawner
 		String id = surrogate.getId();
 		logger.info("Releasing Surrogate s#{}", id);
 		
-//		boolean attached = surrogate.isAttached();
-//		if(attached)
-//		{
-//			Channel       channel = surrogate.getChannel();
-//			ChannelFuture future  = channel.write(new TerminateSurrogate<Long>());
-//			future.addListener(ChannelFutureListener.CLOSE);
-//		}
-
+		boolean attached = surrogate.isAttached();
+		if(attached)
+		{
+			Channel channel = surrogate.getChannel();
+			release(channel);
+		}
 	}
-
 }

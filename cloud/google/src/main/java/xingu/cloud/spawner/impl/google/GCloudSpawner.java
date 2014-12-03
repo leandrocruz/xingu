@@ -87,7 +87,7 @@ public class GCloudSpawner
 	{}
 
 	@Override
-	protected List<Surrogate> spawn(SpawnRequest req, String... ids)
+	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
 		throws Exception
 	{
 		String zone        = req.getRegion();
@@ -100,8 +100,9 @@ public class GCloudSpawner
 		cmd.add("compute");
 		cmd.add("instances");
 		cmd.add("create");
-		for(String id : ids)
+		for(Surrogate surrogate : surrogates)
 		{
+			String id = surrogate.getId();
 			cmd.add(id);
 		}
 		cmd.add("--zone");
@@ -126,7 +127,7 @@ public class GCloudSpawner
 		}
 
 		String result = execute(cmd);
-		return parseSpawn(result);
+		//parseSpawn(result);
 	}
 
 	private List<Surrogate> parseSpawn(String in)
@@ -147,9 +148,9 @@ public class GCloudSpawner
 		NetworkInterface iface0        = reply.getNetworkInterfaces().get(0);
 		AccessConfig     accessConfig0 = iface0.getAccessConfigs().get(0);
 		String address = accessConfig0.getNatIP();
-		String name    = reply.getName();
+		String id      = reply.getName();
 		String zone    = reply.getZone();
-		return new GCloudSurrogate(name, address, zone);
+		return new GCloudSurrogate(id, address, zone);
 	}
 
 	private String execute(List<String> cmd)

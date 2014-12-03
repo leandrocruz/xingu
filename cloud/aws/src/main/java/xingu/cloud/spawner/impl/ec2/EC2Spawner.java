@@ -126,7 +126,7 @@ public class EC2Spawner
 	}
 
 	@Override
-	protected List<Surrogate> spawn(SpawnRequest req, String... ids)
+	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
 		throws Exception
 	{
 		throw new NotImplementedYet();
