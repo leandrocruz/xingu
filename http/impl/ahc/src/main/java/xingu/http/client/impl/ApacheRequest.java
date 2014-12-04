@@ -18,6 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.Attachment;
 import xingu.http.client.CookieUtils;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpResponse;
@@ -51,11 +52,11 @@ public class ApacheRequest
 			if(multipart)
 			{
 				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-				for(NameValue nv : attachments)
+				for(Attachment attachment : attachments)
 				{
-					String name = nv.getName();
-					String path = nv.getValue();
-					builder.addPart(name, new FileBody(new File(path)));
+					String name = attachment.getName();
+					File   file = attachment.getFile();
+					builder.addPart(name, new FileBody(file));
 					
 				}
 				entity = builder.build();

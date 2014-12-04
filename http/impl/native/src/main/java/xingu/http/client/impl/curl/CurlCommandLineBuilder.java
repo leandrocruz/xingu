@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 
+import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -137,14 +138,20 @@ public class CurlCommandLineBuilder
 	private void placeMultipartFields(HttpRequest req, List<String> result)
 		throws Exception
 	{
-		List<NameValue> uploadFields = req.getAttachments();
-		int len = uploadFields == null ? 0 : uploadFields.size();
+		List<Attachment> attachments = req.getAttachments();
+		int len = attachments == null ? 0 : attachments.size();
 		if(len > 0)
 		{
-			for(NameValue f : uploadFields)
+			for(Attachment attachment : attachments)
 			{
+				String name     = attachment.getName();
+				String fileName = attachment.getFileName();
+				File   file     = attachment.getFile();
+				String mime     = attachment.getMime();
 				result.add("-F");
-				result.add(f.getName() + "=@" + f.getValue());
+				result.add(name + "=@" + file.getAbsolutePath() 
+						+ (fileName == null ? "" : ";filename=" + fileName)
+						+ (mime == null ? "" : ";type=" + mime));
 			}
 		}
 

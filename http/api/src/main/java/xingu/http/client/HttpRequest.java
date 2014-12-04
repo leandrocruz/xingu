@@ -1,8 +1,11 @@
 package xingu.http.client;
 
+import java.io.File;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
+
+import xingu.http.client.impl.AttachmentImpl;
 
 public interface HttpRequest
 {
@@ -40,8 +43,8 @@ public interface HttpRequest
 	String getUserAgent();
 	HttpRequest withUserAgent(String ua);
 
-	List<NameValue> getAttachments();
-	HttpRequest withAttachment(String name, String path);
+	List<Attachment> getAttachments();
+	HttpRequest withAttachment(Attachment attachment);	
 	
 	String getAuthenticationUser();
 	String getAuthenticationPassword();

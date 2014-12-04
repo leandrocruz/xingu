@@ -1,10 +1,12 @@
 package xingu.http.client.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -41,13 +43,13 @@ public abstract class HttpRequestSupport
 
 	protected Cookies				cookies		= new CookiesImpl();
 
-	protected List<NameValue>		fields		= new ArrayList<NameValue>();
+	protected List<NameValue>		fields		= new ArrayList<>();
 
-	protected List<NameValue>		attachments	= new ArrayList<NameValue>();
+	protected List<Attachment>		attachments	= new ArrayList<>();
 
-	protected List<NameValue>		headers		= new ArrayList<NameValue>();
+	protected List<NameValue>		headers		= new ArrayList<>();
 
-	private List<ResponseInspector>	inspectors	= new ArrayList<ResponseInspector>();
+	private List<ResponseInspector>	inspectors	= new ArrayList<>();
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -146,7 +148,7 @@ public abstract class HttpRequestSupport
 	}
 
 	@Override
-	public List<NameValue> getAttachments()
+	public List<Attachment> getAttachments()
 	{
 		return attachments;
 	}
@@ -184,9 +186,9 @@ public abstract class HttpRequestSupport
 	}
 
 	@Override
-	public HttpRequest withAttachment(String name, String filePath)
+	public HttpRequest withAttachment(Attachment attachment)
 	{
-		attachments.add(new NameValueImpl(name, filePath));
+		attachments.add(attachment);
 		return this;
 	}
 

@@ -12,6 +12,7 @@ import java.net.URL;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpRequest;
@@ -72,7 +73,7 @@ public class HttpMocker
 		when(req.expects(any(Integer.class))).thenReturn(req);
 		when(req.expects(any(Integer.class), any(String.class))).thenReturn(req);
 		when(req.expects(any(ResponseInspector.class))).thenReturn(req);
-		when(req.withAttachment(any(String.class), any(String.class))).thenReturn(req);
+		when(req.withAttachment(any(Attachment.class))).thenReturn(req);
 		when(req.multipart(any(Boolean.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
 		when(req.name(any(String.class))).thenReturn(req);
