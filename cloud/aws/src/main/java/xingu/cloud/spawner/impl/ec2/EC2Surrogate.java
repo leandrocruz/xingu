@@ -9,9 +9,9 @@ public class EC2Surrogate
 {
 	private final Instance instance;
 
-	public EC2Surrogate(Instance instance)
+	public EC2Surrogate(Instance instance, String region)
 	{
-		super(instance.getInstanceId());
+		super(instance.getInstanceId(), region);
 		this.instance = instance;
 	}
 }

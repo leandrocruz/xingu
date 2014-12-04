@@ -5,8 +5,8 @@ import xingu.cloud.spawner.impl.SurrogateSupport;
 public class LocalSurrogate
 	extends SurrogateSupport
 {
-	public LocalSurrogate(String id)
+	public LocalSurrogate(String id, String region)
 	{
-		super(id);
+		super(id, region);
 	}
 }

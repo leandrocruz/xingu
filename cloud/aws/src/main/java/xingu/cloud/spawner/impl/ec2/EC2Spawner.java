@@ -109,7 +109,7 @@ public class EC2Spawner
 		List<Surrogate>    surrogates  = new ArrayList<Surrogate>(instances.size());
 		for(Instance instance : instances)
 		{
-			EC2Surrogate surrogate = new EC2Surrogate(instance);
+			EC2Surrogate surrogate = new EC2Surrogate(instance, "todo");
 			String       id        = surrogate.getId();
 			logger.info("Creating surrogate #{} from image '{}'", id, imageId);
 			surrogateById.put(id, surrogate);

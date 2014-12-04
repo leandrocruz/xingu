@@ -66,8 +66,7 @@ public class GCloudSpawner
 		String id = surrogate.getId();
 		logger.info("Releasing Surrogate s#{}", id);
 		
-		GCloudSurrogate instance = GCloudSurrogate.class.cast(surrogate);
-		String zone = instance.getRegion();
+		String zone = surrogate.getRegion();
 		
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(bin);

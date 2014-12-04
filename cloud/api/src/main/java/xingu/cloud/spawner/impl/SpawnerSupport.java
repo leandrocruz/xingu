@@ -80,16 +80,7 @@ public abstract class SpawnerSupport
 	public List<Surrogate> spawn(final SpawnRequest req)
 		throws Exception
 	{
-		int count = req.getCount();
-		String[] ids = new String[count];
-		for(int i = 0; i < count; i++)
-		{
-			String pattern = req.getIdPattern();
-			String id      = String.format(pattern, i);
-			ids[i] = id;
-		}
-
-		final List<Surrogate> surrogates = create(ids);
+		final List<Surrogate> surrogates = create(req);
 
 		tf.newThread(new Runnable(){
 			@Override
@@ -109,15 +100,20 @@ public abstract class SpawnerSupport
 		return surrogates;
 	}
 
-	private List<Surrogate> create(String[] ids)
+	private List<Surrogate> create(SpawnRequest req)
 	{
-		List<Surrogate> result = new ArrayList<>(ids.length);
-		for(String id : ids)
+		String region  = req.getRegion();
+		String pattern = req.getIdPattern();
+		int    count   = req.getCount();
+		List<Surrogate> result = new ArrayList<>(count);
+
+		for(int i = 0; i < count; i++)
 		{
-			logger.info("Surrogate s#{} created", id);
-			Surrogate surrogate = new SurrogateSupport(id);
+			String id = String.format(pattern, i);
+			Surrogate surrogate = new SurrogateSupport(id, region);
 			surrogateById.put(id, surrogate);
 			result.add(surrogate);
+			logger.info("Surrogate s#{} created", id);
 		}
 		return result;
 	}

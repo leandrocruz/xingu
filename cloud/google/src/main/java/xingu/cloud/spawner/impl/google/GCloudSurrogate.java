@@ -8,8 +8,7 @@ public class GCloudSurrogate
 {
 	public GCloudSurrogate(String id, String address, String zone)
 	{
-		super(id);
+		super(id, zone);
 		this.ip = IPUtils.from(address);
-		this.region = zone;
 	}
 }

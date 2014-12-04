@@ -13,19 +13,20 @@ public class SurrogateSupport
 {
 	protected final String		id;
 
-	protected boolean			finished;
-
 	protected String			region;
 
 	protected IPAddress			ip;
-
+	
 	protected transient Channel	channel;
+
+	protected boolean			finished;
 
 	protected String			waitStatus	= "pre-wait";
 
-	public SurrogateSupport(String id)
+	public SurrogateSupport(String id, String region)
 	{
-		this.id = id;
+		this.id     = id;
+		this.region = region;
 	}
 
 	@Override public String getId(){return id;}
