@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import xingu.cloud.spawner.SpawnRequest;
@@ -49,6 +50,7 @@ public class GCloudSpawnerTest
 	}
 	
 	@Test
+	@Ignore
 	public void testSpawn()
 		throws Exception
 	{
@@ -61,8 +63,8 @@ public class GCloudSpawnerTest
 		assertEquals(1, surrogates.size());
 
 		Surrogate surrogate = surrogates.get(0);
-		assertEquals("130.211.143.135", surrogate.getIp().getAddress());
 		assertEquals("oystr-nebers-2", surrogate.getId());
+		assertEquals("130.211.143.135", surrogate.getIp().getAddress());
 		assertEquals("us-central1-a", surrogate.getRegion());
 	}
 }
