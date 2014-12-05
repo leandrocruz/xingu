@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.avalon.framework.activity.Startable;
 import org.jboss.netty.channel.Channel;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
+import xingu.cloud.spawner.impl.task.SpawnerTask;
 import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
 import br.com.ibnetwork.xingu.lang.thread.ThreadNamer;
 
@@ -23,9 +26,13 @@ public abstract class SpawnerSupport
 {
 	protected Map<String, Surrogate>	surrogateById	= new HashMap<>();
 
-	protected Logger					logger			= LoggerFactory.getLogger(getClass());
+	private Queue<SpawnerTask>			queue			= new ConcurrentLinkedQueue<>();
 
 	protected DaemonThreadFactory		tf;
+
+	private boolean						shouldRun		= true;
+
+	protected Logger					logger			= LoggerFactory.getLogger(getClass());
 	
 	@Override
 	public void start()
@@ -35,9 +42,19 @@ public abstract class SpawnerSupport
 			@Override
 			public String nameFor(int threadNumber)
 			{
-				return "Spawner #"+threadNumber;
+				return "Spawner Worker #"+threadNumber;
 			}
 		});
+	
+		Thread worker = tf.newThread(new Runnable(){
+			@Override
+			public void run()
+			{
+				consumeQueue();
+			}
+		});
+		
+		worker.start();
 	}
 
 	@Override
@@ -47,6 +64,42 @@ public abstract class SpawnerSupport
 		tf.interruptAllThreads();
 	}
 
+	private void consumeQueue()
+	{
+		while(shouldRun)
+		{
+			SpawnerTask task = queue.poll();
+			if(task == null)
+			{
+				try
+				{
+					synchronized(queue)
+					{
+						/*
+						 * Waiting for 30 secs because there is a chance that we miss the notify() signal
+						 */
+						queue.wait(30 * 1000);
+					}
+				}
+				catch(InterruptedException e)
+				{
+					shouldRun = false;
+				}
+			}
+			else
+			{
+				try
+				{
+					task.execute();
+				}
+				catch(Exception e)
+				{
+					logger.error("Error executing SpawnerTask", e);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public List<Surrogate> list()
 	{
@@ -76,27 +129,28 @@ public abstract class SpawnerSupport
 		return null;
 	}
 
+	private void add(SpawnerTask task)
+	{
+        synchronized(queue)
+        {                           
+            queue.add(task);
+            queue.notify();
+        }
+	}
+
+	@Override
+	public void release(Surrogate surrogate)
+		throws Exception
+	{
+		add(new Stop(surrogate));
+	}
+
 	@Override
 	public List<Surrogate> spawn(final SpawnRequest req)
 		throws Exception
 	{
 		final List<Surrogate> surrogates = create(req);
-
-		tf.newThread(new Runnable(){
-			@Override
-			public void run()
-			{
-				try
-				{
-					spawn(req, surrogates);
-				}
-				catch(Exception e)
-				{
-					logger.error("Error spawning", e);
-				}
-			}
-		}).start();
-
+		add(new Start(req, surrogates));
 		return surrogates;
 	}
 
@@ -117,9 +171,6 @@ public abstract class SpawnerSupport
 		}
 		return result;
 	}
-
-	protected abstract void spawn(SpawnRequest req, List<Surrogate> surrogates)
-		throws Exception;
 
 	@Override
 	public Surrogate attach(String id, Channel channel)
@@ -146,5 +197,58 @@ public abstract class SpawnerSupport
 	{
 		String id = surrogate.getId();
 		surrogateById.remove(id);
+	}
+
+	protected abstract void startSurrogate(SpawnRequest req, List<Surrogate> surrogates)
+		throws Exception;
+
+	protected abstract void stopSurrogate(Surrogate surrogate)
+		throws Exception;
+
+	class Start
+		implements SpawnerTask
+	{
+		private SpawnRequest	req;
+
+		private List<Surrogate>	surrogates;
+
+		public Start(SpawnRequest req, List<Surrogate> surrogates)
+		{
+			this.req = req;
+			this.surrogates = surrogates;
+		}
+
+		@Override
+		public void execute()
+			throws Exception
+		{
+			startSurrogate(req, surrogates);
+		}
+	}
+	
+	class Stop
+		implements SpawnerTask
+	{
+		private Surrogate	surrogate;
+
+		public Stop(Surrogate surrogate)
+		{
+			this.surrogate = surrogate;
+		}
+
+		@Override
+		public void execute()
+			throws Exception
+		{
+			logger.info("Releasing Surrogate s#{}", surrogate.getId());
+			stopSurrogate(surrogate);
+
+			boolean attached = surrogate.isAttached();
+			if(attached)
+			{
+				Channel channel = surrogate.getChannel();
+				release(channel);
+			}
+		}
 	}
 }

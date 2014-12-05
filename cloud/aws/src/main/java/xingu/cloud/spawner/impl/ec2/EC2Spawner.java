@@ -76,13 +76,6 @@ public class EC2Spawner
 	{}
 
 	@Override
-	public synchronized void release(Surrogate surrogate)
-	{
-		String id = surrogate.getId();
-		logger.info("Releasing Surrogate s#{}", id);
-	}
-
-	@Override
 	public List<Surrogate> spawn(SpawnRequest reqX)
 		throws Exception
 	{
@@ -126,7 +119,14 @@ public class EC2Spawner
 	}
 
 	@Override
-	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
+	protected void startSurrogate(SpawnRequest req, List<Surrogate> surrogates)
+		throws Exception
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	protected void stopSurrogate(Surrogate surrogate)
 		throws Exception
 	{
 		throw new NotImplementedYet();

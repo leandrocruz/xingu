@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.netty.channel.Channel;
 
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Surrogate;
@@ -17,7 +16,7 @@ public class LocalSpawner
 	private File root = new File("/tmp/oystr/meta");
 
 	@Override
-	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
+	protected void startSurrogate(SpawnRequest req, List<Surrogate> surrogates)
 		throws Exception
 	{
 		FileUtils.writeStringToFile(new File(root, "host"), "127.0.0.1");
@@ -34,16 +33,7 @@ public class LocalSpawner
 	}
 
 	@Override
-	public synchronized void release(Surrogate surrogate)
-	{
-		String id = surrogate.getId();
-		logger.info("Releasing Surrogate s#{}", id);
-		
-		boolean attached = surrogate.isAttached();
-		if(attached)
-		{
-			Channel channel = surrogate.getChannel();
-			release(channel);
-		}
-	}
+	protected void stopSurrogate(Surrogate surrogate)
+		throws Exception
+	{}
 }

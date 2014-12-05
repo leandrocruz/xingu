@@ -60,12 +60,10 @@ public class GCloudSpawner
 	 */
 	
 	@Override
-	public void release(Surrogate surrogate)
+	protected void stopSurrogate(Surrogate surrogate)
 		throws Exception
 	{
-		String id = surrogate.getId();
-		logger.info("Releasing Surrogate s#{}", id);
-		
+		String id   = surrogate.getId();
 		String zone = surrogate.getRegion();
 		
 		List<String> cmd = new ArrayList<String>();
@@ -86,7 +84,7 @@ public class GCloudSpawner
 	{}
 
 	@Override
-	protected void spawn(SpawnRequest req, List<Surrogate> surrogates)
+	protected void startSurrogate(SpawnRequest req, List<Surrogate> surrogates)
 		throws Exception
 	{
 		String zone        = req.getRegion();
