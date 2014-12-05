@@ -129,7 +129,7 @@ public abstract class SpawnerSupport
 		return null;
 	}
 
-	private void add(SpawnerTask task)
+	private void enqueue(SpawnerTask task)
 	{
         synchronized(queue)
         {                           
@@ -139,37 +139,33 @@ public abstract class SpawnerSupport
 	}
 
 	@Override
-	public void release(Surrogate surrogate)
-		throws Exception
-	{
-		add(new Stop(surrogate));
-	}
-
-	@Override
 	public List<Surrogate> spawn(final SpawnRequest req)
 		throws Exception
-	{
-		final List<Surrogate> surrogates = create(req);
-		add(new Start(req, surrogates));
-		return surrogates;
-	}
-
-	private List<Surrogate> create(SpawnRequest req)
 	{
 		String region  = req.getRegion();
 		String pattern = req.getIdPattern();
 		int    count   = req.getCount();
-		List<Surrogate> result = new ArrayList<>(count);
+		List<Surrogate> surrogates = new ArrayList<>(count);
 
 		for(int i = 0; i < count; i++)
 		{
-			String id = String.format(pattern, i);
+			String    id        = String.format(pattern, i);
 			Surrogate surrogate = new SurrogateSupport(id, region);
-			surrogateById.put(id, surrogate);
-			result.add(surrogate);
+
 			logger.info("Surrogate s#{} created", id);
+			surrogateById.put(id, surrogate);
+			surrogates.add(surrogate);
 		}
-		return result;
+		
+		enqueue(new Start(req, surrogates));
+		return surrogates;
+	}
+
+	@Override
+	public void release(Surrogate surrogate)
+		throws Exception
+	{
+		enqueue(new Stop(surrogate));
 	}
 
 	@Override
@@ -222,6 +218,7 @@ public abstract class SpawnerSupport
 		public void execute()
 			throws Exception
 		{
+			logger.info("Starting {} Surrogates", surrogates.size());
 			startSurrogate(req, surrogates);
 		}
 	}
