@@ -1,5 +1,6 @@
 package xingu.type;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class ObjectType
 		typeByClass.put(Float.class, 		Type.PRIMITIVE);
 		typeByClass.put(Double.class, 		Type.PRIMITIVE);
 		typeByClass.put(Date.class, 		Type.PRIMITIVE);
+		typeByClass.put(File.class, 		Type.PRIMITIVE);
 	}
 
 	public static Type typeFor(Class<?> clazz)
