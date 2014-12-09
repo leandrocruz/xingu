@@ -45,6 +45,8 @@
 		<module>maven</module>
 		<module>maze</module>
 		<module>utils</module>
+		<module>type-handler</module>
+		<module>inspector</module>
 		<module>unicode</module>
 		<module>url</module>
 		<module>update</module>
