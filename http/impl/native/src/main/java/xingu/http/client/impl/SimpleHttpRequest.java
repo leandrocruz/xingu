@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpResponse;
 import xingu.process.ProcessManager;
@@ -25,8 +25,6 @@ public class SimpleHttpRequest
 	@Inject
 	private CommandLineBuilder	builder;
 
-	private static final Logger	logger	= LoggerFactory.getLogger(SimpleHttpRequest.class);
-
 	public SimpleHttpRequest(String uri, String method)
 	{
 		super(uri, method);
@@ -36,15 +34,16 @@ public class SimpleHttpRequest
 	public HttpResponse exec()
 		throws HttpException
 	{
+		Logger logger = context.getLogger();
 		String impl   = builder.name();
 		int    result = 0 ;
 		try
 		{
-			File         file = getOutputFile();
+			File         file = getOutputFile(context);
 			List<String> cmd  = builder.buildLine(this, file);
 			logger.info("Executing command: {}", StringUtils.join(cmd, " "));
 
-			result = execCmd(cmd, 3);
+			result = execCmd(logger, cmd, 3);
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
@@ -60,7 +59,7 @@ public class SimpleHttpRequest
 		throw new HttpException(impl + " error: " + result);
 	}
 	
-	public int execCmd(List<String> cmd, int retryCount)
+	public int execCmd(Logger logger, List<String> cmd, int retryCount)
 		throws Exception
 	{
 		int result = pm.exec(cmd);
@@ -78,38 +77,33 @@ public class SimpleHttpRequest
 				&& (6 == result || 7 == result || 28 == result))
 		{
 			logger.info("retrying: " + result);
-			return execCmd(cmd, retryCount - 1);
+			return execCmd(logger, cmd, retryCount - 1);
 		}
 
 		return result;
 	}
 
-	private File getOutputFile()
+	private File getOutputFile(HttpContext context)
 		throws IOException
 	{
-		final String impl = builder.name();
-		File  tmp         = org.apache.commons.io.FileUtils.getTempDirectory();
-		if(StringUtils.isNotEmpty(ndc))
-		{
-			File root = FileUtils.createOrError(tmp, "xingu-http-client" + File.separator + ndc);
-			SerialFileContainer container = new SerialFileContainer(root, new FileNamer<Integer>() {
-				@Override
-				public Integer getParam(String name)
-				{
-					int    start = name.indexOf("-") + 1;
-					int    end   = name.indexOf("-", start);
-					String s     = name.substring(start, end);
-					return Integer.parseInt(s);
-				}
-
-				@Override
-				public String getName(Integer i)
-				{
-					return "res-" + i + "-" + br.com.ibnetwork.xingu.utils.StringUtils.orEmpty(name) + ".html";
-				}
-			});
-			return container.next();
-		}
-		return File.createTempFile(impl + "-http-response-", ".html");
+		File root = context.getRootDirectory();
+		File dir  = FileUtils.createOrError(root, "http-responses");
+		SerialFileContainer container = new SerialFileContainer(dir, new FileNamer<Integer>() {
+			@Override
+			public Integer getParam(String name)
+			{
+				int    start = name.indexOf("-") + 1;
+				int    end   = name.indexOf("-", start);
+				String s     = name.substring(start, end);
+				return Integer.parseInt(s);
+			}
+			
+			@Override
+			public String getName(Integer i)
+			{
+				return "res-" + i + "-" + br.com.ibnetwork.xingu.utils.StringUtils.orEmpty(name) + ".html";
+			}
+		});
+		return container.next();
 	}
 }

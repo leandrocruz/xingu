@@ -1,17 +1,14 @@
 package xingu.http.client;
 
-import java.io.File;
 import java.util.List;
 
 import org.jboss.netty.handler.codec.http.Cookie;
-
-import xingu.http.client.impl.AttachmentImpl;
 
 public interface HttpRequest
 {
 	String getUri();
 
-	HttpRequest ndc(String ndc);
+	HttpRequest context(HttpContext ctx);
 
 	String getMethod();
 	boolean isPost();

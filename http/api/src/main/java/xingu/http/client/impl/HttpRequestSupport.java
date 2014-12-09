@@ -1,6 +1,5 @@
 package xingu.http.client.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpContext;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
@@ -19,7 +19,7 @@ import br.com.ibnetwork.xingu.utils.StringUtils;
 public abstract class HttpRequestSupport
 	implements HttpRequest
 {
-	protected String				ndc;
+	protected HttpContext			context;
 
 	protected String				name;
 
@@ -224,9 +224,9 @@ public abstract class HttpRequestSupport
 	}
 
 	@Override
-	public HttpRequest ndc(String ndc)
+	public HttpRequest context(HttpContext ctx)
 	{
-		this.ndc = ndc;
+		this.context = ctx;
 		return this;
 	}
 

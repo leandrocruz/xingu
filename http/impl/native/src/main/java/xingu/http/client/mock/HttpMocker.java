@@ -15,6 +15,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
+import xingu.http.client.HttpContext;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.ResponseInspector;
@@ -61,7 +62,7 @@ public class HttpMocker
 		HttpRequest req = mock(HttpRequest.class);
 
 		when(req.getUri()).thenReturn(uri);
-		when(req.ndc(any(String.class))).thenReturn(req);
+		when(req.context(any(HttpContext.class))).thenReturn(req);
 		when(req.withCookie(any(Cookie.class))).thenReturn(req);
 		when(req.withCookies(any(Cookies.class))).thenReturn(req);
 		when(req.field(any(String.class), any(String.class))).thenReturn(req);
