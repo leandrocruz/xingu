@@ -219,4 +219,10 @@ public class FileUtils
 		}
 		return file;
 	}
+
+	public static File getTempDirectory()
+	{
+		String path = System.getProperty("java.io.tmpdir");
+		return new File(path);
+	}
 }
