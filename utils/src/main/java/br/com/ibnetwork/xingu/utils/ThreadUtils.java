@@ -11,5 +11,4 @@ public class ThreadUtils
         catch(Throwable t)
         {}
     }
-
 }
