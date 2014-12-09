@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import xingu.type.ObjectType.Type;
@@ -23,6 +24,17 @@ public class FileTypeHandler
 	public String toString(Object obj)
 	{
 		File file = File.class.cast(obj);
+		if(!file.exists())
+		{
+			return null;
+		}
+		
+		if(file.isDirectory())
+		{
+			//TODO:
+			return "ERROR: file is directory";
+		}
+		
 		try
 		{
 			byte[] bytes = FileUtils.toByteArray(file);
@@ -39,6 +51,16 @@ public class FileTypeHandler
 	@Override
 	public Object toObject(String value)
 	{
+		if(StringUtils.isEmpty(value))
+		{
+			return null;
+		}
+		
+		if(value.startsWith("ERROR"))
+		{
+			return null;
+		}
+
 		try
 		{
 			byte[] bytes = Base64.decodeBase64(value.getBytes());
