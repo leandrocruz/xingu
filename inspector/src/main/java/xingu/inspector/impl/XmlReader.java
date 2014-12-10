@@ -95,7 +95,7 @@ public class XmlReader
 		throws Exception
 	{
 		String      type    = node.clazz != null ? node.clazz : node.name;
-		TypeHandler handler = registry.get(type);
+		TypeHandler handler = registry.get(type); /* pay attention: array type handlers are registered on the fly*/
 		if(handler != null && StringUtils.isNotEmpty(node.value))
 		{
 			return handler.toObject(node.value);
