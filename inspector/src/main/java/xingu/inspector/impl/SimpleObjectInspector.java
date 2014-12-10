@@ -107,7 +107,7 @@ public class SimpleObjectInspector
 				visitObject(obj, visitor);
 				break;
 				
-			case ENUM:				
+			case ENUM:
 			case PRIMITIVE:
 				visitor.onPrimitive(obj, id, handler, field);
 				break;
