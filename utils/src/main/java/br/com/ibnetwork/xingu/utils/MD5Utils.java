@@ -1,7 +1,13 @@
 package br.com.ibnetwork.xingu.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import org.apache.commons.io.IOUtils;
 
 public class MD5Utils
 {
@@ -37,5 +43,19 @@ public class MD5Utils
         return restring;
     }
 
-
+	public static String md5Hash(File file)
+		throws IOException
+	{
+		InputStream is = null;
+		try
+		{
+			is = new FileInputStream(file);
+			byte[] bytes = IOUtils.toByteArray(is);
+			return md5Hash(bytes);
+		}
+		finally
+		{
+			IOUtils.closeQuietly(is);
+		}
+	}
 }
