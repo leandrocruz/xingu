@@ -14,6 +14,11 @@ public class NumberUtils
 		int diff = end - start;
 		return start + rnd.nextInt(diff + 1);
 	}
+	
+	public static String strip(String string)
+	{
+		return string.replaceAll("[^\\d]", "");
+	}
 
     public static int toInt(String value, int defaultValue)
     {
