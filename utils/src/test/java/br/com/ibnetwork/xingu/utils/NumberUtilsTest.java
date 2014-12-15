@@ -21,7 +21,14 @@ public class NumberUtilsTest
     		assertTrue(rnd <= end);
     	}
     }
-
+    
+    @Test
+    public void testStrip()
+    {
+    	String string = NumberUtils.strip("0_1.2,3+4/5%6^7*8(9)");
+    	assertEquals("0123456789", string);
+    }
+    
     @Test
     public void testDivRoundUp()
     	throws Exception
