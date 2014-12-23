@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
@@ -34,7 +35,7 @@ public class SimpleHttpRequest
 	public HttpResponse exec()
 		throws HttpException
 	{
-		Logger logger = context.getLogger();
+		Logger logger = getLogger();
 		String impl   = builder.name();
 		int    result = 0 ;
 		try
@@ -57,6 +58,15 @@ public class SimpleHttpRequest
 		}
 
 		throw new HttpException(impl + " error: " + result);
+	}
+
+	private Logger getLogger()
+	{
+		if(context != null)
+		{
+			return context.getLogger();
+		}
+		return LoggerFactory.getLogger(getClass());
 	}
 	
 	public int execCmd(Logger logger, List<String> cmd, int retryCount)
@@ -86,7 +96,7 @@ public class SimpleHttpRequest
 	private File getOutputFile(HttpContext context)
 		throws IOException
 	{
-		File root = context.getRootDirectory();
+		File root = getRootDirectory(context);
 		File dir  = FileUtils.createOrError(root, "http-responses");
 		SerialFileContainer container = new SerialFileContainer(dir, new FileNamer<Integer>() {
 			@Override
@@ -105,5 +115,16 @@ public class SimpleHttpRequest
 			}
 		});
 		return container.next();
+	}
+
+	private File getRootDirectory(HttpContext context)
+		throws IOException
+	{
+		if(context != null)
+		{
+			return context.getRootDirectory();
+		}
+		File tmp = FileUtils.getTempDirectory();
+		return FileUtils.createOrError(tmp, "xingu-http-client");
 	}
 }
