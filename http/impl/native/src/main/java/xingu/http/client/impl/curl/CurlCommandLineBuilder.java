@@ -56,6 +56,18 @@ public class CurlCommandLineBuilder
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
+		
+		result.add("-X");
+		boolean isPost = req.isPost();
+		if(isPost)
+		{
+			result.add("POST");
+		}
+		else
+		{
+			result.add("GET");
+		}
+
 		result.add("-m");
 		result.add("60");
 		result.add("-i");
@@ -74,7 +86,6 @@ public class CurlCommandLineBuilder
 		placeUserAgent	(req, result);
 		placeHeaders	(req, result);
 
-		boolean isPost      = req.isPost();
 		boolean isMultipart = req.isMultipart();
 		if(isPost && isMultipart)
 		{
@@ -83,11 +94,6 @@ public class CurlCommandLineBuilder
 		else
 		{
 			placeDataFields(req, result);
-		}
-
-		if(!isPost)
-		{
-			result.add("--get");
 		}
 
 		String uri = req.getUri();
