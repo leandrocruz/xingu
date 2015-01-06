@@ -97,8 +97,10 @@ public class HttpResponseImpl
 	@Override public InputStream getRawBody()
 		throws IOException
 	{
-		raw.reset();
+		if(raw.available() == 0)
+		{
+			raw.reset();
+		}
 		return raw;
 	}
-
 }
