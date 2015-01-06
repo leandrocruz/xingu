@@ -15,7 +15,8 @@ public interface HttpResponse
 	String getBody() // ISO-8859-1
 		throws IOException; 
 	
-	InputStream getRawBody();
+	InputStream getRawBody()
+		throws IOException;
 	
 	NameValue[] getHeaders();
 

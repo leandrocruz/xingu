@@ -91,7 +91,14 @@ public class HttpResponseImpl
 	public String getUri(){return uri;}
 	@Override public NameValue[] getHeaders(){return headers;}
 	public void setHeaders(NameValue[] headers){this.headers = headers;}
-	@Override public InputStream getRawBody(){return raw;}
 	public void setRawBody(InputStream is){this.raw = is;}
 	/* @formatter:on */
+
+	@Override public InputStream getRawBody()
+		throws IOException
+	{
+		raw.reset();
+		return raw;
+	}
+
 }

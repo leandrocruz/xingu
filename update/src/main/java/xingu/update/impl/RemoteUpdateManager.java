@@ -1,5 +1,6 @@
 package xingu.update.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.avalon.framework.activity.Initializable;
@@ -49,6 +50,7 @@ public class RemoteUpdateManager
 	
 	@Override
 	protected InputStream toInputStream(BundleDescriptor desc)
+		throws IOException
 	{
 		String       file = desc.getFile();
 		String       id   = desc.getId();
