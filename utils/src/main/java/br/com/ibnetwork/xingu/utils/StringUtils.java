@@ -550,4 +550,9 @@ public class StringUtils
 		return c == '/' || c == '.';
 	}
 
+	public static final String onlyDigits(String input)
+	{
+		return input.replaceAll("[^0-9]", "");
+	}
+
 }
