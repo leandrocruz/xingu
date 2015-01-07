@@ -65,5 +65,4 @@ public class ExcelUtils
 		}
 		return value;
 	}
-
 }
