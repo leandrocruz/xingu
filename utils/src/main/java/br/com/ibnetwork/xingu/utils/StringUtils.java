@@ -194,22 +194,6 @@ public class StringUtils
 		return firstLetter + restLetters;
 	}
 
-	public static String toHex(byte bytes[]) 
-    {
-        StringBuffer buf = new StringBuffer(bytes.length * 2);
-        int i;
-        
-        for (i = 0; i < bytes.length; i++) 
-        {
-            if ((bytes[i] & 0xff) < 0x10) 
-            {
-                buf.append("0");
-            }
-            buf.append(Long.toString(bytes[i] & 0xff, 16));
-        }
-        return buf.toString();
-    }
-
     public static String orEmpty(String s)
     {
         return s != null ? s : EMPTY;
@@ -554,5 +538,4 @@ public class StringUtils
 	{
 		return input.replaceAll("[^0-9]", "");
 	}
-
 }

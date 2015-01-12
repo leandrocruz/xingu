@@ -32,7 +32,7 @@ public class MD5Utils
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(barray);
             byte[] result = md.digest();            
-            restring = StringUtils.toHex(result);
+            restring = HexUtils.toHex(result);
         }  
         catch (NoSuchAlgorithmException ignored)
         { 

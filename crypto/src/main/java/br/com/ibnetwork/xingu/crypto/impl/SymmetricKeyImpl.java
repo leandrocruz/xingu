@@ -5,6 +5,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import br.com.ibnetwork.xingu.crypto.SymmetricKey;
+import br.com.ibnetwork.xingu.utils.HexUtils;
 import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public class SymmetricKeyImpl
@@ -76,6 +77,6 @@ public class SymmetricKeyImpl
     @Override
     public String toString()
     {
-        return algorithm()+"/"+StringUtils.toHex(bytes());
+        return algorithm()+"/"+HexUtils.toHex(bytes());
     }
 }
