@@ -48,4 +48,28 @@ public class NumberUtilsTest
     	assertEquals(2,  NumberUtils.divRoundUp(20, 10));
     	assertEquals(1,  NumberUtils.divRoundUp(20, 21));
     }
+
+    @Test
+    public void testAtoi()
+    	throws Exception
+    {
+    	assertEquals(1, NumberUtils.atoi("1"));
+    	assertEquals(-1, NumberUtils.atoi("-1"));
+
+    	assertEquals(10, NumberUtils.atoi("10"));
+    	assertEquals(-10, NumberUtils.atoi("-10"));
+
+    	assertEquals(101, NumberUtils.atoi("101"));
+    	assertEquals(-101, NumberUtils.atoi("-101"));
+
+    	assertEquals(Integer.MAX_VALUE, NumberUtils.atoi(String.valueOf(Integer.MAX_VALUE)));
+    	assertEquals(Integer.MIN_VALUE, NumberUtils.atoi(String.valueOf(Integer.MIN_VALUE)));
+
+//    	assertEquals(1, NumberUtils.atoi("1a"));
+//    	assertEquals(-1, NumberUtils.atoi("-1a"));
+//
+//    	assertEquals(99, NumberUtils.atoi("9a9"));
+//    	assertEquals(-99, NumberUtils.atoi("-9a9"));
+
+    }
 }
