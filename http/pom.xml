@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>http</artifactId>
+	<artifactId>xingu-http</artifactId>
 	<packaging>pom</packaging>
 	<name>Xingu HTTP</name>
 	<modules>

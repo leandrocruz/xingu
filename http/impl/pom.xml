@@ -3,12 +3,12 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>xingu</groupId>
-		<artifactId>http</artifactId>
+		<artifactId>xingu-http</artifactId>
 		<version>1.4.43-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>http-impl</artifactId>
+	<artifactId>xingu-http-impl</artifactId>
 	<packaging>pom</packaging>
 	<name>Xingu HTTP Impl</name>
 	<modules>
