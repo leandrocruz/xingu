@@ -3,12 +3,12 @@ package xingu.node.commons.sandbox.impl;
 import java.io.File;
 import java.util.Iterator;
 
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.sandbox.SandboxDescriptor;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class FixedSandboxManager
 	extends SandboxManagerSupport

@@ -12,9 +12,9 @@ import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.ResponseInspector;
+import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpUtils;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public abstract class HttpRequestSupport
 	implements HttpRequest

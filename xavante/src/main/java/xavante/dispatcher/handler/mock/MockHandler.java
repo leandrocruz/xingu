@@ -31,11 +31,11 @@ import xavante.dispatcher.impl.RequestHandlerSupport;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.curl.CurlResponseParser;
+import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpResponseBuilder;
 import xingu.netty.http.HttpUtils;
 import xingu.url.Url;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.collection.FluidMap;
 
 public class MockHandler
 	extends RequestHandlerSupport

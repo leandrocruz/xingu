@@ -8,8 +8,8 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import xingu.type.impl.SimpleObjectPopulator;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.TimeUtils;
+import xingu.utils.collection.FluidMap;
 
 public class ObjectPopulatorTest
 {

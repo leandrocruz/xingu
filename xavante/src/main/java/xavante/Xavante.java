@@ -13,10 +13,10 @@ import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.node.server.impl.ServerNodeSupport;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public class Xavante
 	extends ServerNodeSupport

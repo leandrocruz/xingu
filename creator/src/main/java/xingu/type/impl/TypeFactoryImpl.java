@@ -7,16 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.lang.BadParameter;
 import xingu.type.TypeFactory;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.BadParameter;
 
 public class TypeFactoryImpl
     implements TypeFactory, Configurable

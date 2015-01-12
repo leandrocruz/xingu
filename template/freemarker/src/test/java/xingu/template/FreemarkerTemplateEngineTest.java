@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.template.impl.freemarker.FreemarkerTemplateEngine;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class FreemarkerTemplateEngineTest
     extends XinguTestCase

@@ -4,8 +4,8 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.util.CharsetUtil;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.netty.protocol.FrameBasedMessageDecoder;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class SimplePojoDecoder
 	extends FrameBasedMessageDecoder

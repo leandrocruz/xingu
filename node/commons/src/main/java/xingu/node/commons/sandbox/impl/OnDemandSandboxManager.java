@@ -2,10 +2,10 @@ package xingu.node.commons.sandbox.impl;
 
 import java.io.File;
 
+import xingu.container.Inject;
 import xingu.node.commons.sandbox.SandboxDescriptor;
 import xingu.update.BundleDescriptor;
 import xingu.update.UpdateManager;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class OnDemandSandboxManager
 	extends SandboxManagerSupport

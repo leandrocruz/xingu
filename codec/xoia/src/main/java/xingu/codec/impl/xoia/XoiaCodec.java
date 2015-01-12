@@ -5,6 +5,8 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.inspector.ObjectEmitter;
 import xingu.inspector.ObjectVisitor;
 import xingu.inspector.impl.SimpleObjectInspector;
@@ -15,10 +17,8 @@ import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandler;
 import xingu.type.TypeHandlerRegistry;
 import xingu.type.impl.TypeHandlerRegistryImpl;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
+import xingu.utils.ObjectUtils;
+import xingu.utils.classloader.ClassLoaderManager;
 
 public class XoiaCodec
 	implements Codec, Configurable

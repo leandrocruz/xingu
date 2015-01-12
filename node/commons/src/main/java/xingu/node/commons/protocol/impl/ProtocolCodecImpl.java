@@ -6,15 +6,14 @@ import java.security.Key;
 
 import org.apache.commons.io.IOUtils;
 
+import xingu.container.Inject;
+import xingu.crypto.Crypto;
+import xingu.crypto.PubKey;
+import xingu.crypto.SymmetricKey;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.crypto.KeyManager;
 import xingu.node.commons.crypto.SessionKeyHolder;
 import xingu.node.commons.protocol.ProtocolCodec;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.crypto.Crypto;
-import br.com.ibnetwork.xingu.crypto.PubKey;
-import br.com.ibnetwork.xingu.crypto.SymmetricKey;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class ProtocolCodecImpl
 	implements ProtocolCodec

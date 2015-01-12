@@ -17,9 +17,9 @@ import org.junit.Test;
 import xavante.XavanteRequest;
 import xavante.XavanteRequestFactory;
 import xavante.comet.impl.MessageFactoryImpl;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 
 public class MessageFactoryTest
 	extends XinguTestCase

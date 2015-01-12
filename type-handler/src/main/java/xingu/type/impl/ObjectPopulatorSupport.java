@@ -10,13 +10,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectPopulator;
 import xingu.type.ObjectType;
 import xingu.type.ObjectType.Type;
 import xingu.type.Param;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.FieldUtils;
+import xingu.utils.collection.FluidMap;
 
 public abstract class ObjectPopulatorSupport
 	implements ObjectPopulator

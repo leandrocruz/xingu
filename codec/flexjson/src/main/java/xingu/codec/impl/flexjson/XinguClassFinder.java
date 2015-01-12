@@ -2,9 +2,9 @@ package xingu.codec.impl.flexjson;
 
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.container.Inject;
+import xingu.utils.classloader.ClassLoaderManager;
+import xingu.utils.classloader.NamedClassLoader;
 import flexjson.ClassFinder;
 
 public class XinguClassFinder

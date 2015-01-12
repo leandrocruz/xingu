@@ -3,8 +3,8 @@ package xingu.node.commons.protocol;
 import org.jboss.netty.channel.Channel;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.netty.protocol.FrameBasedMessageEncoder;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class SecureEncoder
     extends FrameBasedMessageEncoder

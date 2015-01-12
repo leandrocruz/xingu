@@ -5,7 +5,7 @@ import org.simpleframework.xml.convert.Converter;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class Obfuscate
 	implements Converter<String>

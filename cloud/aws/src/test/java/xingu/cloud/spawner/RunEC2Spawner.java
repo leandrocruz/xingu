@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.avalon.framework.configuration.DefaultConfiguration;
 
 import xingu.cloud.spawner.impl.ec2.EC2Spawner;
-import br.com.ibnetwork.xingu.utils.ip.IPAddress;
+import xingu.utils.ip.IPAddress;
 
 public class RunEC2Spawner
 {

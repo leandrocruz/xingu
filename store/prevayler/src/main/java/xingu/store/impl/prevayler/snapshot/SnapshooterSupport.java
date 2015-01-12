@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import xingu.store.SnapshotListener;
 import xingu.store.impl.NullSnapshotListener;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.TimeUtils;
 
 public abstract class SnapshooterSupport
     extends TimerTask

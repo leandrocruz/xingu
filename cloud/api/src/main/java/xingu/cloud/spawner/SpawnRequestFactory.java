@@ -3,7 +3,7 @@ package xingu.cloud.spawner;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ibnetwork.xingu.utils.NameValue;
+import xingu.utils.NameValue;
 
 public class SpawnRequestFactory
 {

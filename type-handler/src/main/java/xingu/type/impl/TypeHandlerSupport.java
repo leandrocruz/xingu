@@ -1,8 +1,8 @@
 package xingu.type.impl;
 
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandler;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class TypeHandlerSupport
 	implements TypeHandler

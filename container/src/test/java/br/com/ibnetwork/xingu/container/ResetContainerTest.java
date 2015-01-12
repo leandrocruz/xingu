@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNotSame;
 
 import org.junit.Test;
 
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import br.com.ibnetwork.xingu.container.components.Component;
 
 public class ResetContainerTest

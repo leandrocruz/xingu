@@ -3,7 +3,7 @@ package xingu.url;
 import java.io.Serializable;
 import java.util.Set;
 
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.collection.FluidMap;
 
 public interface QueryString
     extends Serializable

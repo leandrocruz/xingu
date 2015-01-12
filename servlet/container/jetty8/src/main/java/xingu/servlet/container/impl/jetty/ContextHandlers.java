@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 public class ContextHandlers
     implements ServerConfig

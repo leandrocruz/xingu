@@ -13,7 +13,7 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public class HttpResponseBuilder
 {

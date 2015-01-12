@@ -2,15 +2,13 @@ package xingu.netty.channel;
 
 import java.net.SocketAddress;
 
-
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelConfig;
 import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
 
-
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class ChannelDelegate
     implements Channel

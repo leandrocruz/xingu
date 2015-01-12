@@ -20,9 +20,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.http.HttpService;
 import xingu.time.Time;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class HttpExceptionHandler
     extends AsyncExceptionHandler

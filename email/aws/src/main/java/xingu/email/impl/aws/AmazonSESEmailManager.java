@@ -9,7 +9,7 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import xingu.email.Email;
 import xingu.email.impl.EmailManagerSupport;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.PropertiesCredentials;

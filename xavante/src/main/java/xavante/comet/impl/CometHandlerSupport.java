@@ -13,15 +13,15 @@ import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
 import xavante.comet.SessionManager;
 import xingu.codec.Codec;
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.ErrorSignal;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
 import xingu.node.commons.signal.impl.ExceptionSignal;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.FieldUtils;
+import xingu.utils.StringUtils;
 
 public abstract class CometHandlerSupport
 	implements CometHandler

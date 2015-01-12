@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.servlet.container.ApplicationContext;
 
 import org.apache.avalon.framework.activity.Startable;
@@ -18,9 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.servlet.container.ServletContainer;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 
 public class JettyServletContainer
     implements ServletContainer, Configurable, Startable

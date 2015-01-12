@@ -9,11 +9,11 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.util.CharsetUtil;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.netty.protocol.FrameBasedMessageEncoder;
 import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxManager;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
+import xingu.utils.FieldUtils;
 
 public class PojoEncoder
 	extends FrameBasedMessageEncoder

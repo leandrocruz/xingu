@@ -2,7 +2,7 @@ package br.com.ibnetwork.xingu.container.components.impl;
 
 import org.apache.avalon.framework.activity.Initializable;
 
-import br.com.ibnetwork.xingu.container.Inject;
+import xingu.container.Inject;
 import br.com.ibnetwork.xingu.container.components.CircularOne;
 import br.com.ibnetwork.xingu.container.components.CircularTwo;
 

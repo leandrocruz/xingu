@@ -8,14 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
 import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpResponse;
 import xingu.process.ProcessManager;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.io.FileNamer;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
-import br.com.ibnetwork.xingu.utils.io.SerialFileContainer;
+import xingu.utils.io.FileNamer;
+import xingu.utils.io.FileUtils;
+import xingu.utils.io.SerialFileContainer;
 
 public class SimpleHttpRequest
 	extends HttpRequestSupport
@@ -111,7 +111,7 @@ public class SimpleHttpRequest
 			@Override
 			public String getName(Integer i)
 			{
-				return "res-" + i + "-" + br.com.ibnetwork.xingu.utils.StringUtils.orEmpty(name) + ".html";
+				return "res-" + i + "-" + xingu.utils.StringUtils.orEmpty(name) + ".html";
 			}
 		});
 		return container.next();

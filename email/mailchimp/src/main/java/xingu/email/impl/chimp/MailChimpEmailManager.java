@@ -20,10 +20,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import xingu.container.Inject;
 import xingu.email.Email;
 import xingu.email.impl.EmailManagerSupport;
 import xingu.http.HttpService;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class MailChimpEmailManager
     extends EmailManagerSupport

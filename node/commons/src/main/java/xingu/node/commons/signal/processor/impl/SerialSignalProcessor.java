@@ -4,9 +4,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import xingu.lang.NotImplementedYet;
+import xingu.lang.thread.InstantFuture;
 import xingu.node.commons.signal.Signal;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.lang.thread.InstantFuture;
 
 public class SerialSignalProcessor
     extends SignalProcessorSupport

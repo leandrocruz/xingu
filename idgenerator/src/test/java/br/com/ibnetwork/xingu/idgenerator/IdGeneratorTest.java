@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+import xingu.idgenerator.Generator;
+import xingu.idgenerator.IdGenerator;
 import xingu.store.ObjectStore;
 import xingu.store.impl.memory.InMemoryObjectStore;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class IdGeneratorTest 
 	extends XinguTestCase

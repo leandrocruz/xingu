@@ -6,10 +6,10 @@ import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import xingu.lang.NotImplementedYet;
 import xingu.url.DomainName;
 import xingu.url.Url;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 
 public class UrlUtils

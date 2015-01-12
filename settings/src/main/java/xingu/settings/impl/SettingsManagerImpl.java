@@ -11,11 +11,11 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.settings.Settings;
 import xingu.settings.SettingsManager;
 import xingu.time.Time;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.DateFormats;
+import xingu.utils.DateFormats;
 
 public class SettingsManagerImpl
 	implements SettingsManager, Configurable

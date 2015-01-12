@@ -5,6 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
+import xingu.container.Environment;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+
 
 public class EnvironmentTest
     extends XinguTestCase

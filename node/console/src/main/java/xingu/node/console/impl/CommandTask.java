@@ -11,8 +11,8 @@ import xingu.codec.Codec;
 import xingu.node.console.command.Command;
 import xingu.node.console.command.Writer;
 import xingu.node.console.command.impl.EncodedChannelWriter;
-import br.com.ibnetwork.xingu.utils.ArgsUtils;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.ArgsUtils;
+import xingu.utils.TimeUtils;
 
 public class CommandTask
 	implements Callable<Command>

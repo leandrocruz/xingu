@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import xingu.url.QueryString;
-import br.com.ibnetwork.xingu.utils.StringUtils;
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.StringUtils;
+import xingu.utils.collection.FluidMap;
 
 public class QueryStringImpl
     implements QueryString

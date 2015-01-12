@@ -10,17 +10,17 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.idgenerator.Generator;
+import xingu.idgenerator.impl.TimestampInMemoryGenerator;
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalWaiter;
 import xingu.node.commons.signal.Waiter;
 import xingu.node.commons.signal.Waiters;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.idgenerator.Generator;
-import br.com.ibnetwork.xingu.idgenerator.impl.TimestampInMemoryGenerator;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.TimeUtils;
 
 public class SignalHandlerSupport
 	implements Configurable

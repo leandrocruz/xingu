@@ -1,6 +1,6 @@
 package br.com.ibnetwork.xingu.container.components;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class AnotherComponent
     implements Component

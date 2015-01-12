@@ -11,8 +11,8 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 
 public class MessageQueueTest
     extends XinguTestCase

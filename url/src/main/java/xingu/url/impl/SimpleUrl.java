@@ -6,7 +6,7 @@ import xingu.url.DomainName;
 import xingu.url.QueryString;
 import xingu.url.Url;
 import xingu.url.UrlUtils;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public class SimpleUrl
 	implements Url

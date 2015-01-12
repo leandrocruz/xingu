@@ -8,12 +8,11 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Environment;
+import xingu.container.Inject;
 import xingu.template.Context;
 import xingu.template.TemplateEngine;
 import xingu.template.TemplateEngineException;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Environment;
 
 public abstract class TemplateEngineSupport
 	implements TemplateEngine, Configurable

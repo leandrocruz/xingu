@@ -6,12 +6,12 @@
 		<some key="value"/>
 	</configuration>
 	
-	<configuration key="br.com.ibnetwork.xingu.factory.test.IsConfigurable">
+	<configuration key="xingu.factory.test.IsConfigurable">
 		<some key="value2"/>
 	</configuration>
 	
 	<!-- this configuration object should not be overridden by it's iline counterpart -->
-	<configuration key="br.com.ibnetwork.xingu.factory.test.IsConfigurable2">
+	<configuration key="xingu.factory.test.IsConfigurable2">
 		<some key="should not read this value"/>
 	</configuration>
 	

@@ -6,11 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.template.Context;
 import xingu.template.TemplateEngine;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class ContextTest
 	extends XinguTestCase

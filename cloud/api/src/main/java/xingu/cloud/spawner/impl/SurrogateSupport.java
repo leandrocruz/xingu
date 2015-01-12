@@ -5,8 +5,8 @@ import java.net.InetSocketAddress;
 import org.jboss.netty.channel.Channel;
 
 import xingu.cloud.spawner.Surrogate;
-import br.com.ibnetwork.xingu.utils.ip.IPAddress;
-import br.com.ibnetwork.xingu.utils.ip.IPUtils;
+import xingu.utils.ip.IPAddress;
+import xingu.utils.ip.IPUtils;
 
 public class SurrogateSupport
 	implements Surrogate

@@ -11,7 +11,7 @@ import javassist.NotFoundException;
 import org.apache.avalon.framework.activity.Initializable;
 
 import xingu.clone.ObjectCloner;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
+import xingu.utils.FieldUtils;
 
 
 public class ObjectClonerImpl

@@ -13,10 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Environment;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Environment;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 import freemarker.cache.CacheStorage;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;

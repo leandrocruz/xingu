@@ -10,15 +10,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.impl.CommandLineBuilder;
 import xingu.http.client.impl.curl.CurlCommandLineBuilder;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class CurlCommandLineBuilderTest
 	extends XinguTestCase

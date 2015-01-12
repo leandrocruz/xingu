@@ -11,13 +11,13 @@ import org.jboss.netty.channel.SimpleChannelHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalHandler;
 import xingu.node.commons.signal.impl.ChannelDisconnected;
 import xingu.node.commons.signal.impl.ExceptionCaught;
 import xingu.node.commons.signal.impl.NotASignal;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class NodeChannelHandler
 	extends SimpleChannelHandler

@@ -1,9 +1,9 @@
 package xingu.runner;
 
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 
 public class XinguRunner

@@ -6,15 +6,15 @@ import java.net.URL;
 
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.http.client.Attachment;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.impl.AttachmentImpl;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.io.FileUtils;
 
 public class CurlRunner
 {

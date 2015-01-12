@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.factory.Factory;
+import xingu.lang.NotImplementedYet;
 
 public class XinguObjectFactory
     implements ObjectFactory

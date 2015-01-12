@@ -7,6 +7,9 @@ import static org.junit.Assert.assertSame;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import br.com.ibnetwork.xingu.container.components.AnotherComponent;
 import br.com.ibnetwork.xingu.container.components.Component;
 

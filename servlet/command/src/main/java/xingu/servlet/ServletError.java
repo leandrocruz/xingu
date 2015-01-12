@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import br.com.ibnetwork.xingu.utils.FieldUtils;
+import xingu.utils.FieldUtils;
 
 public class ServletError
 {

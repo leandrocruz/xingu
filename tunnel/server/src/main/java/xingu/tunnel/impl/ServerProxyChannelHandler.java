@@ -8,8 +8,8 @@ import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 
+import xingu.container.Inject;
 import xingu.tunnel.redirector.Redirector;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class ServerProxyChannelHandler
 	extends SimpleChannelHandler

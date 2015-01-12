@@ -3,8 +3,8 @@ package xingu.node.commons.signal.processor.impl;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
-import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
+import xingu.lang.thread.DaemonThreadFactory;
+import xingu.lang.thread.SimpleThreadNamer;
 
 public class CachedThreadedSignalProcessor
     extends SignalProcessorSupport

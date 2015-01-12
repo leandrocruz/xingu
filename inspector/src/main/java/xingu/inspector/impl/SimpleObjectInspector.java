@@ -12,12 +12,12 @@ import java.util.Set;
 
 import xingu.inspector.ObjectInspector;
 import xingu.inspector.ObjectVisitor;
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType;
 import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandler;
 import xingu.type.TypeHandlerRegistry;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
+import xingu.utils.FieldUtils;
 
 public class SimpleObjectInspector
 	implements ObjectInspector

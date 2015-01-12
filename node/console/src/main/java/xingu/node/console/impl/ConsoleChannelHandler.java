@@ -4,11 +4,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
-import br.com.ibnetwork.xingu.lang.thread.ThreadNamer;
-
 import xingu.codec.Codec;
+import xingu.container.Inject;
+import xingu.lang.thread.DaemonThreadFactory;
+import xingu.lang.thread.ThreadNamer;
 import xingu.node.console.RemoteConsoleRegistry;
 import xingu.node.console.command.Command;
 

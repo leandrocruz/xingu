@@ -1,6 +1,6 @@
 package xingu.node.commons.protocol.impl;
 
-import br.com.ibnetwork.xingu.crypto.SymmetricKey;
+import xingu.crypto.SymmetricKey;
 
 public class NoEncryptionSymmetricKey
     implements SymmetricKey

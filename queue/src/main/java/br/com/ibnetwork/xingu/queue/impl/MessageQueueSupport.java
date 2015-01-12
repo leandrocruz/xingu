@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import br.com.ibnetwork.xingu.container.Inject;
+import xingu.container.Inject;
 import br.com.ibnetwork.xingu.queue.Message;
 import br.com.ibnetwork.xingu.queue.MessageQueue;
 import br.com.ibnetwork.xingu.queue.QueueFactory;

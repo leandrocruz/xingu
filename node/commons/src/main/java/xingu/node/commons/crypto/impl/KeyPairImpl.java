@@ -13,13 +13,13 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Environment;
+import xingu.container.Inject;
+import xingu.crypto.Crypto;
+import xingu.crypto.PubKey;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.crypto.KeyPair;
-import br.com.ibnetwork.xingu.container.Environment;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.crypto.Crypto;
-import br.com.ibnetwork.xingu.crypto.PubKey;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.FSUtils;
+import xingu.utils.FSUtils;
 
 public class KeyPairImpl
     implements KeyPair, Configurable, Initializable

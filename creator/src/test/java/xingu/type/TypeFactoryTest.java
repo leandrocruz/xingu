@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.type.TypeFactory;
 import xingu.type.test.Ack;
 import xingu.type.test.Ping;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class TypeFactoryTest
     extends XinguTestCase

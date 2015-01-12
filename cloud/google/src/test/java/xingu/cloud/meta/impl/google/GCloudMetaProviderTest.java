@@ -7,11 +7,11 @@ import java.io.File;
 import org.junit.Test;
 
 import xingu.cloud.meta.MetaProvider;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.http.client.HttpClient;
 import xingu.http.client.mock.HttpMocker;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class GCloudMetaProviderTest
 	extends XinguTestCase

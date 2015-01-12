@@ -27,18 +27,18 @@ import org.prevayler.implementation.PrevaylerDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Environment;
+import xingu.container.Inject;
+import xingu.container.Injector;
+import xingu.factory.Factory;
 import xingu.store.Initializable;
 import xingu.store.PersistentBean;
 import xingu.store.SnapshotListener;
 import xingu.store.StoreException;
 import xingu.store.impl.BadObjectStore;
 import xingu.store.impl.prevayler.snapshot.SimpleSnapshooter;
-import br.com.ibnetwork.xingu.container.Environment;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Injector;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.ObjectUtils;
+import xingu.utils.TimeUtils;
 
 public class PrevaylerObjectStore
 	extends BadObjectStore

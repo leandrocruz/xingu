@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.type.TypeFactory;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public abstract class CodecSupport
     implements Codec, Configurable

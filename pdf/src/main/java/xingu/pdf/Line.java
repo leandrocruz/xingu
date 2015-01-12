@@ -3,7 +3,7 @@ package xingu.pdf;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 import com.adobe.pdfjt.core.types.ASCoordinate;
 import com.adobe.pdfjt.services.textextraction.Word;

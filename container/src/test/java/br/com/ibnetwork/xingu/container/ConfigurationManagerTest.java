@@ -6,7 +6,9 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+import xingu.container.configuration.ConfigurationManager;
 
 @Ignore
 public class ConfigurationManagerTest

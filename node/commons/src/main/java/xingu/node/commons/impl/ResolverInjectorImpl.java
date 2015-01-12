@@ -1,8 +1,8 @@
 package xingu.node.commons.impl;
 
+import xingu.container.Inject;
+import xingu.container.Injector;
 import xingu.node.commons.ResolverInjector;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Injector;
 
 public class ResolverInjectorImpl
 	implements ResolverInjector

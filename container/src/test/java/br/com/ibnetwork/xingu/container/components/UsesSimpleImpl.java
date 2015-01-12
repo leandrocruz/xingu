@@ -2,7 +2,7 @@ package br.com.ibnetwork.xingu.container.components;
 
 import org.apache.avalon.framework.configuration.Configurable;
 
-import br.com.ibnetwork.xingu.container.Inject;
+import xingu.container.Inject;
 
 /**
  * @author <a href="mailto:leandro@ibnetwork.com.br">leandro</a>

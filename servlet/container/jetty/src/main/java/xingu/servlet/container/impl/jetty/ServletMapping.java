@@ -8,9 +8,9 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 @Deprecated
 class ServletMapping

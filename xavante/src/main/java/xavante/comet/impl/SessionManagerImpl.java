@@ -12,9 +12,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import xavante.comet.CometSession;
 import xavante.comet.MessageFactory;
 import xavante.comet.SessionManager;
+import xingu.container.Inject;
 import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.Signal;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class SessionManagerImpl
 	implements SessionManager, Initializable

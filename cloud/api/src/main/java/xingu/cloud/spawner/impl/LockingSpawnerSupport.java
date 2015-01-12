@@ -10,10 +10,10 @@ import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
+import xingu.lang.NotImplementedYet;
 
 public abstract class LockingSpawnerSupport
 	implements Spawner

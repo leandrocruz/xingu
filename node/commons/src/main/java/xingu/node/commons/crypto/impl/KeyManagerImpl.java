@@ -7,10 +7,10 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.node.commons.crypto.KeyManager;
 import xingu.node.commons.crypto.KeyPair;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 
 
 public class KeyManagerImpl

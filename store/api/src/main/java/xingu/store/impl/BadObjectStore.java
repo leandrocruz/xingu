@@ -2,8 +2,7 @@ package xingu.store.impl;
 
 import java.util.List;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-
+import xingu.lang.NotImplementedYet;
 import xingu.store.ObjectStore;
 import xingu.store.PersistentBean;
 import xingu.store.StoreException;

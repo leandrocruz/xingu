@@ -6,7 +6,7 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class InstantaneousChannelEvent
     implements ChannelFuture

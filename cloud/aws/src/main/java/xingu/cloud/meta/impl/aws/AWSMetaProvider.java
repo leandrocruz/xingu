@@ -1,11 +1,11 @@
 package xingu.cloud.meta.impl.aws;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.StringUtils;
 import xingu.cloud.meta.MetaProvider;
+import xingu.container.Inject;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpResponse;
+import xingu.lang.NotImplementedYet;
+import xingu.utils.StringUtils;
 
 public class AWSMetaProvider
 	implements MetaProvider

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import xingu.time.Instant;
 import xingu.time.MutableTime;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.TimeUtils;
 
 
 public class TimeForTesting

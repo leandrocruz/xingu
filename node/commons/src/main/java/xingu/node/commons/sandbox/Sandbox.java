@@ -1,7 +1,7 @@
 package xingu.node.commons.sandbox;
 
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.container.Container;
+import xingu.utils.classloader.NamedClassLoader;
 
 public interface Sandbox
 {

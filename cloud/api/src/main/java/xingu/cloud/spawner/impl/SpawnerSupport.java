@@ -18,8 +18,8 @@ import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
 import xingu.cloud.spawner.impl.task.SpawnerTask;
-import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
-import br.com.ibnetwork.xingu.lang.thread.ThreadNamer;
+import xingu.lang.thread.DaemonThreadFactory;
+import xingu.lang.thread.ThreadNamer;
 
 public abstract class SpawnerSupport
 	implements Spawner, Startable

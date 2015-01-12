@@ -17,11 +17,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.store.PersistentBean;
 import xingu.store.StoreException;
 import xingu.store.impl.BadObjectStore;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 
 public class MyBatisObjectStore
 	extends BadObjectStore

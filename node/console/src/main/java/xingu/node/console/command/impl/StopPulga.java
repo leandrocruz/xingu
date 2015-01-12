@@ -2,10 +2,10 @@ package xingu.node.console.command.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
+import xingu.container.Container;
+import xingu.container.Inject;
 import xingu.node.console.command.Command;
 import xingu.node.console.command.Writer;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class StopPulga
 	implements Command<Void>

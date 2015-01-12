@@ -4,7 +4,7 @@ import java.net.URI;
 
 import xingu.url.Url;
 import xingu.url.UrlParser;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;

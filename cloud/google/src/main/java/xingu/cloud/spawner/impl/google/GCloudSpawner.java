@@ -20,10 +20,10 @@ import xingu.cloud.spawner.impl.SpawnerSupport;
 import xingu.cloud.spawner.impl.google.model.AccessConfig;
 import xingu.cloud.spawner.impl.google.model.CreateJsonReply;
 import xingu.cloud.spawner.impl.google.model.NetworkInterface;
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.process.ProcessManager;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.NameValue;
+import xingu.utils.NameValue;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -18,7 +18,7 @@ import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
 import xingu.cloud.spawner.impl.SpawnerSupport;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;

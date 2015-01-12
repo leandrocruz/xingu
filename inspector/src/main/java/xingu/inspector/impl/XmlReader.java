@@ -19,15 +19,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import xingu.inspector.NodeFactory;
 import xingu.inspector.ObjectEmitter;
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType;
 import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandler;
 import xingu.type.TypeHandlerRegistry;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.ArrayUtils;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.utils.ArrayUtils;
+import xingu.utils.FieldUtils;
+import xingu.utils.classloader.ClassLoaderManager;
+import xingu.utils.classloader.NamedClassLoader;
 
 public class XmlReader
 	extends DefaultHandler

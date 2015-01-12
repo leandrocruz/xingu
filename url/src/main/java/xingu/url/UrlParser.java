@@ -1,8 +1,8 @@
 package xingu.url;
 
+import xingu.lang.BadParameter;
 import xingu.url.impl.SimpleUrl;
-import br.com.ibnetwork.xingu.lang.BadParameter;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 /**
  * @see http://en.wikipedia.org/wiki/URI_scheme

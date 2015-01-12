@@ -10,7 +10,7 @@ import org.simpleframework.xml.strategy.Strategy;
 
 import xingu.codec.Codec;
 import xingu.codec.impl.CodecSupport;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class SimpleCodec
 	extends CodecSupport

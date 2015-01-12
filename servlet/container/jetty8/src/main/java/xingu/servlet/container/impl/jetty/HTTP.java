@@ -8,7 +8,7 @@ import org.eclipse.jetty.server.bio.SocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.utils.ObjectUtils;
 
 public class HTTP
     implements ServerConfig

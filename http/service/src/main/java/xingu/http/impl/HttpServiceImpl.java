@@ -27,9 +27,8 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ibnetwork.xingu.utils.TimeUtils;
-
 import xingu.http.HttpService;
+import xingu.utils.TimeUtils;
 
 public class HttpServiceImpl
     implements HttpService, Configurable, Startable

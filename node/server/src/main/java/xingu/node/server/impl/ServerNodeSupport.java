@@ -24,12 +24,12 @@ import org.jboss.netty.util.ThreadNameDeterminer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.lang.thread.DaemonThreadFactory;
+import xingu.lang.thread.SimpleThreadNamer;
 import xingu.netty.protocol.SayHi;
 import xingu.node.commons.Node;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
-import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
 
 public class ServerNodeSupport
 	implements Node, Configurable, Startable

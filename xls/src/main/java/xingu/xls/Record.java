@@ -3,7 +3,7 @@ package xingu.xls;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.utils.ValueProvider;
+import xingu.utils.ValueProvider;
 
 public class Record
 	implements ValueProvider<String>

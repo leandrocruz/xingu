@@ -1,7 +1,7 @@
 package xingu.time.impl;
 
+import xingu.lang.NotImplementedYet;
 import xingu.time.Time;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public abstract class TimeSupport
     implements Time

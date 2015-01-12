@@ -1,7 +1,7 @@
 package br.com.ibnetwork.xingu.queue.impl;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Injector;
+import xingu.container.Inject;
+import xingu.container.Injector;
 import br.com.ibnetwork.xingu.queue.MessageQueue;
 import br.com.ibnetwork.xingu.queue.QueueFactory;
 import br.com.ibnetwork.xingu.queue.QueueManagerException;

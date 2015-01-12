@@ -1,10 +1,10 @@
 package xingu.cloud.meta.impl.google;
 
 import xingu.cloud.meta.MetaProvider;
+import xingu.container.Inject;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpResponse;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public class GCloudMetaProvider
 	implements MetaProvider

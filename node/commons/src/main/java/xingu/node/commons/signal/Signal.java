@@ -3,7 +3,7 @@ package xingu.node.commons.signal;
 import java.io.Serializable;
 
 import xingu.node.commons.identity.Identity;
-import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
+import xingu.utils.ip.NetworkAddress;
 
 public interface Signal<T>
 	extends Serializable

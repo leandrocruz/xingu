@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.codec.Codec;
+import xingu.container.Inject;
 import xingu.netty.protocol.FrameBasedMessageDecoder;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class SecureDecoder
     extends FrameBasedMessageDecoder

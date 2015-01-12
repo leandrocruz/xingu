@@ -22,13 +22,13 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.time.Time;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 import xingu.update.UpdateManager;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.MD5Utils;
+import xingu.utils.MD5Utils;
 
 public abstract class UpdateManagerSupport
 	implements UpdateManager, Configurable, Initializable

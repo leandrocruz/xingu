@@ -7,9 +7,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType.Type;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.io.FileUtils;
 
 
 public class FileTypeHandler

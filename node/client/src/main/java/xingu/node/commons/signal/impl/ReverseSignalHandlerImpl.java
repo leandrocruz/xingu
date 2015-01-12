@@ -4,12 +4,12 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelFutureListener;
 
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.commons.signal.ReverseSignalHandler;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalHandler;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class ReverseSignalHandlerImpl
 	implements ReverseSignalHandler

@@ -3,7 +3,7 @@ package xingu.inspector;
 import java.util.List;
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.utils.ArrayUtils;
+import xingu.utils.ArrayUtils;
 
 public class NestedObject
 {

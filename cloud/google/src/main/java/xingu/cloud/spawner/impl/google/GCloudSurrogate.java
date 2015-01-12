@@ -1,7 +1,7 @@
 package xingu.cloud.spawner.impl.google;
 
-import br.com.ibnetwork.xingu.utils.ip.IPUtils;
 import xingu.cloud.spawner.impl.SurrogateSupport;
+import xingu.utils.ip.IPUtils;
 
 public class GCloudSurrogate
 	extends SurrogateSupport

@@ -16,18 +16,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.container.impl.Pulga;
+import xingu.lang.NotImplementedYet;
 import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxDescriptor;
 import xingu.node.commons.sandbox.SandboxManager;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.container.impl.Pulga;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.impl.ClassLoaderAdapter;
-import br.com.ibnetwork.xingu.utils.classloader.impl.DirectoryClassLoader;
-import br.com.ibnetwork.xingu.utils.io.zip.ZipUtils;
+import xingu.utils.classloader.ClassLoaderUtils;
+import xingu.utils.classloader.NamedClassLoader;
+import xingu.utils.classloader.impl.ClassLoaderAdapter;
+import xingu.utils.classloader.impl.DirectoryClassLoader;
+import xingu.utils.io.zip.ZipUtils;
 
 public abstract class SandboxManagerSupport
 	implements SandboxManager, Configurable, Initializable

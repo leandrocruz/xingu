@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.lang.BadParameter;
+import xingu.lang.BadParameter;
 
 public class UrlValidationTest
 {

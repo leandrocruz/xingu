@@ -1,6 +1,6 @@
 package xingu.pdf.impl;
 
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.utils.StringUtils;
 
 public class TextFinder
 {

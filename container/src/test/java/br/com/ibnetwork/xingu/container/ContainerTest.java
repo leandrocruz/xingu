@@ -16,6 +16,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.container.configuration.ConfigurationManager;
+import xingu.container.impl.Pulga;
+import xingu.utils.io.FileUtils;
 import br.com.ibnetwork.xingu.container.components.Alternative;
 import br.com.ibnetwork.xingu.container.components.CircularOne;
 import br.com.ibnetwork.xingu.container.components.Component;
@@ -33,9 +39,6 @@ import br.com.ibnetwork.xingu.container.components.impl.MyAlternative;
 import br.com.ibnetwork.xingu.container.components.impl.MyImpl;
 import br.com.ibnetwork.xingu.container.components.impl.NotSoSimple;
 import br.com.ibnetwork.xingu.container.components.impl.SimpleMy;
-import br.com.ibnetwork.xingu.container.configuration.ConfigurationManager;
-import br.com.ibnetwork.xingu.container.impl.Pulga;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
 
 public class ContainerTest
 {

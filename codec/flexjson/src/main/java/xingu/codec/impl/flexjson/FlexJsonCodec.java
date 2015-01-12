@@ -11,11 +11,11 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 
 import xingu.codec.Codec;
 import xingu.codec.impl.CodecSupport;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.lang.Constructors;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.StringUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.lang.Constructors;
+import xingu.utils.ObjectUtils;
+import xingu.utils.StringUtils;
 import flexjson.ClassFinder;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;

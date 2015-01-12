@@ -2,7 +2,7 @@ package xingu.inspector;
 
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.utils.MapUtils;
+import xingu.utils.MapUtils;
 
 public class WithMap
 {

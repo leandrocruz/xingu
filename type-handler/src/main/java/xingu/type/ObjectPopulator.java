@@ -1,6 +1,6 @@
 package xingu.type;
 
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.collection.FluidMap;
 
 public interface ObjectPopulator
 {

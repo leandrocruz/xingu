@@ -13,8 +13,8 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import br.com.ibnetwork.xingu.search.SearchEngine;
 
 public class LuceneSearchEngineTest

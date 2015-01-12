@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import xingu.taster.ByteTaster;
-import br.com.ibnetwork.xingu.utils.ByteUtils;
+import xingu.utils.ByteUtils;
 
 /*
  * See: http://www.garykessler.net/library/file_sigs.html

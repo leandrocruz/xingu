@@ -2,7 +2,7 @@ package xingu.servlet.command;
 
 import java.io.Serializable;
 
-import br.com.ibnetwork.xingu.lang.WithId;
+import xingu.lang.WithId;
 
 /**
  * Don't remove this interface. This is required to speed-up the gwt compilation process

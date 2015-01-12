@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.servlet.Servlet;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.servlet.container.ApplicationContext;
 
 import org.apache.avalon.framework.activity.Startable;
@@ -27,10 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.servlet.container.ServletContainer;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.ObjectUtils;
+import xingu.utils.io.FileUtils;
 
 /**
  * To create user passwords, see http://docs.codehaus.org/display/JETTY/Securing+Passwords

@@ -6,10 +6,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.CharUtils;
-
+import xingu.lang.NotImplementedYet;
 import xingu.netty.IoModel;
+import xingu.utils.CharUtils;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.netty.buffer.ChannelBuffer;

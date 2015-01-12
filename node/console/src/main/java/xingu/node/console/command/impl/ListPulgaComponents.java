@@ -1,9 +1,9 @@
 package xingu.node.console.command.impl;
 
+import xingu.container.Container;
+import xingu.container.Inject;
 import xingu.node.console.command.Command;
 import xingu.node.console.command.Writer;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class ListPulgaComponents
 	implements Command<String>

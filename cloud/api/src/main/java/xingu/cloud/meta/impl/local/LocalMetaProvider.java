@@ -5,8 +5,8 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.cloud.meta.MetaProvider;
+import xingu.lang.NotImplementedYet;
 
 public class LocalMetaProvider
 	implements MetaProvider

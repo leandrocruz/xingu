@@ -1,7 +1,7 @@
 package xingu.store;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
+import xingu.container.Inject;
+import xingu.factory.Factory;
 
 public class OtherPojo
     extends Pojo

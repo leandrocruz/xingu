@@ -17,7 +17,7 @@ import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseImpl;
 import xingu.http.client.impl.NameValueImpl;
 import xingu.utils.NettyUtils;
-import br.com.ibnetwork.xingu.utils.NumberUtils;
+import xingu.utils.NumberUtils;
 
 public class CurlResponseParser
 {

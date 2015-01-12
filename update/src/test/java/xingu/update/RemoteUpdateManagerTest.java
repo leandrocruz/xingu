@@ -9,12 +9,12 @@ import java.util.Iterator;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.http.client.HttpClient;
 import xingu.http.client.mock.HttpMocker;
 import xingu.update.impl.RemoteUpdateManager;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 
 public class RemoteUpdateManagerTest

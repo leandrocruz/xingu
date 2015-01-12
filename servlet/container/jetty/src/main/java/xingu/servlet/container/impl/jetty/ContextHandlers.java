@@ -10,9 +10,9 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.handler.HandlerCollection;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 public class ContextHandlers
     implements ServerConfig

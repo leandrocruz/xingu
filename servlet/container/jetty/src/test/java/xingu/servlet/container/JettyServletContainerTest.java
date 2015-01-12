@@ -11,15 +11,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.servlet.container.ApplicationContext;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import xingu.servlet.container.ServletContainer;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 @Ignore
 public class JettyServletContainerTest

@@ -3,7 +3,7 @@ package xingu.node.commons.crypto.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.crypto.SymmetricKey;
+import xingu.crypto.SymmetricKey;
 import xingu.node.commons.crypto.SessionKeyHolder;
 
 public class SessionKeyHolderImpl

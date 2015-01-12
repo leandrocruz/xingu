@@ -17,17 +17,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.codec.Codec;
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.servlet.command.BehaviorResolver;
 import xingu.servlet.command.Command;
 import xingu.servlet.command.CommandBehavior;
 import xingu.servlet.command.CommandReply;
 import xingu.servlet.command.reply.StringReply;
 import xingu.type.TypeFactory;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.FieldUtils;
+import xingu.utils.FieldUtils;
 
 public class XinguServlet
     extends HttpServlet

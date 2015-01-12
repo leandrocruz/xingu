@@ -14,12 +14,12 @@ import java.util.Random;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+import xingu.factory.Factory;
 import xingu.store.impl.prevayler.PrevaylerObjectStore;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.io.FileUtils;
 
 public class PrevaylerTest
     extends XinguTestCase

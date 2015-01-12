@@ -2,11 +2,11 @@ package xingu.node.commons.signal.behavior.impl;
 
 import org.jboss.netty.channel.Channel;
 
+import xingu.container.Inject;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.behavior.BehaviorPerformer;
 import xingu.node.commons.signal.behavior.BehaviorResolver;
 import xingu.node.commons.signal.behavior.SignalBehavior;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class BehaviorPerformerImpl
 	implements BehaviorPerformer

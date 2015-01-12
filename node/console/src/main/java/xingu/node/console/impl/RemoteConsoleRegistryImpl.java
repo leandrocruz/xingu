@@ -3,11 +3,11 @@ package xingu.node.console.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.node.console.RemoteConsoleRegistry;
 import xingu.node.console.command.Command;
+import xingu.utils.ObjectUtils;
 
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;

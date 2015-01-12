@@ -1,6 +1,6 @@
 package br.com.ibnetwork.xingu.container.components;
 
-import br.com.ibnetwork.xingu.container.Container;
+import xingu.container.Container;
 
 public interface UsesAnnotations
 {

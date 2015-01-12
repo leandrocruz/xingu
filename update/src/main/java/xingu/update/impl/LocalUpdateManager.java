@@ -2,7 +2,7 @@ package xingu.update.impl;
 
 import java.io.InputStream;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 import xingu.update.BundleDescriptor;
 import xingu.update.BundleDescriptors;
 

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.lang.BadParameter;
+import xingu.lang.BadParameter;
 
 public class Url2Test
 {

@@ -1,6 +1,6 @@
 package xingu.node.commons.crypto;
 
-import br.com.ibnetwork.xingu.crypto.SymmetricKey;
+import xingu.crypto.SymmetricKey;
 
 public interface SessionKeyHolder
 {

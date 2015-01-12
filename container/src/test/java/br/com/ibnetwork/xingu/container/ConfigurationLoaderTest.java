@@ -8,7 +8,8 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.utils.FSUtils;
+import xingu.container.ConfigurationLoader;
+import xingu.utils.FSUtils;
 
 public class ConfigurationLoaderTest
 {

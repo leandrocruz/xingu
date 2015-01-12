@@ -18,8 +18,8 @@ import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.CommandLineBuilder;
+import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpUtils;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 /*
  * See: http://curl.haxx.se/docs/manpage.html

@@ -9,12 +9,12 @@ import java.util.Map;
 import org.junit.Test;
 
 import xingu.codec.Codec;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderManager;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+import xingu.lang.NotImplementedYet;
+import xingu.utils.classloader.ClassLoaderManager;
+import xingu.utils.classloader.NamedClassLoader;
 
 public class FlexJsonCodecTest
 	extends XinguTestCase

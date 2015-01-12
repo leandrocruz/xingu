@@ -1,8 +1,8 @@
 package xingu.email.impl;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 import xingu.email.Email;
 import xingu.email.EmailManager;
+import xingu.lang.NotImplementedYet;
 
 public class EmailManagerImpl
 	implements EmailManager

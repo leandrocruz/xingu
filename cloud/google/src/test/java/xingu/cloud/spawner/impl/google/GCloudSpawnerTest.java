@@ -18,10 +18,10 @@ import xingu.cloud.spawner.Surrogate;
 import xingu.cloud.spawner.impl.google.GCloudSpawner;
 import xingu.codec.Codec;
 import xingu.codec.impl.JacksonCodec;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.process.ProcessManager;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class GCloudSpawnerTest
 	extends XinguTestCase

@@ -13,15 +13,15 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.netty.channel.InstantaneousChannelEvent;
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
 import xingu.node.commons.signal.impl.ExceptionSignal;
 import xingu.node.commons.signal.impl.SignalHandlerImpl;
 import xingu.node.commons.signal.impl.TimeoutSignal;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class SignalHandlerTest
 	extends XinguTestCase

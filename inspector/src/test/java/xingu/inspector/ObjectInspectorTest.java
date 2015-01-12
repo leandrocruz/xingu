@@ -18,8 +18,8 @@ import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandlerRegistry;
 import xingu.type.impl.GenericTypeHandler;
 import xingu.type.impl.TypeHandlerRegistryImpl;
-import br.com.ibnetwork.xingu.utils.ArrayUtils;
-import br.com.ibnetwork.xingu.utils.classloader.impl.ContextClassLoaderManager;
+import xingu.utils.ArrayUtils;
+import xingu.utils.classloader.impl.ContextClassLoaderManager;
 
 public class ObjectInspectorTest
 {

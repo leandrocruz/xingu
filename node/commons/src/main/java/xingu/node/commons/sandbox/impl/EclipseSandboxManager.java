@@ -10,14 +10,14 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.io.FilenameUtils;
 
+import xingu.container.Environment;
+import xingu.container.Inject;
 import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxDescriptor;
-import br.com.ibnetwork.xingu.container.Environment;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.eclipse.EclipseClassLoader;
-import br.com.ibnetwork.xingu.utils.classloader.eclipse.Project;
-import br.com.ibnetwork.xingu.utils.classloader.eclipse.Workspace;
+import xingu.utils.classloader.NamedClassLoader;
+import xingu.utils.classloader.eclipse.EclipseClassLoader;
+import xingu.utils.classloader.eclipse.Project;
+import xingu.utils.classloader.eclipse.Workspace;
 
 public class EclipseSandboxManager
 	extends SandboxManagerSupport

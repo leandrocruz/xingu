@@ -1,8 +1,8 @@
 package xingu.node.commons.sandbox.impl;
 
+import xingu.container.Container;
 import xingu.node.commons.sandbox.Sandbox;
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.utils.classloader.NamedClassLoader;
 
 public class SandboxImpl
 	implements Sandbox

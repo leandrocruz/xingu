@@ -6,14 +6,14 @@ import java.io.File;
 
 import org.junit.Test;
 
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.node.commons.sandbox.Sandbox;
 import xingu.node.commons.sandbox.SandboxManager;
 import xingu.update.BundleDescriptor;
 import xingu.update.UpdateManager;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
-import br.com.ibnetwork.xingu.utils.classloader.NamedClassLoader;
+import xingu.utils.classloader.NamedClassLoader;
 import static org.mockito.Mockito.*;
 
 public class OnDemandSandboxManagerTest

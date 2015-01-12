@@ -9,11 +9,11 @@ import org.junit.Test;
 
 import xingu.codec.Codec;
 import xingu.codec.impl.JacksonCodec;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.settings.impl.SettingsManagerImpl;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.io.FileUtils;
 
 public class SettingsTest
 	extends XinguTestCase

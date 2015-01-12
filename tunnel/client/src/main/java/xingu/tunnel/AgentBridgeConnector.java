@@ -10,12 +10,12 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.MessageEvent;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.node.client.bridge.impl.BridgeConnectorImpl;
 import xingu.node.commons.protocol.PojoDecoder;
 import xingu.node.commons.protocol.PojoEncoder;
 import xingu.utils.NettyUtils;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 
 public class AgentBridgeConnector
 	extends BridgeConnectorImpl

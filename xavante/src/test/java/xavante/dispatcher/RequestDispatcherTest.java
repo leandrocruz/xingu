@@ -13,11 +13,11 @@ import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.junit.Test;
 
 import xavante.dispatcher.impl.RequestDispatcherImpl;
+import xingu.container.Binder;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 import xingu.url.QueryString;
 import xingu.url.Url;
-import br.com.ibnetwork.xingu.container.Binder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
 
 public class RequestDispatcherTest
 	extends XinguTestCase

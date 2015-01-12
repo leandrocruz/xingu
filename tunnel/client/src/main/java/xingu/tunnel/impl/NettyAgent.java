@@ -7,6 +7,8 @@ import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.client.bridge.OnConnect;
 import xingu.tunnel.Agent;
@@ -14,8 +16,6 @@ import xingu.tunnel.proto.ClientConnected;
 import xingu.tunnel.proto.ClientDisconnected;
 import xingu.tunnel.proto.ClientMessage;
 import xingu.tunnel.proto.TcpMessage;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class NettyAgent
 	extends SimpleChannelHandler

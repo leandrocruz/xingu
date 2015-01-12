@@ -11,8 +11,8 @@ import xavante.comet.CometHandler;
 import xavante.comet.CometMessage;
 import xavante.comet.MessageFactory;
 import xavante.dispatcher.impl.RequestHandlerSupport;
+import xingu.container.Inject;
 import xingu.netty.http.HttpResponseBuilder;
-import br.com.ibnetwork.xingu.container.Inject;
 
 public class LongPollingCometHandler
 	extends RequestHandlerSupport

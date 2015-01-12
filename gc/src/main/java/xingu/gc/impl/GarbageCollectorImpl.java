@@ -6,7 +6,7 @@ import org.apache.avalon.framework.activity.Startable;
 
 import xingu.gc.Collectable;
 import xingu.gc.GarbageCollector;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 
 public class GarbageCollectorImpl
 	implements GarbageCollector, Startable

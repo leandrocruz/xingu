@@ -48,15 +48,15 @@ import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData;
 import org.jboss.netty.handler.codec.http.multipart.InterfaceHttpData.HttpDataType;
 
+import xingu.lang.NotImplementedYet;
 import xingu.netty.Deflater;
 import xingu.url.QueryString;
 import xingu.url.Url;
 import xingu.url.UrlParser;
 import xingu.url.impl.QueryStringImpl;
+import xingu.utils.CharUtils;
 import xingu.utils.NettyUtils;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.CharUtils;
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
+import xingu.utils.collection.FluidMap;
 
 public class HttpUtils
 {
@@ -369,7 +369,7 @@ public class HttpUtils
 
         if(foundHeader)
         {
-            result = br.com.ibnetwork.xingu.utils.StringUtils.joinIgnoringNulls(parts, ",");
+            result = xingu.utils.StringUtils.joinIgnoringNulls(parts, ",");
         }
         return result;
     }

@@ -16,17 +16,17 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.container.Inject;
 import xingu.email.Email;
 import xingu.email.EmailManager;
+import xingu.lang.Sys;
 import xingu.store.ObjectStore;
 import xingu.template.Context;
 import xingu.template.TemplateEngine;
 import xingu.time.Instant;
 import xingu.time.Time;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.Sys;
-import br.com.ibnetwork.xingu.utils.StringUtils;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.StringUtils;
+import xingu.utils.TimeUtils;
 
 public abstract class EmailManagerSupport
     implements EmailManager, Configurable, Startable, Runnable

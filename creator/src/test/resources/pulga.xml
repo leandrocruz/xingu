@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <pulga>
-	<component	role="br.com.ibnetwork.xingu.factory.Factory"
-				class="br.com.ibnetwork.xingu.factory.impl.FactoryImpl">
+	<component	role="xingu.factory.Factory"
+				class="xingu.factory.impl.FactoryImpl">
 		<classes>
-			<class 	name="br.com.ibnetwork.xingu.factory.test.Interface"
-					concrete="br.com.ibnetwork.xingu.factory.test.Implementation"/>
+			<class 	name="xingu.factory.test.Interface"
+					concrete="xingu.factory.test.Implementation"/>
 		</classes>
 	</component>
 	<component	role="xingu.type.TypeFactory"

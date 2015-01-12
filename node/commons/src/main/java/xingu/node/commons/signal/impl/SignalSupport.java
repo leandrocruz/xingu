@@ -2,7 +2,7 @@ package xingu.node.commons.signal.impl;
 
 import xingu.node.commons.identity.Identity;
 import xingu.node.commons.signal.Signal;
-import br.com.ibnetwork.xingu.utils.ip.NetworkAddress;
+import xingu.utils.ip.NetworkAddress;
 
 public class SignalSupport<T>
 	implements Signal<T>

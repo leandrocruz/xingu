@@ -1,6 +1,6 @@
 package xingu.store;
 
-import br.com.ibnetwork.xingu.container.Inject;
+import xingu.container.Inject;
 
 public class Injected
     implements PersistentBean

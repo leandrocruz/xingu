@@ -5,12 +5,12 @@ import java.lang.reflect.Field;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import xingu.inspector.ObjectVisitor;
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType.Type;
 import xingu.type.TypeHandler;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
-import br.com.ibnetwork.xingu.utils.classloader.ClassLoaderUtils;
-import br.com.ibnetwork.xingu.utils.printer.Printer;
-import br.com.ibnetwork.xingu.utils.printer.xml.XmlPrinter;
+import xingu.utils.classloader.ClassLoaderUtils;
+import xingu.utils.printer.Printer;
+import xingu.utils.printer.xml.XmlPrinter;
 
 public class XmlEmitter
 	implements ObjectVisitor<String>

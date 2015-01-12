@@ -1,7 +1,7 @@
 package xingu.type.impl;
 
+import xingu.lang.NotImplementedYet;
 import xingu.type.ObjectType.Type;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class EnumTypeHandler
 	extends TypeHandlerSupport

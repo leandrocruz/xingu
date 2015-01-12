@@ -30,12 +30,12 @@ import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.FSUtils;
+import xingu.utils.ObjectUtils;
 import br.com.ibnetwork.xingu.search.SearchEngine;
 import br.com.ibnetwork.xingu.search.SearchEngineException;
-import br.com.ibnetwork.xingu.utils.FSUtils;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
 
 public class LuceneSearchEngine
     implements SearchEngine, Initializable, Configurable

@@ -14,8 +14,8 @@ import java.net.URLConnection;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
 
 @Ignore
 public class JettyServletContainerTest

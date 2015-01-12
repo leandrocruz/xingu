@@ -4,8 +4,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
 
 public class InjectedServlet
     extends HttpServlet

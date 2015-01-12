@@ -8,6 +8,9 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.servlet.container.ApplicationContext;
 
 import org.apache.avalon.framework.activity.Startable;
@@ -18,9 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.servlet.container.ServletContainer;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 
 public class JettyServletContainer
     implements ServletContainer, Configurable, Startable

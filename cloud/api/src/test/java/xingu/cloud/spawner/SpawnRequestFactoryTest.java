@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.utils.NameValue;
+import xingu.utils.NameValue;
 
 public class SpawnRequestFactoryTest
 {

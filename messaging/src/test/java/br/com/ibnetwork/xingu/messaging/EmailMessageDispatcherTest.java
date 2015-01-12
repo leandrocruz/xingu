@@ -15,9 +15,9 @@ import javax.mail.internet.MimeMultipart;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.XinguTestCase;
-import br.com.ibnetwork.xingu.utils.FSUtils;
+import xingu.container.Inject;
+import xingu.container.XinguTestCase;
+import xingu.utils.FSUtils;
 
 @Ignore
 public class EmailMessageDispatcherTest 

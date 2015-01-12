@@ -18,9 +18,9 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.jboss.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import xavante.dispatcher.RequestDispatcher;
+import xingu.container.Inject;
+import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpResponseBuilder;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
 
 public class XavanteChannelHandler
 	extends SimpleChannelHandler

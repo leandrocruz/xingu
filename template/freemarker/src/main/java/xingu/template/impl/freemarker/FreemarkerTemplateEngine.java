@@ -13,14 +13,12 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.template.Context;
 import xingu.template.TemplateEngineException;
 import xingu.template.impl.TemplateEngineSupport;
-
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
 import freemarker.cache.TemplateLoader;
-
 import freemarker.log.Logger;
 import freemarker.core.InvalidReferenceException;
 import freemarker.core.ParseException;

@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import xingu.codec.impl.CodecSupport;
 import xingu.codec.impl.JsonTokenizer;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Inject;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

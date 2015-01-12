@@ -4,10 +4,10 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import br.com.ibnetwork.xingu.container.Container;
-import br.com.ibnetwork.xingu.container.ContainerUtils;
-import br.com.ibnetwork.xingu.lang.ThreadBlocker;
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.container.Container;
+import xingu.container.ContainerUtils;
+import xingu.lang.ThreadBlocker;
+import xingu.utils.io.FileUtils;
 
 public class NodeRunner
 {

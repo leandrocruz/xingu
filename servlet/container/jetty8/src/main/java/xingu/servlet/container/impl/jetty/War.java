@@ -8,10 +8,9 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.eclipse.jetty.server.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import br.com.ibnetwork.xingu.utils.io.FileUtils;
+import xingu.utils.io.FileUtils;
 
 @Deprecated
 public class War

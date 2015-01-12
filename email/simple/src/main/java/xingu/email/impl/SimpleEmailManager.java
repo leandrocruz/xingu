@@ -6,8 +6,8 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
+import xingu.container.Inject;
 import xingu.email.Email;
-import br.com.ibnetwork.xingu.container.Inject;
 import br.com.ibnetwork.xingu.messaging.MessageDispatcher;
 
 public class SimpleEmailManager

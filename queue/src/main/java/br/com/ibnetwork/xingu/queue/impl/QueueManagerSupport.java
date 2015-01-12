@@ -3,12 +3,12 @@ package br.com.ibnetwork.xingu.queue.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ibnetwork.xingu.container.Inject;
+import xingu.container.Inject;
+import xingu.utils.StringUtils;
 import br.com.ibnetwork.xingu.queue.MessageQueue;
 import br.com.ibnetwork.xingu.queue.QueueFactory;
 import br.com.ibnetwork.xingu.queue.QueueManager;
 import br.com.ibnetwork.xingu.queue.QueueManagerException;
-import br.com.ibnetwork.xingu.utils.StringUtils;
 
 public abstract class QueueManagerSupport
     implements QueueManager

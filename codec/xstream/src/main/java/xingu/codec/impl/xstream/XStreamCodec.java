@@ -17,10 +17,10 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import xingu.codec.CodecObject;
 import xingu.codec.impl.CodecSupport;
 import xingu.codec.impl.OutputMode;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.container.Injector;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.container.Inject;
+import xingu.container.Injector;
+import xingu.factory.Factory;
+import xingu.utils.ObjectUtils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.SingleValueConverter;

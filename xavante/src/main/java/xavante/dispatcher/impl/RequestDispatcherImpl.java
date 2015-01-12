@@ -13,11 +13,11 @@ import xavante.XavanteRequestFactory;
 import xavante.dispatcher.DefaultRequestHandler;
 import xavante.dispatcher.RequestDispatcher;
 import xavante.dispatcher.RequestHandler;
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.url.Url;
 import xingu.url.UrlParser;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.utils.ObjectUtils;
 
 public class RequestDispatcherImpl
 	implements RequestDispatcher, Configurable

@@ -35,11 +35,11 @@ import org.jboss.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xingu.lang.thread.DaemonThreadFactory;
+import xingu.lang.thread.SimpleThreadNamer;
 import xingu.node.client.bridge.BridgeConnector;
 import xingu.node.client.bridge.OnConnect;
-import br.com.ibnetwork.xingu.lang.thread.DaemonThreadFactory;
-import br.com.ibnetwork.xingu.lang.thread.SimpleThreadNamer;
-import br.com.ibnetwork.xingu.utils.TimeUtils;
+import xingu.utils.TimeUtils;
 
 public class BridgeConnectorImpl
 	extends SimpleChannelHandler

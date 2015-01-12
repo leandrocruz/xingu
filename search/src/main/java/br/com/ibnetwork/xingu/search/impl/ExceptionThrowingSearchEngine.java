@@ -6,7 +6,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 
-import br.com.ibnetwork.xingu.lang.NotImplementedYet;
+import xingu.lang.NotImplementedYet;
 import br.com.ibnetwork.xingu.search.SearchEngine;
 import br.com.ibnetwork.xingu.search.SearchEngineException;
 

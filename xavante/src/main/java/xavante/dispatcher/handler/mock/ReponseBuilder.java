@@ -2,9 +2,9 @@ package xavante.dispatcher.handler.mock;
 
 
 
-import br.com.ibnetwork.xingu.utils.collection.FluidMap;
 import xavante.XavanteRequest;
 import xingu.http.client.HttpResponse;
+import xingu.utils.collection.FluidMap;
 
 public interface ReponseBuilder
 {

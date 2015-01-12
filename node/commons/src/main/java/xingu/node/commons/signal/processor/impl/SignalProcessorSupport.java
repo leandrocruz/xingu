@@ -10,13 +10,13 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.jboss.netty.channel.Channel;
 
+import xingu.container.Inject;
+import xingu.factory.Factory;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.impl.SignalTaskImpl;
 import xingu.node.commons.signal.processor.SignalProcessor;
 import xingu.node.commons.signal.processor.SignalTask;
-import br.com.ibnetwork.xingu.container.Inject;
-import br.com.ibnetwork.xingu.factory.Factory;
-import br.com.ibnetwork.xingu.utils.ObjectUtils;
+import xingu.utils.ObjectUtils;
 
 public abstract class SignalProcessorSupport
 	implements SignalProcessor, Configurable, Startable

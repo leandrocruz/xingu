@@ -2,7 +2,7 @@ package xingu.node.commons.crypto;
 
 import java.security.PrivateKey;
 
-import br.com.ibnetwork.xingu.crypto.PubKey;
+import xingu.crypto.PubKey;
 
 public interface KeyPair
 {
