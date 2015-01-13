@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>http-impl-commons</artifactId>
+			<artifactId>xingu-http-impl-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

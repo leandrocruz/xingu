@@ -34,7 +34,7 @@
 		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>http-impl-native</artifactId>
+			<artifactId>xingu-http-impl-native</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>	
