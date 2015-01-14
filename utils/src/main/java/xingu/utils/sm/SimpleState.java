@@ -44,8 +44,12 @@ public class SimpleState<T, R>
 	{
 		if(entries.size() == 0)
 		{
-			//any
-			return fw(value, fallback);
+			if(fallback != null)
+			{
+				//any
+				return fw(value, fallback);
+			}
+			return this;
 		}
 
 		if(value == null)
