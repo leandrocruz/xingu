@@ -6,17 +6,15 @@ public interface State<T, R>
 
 	State<T, R> on(T value);
 
-	void when(T value, State<T, R> next);
+	State<T, R> when(T value, State<T, R> next);
 	
-	void when(T value, State<T, R> next, State<T, R> fallback);
+	State<T, R> fallback(State<T, R> next);
 
-	void any(State<T, R> next);
-	
-	void appendResult(R result);
+	State<T, R> end();
 
 	void append(T value);
 
-	R collect();
+	void appendResult(R result);
 
-	State<T, R> end();
+	R collect();
 }

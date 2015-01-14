@@ -1,13 +1,12 @@
 package xingu.utils.sm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleState<T, R>
 	implements State<T, R>
 {
 	protected String		name;
-
-	protected T				toMatch;	// null for any value
-
-	protected State<T, R>	next;
 
 	protected State<T, R>	fallback;
 
@@ -15,6 +14,8 @@ public class SimpleState<T, R>
 
 	protected boolean		push;
 
+	private List<Entry<T,R>> entries = new ArrayList<>();
+	
 	public SimpleState(String name)
 	{
 		this(name, false, null);
@@ -41,26 +42,30 @@ public class SimpleState<T, R>
 	@Override
 	public State<T, R> on(T value)
 	{
-		if(toMatch == null && next != null)
+		if(entries.size() == 0)
 		{
-			//any()
-			return fw(value, next);
+			//any
+			return fw(value, fallback);
 		}
 
 		if(value == null)
 		{
-			return whenNull();
+			return this;
 		}
-		
-		if(value.equals(this.toMatch))
+
+		for(Entry<T, R> entry : entries)
 		{
-			if(next != null)
+			boolean equals = value.equals(entry.toMatch);
+			if(equals)
 			{
-				return fw(value, next);
-			}
-			else
-			{
-				return whenNextNull(value);
+				if(entry.next != null)
+				{
+					return fw(value, entry.next);
+				}
+				else
+				{
+					return this;
+				}
 			}
 		}
 
@@ -98,52 +103,48 @@ public class SimpleState<T, R>
 		return this;
 	}
 
+	@Override
+	public State<T, R> when(T value, State<T, R> next)
+	{
+		entries.add(new Entry<T,R>(value, next));
+		return this;
+	}
+
+	@Override
+	public State<T, R> fallback(State<T, R> fallback)
+	{
+		this.fallback = fallback;
+		return this;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+
 	public void append(T value)
 	{}
 
 	public void appendResult(R result)
 	{}
 
-	protected State<T, R> whenNull()
-	{
-		return this;
-	}
-
-	protected State<T, R> whenNextNull(T t)
-	{
-		return this;
-	}
-
-	@Override
-	public void when(T value, State<T, R> next)
-	{
-		this.toMatch = value;
-		this.next  = next;
-	}
-
-	@Override
-	public void when(T value, State<T, R> next, State<T, R> fallback)
-	{
-		this.toMatch    = value;
-		this.next     = next;
-		this.fallback = fallback;
-	}
-
-	@Override
-	public void any(State<T, R> next)
-	{
-		this.next = next;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "[" + name + "] " + toMatch + " -> " + next.name();
-	}
-
 	@Override
 	public R collect()
 	{
 		return null;
+	}
+}
+
+class Entry<T, R>
+{
+	T			toMatch;	// null for any value
+
+	State<T, R>	next;
+
+	public Entry(T value, State<T, R> next)
+	{
+		this.toMatch = value;
+		this.next    = next;
 	}
 }
