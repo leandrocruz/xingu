@@ -160,4 +160,19 @@ public class StringUtilsTest
     	assertEquals("50.0%", StringUtils.toPercent(.5));
     	assertEquals("100.0%", StringUtils.toPercent(1));
     }
+
+    @Test
+    public void testUnitFormat()
+    {
+    	assertEquals("100.0 ", StringUtils.unitFormat(100));
+    	assertEquals("1.0 K", StringUtils.unitFormat(1000));
+    	assertEquals("2.0 K", StringUtils.unitFormat(2000));
+    	assertEquals("1.0 M", StringUtils.unitFormat(1000_000));
+    	assertEquals("1.5 M", StringUtils.unitFormat(1500_000));
+    	assertEquals("1.0 G", StringUtils.unitFormat(1000_000_000));
+    	assertEquals("1.0 T", StringUtils.unitFormat(1000_000_000_000l));
+    	assertEquals("1.0 P", StringUtils.unitFormat(1000_000_000_000_000l));
+    	assertEquals("1.0 E", StringUtils.unitFormat(1000_000_000_000_000_000l));
+    	assertEquals("9.2 E", StringUtils.unitFormat(Long.MAX_VALUE));
+    }
 }

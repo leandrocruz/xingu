@@ -9,26 +9,28 @@ import java.util.List;
 
 public class StringUtils
 {
-    public static final String EMPTY = "";
-    
-    public static final String SPACE = " ";
-    
-    public static final String SLASH = "/";
-    
-    public static final String BACK_SLASH = "\\";
-    
-    public static final String QUESTION_MARK = "?";
-    
-    public static final String DOT = ".";
+	public static final String		EMPTY			= "";
 
-    public static final String EQUALS = "=";
+	public static final String		SPACE			= " ";
 
-    public static final String AND = "&";
-    
-    public static final Charset UTF8 = Charset.forName("utf8");
-    
-    public static final String[] EMPTY_ARRAY = new String[]{};
+	public static final String		SLASH			= "/";
 
+	public static final String		BACK_SLASH		= "\\";
+
+	public static final String		QUESTION_MARK	= "?";
+
+	public static final String		DOT				= ".";
+
+	public static final String		EQUALS			= "=";
+
+	public static final String		AND				= "&";
+
+	public static final Charset		UTF8			= Charset.forName("utf8");
+
+	public static final String[]	EMPTY_ARRAY		= new String[] {};
+
+	public static final String[]	UNITS			= new String[] {"", "K", "M", "G", "T", "P", "E"};
+    
     public static final boolean isEmpty(String[] array)
     {
         return array == null || array.length == 0;
@@ -537,5 +539,32 @@ public class StringUtils
 	public static final String onlyDigits(String input)
 	{
 		return input.replaceAll("[^0-9]", "");
+	}
+	
+	public static String unitFormat(long count)
+	{
+		return unitFormat(count, UNITS);
+	}
+
+	public static String unitFormat(long count, String[] units)
+	{
+		if(count < 0)
+		{
+			return "neg!";
+		}
+
+		int power = 0;
+		while(true)
+		{
+	        double min = power == 0 ? 0 : Math.pow(1000, power);
+	        double max = Math.pow(1000, power + 1);
+	        if(count >= min && count < max)
+	        {
+	        	double value = power == 0 ? count : count/min;
+	        	return String.format("%3.1f %s", value, UNITS[power]);
+	        }
+
+	        power++;
+		}
 	}
 }
