@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.container.Inject;
+import xingu.http.client.HttpProgressListener;
 import xingu.lang.NotImplementedYet;
 import xingu.time.Time;
 import xingu.update.BundleDescriptor;
@@ -152,6 +153,13 @@ public abstract class UpdateManagerSupport
 	public BundleDescriptor update(String id)
 		throws Exception
 	{
+		return update(id, null);
+	}
+
+	@Override
+	public BundleDescriptor update(String id, HttpProgressListener listener)
+		throws Exception
+	{
 		BundleDescriptor remote = remoteDescriptors.byId(id);
 		BundleDescriptor local  = localDescriptors.byId(id);
 		if(!isUpdateRequired(remote, local))
@@ -168,7 +176,7 @@ public abstract class UpdateManagerSupport
 			clean(target);	
 		}
 
-		InputStream is   = toInputStream(remote);
+		InputStream is   = toInputStream(remote, listener);
 		byte[]      data = IOUtils.toByteArray(is);
 
 		String h1 = remote.getHash();
@@ -253,6 +261,6 @@ public abstract class UpdateManagerSupport
 	protected abstract BundleDescriptors getRemoteDescriptors()
 		throws Exception;
 
-	protected abstract InputStream toInputStream(BundleDescriptor desc)
+	protected abstract InputStream toInputStream(BundleDescriptor desc, HttpProgressListener listener)
 		throws Exception;
 }
