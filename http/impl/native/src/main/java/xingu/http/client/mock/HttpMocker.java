@@ -16,6 +16,7 @@ import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpContext;
+import xingu.http.client.HttpProgressListener;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.ResponseInspector;
@@ -78,6 +79,8 @@ public class HttpMocker
 		when(req.multipart(any(Boolean.class))).thenReturn(req);
 		when(req.withUserAgent(any(String.class))).thenReturn(req);
 		when(req.name(any(String.class))).thenReturn(req);
+		when(req.listener(any(HttpProgressListener.class))).thenReturn(req);
+		when(req.ignoreSSLCertificates(any(Boolean.class))).thenReturn(req);
 
 		return req;
 	}
