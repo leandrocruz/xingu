@@ -29,13 +29,22 @@ public class ApacheHttpResponseBuilder
 			throw new NotImplementedYet("Sorry, but I can't create a buffer of size: " + len);
 		}
 
-		int           chunkSize;
-		int           progress   = 0;
-		ChannelBuffer buffer     = ChannelBuffers.buffer((int) len);
-		byte[]        tmp        = new byte[4 * 1024];
+		ChannelBuffer buffer;
+		if(len > 0)
+		{
+			buffer = ChannelBuffers.buffer((int) len);
+		}
+		else
+		{
+			buffer = ChannelBuffers.dynamicBuffer();
+		}
 
-		InputStream is = entity.getContent();
-        while ((chunkSize = is.read(tmp)) != -1)
+		int         chunkSize;
+		int         progress   = 0;
+		byte[]      tmp        = new byte[4 * 1024];
+		InputStream is         = entity.getContent();
+
+		while ((chunkSize = is.read(tmp)) != -1)
         {
         	buffer.writeBytes(tmp, 0, chunkSize);
             progress += chunkSize;
@@ -46,7 +55,9 @@ public class ApacheHttpResponseBuilder
         }
 
         /* We need to read and replace the stream while the socket is still open */
-        byte[]      raw         = buffer.array();
+		int    readable = buffer.readableBytes();
+		byte[] raw      = new byte[readable];
+		buffer.getBytes(0, raw);
 		InputStream replacement = new BufferedInputStream(new ByteArrayInputStream(raw));
 
 		
