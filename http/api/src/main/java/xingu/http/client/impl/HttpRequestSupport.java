@@ -8,6 +8,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpContext;
+import xingu.http.client.HttpProgressListener;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
@@ -40,6 +41,10 @@ public abstract class HttpRequestSupport
 	protected String				authPassword;
 
 	protected boolean				multipart;
+
+	protected boolean				ignoreSSLCertificates;
+
+	protected HttpProgressListener	listener;
 
 	protected Cookies				cookies		= new CookiesImpl();
 
@@ -74,6 +79,19 @@ public abstract class HttpRequestSupport
 	public boolean isPost()
 	{
 		return "POST".equalsIgnoreCase(method);
+	}
+	
+	@Override
+	public boolean ignoreSSLCertificates()
+	{
+		return ignoreSSLCertificates;
+	}
+
+	@Override
+	public HttpRequest ignoreSSLCertificates(boolean ignore)
+	{
+		ignoreSSLCertificates = ignore;
+		return this;
 	}
 
 	@Override
@@ -301,6 +319,13 @@ public abstract class HttpRequestSupport
 	public HttpRequest name(String name)
 	{
 		this.name = name;
+		return this;
+	}
+
+	@Override
+	public HttpRequest listener(HttpProgressListener listener)
+	{
+		this.listener = listener;
 		return this;
 	}
 

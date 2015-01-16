@@ -13,13 +13,13 @@ public class HttpException
 		super(msg);
 	}
 
-	public HttpException(Exception source)
+	public HttpException(Throwable t)
 	{
-		super(source);
+		super(t);
 	}
 
-	public HttpException(String msg, Exception source)
+	public HttpException(String msg, Throwable t)
 	{
-		super(msg, source);
+		super(msg, t);
 	}
 }

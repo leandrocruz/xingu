@@ -58,4 +58,9 @@ public interface HttpRequest
 	String getCharset();
 
 	HttpRequest name(String name);
+
+	HttpRequest ignoreSSLCertificates(boolean ignore);
+	boolean ignoreSSLCertificates();
+
+	HttpRequest listener(HttpProgressListener listener);
 }
