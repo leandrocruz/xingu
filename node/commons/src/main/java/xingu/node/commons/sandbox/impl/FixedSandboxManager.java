@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Iterator;
 
 import xingu.container.Inject;
-import xingu.http.client.HttpProgressListener;
 import xingu.http.client.impl.StepListener;
 import xingu.lang.NotImplementedYet;
 import xingu.node.commons.sandbox.SandboxDescriptor;
@@ -17,8 +16,10 @@ public class FixedSandboxManager
 	extends SandboxManagerSupport
 {
 	@Inject
-	private UpdateManager updater;
+	private UpdateManager			updater;
 
+	public static final String[]	UNITS	= new String[] { "B", "KB", "MB", "GB" };
+	
 	class LogProgressListener
 		extends StepListener
 	{
@@ -40,23 +41,10 @@ public class FixedSandboxManager
 
 			lastBytes = progress;
 			lastCall  = now;
-			
-			logger.info("Progress {} - {}/sec", StringUtils.toPercent(progress, total), toNumInUnits((long)rate));
-		}
-		
-		public String toNumInUnits(long bytes)
-		{
-			int u = 0;
-		    int threshold = 1024*1024;
-			for (;bytes > threshold; bytes >>= 10)
-		    {
-		        u++;
-		    }
-		    if (bytes > 1024)
-		    {
-		    	u++;
-		    }
-		    return String.format("%.1f %cB", bytes/1024f, " kMGTPE".charAt(u));
+
+			logger.info("Progress {} - {}/sec", 
+					StringUtils.toPercent(progress, total), 
+					StringUtils.unitFormat((long) rate), UNITS);
 		}
 	}
 
