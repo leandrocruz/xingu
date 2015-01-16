@@ -561,9 +561,8 @@ public class StringUtils
 	        if(count >= min && count < max)
 	        {
 	        	double value = power == 0 ? count : count/min;
-	        	return String.format("%3.1f %s", value, UNITS[power]);
+	        	return String.format("%3.1f %s", value, units[power]);
 	        }
-
 	        power++;
 		}
 	}
