@@ -6,6 +6,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class StringUtils
 {
@@ -548,6 +549,11 @@ public class StringUtils
 
 	public static String unitFormat(long count, String[] units)
 	{
+		return unitFormat(count, units, Locale.ENGLISH);
+	}
+
+	public static String unitFormat(long count, String[] units, Locale locale)
+	{
 		if(count < 0)
 		{
 			return "neg!";
@@ -561,7 +567,7 @@ public class StringUtils
 	        if(count >= min && count < max)
 	        {
 	        	double value = power == 0 ? count : count/min;
-	        	return String.format("%3.1f %s", value, units[power]);
+	        	return String.format(locale, "%3.1f %s", value, units[power]);
 	        }
 	        power++;
 		}
