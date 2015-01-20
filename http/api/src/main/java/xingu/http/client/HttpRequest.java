@@ -63,4 +63,7 @@ public interface HttpRequest
 	boolean ignoreSSLCertificates();
 
 	HttpRequest listener(HttpProgressListener listener);
+	
+	HttpRequest payload(String payload);
+	String getPayload();
 }

@@ -40,6 +40,8 @@ public abstract class HttpRequestSupport
 
 	protected String				authPassword;
 
+	protected String				payload;
+
 	protected boolean				multipart;
 
 	protected boolean				ignoreSSLCertificates;
@@ -329,6 +331,19 @@ public abstract class HttpRequestSupport
 		return this;
 	}
 
+	@Override
+	public HttpRequest payload(String payload)
+	{
+		this.payload = payload;
+		return this;
+	}
+	
+	@Override
+	public String getPayload()
+	{
+		return payload;
+	}
+	
 	@Override
 	public String toString()
 	{

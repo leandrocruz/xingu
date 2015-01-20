@@ -85,6 +85,7 @@ public class CurlCommandLineBuilder
 		placeCookies	(req, result);
 		placeUserAgent	(req, result);
 		placeHeaders	(req, result);
+		placePayload	(req, result);
 
 		boolean isMultipart = req.isMultipart();
 		if(isPost && isMultipart)
@@ -248,6 +249,16 @@ public class CurlCommandLineBuilder
 					req.setCharset(charset);
 				}
 			}
+		}
+	}
+
+	private void placePayload(HttpRequest req, List<String> result)
+	{
+		String payload = req.getPayload();
+		if(StringUtils.isNotEmpty(payload))
+		{
+			result.add("--data-binary");
+			result.add("\"" + payload + "\"");
 		}
 	}
 
