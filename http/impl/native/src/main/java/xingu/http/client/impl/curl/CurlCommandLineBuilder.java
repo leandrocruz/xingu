@@ -258,7 +258,7 @@ public class CurlCommandLineBuilder
 		if(StringUtils.isNotEmpty(payload))
 		{
 			result.add("--data-binary");
-			result.add("\"" + payload + "\"");
+			result.add(payload);
 		}
 	}
 
