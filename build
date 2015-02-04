@@ -1,7 +1,0 @@
-#!/bin/bash
-
-svn update
-
-mvn clean install
-
-mvn -Declipse.workspace=$HOME/dev/eclipse/ws-kidux eclipse:eclipse
