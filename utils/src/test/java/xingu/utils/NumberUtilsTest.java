@@ -9,6 +9,14 @@ import xingu.utils.NumberUtils;
 
 public class NumberUtilsTest
 {
+	@Test
+	public void testLiteral()
+	{
+		assertEquals(32, 32);
+		assertEquals(26, 032); 	//octal
+		assertEquals(50, 0x32);	//hexa
+	}
+	
     @Test
     public void testRandom()
         throws Exception
