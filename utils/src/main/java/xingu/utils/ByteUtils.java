@@ -2,6 +2,7 @@ package xingu.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -9,6 +10,16 @@ public class ByteUtils
 {
 	private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	
+	public static String toString(byte[] data)
+	{
+		return new String(data);
+	}
+
+	public static int toInt(byte[] data)
+	{
+		return ByteBuffer.wrap(data).getInt();
+	}
+
 	public static String toHex(byte[] data)
 	{
 		char[] hexChars = new char[data.length * 2];
