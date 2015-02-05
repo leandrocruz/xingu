@@ -41,4 +41,10 @@ public class ChunkWriter
 	{
 		os.close();
 	}
+
+	public void flush()
+		throws IOException
+	{
+		os.flush();
+	}
 }
