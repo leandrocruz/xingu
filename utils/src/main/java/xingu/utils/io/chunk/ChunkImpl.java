@@ -39,4 +39,10 @@ public class ChunkImpl
 	{
 		return read;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Chunk ["+size+"/"+read+"]";
+	}
 }
