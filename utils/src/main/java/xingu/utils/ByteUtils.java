@@ -20,6 +20,11 @@ public class ByteUtils
 		return ByteBuffer.wrap(data).getInt();
 	}
 
+	public static byte[] toByteArray(int number)
+	{
+		return ByteBuffer.allocate(4).putInt(number).array();
+	}
+
 	public static String toHex(byte[] data)
 	{
 		char[] hexChars = new char[data.length * 2];
@@ -48,6 +53,4 @@ public class ByteUtils
         baos.close();
         return result;
     }
-
-
 }

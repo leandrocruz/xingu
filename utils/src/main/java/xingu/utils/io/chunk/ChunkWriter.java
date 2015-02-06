@@ -3,7 +3,8 @@ package xingu.utils.io.chunk;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
+
+import xingu.utils.ByteUtils;
 
 public class ChunkWriter
 	implements Closeable
@@ -18,7 +19,7 @@ public class ChunkWriter
 	public void write(int number)
 		throws IOException
 	{
-		byte[] bytes = ByteBuffer.allocate(4).putInt(number).array();
+		byte[] bytes = ByteUtils.toByteArray(number);
 		write(bytes);
 	}
 
@@ -31,8 +32,9 @@ public class ChunkWriter
 	public void write(byte[] data)
 		throws IOException
 	{
-		int len = data.length;
-		os.write(len);
+		int    len    = data.length;
+		byte[] prolog = ByteUtils.toByteArray(len);
+		os.write(prolog);
 		os.write(data);
 	}
 
