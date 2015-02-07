@@ -45,6 +45,7 @@
 		<module>maven</module>
 		<module>maze</module>
 		<module>utils</module>
+		<module>dns</module>
 		<module>type-handler</module>
 		<module>inspector</module>
 		<module>unicode</module>
