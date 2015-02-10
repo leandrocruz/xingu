@@ -86,6 +86,5 @@ public class NumberUtilsTest
     public void testToDouble()
     {
     	assertEquals(.25, NumberUtils.toDouble(".25"), .001d);
-    	assertEquals(.25, NumberUtils.toDouble(""), .001d);
     }
 }
