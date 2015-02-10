@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import xingu.inspector.Ignore;
 import xingu.inspector.ObjectInspector;
 import xingu.inspector.ObjectVisitor;
 import xingu.lang.NotImplementedYet;
@@ -55,7 +56,9 @@ public class SimpleObjectInspector
 			int     modifiers   = field.getModifiers();
 			boolean isTransient = Modifier.isTransient(modifiers);
 			boolean isStatic    = Modifier.isStatic(modifiers);
-			if(isTransient || isStatic)
+			Ignore  ann         = field.getAnnotation(Ignore.class);
+			boolean ignore      = ann == null ? false : ann.ignore();
+			if(isTransient || isStatic || ignore)
 			{
 				return;
 			}

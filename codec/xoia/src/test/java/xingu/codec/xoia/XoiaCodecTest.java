@@ -49,4 +49,13 @@ public class XoiaCodecTest
 		assertEquals(array[1], decoded.get(1));
 		assertEquals(array[2], decoded.get(2));
 	}
+
+	@Test
+	public void testIgnore()
+		throws Exception
+	{
+		String xml = codec.encode(new ObjectWithAnnotation());
+		String expected = "<obj id=\"1\" class=\"xingu.codec.xoia.ObjectWithAnnotation\">\n</obj>\n";
+		assertEquals(expected, xml);
+	}
 }
