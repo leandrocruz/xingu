@@ -80,6 +80,12 @@ public class NumberUtilsTest
 //
 //    	assertEquals(99, NumberUtils.atoi("9a9"));
 //    	assertEquals(-99, NumberUtils.atoi("-9a9"));
-
+    }
+    
+    @Test
+    public void testToDouble()
+    {
+    	assertEquals(.25, NumberUtils.toDouble(".25"), .001d);
+    	assertEquals(.25, NumberUtils.toDouble(""), .001d);
     }
 }

@@ -96,4 +96,25 @@ public class NumberUtils
 		}
 		return signal * result;
 	}
+
+	public static double toDouble(String str)
+	{
+		return toDouble(str, null);
+	}
+
+	public static double toDouble(String str, Double deflt)
+	{
+		try
+		{
+			return Double.parseDouble(str);
+		}
+		catch(NumberFormatException e)
+		{
+			if(deflt == null)
+			{
+				throw new NotImplementedYet("Not a double: [" + str + "]");
+			}
+			return deflt;
+		}
+	}
 }
