@@ -223,19 +223,21 @@ public abstract class CometHandlerSupport
 	}
 
 	@Override
-	public String onError(Throwable t)
+	public String onError(CometMessage msg, Throwable t)
 	{
 		logger.error("Error Handing Comet Message", t);
 		String trace = ExceptionUtils.getStackTrace(t);
-		String encoded;
+		String id = msg == null ? "" : msg.getSequence(); 
+		
 		try
 		{
-			encoded = codec.encode(new ExceptionSignal(null, "Error Handing Comet Message", trace));
+			ExceptionSignal signal = new ExceptionSignal(t.getMessage(), trace);
+			signal.setSignalId(id);
+			return codec.encode(signal);
 		}
 		catch(Exception e)
 		{
-			return "{trace: \""+trace+"\"}";
+			return "{\"signalId\":\""+id+"\",\"error\": true ,\"message\":\""+e.getMessage()+"\"}";
 		}
-		return encoded;
 	}
 }

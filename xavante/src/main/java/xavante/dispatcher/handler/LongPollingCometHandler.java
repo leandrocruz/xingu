@@ -41,10 +41,11 @@ public class LongPollingCometHandler
 				.build();
 		
 		String reply = null;
+		CometMessage msg = null;
 		try
 		{
-			CometMessage msg = factory.build(xeq, resp);
-			reply            = handler.onMessage(msg);
+			msg   = factory.build(xeq, resp);
+			reply = handler.onMessage(msg);
 		}
 		catch(InterruptedException e)
 		{
@@ -52,7 +53,7 @@ public class LongPollingCometHandler
 		}
 		catch(Throwable t)
 		{
-			reply = handler.onError(t);
+			reply = handler.onError(msg, t);
 		}
 		finally
 		{

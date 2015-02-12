@@ -5,5 +5,5 @@ public interface CometHandler
 	String onMessage(CometMessage msg)
 		throws Exception;
 
-	String onError(Throwable t);
+	String onError(CometMessage msg, Throwable t);
 }

@@ -14,6 +14,11 @@ public class ErrorSignal<T>
 	public ErrorSignal()
 	{}
 	
+	public ErrorSignal(String id)
+	{
+		setSignalId(id);
+	}
+
 	public ErrorSignal(String code, String message)
 	{
 		this.message = message;

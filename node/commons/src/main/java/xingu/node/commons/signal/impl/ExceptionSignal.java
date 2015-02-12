@@ -19,6 +19,11 @@ public class ExceptionSignal<T>
 	public ExceptionSignal()
 	{}
 
+	public ExceptionSignal(String message, String trace)
+	{
+		this(null, message, trace);
+	}
+
 	public ExceptionSignal(Signal<?> signal, String message, String trace)
 	{
 		this.signal  = signal;
