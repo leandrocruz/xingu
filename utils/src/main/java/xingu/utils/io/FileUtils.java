@@ -205,6 +205,18 @@ public class FileUtils
 		return file;
 	}
 
+	public static File createOrError(File parent, int name)
+		throws IOException
+	{
+		return createOrError(parent, String.valueOf(name));
+	}
+
+	public static File createOrError(File parent, long name)
+		throws IOException
+	{
+		return createOrError(parent, String.valueOf(name));
+	}
+
 	public static File createOrError(File parent, String name)
 		throws IOException
 	{
