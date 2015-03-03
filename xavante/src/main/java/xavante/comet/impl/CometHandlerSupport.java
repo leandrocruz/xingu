@@ -189,14 +189,20 @@ public abstract class CometHandlerSupport
 	protected String drain(CometMessage msg)
 		throws Exception
 	{
-		String       hash     = msg.getToken();
-		CometSession session  = sessions.byId(hash);
-		Object[]     messages = session.drain();
+		String       hash    = msg.getToken();
+		CometSession session = sessions.byId(hash);
+		if(session == null)
+		{
+			return null;
+		}
+
+		Object[] messages = session.drain();
 		if(messages == null)
 		{
 			// Thread interrupted
 			return null;
 		}
+
 		StringBuffer sb = toString(messages);
 		return sb.toString();
 	}
