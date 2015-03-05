@@ -274,13 +274,13 @@ public class CurlCommandLineBuilder
 			for(Cookie c : cookies.getBuffer())
 			{
 				if(c == null 
-						|| StringUtils.isEmpty(c.getName())
-						|| StringUtils.isEmpty(c.getValue()))
+						|| StringUtils.isEmpty(c.getName()))
 				{
 					throw new NotImplementedYet("Cookie is null");
 				}
 				i++;
-				sb.append(c.getName()).append("=").append(c.getValue());
+				String value = c.getValue();
+				sb.append(c.getName()).append("=").append(value != null ? value : "");
 				
 				if(i < len)
 				{
