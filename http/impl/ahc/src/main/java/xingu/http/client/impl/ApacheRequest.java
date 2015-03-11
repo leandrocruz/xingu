@@ -118,7 +118,7 @@ public class ApacheRequest
 		/*
 		 * See http://reference.baeldung.com/httpclient-timeout
 		 */
-		int timeout = 5 * 1000;
+		int timeout = 30 * 1000;
 		RequestConfig config = RequestConfig.custom()
 				.setConnectTimeout(timeout) 			// the time to establish the connection with the remote host
 				.setConnectionRequestTimeout(timeout)	// the time to wait for a connection from the connection manager/pool
