@@ -12,6 +12,18 @@ import xingu.utils.StringUtils;
 public class StringUtilsTest
 {
 	@Test
+	public void testUpperCaseStart()
+	{
+		assertEquals(false, StringUtils.upperCaseStart(""));
+		assertEquals(false, StringUtils.upperCaseStart(" "));
+		assertEquals(false, StringUtils.upperCaseStart("aa"));
+		assertEquals(false, StringUtils.upperCaseStart("aA"));
+		assertEquals(true, StringUtils.upperCaseStart("Aa"));
+		assertEquals(true, StringUtils.upperCaseStart("\u0041")); // "A"
+		assertEquals(false, StringUtils.upperCaseStart("\u0061")); // "a"
+	}
+
+	@Test
 	public void testNormalizeWhiteSpace()
 	{
 		String noBreakSpace = "\u00A0";

@@ -37,6 +37,21 @@ public class StringUtils
         return array == null || array.length == 0;
     }
 
+    public static final boolean upperCaseStart(String input)
+    {
+    	if(input == null)
+    	{
+    		throw new IllegalArgumentException("Input is null");
+    	}
+    	if(input.length() == 0)
+    	{
+    		return false;
+    	}
+    	char[] array = input.toCharArray();
+    	char c = array[0];
+    	return Character.isUpperCase(c);
+    }
+
     public static final boolean isEmpty(Collection<String> coll)
     {
         return coll == null || coll.isEmpty();
