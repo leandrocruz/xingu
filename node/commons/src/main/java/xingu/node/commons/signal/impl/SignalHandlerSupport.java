@@ -41,7 +41,7 @@ public abstract class SignalHandlerSupport
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		idGen        = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
+		idGen = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
 	
 	@Override
