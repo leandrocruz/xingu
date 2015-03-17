@@ -21,7 +21,7 @@ public class ReverseSignalHandlerImpl
 	private SignalHandler signals; // do NOT extend SignalHandlerSupport. We need the SignalHandler shared instance
 	
 	@Override
-	public Signal query(Signal signal)
+	public Signal query(Signal signal, long queryTimeout)
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
@@ -29,15 +29,15 @@ public class ReverseSignalHandlerImpl
 		{
 			throw new NotImplementedYet("Not connected. Channel is null");
 		}
-		return signals.query(signal, null, channel);
+		return signals.query(signal, null, channel, queryTimeout);
 	}
 
 	@Override
-	public Signal query(Signal signal, ChannelFutureListener onWrite)
+	public Signal query(Signal signal, ChannelFutureListener onWrite, long queryTimeout)
 		throws Exception
 	{
 		Channel channel = connector.getAcceptedChannel();
-		return signals.query(signal, onWrite, channel);
+		return signals.query(signal, onWrite, channel, queryTimeout);
 	}
 
 	@Override

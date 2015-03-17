@@ -5,10 +5,10 @@ import org.jboss.netty.channel.ChannelFutureListener;
 
 public interface ReverseSignalHandler
 {
-	Signal query(Signal signal)
+	Signal query(Signal signal, long queryTimeout)
 			throws Exception;
 
-	Signal query(Signal signal, ChannelFutureListener onWrite)
+	Signal query(Signal signal, ChannelFutureListener onWrite, long queryTimeout)
 		throws Exception;
 
 	ChannelFuture deliver(Signal signal)

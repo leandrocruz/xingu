@@ -52,7 +52,7 @@ public class SignalHandlerTest
 		when(sessions.by(channel)).thenReturn(session);
 		when(channel.write(any(Signal.class))).thenReturn(InstantaneousChannelEvent.instance(channel));
 		
-		TimeoutSignal<?> reply = (TimeoutSignal<?>) handler.query(signal, null, channel);
+		TimeoutSignal<?> reply = (TimeoutSignal<?>) handler.query(signal, null, channel, 1000);
 		assertSame(signal, reply.getSignal());
 		assertEquals(1000, reply.getTimeout());
 	}
@@ -72,7 +72,7 @@ public class SignalHandlerTest
 		when(sessions.by(channel)).thenReturn(session);
 		when(channel.write(any(Signal.class))).thenReturn(future);
 		
-		ExceptionSignal<?> reply = (ExceptionSignal<?>) handler.query(signal, null, channel);
+		ExceptionSignal<?> reply = (ExceptionSignal<?>) handler.query(signal, null, channel, 1000);
 		assertSame(signal, reply.getSignal());
 		assertSame(exception, reply.getCause());
 	}
@@ -96,7 +96,7 @@ public class SignalHandlerTest
 			{
 				try
 				{
-					handler.query(signal, null, channel);
+					handler.query(signal, null, channel, 1000);
 				}
 				catch(Exception e)
 				{
@@ -151,7 +151,7 @@ public class SignalHandlerTest
 			{
 				try
 				{
-					Signal reply = handler.query(signal, null, channel);
+					Signal reply = handler.query(signal, null, channel, 1000);
 					match.set(reply == response);
 				}
 				catch(Exception e)
@@ -206,7 +206,7 @@ public class SignalHandlerTest
 			{
 				try
 				{
-					Signal reply = handler.query(signal, null, channel);
+					Signal reply = handler.query(signal, null, channel, 1000);
 					match.set(reply instanceof TimeoutSignal);
 				}
 				catch(Exception e)

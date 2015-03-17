@@ -17,13 +17,13 @@ import xingu.idgenerator.impl.TimestampInMemoryGenerator;
 import xingu.node.commons.session.Session;
 import xingu.node.commons.session.SessionManager;
 import xingu.node.commons.signal.Signal;
+import xingu.node.commons.signal.SignalHandler;
 import xingu.node.commons.signal.SignalWaiter;
 import xingu.node.commons.signal.Waiter;
 import xingu.node.commons.signal.Waiters;
-import xingu.utils.TimeUtils;
 
-public class SignalHandlerSupport
-	implements Configurable
+public abstract class SignalHandlerSupport
+	implements Configurable, SignalHandler
 {
 	@Inject
 	protected SessionManager		sessions;
@@ -33,8 +33,6 @@ public class SignalHandlerSupport
 
 	protected volatile AtomicLong	count	= new AtomicLong(0);
 
-	protected long					queryTimeout;
-
 	protected Waiters<Signal>		waiters	= new Waiters<Signal>();
 
 	protected Generator<String>		idGen;
@@ -43,18 +41,11 @@ public class SignalHandlerSupport
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
-		String tm = conf.getChild("query").getAttribute("timeout", "5m");
-		queryTimeout = TimeUtils.toMillis(tm);
 		idGen        = factory.create(TimestampInMemoryGenerator.class, "signal-sequencer", 100);
 	}
-
-	public Signal query(Signal signal, Channel channel)
-		throws Exception
-	{
-		return query(signal, null, channel);
-	}
 	
-	public Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel)
+	@Override
+	public Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel, long timeout)
 		throws Exception
 	{
 		Signal reply = null;
@@ -70,7 +61,7 @@ public class SignalHandlerSupport
 				future.addListener(onWrite);
 			}
 			future.awaitUninterruptibly();
-			reply = backFromTheFuture(future, signal, waiter); /* pretty cool don't you think? */
+			reply = backFromTheFuture(future, signal, waiter, timeout); /* pretty cool don't you think? */
 		}
 		catch(InterruptedException e)
 		{
@@ -95,7 +86,7 @@ public class SignalHandlerSupport
 		return channel.write(signal);
 	}
 
-	protected Signal<?> backFromTheFuture(ChannelFuture future, Signal<?> signal, Waiter<Signal> waiter)
+	protected Signal<?> backFromTheFuture(ChannelFuture future, Signal<?> signal, Waiter<Signal> waiter, long queryTimeout)
 		throws InterruptedException
 	{
 		boolean success = future.isSuccess();

@@ -11,7 +11,7 @@ public interface SignalHandler
 	void on(Signal signal, Channel channel)
 		throws Exception;
 
-	Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel)
+	Signal query(Signal signal, ChannelFutureListener onWrite, Channel channel, long queryTimeoput)
 		throws Exception;
 
 	ChannelFuture deliver(Signal signal, Channel channel)
