@@ -19,5 +19,4 @@ public interface Spawner
 	Surrogate attach(String id, Channel channel);
 	
 	void dettach(Surrogate surrogate);
-	
 }

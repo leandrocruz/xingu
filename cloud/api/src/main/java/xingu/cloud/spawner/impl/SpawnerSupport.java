@@ -144,12 +144,13 @@ public abstract class SpawnerSupport
 	{
 		String region  = req.getRegion();
 		String pattern = req.getIdPattern();
+		String tag     = req.getTag();
 		int    count   = req.getCount();
 		List<Surrogate> surrogates = new ArrayList<>(count);
 
 		for(int i = 0; i < count; i++)
 		{
-			String    id        = String.format(pattern, i);
+			String    id        = String.format(pattern, tag, i);
 			Surrogate surrogate = new SurrogateSupport(id, region);
 
 			logger.info("Surrogate s#{} created", id);

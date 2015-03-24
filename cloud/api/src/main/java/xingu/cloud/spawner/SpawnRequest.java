@@ -18,6 +18,8 @@ public interface SpawnRequest
 	
 	String getImage();
 
+	String getTag();
+
 	int getCount();
 	
 	List<NameValue<String>> getMeta();

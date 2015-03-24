@@ -24,6 +24,7 @@ public class SpawnRequestFactory
 		result.req.machineType = req.machineType;
 		result.req.image       = req.image;
 		result.req.idPattern   = req.idPattern;
+		result.req.tag		   = req.tag;
 		List<NameValue<String>> meta = req.getMeta();
 		for(NameValue<String> nv : meta)
 		{
@@ -80,6 +81,12 @@ public class SpawnRequestFactory
 		return this;
 	}
 
+	public SpawnRequestFactory withTag(String tag)
+	{
+		req.tag = tag;
+		return this;
+	}
+
 	class SpawnRequestImpl 
 		implements SpawnRequest
 	{
@@ -95,6 +102,8 @@ public class SpawnRequestFactory
 
 		String	image;
 
+		String 	tag;
+		
 		int		count;
 		
 		List<NameValue<String>> meta = new ArrayList<>();
@@ -150,6 +159,12 @@ public class SpawnRequestFactory
 		public String getIdPattern()
 		{
 			return idPattern;
+		}
+
+		@Override
+		public String getTag()
+		{
+			return tag;
 		}
 	}
 }
