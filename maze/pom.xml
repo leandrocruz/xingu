@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>xingu</groupId>
 		<artifactId>xingu</artifactId>
-		<version>1.4.43</version>
+		<version>1.4.44-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
