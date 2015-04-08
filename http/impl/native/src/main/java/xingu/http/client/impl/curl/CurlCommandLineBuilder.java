@@ -57,15 +57,15 @@ public class CurlCommandLineBuilder
 		List<String> result = new ArrayList<String>();
 		result.add("curl");
 		
-		result.add("-X");
 		boolean isPost = req.isPost();
 		if(isPost)
 		{
+			result.add("-X");
 			result.add("POST");
 		}
 		else
 		{
-			result.add("GET");
+			result.add("--get");
 		}
 
 		result.add("-m");
