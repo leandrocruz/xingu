@@ -25,6 +25,11 @@ public class ByteUtils
 		return ByteBuffer.allocate(4).putInt(number).array();
 	}
 
+	public static byte[] toByteArray(long number)
+	{
+		return ByteBuffer.allocate(8).putLong(number).array();
+	}
+
 	public static String toHex(byte[] data)
 	{
 		char[] hexChars = new char[data.length * 2];
