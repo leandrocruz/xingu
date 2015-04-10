@@ -1,6 +1,6 @@
 package xingu.utils.io.chunk;
 
-public interface IChunk
+public interface FramedChunk
 {
 	Frame[] getFrames();
 

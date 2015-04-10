@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xingu.utils.io.chunk.Frame;
-import xingu.utils.io.chunk.IChunk;
-import xingu.utils.io.chunk.IChunkReader;
+import xingu.utils.io.chunk.FramedChunk;
+import xingu.utils.io.chunk.FramedChunkReader;
 
-public class IChunkReaderImpl
-	implements IChunkReader
+public class FramedChunkReaderImpl
+	implements FramedChunkReader
 {
 	private File				file;
 
 	private RandomAccessFile	source;
 	
-	public IChunkReaderImpl(File file)
+	public FramedChunkReaderImpl(File file)
 		throws FileNotFoundException
 	{
 		this.file = file;
@@ -33,11 +33,11 @@ public class IChunkReaderImpl
 	}
 
 	@Override
-	public List<IChunk> read()
+	public List<FramedChunk> read()
 		throws IOException
 	{
-		List<IChunk> result = new ArrayList<>();
-		IChunk chunk;
+		List<FramedChunk> result = new ArrayList<>();
+		FramedChunk chunk;
 		while((chunk = readChunk()) != null)
 		{
 			result.add(chunk);
@@ -45,7 +45,7 @@ public class IChunkReaderImpl
 		return result;
 	}
 
-	private IChunk readChunk()
+	private FramedChunk readChunk()
 		throws IOException
 	{
 		if(!hasCapacity(8)) /* read at least the chunk count and  the first frame size */
@@ -54,7 +54,7 @@ public class IChunkReaderImpl
 		}
 
 		int    count = source.readInt();
-		IChunk chunk = new IChunkImpl(count);
+		FramedChunk chunk = new FramedChunkImpl(count);
 		for(int i = 0 ; i < count ; i++)
 		{
 			int size = source.readInt();

@@ -6,17 +6,17 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import xingu.utils.io.chunk.Frame;
-import xingu.utils.io.chunk.IChunk;
-import xingu.utils.io.chunk.IChunkWriter;
+import xingu.utils.io.chunk.FramedChunk;
+import xingu.utils.io.chunk.FramedChunkWriter;
 
-public class IChunkWriterImpl
-	implements IChunkWriter
+public class FramedChunkWriterImpl
+	implements FramedChunkWriter
 {
 	private File				file;
 
 	private RandomAccessFile	source;
 
-	public IChunkWriterImpl(File file)
+	public FramedChunkWriterImpl(File file)
 		throws FileNotFoundException
 	{
 		this.file = file;
@@ -31,7 +31,7 @@ public class IChunkWriterImpl
 	}
 
 	@Override
-	public void write(IChunk chunk)
+	public void write(FramedChunk chunk)
 		throws IOException
 	{
 		Frame[] frames = chunk.getFrames();

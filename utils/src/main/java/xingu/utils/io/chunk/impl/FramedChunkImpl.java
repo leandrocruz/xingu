@@ -1,16 +1,16 @@
 package xingu.utils.io.chunk.impl;
 
 import xingu.utils.io.chunk.Frame;
-import xingu.utils.io.chunk.IChunk;
+import xingu.utils.io.chunk.FramedChunk;
 
-public class IChunkImpl
-	implements IChunk
+public class FramedChunkImpl
+	implements FramedChunk
 {
 	private int index = 0;
 	
 	private Frame[] frames;
 	
-	public IChunkImpl(int frameCount)
+	public FramedChunkImpl(int frameCount)
 	{
 		this.frames = new Frame[frameCount];
 	}

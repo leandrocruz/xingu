@@ -4,9 +4,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
-public interface IChunkReader
+public interface FramedChunkReader
 	extends Closeable
 {
-	List<IChunk> read()
+	List<FramedChunk> read()
 		throws IOException;
 }
