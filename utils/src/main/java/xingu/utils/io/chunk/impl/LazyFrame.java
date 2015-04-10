@@ -46,4 +46,12 @@ public class LazyFrame
 		 */
 		return payload;
 	}
+	
+	@Override
+	public String readString()
+		throws IOException
+	{
+		byte[] payload = getPayload();
+		return new String(payload);
+	}
 }

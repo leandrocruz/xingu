@@ -14,4 +14,7 @@ public interface Frame
 
 	byte[] getPayload()
 		throws IOException;
+
+	String readString()
+		throws IOException;
 }

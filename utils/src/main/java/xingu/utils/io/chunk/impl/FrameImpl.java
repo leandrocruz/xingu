@@ -1,5 +1,8 @@
 package xingu.utils.io.chunk.impl;
 
+import java.io.IOException;
+
+import xingu.lang.NotImplementedYet;
 import xingu.utils.ByteUtils;
 import xingu.utils.io.chunk.Frame;
 
@@ -36,5 +39,17 @@ public class FrameImpl
 	public byte[] getPayload()
 	{
 		return payload;
+	}
+
+	@Override
+	public String readString()
+		throws IOException
+	{
+		if(Frame.IN_MEMORY != type)
+		{
+			throw new NotImplementedYet();
+		}
+		
+		return new String(payload);
 	}
 }
