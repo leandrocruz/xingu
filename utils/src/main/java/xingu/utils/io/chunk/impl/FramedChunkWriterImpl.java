@@ -41,11 +41,14 @@ public class FramedChunkWriterImpl
 		{
 			byte   type  = frame.getType();
 			byte[] bytes = frame.getPayload();
-			int    len   = bytes.length;
+			int    len   = bytes == null ? 0 : bytes.length;
 
 			source.writeInt(len);
 			source.writeByte(type);
-			source.write(bytes);
+			if(bytes != null)
+			{
+				source.write(bytes);
+			}
 		}
 	}
 

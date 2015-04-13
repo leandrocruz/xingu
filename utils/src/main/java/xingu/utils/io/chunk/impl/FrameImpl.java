@@ -21,7 +21,7 @@ public class FrameImpl
 
 	public FrameImpl(String data)
 	{
-		this(Frame.IN_MEMORY, data.getBytes());
+		this(Frame.IN_MEMORY, data == null ? new byte[0] : data.getBytes());
 	}
 
 	public FrameImpl(int data)
