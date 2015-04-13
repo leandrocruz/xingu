@@ -102,6 +102,11 @@ public class XmlReader
 		}
 		
 		NamedClassLoader cl = clm.byId(node.classLoader);
+		if(cl == null)
+		{
+			throw new NotImplementedYet("Missing classloader: " + node.classLoader);
+		}
+
 		if(handler == null)
 		{
 			Class<?> clazz 	= cl.loadClass(node.clazz);
