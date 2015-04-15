@@ -10,7 +10,7 @@ public class ByteBagUtils
 {
 	public static final String SPLIT = new String("\u01C0\u01C1"); // 0xC780 0xC781
 	
-	public static ByteBag toByteBag(String[] array)
+	public static ByteBag toByteBag(String... array)
 	{
 		String s = StringUtils.join(array, SPLIT);
 		return new ByteArrayByteBag(s);
