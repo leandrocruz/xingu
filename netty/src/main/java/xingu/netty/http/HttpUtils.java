@@ -89,6 +89,10 @@ public class HttpUtils
 
     public static boolean isUrlEncoded(String type)
     {
+    	if(type == null)
+    	{
+    		return false;
+    	}
     	int idx = type.indexOf("application/x-www-form-urlencoded");
 		return idx >= 0;
     }
