@@ -79,7 +79,6 @@
 		<module>process</module>
 		<module>tunnel</module>
 		<module>gc</module>
-		<module>xavante</module>
 		<module>xls</module>
 		<module>pdf</module>
 		<module>cloud</module>
