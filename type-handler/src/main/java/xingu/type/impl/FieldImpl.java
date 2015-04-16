@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xingu.type.Field;
-import xingu.type.Transformer;
+import xingu.type.transformer.Transformer;
 
 public class FieldImpl
 	implements Field

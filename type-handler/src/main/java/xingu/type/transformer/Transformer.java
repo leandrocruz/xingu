@@ -1,4 +1,4 @@
-package xingu.type;
+package xingu.type.transformer;
 
 public interface Transformer
 {

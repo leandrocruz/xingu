@@ -1,8 +1,6 @@
-package xingu.type.impl;
+package xingu.type.transformer;
 
 import org.apache.commons.lang3.StringUtils;
-
-import xingu.type.Transformer;
 
 public class TrimTransformer
 	implements Transformer
