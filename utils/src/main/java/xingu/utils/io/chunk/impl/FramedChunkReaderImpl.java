@@ -72,7 +72,7 @@ public class FramedChunkReaderImpl
 				{
 					long pos = source.getFilePointer();
 					source.seek(pos + size);
-					chunk.add(new LazyFrame(type, size, pos, source));
+					chunk.add(new LazyFrame(type, size, pos, source, file.getAbsolutePath()));
 				}
 			}
 			else

@@ -2,6 +2,7 @@ package xingu.utils.io.chunk.impl;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Objects;
 
 import xingu.utils.io.chunk.Frame;
 
@@ -16,12 +17,15 @@ public class LazyFrame
 
 	private RandomAccessFile	source;
 
-	public LazyFrame(byte type, int size, long pos, RandomAccessFile source)
+	private String				path;
+
+	public LazyFrame(byte type, int size, long pos, RandomAccessFile source, String path)
 	{
 		this.size   = size;
 		this.type   = type;
 		this.pos    = pos;
 		this.source = source;
+		this.path   = path;
 	}
 
 	@Override
@@ -54,4 +58,26 @@ public class LazyFrame
 		byte[] payload = getPayload();
 		return new String(payload);
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof LazyFrame))
+		{
+			return false;
+		}
+		
+		LazyFrame other = (LazyFrame) obj;
+		return Objects.equals(size, other.size)
+				&& Objects.equals(type, other.type)
+				&& Objects.equals(pos, other.pos)
+				&& Objects.equals(path, other.path);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(size, type, pos, path);
+	}
+	
 }

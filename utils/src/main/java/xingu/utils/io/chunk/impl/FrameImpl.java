@@ -1,6 +1,8 @@
 package xingu.utils.io.chunk.impl;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 import xingu.lang.NotImplementedYet;
 import xingu.utils.ByteUtils;
@@ -51,5 +53,24 @@ public class FrameImpl
 		}
 		
 		return new String(payload);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof FrameImpl))
+		{
+			return false;
+		}
+		
+		FrameImpl other = (FrameImpl) obj;
+		return Objects.equals(type, other.type)
+				&& Arrays.equals(payload, other.payload);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(type, payload);
 	}
 }
