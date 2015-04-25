@@ -1,19 +1,22 @@
 package xingu.node.traffic;
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.avalon.framework.activity.Startable;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-import org.jboss.netty.channel.WriteCompletionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import xingu.container.Inject;
 import xingu.lang.thread.Task;
 import xingu.lang.thread.Worker;
-import xingu.node.commons.signal.impl.Ping;
+import xingu.time.Time;
 import xingu.utils.TimeUtils;
 
 public class KeepAlive
@@ -21,16 +24,33 @@ public class KeepAlive
 	implements Startable, Task
 {
 	@Inject
-	private TrafficHandler traffic;
+	private Time					time;
 
-	private Worker worker;
+	@Inject
+	private TrafficHandler			traffic;
+
+	private Worker					worker;
+
+	protected volatile AtomicLong	count		= new AtomicLong(0);
+
+	private long					interval	= TimeUtils.toMillis("5s");
+
+	private Logger					logger		= LoggerFactory.getLogger(getClass());
 	
-	private static final long FIVE_MINUTES = TimeUtils.toMillis("5m");
+	public KeepAlive()
+	{}
+	
+	public KeepAlive(long interval)
+	{
+		this.interval = interval;
+	}
+
 	@Override
 	public void start()
 		throws Exception
 	{
-		worker = new Worker("KeepAliveWorker", true, FIVE_MINUTES, this);
+		worker = new Worker("KeepAliveWorker", true, interval, this);
+		worker.start();
 	}
 
 	@Override
@@ -47,18 +67,17 @@ public class KeepAlive
 	public void execute()
 		throws Exception
 	{
-		long time = System.currentTimeMillis();
+		long now = time.now().time();
 		Collection<ChannelData> coll = traffic.getData();
 		for(ChannelData data : coll)
 		{
-			long last = data.timeForLastEvent();
-			long duration = time - last;
-			if(duration >= FIVE_MINUTES)
+			long duration = now - data.timeForLastEvent();
+			if(duration >= interval)
 			{
 				Channel channel = data.getChannel();
-				Ping ping = new Ping();
-				ping.sTime(time);
-				channel.write(ping);
+				long    id      = count.incrementAndGet();
+				logger.info("Sending PNG to {}", channel.getRemoteAddress());
+				channel.write("PNG." + id + "." + channel.getId() + "." + now);
 			}
 		}
 	}
@@ -108,17 +127,38 @@ public class KeepAlive
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
 		throws Exception
 	{
+		Object obj = e.getMessage();
+		if(obj instanceof String)
+		{
+			String msg = String.class.cast(obj);
+			if(msg.startsWith("ACK"))
+			{
+				String[]    parts     = StringUtils.split(msg, ".");
+				int         channelId = Integer.valueOf(parts[2]);
+				long        start     = Long.valueOf(parts[3]);
+				ChannelData data      = traffic.byChannel(channelId);
+				long        now       = time.now().time();
+				long duration = now - start;
+				data.addPing(duration);
+
+				Channel channel = e.getChannel();
+				logger.info("PNG {} ms response from {}", duration, channel.getRemoteAddress());
+				
+				return;
+			}
+		}
+		
 		Channel channel = e.getChannel();
 		traffic.onMessage(channel);
 		ctx.sendUpstream(e);
 	}
 
 	@Override
-	public void writeComplete(ChannelHandlerContext ctx, WriteCompletionEvent e)
+	public void writeRequested(ChannelHandlerContext ctx, MessageEvent e)
 		throws Exception
 	{
 		Channel channel = e.getChannel();
 		traffic.onWrite(channel);
-		ctx.sendUpstream(e);
+		ctx.sendDownstream(e);
 	}
 }

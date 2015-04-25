@@ -15,4 +15,6 @@ public interface TrafficHandler
 	void onMessage(Channel channel);
 
 	Collection<ChannelData> getData();
+
+	ChannelData byChannel(int id);
 }

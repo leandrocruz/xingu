@@ -7,4 +7,6 @@ public interface ChannelData
 	long timeForLastEvent();
 
 	Channel getChannel();
+
+	void addPing(long duration);
 }

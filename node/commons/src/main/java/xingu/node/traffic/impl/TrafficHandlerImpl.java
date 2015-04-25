@@ -65,6 +65,15 @@ public class TrafficHandlerImpl
 	{
 		long now = time.now().time();
 		ChannelDataImpl data = get(channel);
-		data.setLast(now);
+		if(data != null)
+		{
+			data.setLast(now);
+		}
+	}
+
+	@Override
+	public ChannelData byChannel(int id)
+	{
+		return dataByChannelId.get(id);
 	}
 }

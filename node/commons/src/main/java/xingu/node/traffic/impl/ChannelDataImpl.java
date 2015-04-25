@@ -12,6 +12,8 @@ public class ChannelDataImpl
 	private long	created;
 
 	private long	last;
+	
+	private long lastDuration;
 
 	public ChannelDataImpl(Channel channel, long now)
 	{
@@ -35,5 +37,11 @@ public class ChannelDataImpl
 	public void setLast(long time)
 	{
 		this.last = time;
+	}
+
+	@Override
+	public void addPing(long duration)
+	{
+		lastDuration = duration;
 	}
 }
