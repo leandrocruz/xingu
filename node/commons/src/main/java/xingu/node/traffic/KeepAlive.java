@@ -33,7 +33,7 @@ public class KeepAlive
 
 	protected volatile AtomicLong	count		= new AtomicLong(0);
 
-	private long					interval	= TimeUtils.toMillis("5s");
+	private long					interval	= TimeUtils.toMillis("5m");
 
 	private Logger					logger		= LoggerFactory.getLogger(getClass());
 	
