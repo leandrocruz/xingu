@@ -7,7 +7,6 @@ import xingu.node.traffic.ChannelData;
 public class ChannelDataImpl
 	implements ChannelData
 {
-
 	private Channel	channel;
 
 	private long	created;
@@ -18,8 +17,7 @@ public class ChannelDataImpl
 	{
 		this.channel = channel;
 		this.created = now;
-		this.last = now;
-		
+		this.last    = now;
 	}
 
 	@Override
@@ -38,5 +36,4 @@ public class ChannelDataImpl
 	{
 		this.last = time;
 	}
-
 }
