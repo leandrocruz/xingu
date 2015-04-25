@@ -142,7 +142,7 @@ public class KeepAlive
 				data.addPing(duration);
 
 				Channel channel = e.getChannel();
-				logger.info("PNG {} ms response from {}", duration, channel.getRemoteAddress());
+				logger.info("PNG {}ms response from {}", duration, channel.getRemoteAddress());
 				
 				return;
 			}
