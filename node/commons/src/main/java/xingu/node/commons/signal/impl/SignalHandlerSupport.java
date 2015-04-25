@@ -1,7 +1,5 @@
 package xingu.node.commons.signal.impl;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
@@ -30,8 +28,6 @@ public abstract class SignalHandlerSupport
 
 	@Inject
 	protected Factory				factory;
-
-	protected volatile AtomicLong	count	= new AtomicLong(0);
 
 	protected Waiters<Signal>		waiters	= new Waiters<Signal>();
 
