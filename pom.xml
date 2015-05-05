@@ -10,7 +10,7 @@
 	<groupId>xingu</groupId>
 	<artifactId>xingu</artifactId>
 	<packaging>pom</packaging>
-	<version>1.5.2</version>
+	<version>1.5.3-SNAPSHOT</version>
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>https://bitbucket.org/leandrocruz/xingu</url>
