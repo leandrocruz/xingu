@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.container.Inject;
-import xingu.lang.NotImplementedYet;
 import xingu.node.commons.signal.Signal;
 import xingu.node.commons.signal.SignalHandler;
 import xingu.node.commons.signal.impl.ChannelDisconnected;
@@ -27,13 +26,6 @@ public class NodeChannelHandler
 
 	private Logger			logger	= LoggerFactory.getLogger(getClass());
 	
-	@Override
-	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e)
-		throws Exception
-	{
-		throw new NotImplementedYet();
-	}
-
 	@Override
 	public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e)
 		throws Exception
@@ -50,6 +42,7 @@ public class NodeChannelHandler
 		Channel channel = e.getChannel();
 		Throwable cause = e.getCause();
 		bridge.on(new ExceptionCaught(channel, cause), channel);
+		ctx.sendUpstream(e);
 	}
 
 	@Override
@@ -72,5 +65,6 @@ public class NodeChannelHandler
 			logger.warn("Message '{}' from {} is not a signal", name, addr);
 			bridge.on(new NotASignal(msg), channel);
 		}
+		ctx.sendUpstream(e);
 	}
 }
