@@ -2,6 +2,7 @@ package xingu.codec.simple;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.avalon.framework.configuration.Configuration;
 import org.junit.Test;
 
 import xingu.codec.Codec;
@@ -19,7 +20,8 @@ public class SimpleCodecTest
 	protected void rebind(Binder binder)
 		throws Exception
 	{
-		binder.bind(Codec.class).to(SimpleCodec.class);
+		Configuration conf = this.buildFrom("<x><classAttribute suppress=\"false\"/></x>");
+		binder.bind(Codec.class).to(SimpleCodec.class).with(conf);
 	}
 	
 	@Test
@@ -33,8 +35,7 @@ public class SimpleCodecTest
 		parent.children.add(new Child(2));
 		parent.children.add(new Child(3));
 		xml = codec.encode(parent);
-		
-		System.out.println(xml);
+
 		Parent decoded = codec.decode(xml, Parent.class);
 		assertEquals(10, decoded.i);
 		assertEquals("sample", decoded.s);
