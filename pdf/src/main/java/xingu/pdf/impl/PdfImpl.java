@@ -3,6 +3,8 @@ package xingu.pdf.impl;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -136,5 +138,21 @@ public class PdfImpl
 			buffer.append(asText).append("\n");
 		}
 		return buffer.toString();
+	}
+
+	@Override
+	public String get(Pattern pattern)
+	{
+		List<Line> lines = getLines();
+		for(Line line : lines)
+		{
+			String text = line.asText();
+			Matcher matcher = pattern.matcher(text);
+			if(matcher.find())
+			{
+				return matcher.group(0);
+			}
+		}
+		return null;
 	}
 }

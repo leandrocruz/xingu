@@ -1,5 +1,7 @@
 package xingu.pdf.impl;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Collections;
@@ -19,12 +21,18 @@ import com.adobe.pdfjt.services.textextraction.WordsIterator;
 public class PdfParserImpl
 	implements PdfParser
 {
-
 	@Override
 	public Pdf parse(String file)
 		throws Exception
 	{
-		PDFDocument     pdf         = ApplicationUtils.loadPDFDocument(file);
+		return parse(new FileInputStream(file));
+	}
+
+	@Override
+	public Pdf parse(InputStream is)
+		throws Exception
+	{
+		PDFDocument     pdf         = ApplicationUtils.loadPDFDocument(is);
 		PdfParseContext ctx         = new PdfParseContext();
 
 		ClassLoader     classLoader = this.getClass().getClassLoader();
@@ -41,7 +49,7 @@ public class PdfParserImpl
 		List<Line> lines = ctx.getLines();
 		Collections.sort(lines);
 
-		PdfImpl result = new PdfImpl(file);
+		PdfImpl result = new PdfImpl(null);
 		for(Line line : lines)
 		{
 			result.addLine(line);

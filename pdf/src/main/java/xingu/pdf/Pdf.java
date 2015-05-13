@@ -2,6 +2,7 @@ package xingu.pdf;
 
 import java.io.Writer;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public interface Pdf
 {
@@ -21,4 +22,6 @@ public interface Pdf
 	int getPageCount();
 
 	String getText();
+
+	String get(Pattern pattern);
 }
