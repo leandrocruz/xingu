@@ -97,17 +97,21 @@ public class HttpUtils
 		return idx >= 0;
     }
     
-    public static String charset(String type, String defaultCharset)
+    public static String charset(String input, String deflt)
     {
-        if(type == null)
+    	return fieldFrom("charset", input, deflt);
+    }
+    
+    public static String fieldFrom(String field, String input, String deflt)
+    {
+        if(input == null)
         {
-            return defaultCharset;
+            return deflt;
         }
-        String prefix = "charset";
-        int idx = type.indexOf(prefix);
+        int idx = input.indexOf(field);
         if(idx >= 0)
         {
-            String name = type.substring(idx + prefix.length());
+            String name = input.substring(idx + field.length());
             name = StringUtils.strip(name, " ='\";");
             if(StringUtils.isEmpty(name))
             {
@@ -115,7 +119,7 @@ public class HttpUtils
             }
             return name;
         }
-        return defaultCharset;
+        return deflt;
     }
 
     public static String toString(Object obj, Encoding encoding, String charset)
