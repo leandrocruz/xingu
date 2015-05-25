@@ -13,11 +13,11 @@ import org.junit.Test;
 import xingu.container.Binder;
 import xingu.container.Inject;
 import xingu.container.XinguTestCase;
+import xingu.http.client.CommandLineBuilder;
 import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
-import xingu.http.client.impl.CommandLineBuilder;
 import xingu.http.client.impl.curl.CurlCommandLineBuilder;
 
 public class CurlCommandLineBuilderTest

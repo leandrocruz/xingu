@@ -7,11 +7,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 
+import xingu.http.client.CommandLineBuilder;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
-import xingu.http.client.impl.CommandLineBuilder;
 import xingu.lang.NotImplementedYet;
 
 public class WgetCommandLineBuilder

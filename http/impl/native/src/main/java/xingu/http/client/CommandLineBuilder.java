@@ -1,4 +1,4 @@
-package xingu.http.client.impl;
+package xingu.http.client;
 
 import java.io.File;
 import java.util.List;
