@@ -7,6 +7,8 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
+import xingu.lang.NotImplementedYet;
+import xingu.utils.io.chunk.ByteBagUtils;
 import xingu.utils.io.chunk.Frame;
 import xingu.utils.io.chunk.FramedChunk;
 import xingu.utils.io.chunk.FramedChunkReader;
@@ -95,5 +97,31 @@ public class FramedChunkReaderImpl
 	public String toString()
 	{
 		return "ChunkReader: " + file;
+	}
+	
+	public static void main(String[] args)
+		throws Exception
+	{
+		String file = args[0];
+		File f = new File(file);
+		if(!f.exists())
+		{
+			throw new NotImplementedYet("Missing: " + f);
+		}
+		
+		List<FramedChunk> chunks = new FramedChunkReaderImpl(f).read();
+		int count = 1;
+		for(FramedChunk chunk : chunks)
+		{
+			System.out.println("Frame: " + (count++));
+			Frame[] frames = chunk.getFrames();
+			int len = frames.length;
+			for(int i = 0; i < len; i++)
+			{
+				Frame frame = frames[i];
+				byte[] payload = frame.getPayload();
+				System.out.println("  ["+i+"] " + frame.getType() + " " + new String(payload));
+			}
+		}
 	}
 }
