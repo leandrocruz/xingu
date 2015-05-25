@@ -1,5 +1,6 @@
 package xingu.utils;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -84,8 +85,18 @@ public class TimeUtils
 
 	public static String toString(long millis, String unit)
 	{
+		return toString(millis, unit, false);
+	}
+	
+	public static String toString(long millis, String unit, boolean round)
+	{
 		double factor = getFactor(unit);
-		return ((double) millis) / factor + unit;
+		double value  = ((double) millis) / factor;
+		if(round)
+		{
+			return new DecimalFormat("0.00").format(value) + unit;
+		}
+		return value + unit;
 	}
 
 	public static Date toDateNoTime(Date now)
