@@ -47,6 +47,8 @@ public class ConfigParserImpl implements ConfigParser
             int index = line.indexOf("=");
             String key = line.substring(0, index);
             String value = line.substring(index+1);
+            value = value.trim();
+            value = Interpolator.interpolate(value);
             vars.put(key.trim(), value.trim());
         }
         else if(line.startsWith("["))
