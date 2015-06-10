@@ -117,4 +117,10 @@ public class WgetCommandLineBuilder
 	{
 		throw new NotImplementedYet();
 	}
+	
+	@Override
+	public String join(List<String> cmd)
+	{
+		return StringUtils.join(cmd, " ");
+	}
 }

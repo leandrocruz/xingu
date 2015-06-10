@@ -15,4 +15,6 @@ public interface CommandLineBuilder
 
 	HttpResponse responseFrom(HttpRequest req, File file)
 		throws Exception;
+
+	String join(List<String> cmd);
 }

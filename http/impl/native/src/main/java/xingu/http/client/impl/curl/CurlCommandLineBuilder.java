@@ -298,4 +298,39 @@ public class CurlCommandLineBuilder
 		String uri = req.getUri();
 		return CurlResponseParser.responseFrom(uri, file);
 	}
+
+	@Override
+	public String join(List<String> cmd)
+	{
+		StringBuffer sb = new StringBuffer();
+		boolean quote = false;
+		for(String s : cmd)
+		{
+			if(quote)
+			{
+				sb.append("'").append(s).append("'").append(" ");
+				quote = false;
+				continue;
+			}
+			if(quoteNext(s))
+			{
+				quote = true;
+			}
+			sb.append(s).append(" ");
+		}
+		return sb.toString();
+	}
+
+	private boolean quoteNext(String s)
+	{
+		switch(s)
+		{
+			case "--cookie":
+			case "--data":
+			case "--data-urlencode":
+			case "-H":
+				return true;
+		}
+		return false;
+	}
 }
