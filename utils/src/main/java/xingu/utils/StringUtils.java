@@ -587,4 +587,21 @@ public class StringUtils
 	        power++;
 		}
 	}
+
+	public static boolean anyNull(String... values)
+	{
+		if(values == null)
+		{
+			return true;
+		}
+		
+		for(String value : values)
+		{
+			if(value == null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
