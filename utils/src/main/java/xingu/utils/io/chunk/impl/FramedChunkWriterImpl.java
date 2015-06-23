@@ -31,7 +31,7 @@ public class FramedChunkWriterImpl
 	}
 
 	@Override
-	public void write(FramedChunk chunk)
+	public synchronized void write(FramedChunk chunk)
 		throws IOException
 	{
 		Frame[] frames = chunk.getFrames();
