@@ -1,6 +1,6 @@
 # Xingu  #
 
-A repository of Java components compatible with Pulga, the micro avalon container.
+A repository of Java components compatible with Pulga, the micro avalon container (IOC/DI).
 
 Leandro Rodrigo Saad Cruz  
 (leandro (dot) saad (at) gmail (dot) com)
