@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import xingu.lang.NotImplementedYet;
 import xingu.utils.StringUtils;
@@ -205,6 +206,19 @@ public class FileUtils
 		return file;
 	}
 
+	public static void createDirectoryOrError(File file)
+		throws IOException
+	{
+		if(!file.exists())
+		{
+			boolean created = file.mkdirs();
+			if(!created)
+			{
+				throw new NotImplementedYet("Can't create directory: " + file);
+			}
+		}
+	}
+
 	public static File createOrError(File parent, int name)
 		throws IOException
 	{
@@ -236,5 +250,20 @@ public class FileUtils
 	{
 		String path = System.getProperty("java.io.tmpdir");
 		return new File(path);
+	}
+
+	public static File createTempFile(File root, String prefix, String suffix)
+		throws IOException
+	{
+		createDirectoryOrError(root);
+		
+		File file = null;
+		do
+		{
+			String rnd = RandomStringUtils.randomAlphanumeric(3);
+			file = new File(root, prefix + rnd + suffix);
+		}
+		while(file.exists());
+		return file;
 	}
 }
