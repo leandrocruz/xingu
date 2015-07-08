@@ -9,18 +9,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
 	<artifactId>xingu-pdf</artifactId>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>Xingu PDF</name>
-	<dependencies>
-		<dependency>
-			<groupId>xingu</groupId>
-			<artifactId>xingu-creator</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>pdfjt</groupId>
-			<artifactId>pdfjt</artifactId>
-			<version>2.1.0</version>
-		</dependency>		
-	</dependencies>	
+	<modules>
+		<module>api</module>
+	</modules>
 </project>
