@@ -8,14 +8,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
-	<artifactId>xingu-pdf-api</artifactId>
+	<artifactId>xingu-pdf-pdfbox</artifactId>
 	<packaging>jar</packaging>
-	<name>Xingu PDF API</name>
+	<name>Xingu PDF PDFBox Impls</name>
 	<dependencies>
 		<dependency>
 			<groupId>xingu</groupId>
-			<artifactId>xingu-container</artifactId>
+			<artifactId>xingu-pdf-api</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>1.8.9</version>
 		</dependency>
 	</dependencies>
 </project>

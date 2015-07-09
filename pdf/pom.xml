@@ -13,5 +13,6 @@
 	<name>Xingu PDF</name>
 	<modules>
 		<module>api</module>
+		<module>pdfbox</module>
 	</modules>
 </project>
