@@ -1,5 +1,7 @@
 package xingu.pdf;
 
+import static org.junit.Assert.*;
+
 import java.io.InputStream;
 
 import org.junit.Test;
@@ -28,6 +30,8 @@ public class PdfBoxPdfParserTest
 	{
 		InputStream is = getClass().getClassLoader().getResourceAsStream("boleto.pdf");
 		Pdf pdf = parser.parse(is);
-		String text = pdf.getText();
+		assertEquals(1, pdf.getPageCount());
+		assertEquals(49, pdf.getLines().size());
+		assertEquals("Autenticação Mecânica", pdf.getLine(48).asText());
 	}
 }
