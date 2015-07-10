@@ -6,14 +6,11 @@ import java.util.List;
 import xingu.lang.NotImplementedYet;
 import xingu.pdf.Line;
 import xingu.pdf.Word;
+import xingu.pdf.impl.LineSupport;
 
 public class PdfBoxLine
-	implements Line
+	extends LineSupport
 {
-	private int	page;
-	
-	private int	number;
-
 	private String	text;
 	
 	private List<Word> words;
@@ -44,22 +41,6 @@ public class PdfBoxLine
 	}
 
 	@Override
-	public int number()
-	{
-		return number;
-	}
-
-	@Override
-	public void number(int i)
-	{}
-
-	@Override
-	public int page()
-	{
-		return page;
-	}
-
-	@Override
 	public Word word(int i)
 	{
 		return words.get(i);
@@ -69,18 +50,5 @@ public class PdfBoxLine
 	public List<Word> words()
 	{
 		return words;
-	}
-
-	@Override
-	public Word lastWord()
-	{
-		int idx = words().size() - 1;
-		return word(idx);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "[p#"+page+" "+number+" w#"+words.size()+"] " + text();
 	}
 }
