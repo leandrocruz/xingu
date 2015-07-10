@@ -28,5 +28,7 @@ public class PdfBoxPdfParserTest
 	{
 		InputStream is = getClass().getClassLoader().getResourceAsStream("boleto.pdf");
 		Pdf pdf = parser.parse(is);
+		String text = pdf.getText();
+		System.out.println(text);
 	}
 }

@@ -1,11 +1,15 @@
 package xingu.pdf.impl.pdfbox;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 
+import xingu.lang.NotImplementedYet;
 import xingu.pdf.Line;
 import xingu.pdf.Pdf;
 
@@ -64,7 +68,19 @@ public class PdfBoxAdapter
 	@Override
 	public String getText()
 	{
-		return null;
+		try
+		{
+			PDFTextStripper stripper = new PDFTextStripper();
+			stripper.setLineSeparator("\n");
+			stripper.setWordSeparator(" ");
+			StringWriter writer = new StringWriter();
+			stripper.writeText(doc, writer);
+			return writer.toString();
+		}
+		catch(IOException e)
+		{
+			throw new NotImplementedYet(e);
+		}
 	}
 
 	@Override
