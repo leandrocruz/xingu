@@ -1,6 +1,5 @@
 package xingu.pdf;
 
-
 public interface Word
 {
 	Coordinate bottomRight()
@@ -10,4 +9,6 @@ public interface Word
 		throws PdfException;
 
 	int getPageNumber();
+	
+	String getText();
 }

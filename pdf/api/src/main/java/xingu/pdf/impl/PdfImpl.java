@@ -21,13 +21,6 @@ public class PdfImpl
 
 	private int pageCount = 0;
 	
-	private String	file;
-	
-	public PdfImpl(String file)
-	{
-		this.file = file;
-	}
-
 	public void addLine(Line line)
 	{
 		pageCount = line.getPage() + 1;
@@ -82,7 +75,7 @@ public class PdfImpl
 				List<Word> words = line.getWords();
 				for(Word word : words)
 				{
-					String s = word.toString();
+					String s = word.getText();
 					finder.consume(s);
 					if(finder.done())
 					{
@@ -92,12 +85,6 @@ public class PdfImpl
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public String getFile()
-	{
-		return file;
 	}
 
 	@Override

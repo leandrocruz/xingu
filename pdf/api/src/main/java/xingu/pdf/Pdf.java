@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 public interface Pdf
 {
-	String getFile();
-	
 	Line getLine(int lineNumber);
 
 	Line getLine(int lineNumber, int page);

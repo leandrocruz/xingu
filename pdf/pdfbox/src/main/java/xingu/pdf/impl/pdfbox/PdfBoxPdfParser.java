@@ -1,23 +1,22 @@
 package xingu.pdf.impl.pdfbox;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
 import xingu.lang.NotImplementedYet;
 import xingu.pdf.Pdf;
-import xingu.pdf.PdfParser;
+import xingu.pdf.impl.PdfImpl;
+import xingu.pdf.impl.PdfParserSupport;
 
 public class PdfBoxPdfParser
-	implements PdfParser
+	extends PdfParserSupport
 {
+	private static final boolean DEBUG = true;
 
 	@Override
 	public Pdf parse(InputStream is)
@@ -30,22 +29,39 @@ public class PdfBoxPdfParser
         {
             throw new NotImplementedYet("Document is encrypted");
         }
-        return new PdfBoxAdapter(doc);
+        PDFTextStripper stripper = new PDFTextStripper();
+        stripper.setSortByPosition(true);
+        stripper.setLineSeparator("\n");
+        stripper.setWordSeparator(" ");
+
+        PdfImpl result = new PdfImpl();
+
+        int lineNumber = 0;
+        int pages = doc.getNumberOfPages();
+        for(int i = 1 ; i <= pages ; i++)
+        {
+        	String text = textForPage(doc, stripper, i);
+        	String[] lines = text.split("\n");
+	        for(String line : lines)
+			{
+	        	PdfBoxLine l = new PdfBoxLine(i - 1, line, lineNumber++);
+				result.addLine(l);
+				if(DEBUG) System.out.println(l);
+			}
+        }
+        doc.close();
+
+        return result;
 	}
 
-	@Override
-	public Pdf parse(String file)
-		throws Exception
+	private String textForPage(PDDocument doc, PDFTextStripper stripper, int page)
+		throws IOException
 	{
-		InputStream is = null;
-		try
-		{
-			is = new FileInputStream(new File(file));
-			return parse(is);
-		}
-		finally
-		{
-			IOUtils.closeQuietly(is);
-		}
+		stripper.resetEngine();
+		stripper.setStartPage(page);
+		stripper.setEndPage(page);
+		StringWriter writer = new StringWriter();
+		stripper.writeText(doc, writer);
+		return writer.toString();
 	}
 }
