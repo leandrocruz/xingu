@@ -16,7 +16,7 @@ import xingu.pdf.impl.PdfParserSupport;
 public class PdfBoxPdfParser
 	extends PdfParserSupport
 {
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	@Override
 	public Pdf parse(InputStream is)
@@ -35,16 +35,14 @@ public class PdfBoxPdfParser
         stripper.setWordSeparator(" ");
 
         PdfImpl result = new PdfImpl();
-
-        int lineNumber = 0;
-        int pages = doc.getNumberOfPages();
+        int     pages  = doc.getNumberOfPages();
         for(int i = 1 ; i <= pages ; i++)
         {
         	String text = textForPage(doc, stripper, i);
         	String[] lines = text.split("\n");
 	        for(String line : lines)
 			{
-	        	PdfBoxLine l = new PdfBoxLine(i - 1, line, lineNumber++);
+	        	PdfBoxLine l = new PdfBoxLine(i - 1, line);
 				result.addLine(l);
 				if(DEBUG) System.out.println(l);
 			}

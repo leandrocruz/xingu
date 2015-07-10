@@ -13,10 +13,9 @@ public class PdfBoxLine
 	
 	private List<Word> words;
 
-	public PdfBoxLine(int page, String text, int number)
+	public PdfBoxLine(int page, String text)
 	{
 		this.page   = page;
-		this.number = number;
 		this.text   = text;
 		this.words  = parse();
 	}
