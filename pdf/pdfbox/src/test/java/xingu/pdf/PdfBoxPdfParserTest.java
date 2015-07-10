@@ -32,6 +32,6 @@ public class PdfBoxPdfParserTest
 		Pdf pdf = parser.parse(is);
 		assertEquals(1, pdf.getPageCount());
 		assertEquals(49, pdf.getLines().size());
-		assertEquals("Autenticação Mecânica", pdf.getLine(48).asText());
+		assertEquals("Autenticação Mecânica", pdf.getLine(48).text());
 	}
 }

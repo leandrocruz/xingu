@@ -38,42 +38,49 @@ public class PdfBoxLine
 	}
 
 	@Override
-	public String asText()
+	public String text()
 	{
 		return text;
 	}
 
 	@Override
-	public int getNumber()
+	public int number()
 	{
 		return number;
 	}
 
 	@Override
-	public void setNumber(int i)
+	public void number(int i)
 	{}
 
 	@Override
-	public int getPage()
+	public int page()
 	{
 		return page;
 	}
 
 	@Override
-	public Word getWord(int i)
+	public Word word(int i)
 	{
 		return words.get(i);
 	}
 
 	@Override
-	public List<Word> getWords()
+	public List<Word> words()
 	{
 		return words;
 	}
 
 	@Override
+	public Word lastWord()
+	{
+		int idx = words().size() - 1;
+		return word(idx);
+	}
+
+	@Override
 	public String toString()
 	{
-		return "[p#"+page+" w#"+words.size()+" "+number+"] " + asText();
+		return "[p#"+page+" "+number+" w#"+words.size()+"] " + text();
 	}
 }

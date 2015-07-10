@@ -4,15 +4,14 @@ import java.util.List;
 
 public interface Line
 {
-	String asText();
+	String text();
 
-	int getNumber();
-	void setNumber(int i);
+	int number();
+	void number(int i);
 
-	int getPage();
+	int page();
 
-	Word getWord(int i);
-
-	List<Word> getWords();
-
+	Word word(int i);
+	Word lastWord();
+	List<Word> words();
 }

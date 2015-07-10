@@ -33,13 +33,13 @@ public class PdfBoxWord
 	}
 
 	@Override
-	public int getPageNumber()
+	public int pageNumber()
 	{
 		return page;
 	}
 
 	@Override
-	public String getText()
+	public String text()
 	{
 		return text;
 	}

@@ -8,7 +8,7 @@ public interface Word
 	Coordinate topLeft()
 		throws PdfException;
 
-	int getPageNumber();
+	int pageNumber();
 	
-	String getText();
+	String text();
 }

@@ -23,8 +23,8 @@ public class PdfImpl
 	
 	public void addLine(Line line)
 	{
-		pageCount = line.getPage() + 1;
-		line.setNumber(lineNumber++);
+		pageCount = line.page() + 1;
+		line.number(lineNumber++);
 		lines.add(line);
 	}
 
@@ -56,7 +56,7 @@ public class PdfImpl
 		List<Line> result = new ArrayList<Line>();
 		for(Line line : lines)
 		{
-			if(line.getPage() == page)
+			if(line.page() == page)
 			{
 				result.add(line);
 			}
@@ -70,12 +70,12 @@ public class PdfImpl
 		TextFinder finder = new TextFinder(text);
 		for(Line line : lines)
 		{
-			if(line.getPage() == page)
+			if(line.page() == page)
 			{
-				List<Word> words = line.getWords();
+				List<Word> words = line.words();
 				for(Word word : words)
 				{
-					String s = word.getText();
+					String s = word.text();
 					finder.consume(s);
 					if(finder.done())
 					{
@@ -116,7 +116,7 @@ public class PdfImpl
 		List<Line>   lines  = getLines();
 		for(Line line : lines)
 		{
-			String asText = line.asText();
+			String asText = line.text();
 			if(StringUtils.isEmpty(asText))
 			{
 				continue;
@@ -132,7 +132,7 @@ public class PdfImpl
 		List<Line> lines = getLines();
 		for(Line line : lines)
 		{
-			String text = line.asText();
+			String text = line.text();
 			Matcher matcher = pattern.matcher(text);
 			if(matcher.find())
 			{
