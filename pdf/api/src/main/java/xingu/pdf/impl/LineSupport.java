@@ -1,16 +1,14 @@
 package xingu.pdf.impl;
 
-import java.util.List;
-
 import xingu.pdf.Line;
 import xingu.pdf.Word;
 
 public abstract class LineSupport
 	implements Line
 {
-	protected int        number;
+	protected int	number;
 
-	protected int        page;
+	protected int	page;
 
 	@Override
 	public int number()

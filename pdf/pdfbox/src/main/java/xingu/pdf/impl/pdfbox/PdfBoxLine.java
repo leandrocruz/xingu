@@ -3,8 +3,6 @@ package xingu.pdf.impl.pdfbox;
 import java.util.ArrayList;
 import java.util.List;
 
-import xingu.lang.NotImplementedYet;
-import xingu.pdf.Line;
 import xingu.pdf.Word;
 import xingu.pdf.impl.LineSupport;
 
