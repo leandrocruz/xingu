@@ -73,4 +73,10 @@ public class FrameImpl
 	{
 		return Objects.hash(type, payload);
 	}
+
+	@Override
+	public int getSize()
+	{
+		return getPayload().length;
+	}
 }

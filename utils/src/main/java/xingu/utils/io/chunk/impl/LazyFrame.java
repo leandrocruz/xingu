@@ -79,5 +79,11 @@ public class LazyFrame
 	{
 		return Objects.hash(size, type, pos, path);
 	}
+
+	@Override
+	public int getSize()
+	{
+		return size;
+	}
 	
 }

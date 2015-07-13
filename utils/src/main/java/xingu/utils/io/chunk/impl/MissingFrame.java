@@ -33,4 +33,10 @@ public class MissingFrame
 	{
 		throw new NotImplementedYet("Missing '"+size+"' bytes from source");
 	}
+
+	@Override
+	public int getSize()
+	{
+		return size;
+	}
 }

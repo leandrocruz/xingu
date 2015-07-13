@@ -12,6 +12,8 @@ public interface Frame
 	
 	byte getType();
 
+	int getSize();
+
 	byte[] getPayload()
 		throws IOException;
 
