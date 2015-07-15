@@ -26,6 +26,12 @@ public class HexUtils
 		return String.valueOf(CHARS.charAt(pos));
 	}
 
+	public static String toHex(long number)
+	{
+		byte[] bytes = ByteUtils.toByteArray(number);
+		return toHex(bytes);
+	}
+
 	public static String toHex(byte bytes[]) 
     {
         StringBuffer buf = new StringBuffer(bytes.length * 2);
