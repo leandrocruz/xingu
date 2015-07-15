@@ -14,6 +14,6 @@ public class FramedChunkUtilsTest
 	public void testPrint()
 		throws Exception
 	{
-		FramedChunkUtils.print(new File("/home/leandro/oystr/20150714.131732-6fdw5y"), System.out);
+		FramedChunkUtils.print(new File("/home/leandro/oystr/journal/20150714.131732-6fdw5y"), System.out);
 	}
 }

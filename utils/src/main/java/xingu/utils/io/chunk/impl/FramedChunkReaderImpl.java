@@ -58,7 +58,8 @@ public class FramedChunkReaderImpl
 	private int seek(long start)
 		throws IOException
 	{
-		if(true || !hasCapacity(8 + 8 + 1))
+		int[] numbers = new int[]{19, 28, 24, 3};
+		if(!hasCapacity(4 /* int */ + numbers.length * (4 /* int */ + 1 /* byte */)))
 		{
 			return -1;
 		}
@@ -69,20 +70,18 @@ public class FramedChunkReaderImpl
 		{
 			return seek(start + 1);
 		}
-		
-		int size = source.readInt();
-		if(19 != size)
+
+		for(int number : numbers)
 		{
-			return seek(start + 1);
+			int n = source.readInt();
+			if(n != number)
+			{
+				return seek(start + 1);
+			}
+			long jumpTo = source.getFilePointer() + 1 /* type byte */ + n;
+			source.seek(jumpTo);
 		}
-		
-		byte type = source.readByte();
-		if(Frame.IN_MEMORY != type)
-		{
-			return seek(start + 1);
-		}
-		
-		source.seek(start);
+		source.seek(start + 4);
 		return count;
 	}
 	
