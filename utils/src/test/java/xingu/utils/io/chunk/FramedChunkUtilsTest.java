@@ -10,12 +10,10 @@ import org.junit.Test;
 public class FramedChunkUtilsTest
 {
 	@Test
-	@Ignore
+	//@Ignore
 	public void testPrint()
 		throws Exception
 	{
-		Writer writer = new StringWriter();
-		FramedChunkUtils.print(new File("/home/leandro/oystr/20150713.073713-h8agco"), writer);
-		System.out.println(writer);
+		FramedChunkUtils.print(new File("/home/leandro/oystr/20150714.131732-6fdw5y"), System.out);
 	}
 }
