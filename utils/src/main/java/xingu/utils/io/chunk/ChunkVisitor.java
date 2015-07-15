@@ -14,4 +14,5 @@ public interface ChunkVisitor
 
 	void onChunk(FramedChunk chunk);
 
+	void onJump(long pointer, long jump);
 }

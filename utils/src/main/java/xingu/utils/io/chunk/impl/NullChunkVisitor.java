@@ -40,4 +40,8 @@ public class NullChunkVisitor
 	@Override
 	public void onChunk(FramedChunk chunk)
 	{}
+
+	@Override
+	public void onJump(long pointer, long jump)
+	{}
 }

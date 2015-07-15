@@ -19,7 +19,7 @@ public class FramedChunkReaderImpl
 {
 	private File				file;
 
-	private RandomAccessFile	source;
+	protected RandomAccessFile	source;
 	
 	public FramedChunkReaderImpl(File file)
 		throws FileNotFoundException
@@ -39,12 +39,16 @@ public class FramedChunkReaderImpl
 	public List<FramedChunk> read()
 		throws IOException
 	{
-		return read(NullChunkVisitor.instance());
+		return read(null);
 	}
 	@Override
 	public List<FramedChunk> read(ChunkVisitor visitor)
 		throws IOException
 	{
+		if(visitor == null)
+		{
+			visitor = NullChunkVisitor.instance();
+		}
 		List<FramedChunk> result = new ArrayList<>();
 		FramedChunk chunk;
 		while((chunk = readChunk(visitor)) != null)
@@ -55,34 +59,15 @@ public class FramedChunkReaderImpl
 		return result;
 	}
 
-	private int seek(long start)
+	protected long seek(long start)
 		throws IOException
 	{
-		int[] numbers = new int[]{19, 28, 24, 3};
-		if(!hasCapacity(4 /* int */ + numbers.length * (4 /* int */ + 1 /* byte */)))
-		{
-			return -1;
-		}
-		
-		source.seek(start);
-		int count = source.readInt();
-		if(count != 5)
-		{
-			return seek(start + 1);
-		}
-
-		for(int number : numbers)
-		{
-			int n = source.readInt();
-			if(n != number)
-			{
-				return seek(start + 1);
-			}
-			long jumpTo = source.getFilePointer() + 1 /* type byte */ + n;
-			source.seek(jumpTo);
-		}
-		source.seek(start + 4);
-		return count;
+		return -1;
+	}
+	
+	protected boolean seekBytes(int count)
+	{
+		 return count > 10; /* security check for now */
 	}
 	
 	private FramedChunk readChunk(ChunkVisitor visitor)
@@ -94,18 +79,19 @@ public class FramedChunkReaderImpl
 			return null;
 		}
 
-		int    count = source.readInt();
+		int count = source.readInt();
 		visitor.onFrameCount(count);
-		if(count > 10 /* security check for now */)
+		if(seekBytes(count))
 		{
-			long pointer = source.getFilePointer() - 4;
-			count = seek(pointer);
-			if(count <= 0)
+			long pointer = source.getFilePointer() - 4; /* roll back an int */
+			long jump    = seek(pointer);
+			if(jump <= 0)
 			{
 				throw new NotImplementedYet("Frame count is too large: " + count + " [0x"+HexUtils.toHex(count)+"] at: " + pointer + " [0x"+HexUtils.toHex(pointer)+"]");
 			}
-			long jump = source.getFilePointer();
-			System.out.println("-> Jumping "+(jump - pointer)+" bytes from " +pointer+ " to "+ jump + " <-");
+			source.seek(jump);
+			visitor.onJump(pointer, jump);
+			return readChunk(visitor);
 		}
 		FramedChunk chunk = new FramedChunkImpl(count);
 		for(int i = 0 ; i < count ; i++)
@@ -143,7 +129,7 @@ public class FramedChunkReaderImpl
 		return chunk;
 	}
 
-	private boolean hasCapacity(int len)
+	protected boolean hasCapacity(int len)
 		throws IOException
 	{
 		long pos   = source.getFilePointer();

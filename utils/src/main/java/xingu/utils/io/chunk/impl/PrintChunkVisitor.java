@@ -76,4 +76,11 @@ public class PrintChunkVisitor
 		chunks++;
 		printer.println("--");
 	}
+
+	@Override
+	public void onJump(long pointer, long jump)
+	{
+		long count = jump - pointer;
+		printer.println("*** Jump ["+count+"] "+pointer+" -> "+jump);
+	}
 }
