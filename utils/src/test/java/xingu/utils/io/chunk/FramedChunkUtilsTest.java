@@ -2,6 +2,7 @@ package xingu.utils.io.chunk;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import xingu.utils.io.chunk.impl.PrintChunkVisitor;
@@ -10,7 +11,7 @@ import xingu.utils.io.chunk.impl.SeekingFramedChunkReader;
 public class FramedChunkUtilsTest
 {
 	@Test
-	//@Ignore
+	@Ignore
 	public void testPrint()
 		throws Exception
 	{
