@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xingu.lang.NotImplementedYet;
-import xingu.utils.io.chunk.ByteBagUtils;
+import xingu.utils.HexUtils;
+import xingu.utils.io.chunk.ChunkVisitor;
 import xingu.utils.io.chunk.Frame;
 import xingu.utils.io.chunk.FramedChunk;
 import xingu.utils.io.chunk.FramedChunkReader;
@@ -38,48 +39,69 @@ public class FramedChunkReaderImpl
 	public List<FramedChunk> read()
 		throws IOException
 	{
+		return read(NullChunkVisitor.instance());
+	}
+	@Override
+	public List<FramedChunk> read(ChunkVisitor visitor)
+		throws IOException
+	{
 		List<FramedChunk> result = new ArrayList<>();
 		FramedChunk chunk;
-		while((chunk = readChunk()) != null)
+		while((chunk = readChunk(visitor)) != null)
 		{
+			visitor.onChunk(chunk);
 			result.add(chunk);
 		}
 		return result;
 	}
 
-	private FramedChunk readChunk()
+	private FramedChunk readChunk(ChunkVisitor visitor)
 		throws IOException
 	{
 		if(!hasCapacity(8)) /* read at least the chunk count and  the first frame size */
 		{
+			visitor.onNoCapacity();
 			return null;
 		}
 
 		int    count = source.readInt();
+		visitor.onFrameCount(count);
+		if(count > 10 /* security check for now */)
+		{
+			long pointer = source.getFilePointer() - 4;
+			throw new NotImplementedYet("Frame count is too large: " + count + " [0x"+HexUtils.toHex(count)+"] at: " + pointer + " [0x"+HexUtils.toHex(pointer)+"]");
+		}
 		FramedChunk chunk = new FramedChunkImpl(count);
 		for(int i = 0 ; i < count ; i++)
 		{
 			int size = source.readInt();
+			visitor.onSize(size);
 			if(hasCapacity(size + 1)) /* payload + type */
 			{
 				byte type = source.readByte();
+				visitor.onType(type);
 				if(type == Frame.IN_MEMORY)
 				{
 					byte[] payload = new byte[size];
 					source.read(payload);
 					Frame frame = new FrameImpl(type, payload);
+					visitor.onFrame(frame);
 					chunk.add(frame);
 				}
 				else
 				{
 					long pos = source.getFilePointer();
 					source.seek(pos + size);
-					chunk.add(new LazyFrame(type, size, pos, source, file.getAbsolutePath()));
+					LazyFrame frame = new LazyFrame(type, size, pos, source, file.getAbsolutePath());
+					visitor.onFrame(frame);
+					chunk.add(frame);
 				}
 			}
 			else
 			{
-				chunk.add(new MissingFrame(size));
+				MissingFrame frame = new MissingFrame(size);
+				visitor.onFrame(frame);
+				chunk.add(frame);
 			}
 		}
 		return chunk;

@@ -9,4 +9,7 @@ public interface FramedChunkReader
 {
 	List<FramedChunk> read()
 		throws IOException;
+
+	List<FramedChunk> read(ChunkVisitor visitor)
+		throws IOException;
 }
