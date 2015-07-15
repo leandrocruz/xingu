@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xingu.lang.NotImplementedYet;
-import xingu.utils.io.chunk.ByteBagUtils;
 import xingu.utils.io.chunk.Frame;
 import xingu.utils.io.chunk.FramedChunk;
 import xingu.utils.io.chunk.FramedChunkReader;
@@ -56,6 +55,10 @@ public class FramedChunkReaderImpl
 		}
 
 		int    count = source.readInt();
+		if(count > 10)
+		{
+			throw new NotImplementedYet("Frame Count Out of Range: " + count);
+		}
 		FramedChunk chunk = new FramedChunkImpl(count);
 		for(int i = 0 ; i < count ; i++)
 		{
