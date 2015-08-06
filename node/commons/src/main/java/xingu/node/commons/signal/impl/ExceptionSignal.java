@@ -45,8 +45,6 @@ public class ExceptionSignal<T>
 	public BooleanSignal perform(ExceptionSignal signal, Channel channel)
 		throws Exception
 	{
-		System.err.println("Error Executing Signal " + this.signal);
-		System.err.println(trace);
 		return null;
 	}
 
