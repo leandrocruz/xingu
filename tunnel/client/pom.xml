@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>xingu</groupId>
 		<artifactId>xingu-tunnel</artifactId>
-		<version>1.6.1</version>
+		<version>1.6.2</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
 	<artifactId>xingu-tunnel-client</artifactId>
 	<packaging>jar</packaging>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<name>Xingu TCP Tunnel Client</name>
 	<dependencies>
 		<dependency>
