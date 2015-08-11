@@ -25,7 +25,7 @@ public class FramedChunkConcurrencyTest
 	public void testConcurrency()
 		throws Exception
 	{
-		List<FramedChunk> chunks = Collections.synchronizedList(new ArrayList<FramedChunk>(1000));
+		List<FramedChunk> chunks = Collections.synchronizedList(new ArrayList<FramedChunk>(CHUNK_COUNT));
 		for(int i = 0 ; i < CHUNK_COUNT ; i++)
 		{
 			FramedChunk chunk = new FramedChunkImpl(2);
