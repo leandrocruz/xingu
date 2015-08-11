@@ -17,7 +17,7 @@ import xingu.utils.io.chunk.impl.FramedChunkWriterImpl;
 
 public class FramedChunkConcurrencyTest
 {
-	private static final int CHUNK_COUNT = 1000;
+	private static final int CHUNK_COUNT = 100;
 	
 	private static final int CONSUMER_COUNT = 5;
 
