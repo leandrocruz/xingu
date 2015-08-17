@@ -3,6 +3,11 @@ package xingu.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -41,6 +46,16 @@ public class ByteUtils
 			hexChars[j * 2  + 1] = hexArray[v & 0x0F];
 		}
 		return new String(hexChars);
+	}
+
+	public static final CharBuffer removeUnknowBytes(byte[] array, String charset)
+		throws CharacterCodingException
+	{
+		CharsetDecoder utf8Decoder = Charset.forName(charset).newDecoder();
+		utf8Decoder.onMalformedInput(CodingErrorAction.IGNORE);
+		utf8Decoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
+		ByteBuffer bytes = ByteBuffer.wrap(array);
+		return utf8Decoder.decode(bytes);
 	}
 
     public static byte[] compress(String name, byte[] data) 
