@@ -1,8 +1,7 @@
 package xingu.http.client.impl;
 
 import java.io.File;
-
-import com.sun.org.apache.bcel.internal.util.Objects;
+import java.util.Objects;
 
 import xingu.http.client.Attachment;
 
