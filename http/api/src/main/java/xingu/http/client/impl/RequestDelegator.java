@@ -31,7 +31,8 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest context(HttpContext ctx)
 	{
-		return req.context(ctx);
+		req.context(ctx);
+		return this;
 	}
 
 	@Override
@@ -55,7 +56,8 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest header(String name, String value)
 	{
-		return req.header(name, value);
+		req.header(name, value);
+		return this;
 	}
 
 	@Override
@@ -67,31 +69,36 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest field(String nameValue)
 	{
-		return req.field(nameValue);
+		req.field(nameValue);
+		return this;
 	}
 
 	@Override
 	public HttpRequest field(String name, String value)
 	{
-		return req.field(name, value);
+		req.field(name, value);
+		return this;
 	}
 
 	@Override
 	public HttpRequest field(String name, String value, String type)
 	{
-		return req.field(name, value, type);
+		req.field(name, value, type);
+		return this;
 	}
 
 	@Override
 	public HttpRequest field(String name, int value)
 	{
-		return req.field(name, value);
+		req.field(name, value);
+		return this;
 	}
 
 	@Override
 	public HttpRequest field(String name, long value)
 	{
-		return req.field(name, value);
+		req.field(name, value);
+		return this;
 	}
 
 	@Override
@@ -103,19 +110,22 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest withCookie(Cookie cookie)
 	{
-		return req.withCookie(cookie);
+		req.withCookie(cookie);
+		return this;
 	}
 
 	@Override
 	public HttpRequest withCookies(Cookies cookies)
 	{
-		return req.withCookies(cookies);
+		req.withCookies(cookies);
+		return this;
 	}
 
 	@Override
 	public HttpRequest multipart(boolean isMultipartFormData)
 	{
-		return req.multipart(isMultipartFormData);
+		req.multipart(isMultipartFormData);
+		return this;
 	}
 
 	@Override
@@ -133,13 +143,15 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest withCertificate(String certificate)
 	{
-		return req.withCertificate(certificate);
+		req.withCertificate(certificate);
+		return this;
 	}
 
 	@Override
 	public HttpRequest withCertificate(String certificate, String password)
 	{
-		return req.withCertificate(certificate, password);
+		req.withCertificate(certificate, password);
+		return this;
 	}
 
 	@Override
@@ -157,7 +169,8 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest withUserAgent(String ua)
 	{
-		return req.withUserAgent(ua);
+		req.withUserAgent(ua);
+		return this;
 	}
 
 	@Override
@@ -169,7 +182,8 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest withAttachment(Attachment attachment)
 	{
-		return req.withAttachment(attachment);
+		req.withAttachment(attachment);
+		return this;
 	}
 
 	@Override
@@ -187,25 +201,29 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest withAuthentication(String user, String password)
 	{
-		return req.withAuthentication(user, password);
+		req.withAuthentication(user, password);
+		return this;
 	}
 
 	@Override
 	public HttpRequest expects(int code)
 	{
-		return req.expects(code);
+		req.expects(code);
+		return this;
 	}
 
 	@Override
 	public HttpRequest expects(int code, String messageIfError)
 	{
-		return req.expects(code, messageIfError);
+		req.expects(code, messageIfError);
+		return this;
 	}
 
 	@Override
 	public HttpRequest expects(ResponseInspector inspector)
 	{
-		return req.expects(inspector);
+		req.expects(inspector);
+		return this;
 	}
 
 	@Override
@@ -223,13 +241,15 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest name(String name)
 	{
-		return req.name(name);
+		req.name(name);
+		return this;
 	}
 
 	@Override
 	public HttpRequest ignoreSSLCertificates(boolean ignore)
 	{
-		return req.ignoreSSLCertificates(ignore);
+		req.ignoreSSLCertificates(ignore);
+		return this;
 	}
 
 	@Override
@@ -241,13 +261,15 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest listener(HttpProgressListener listener)
 	{
-		return req.listener(listener);
+		req.listener(listener);
+		return this;
 	}
 
 	@Override
 	public HttpRequest payload(String payload)
 	{
-		return req.payload(payload);
+		req.payload(payload);
+		return this;
 	}
 
 	@Override
