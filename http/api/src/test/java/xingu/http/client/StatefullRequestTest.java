@@ -23,7 +23,7 @@ public class StatefullRequestTest
 	{
 		HttpResponse    reply   = mock(HttpResponse.class);
 		HttpRequest     req     = mock(HttpRequest.class);
-		HttpStateKeeper state   = mock(HttpStateKeeper.class);
+		HttpStateHandler state   = mock(HttpStateHandler.class);
 		HttpContext     ctx     = mock(HttpContext.class);
 		NameValue[]     headers = new NameValue[]{new NameValueImpl("set-cookie", "my_cookie=a")};
 

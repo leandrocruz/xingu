@@ -6,14 +6,14 @@ import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
-import xingu.http.client.HttpStateKeeper;
+import xingu.http.client.HttpStateHandler;
 
 public class StatefullRequest
 	extends RequestDelegator
 {
-	private HttpStateKeeper	state;
+	private HttpStateHandler	state;
 
-	public StatefullRequest(HttpRequest req, HttpStateKeeper state)
+	public StatefullRequest(HttpRequest req, HttpStateHandler state)
 	{
 		super(req);
 		this.state = state;
@@ -45,6 +45,13 @@ public class StatefullRequest
 		}
 		state.setCookies(cookies);
 
-		return res;
+		try
+		{
+			return state.handle(req, res);
+		}
+		catch(Throwable t)
+		{
+			throw new HttpException("Error handling exec()", t);
+		}
 	}
 }
