@@ -1,6 +1,7 @@
 package xingu.http.client;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.CookieDecoder;
@@ -57,22 +58,23 @@ public class CookieUtils
 
 	public static Cookies mergeCookies(Cookies first, Cookies second)
 	{
-		Set<Cookie> currentSet = first.getBuffer();
-		Set<Cookie> toMergeSet = second.getBuffer();
-		for(Cookie cookie : toMergeSet)
+		Cookies     result    = new CookiesImpl();
+		Set<Cookie> merged    = result.getBuffer();
+		Set<Cookie> firstSet  = first.getBuffer();
+		Set<Cookie> secondSet = second.getBuffer();
+
+		merged.addAll(firstSet);
+		
+		for(Cookie onSecond : secondSet)
 		{
-			String name    = cookie.getName();
-			Cookie current = first.byName(name);
-			if(current == null)
+			String name    = onSecond.getName();
+			Cookie onFirst = result.byName(name);
+			if(onFirst != null)
 			{
-				currentSet.add(cookie);
+				merged.remove(onFirst);
 			}
-			else
-			{
-				currentSet.remove(current);
-				currentSet.add(cookie);
-			}
+			merged.add(onSecond);
 		}
-		return new CookiesImpl(currentSet);
+		return new CookiesImpl(merged);
 	}
 }

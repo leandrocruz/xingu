@@ -3,6 +3,7 @@ package xingu.http.client.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.jboss.netty.handler.codec.http.Cookie;
@@ -127,4 +128,42 @@ public class CookiesImpl
 	{
 		return names().toString();
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(!(obj instanceof Cookies))
+		{
+			return false;
+		}
+		
+		if(obj == this)
+		{
+			return true;
+		}
+		
+		Cookies other = Cookies.class.cast(obj);
+		Set<Cookie> cookies = other.getBuffer();
+		if(buffer.size() != cookies.size())
+		{
+			return false;
+		}
+
+		for(Cookie cookie : buffer)
+		{
+			String name = cookie.getName();
+			Cookie otherCookie = other.byName(name);
+			if(!Objects.equals(cookie, otherCookie))
+				return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(buffer);
+	}
+
 }
