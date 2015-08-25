@@ -29,6 +29,7 @@ public class StatefullRequestTest
 
 		when(state.getContext()).thenReturn(ctx);
 		when(state.getCookies()).thenReturn(null);
+		when(state.handle(any(HttpRequest.class), any(HttpResponse.class))).thenReturn(reply);
 		when(req.exec()).thenReturn(reply);
 		when(reply.getHeaders()).thenReturn(headers);
 
