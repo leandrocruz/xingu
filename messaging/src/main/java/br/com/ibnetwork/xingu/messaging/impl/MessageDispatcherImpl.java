@@ -24,12 +24,6 @@ import br.com.ibnetwork.xingu.messaging.MessageDispatcherException;
 public class MessageDispatcherImpl 
 	implements MessageDispatcher, Configurable
 {
-    private boolean debug;
-    
-    private boolean authEnabled;
-
-    private boolean tlsEnabled;
-    
     private Properties props;
 
     private Session session;
@@ -42,17 +36,17 @@ public class MessageDispatcherImpl
         Configuration conf = configuration.getChild("smtpServer"); 
         String smtpServer = conf.getAttribute("address","localhost");
         String smtpPort = conf.getAttribute("port","25");
-		debug = conf.getAttributeAsBoolean("debug",false);
-		authEnabled = conf.getAttributeAsBoolean("authEnabled",false);
-		tlsEnabled = conf.getAttributeAsBoolean("tlsEnabled", false);
+		boolean debug = conf.getAttributeAsBoolean("debug", false);
+		boolean authEnabled = conf.getAttributeAsBoolean("authEnabled", false);
+		boolean tlsEnabled = conf.getAttributeAsBoolean("tlsEnabled", false);
 		props = new Properties();
 		props.put("mail.smtp.host", smtpServer);
-		props.put("mail.smtp.port",smtpPort);
-		props.put("mail.debug",new Boolean(debug).toString());
-		props.put("mail.smtp.auth",new Boolean(authEnabled).toString());
+		props.put("mail.smtp.port", smtpPort);
+		props.put("mail.debug", new Boolean(debug).toString());
+		props.put("mail.smtp.auth", new Boolean(authEnabled).toString());
 		if (tlsEnabled)
 		{
-		    props.put("mail.smtp.starttls.enable",Boolean.toString(true));
+		    props.put("mail.smtp.starttls.enable", Boolean.toString(true));
 		}
 		Authenticator auth = null;
 		if(authEnabled)
