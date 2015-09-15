@@ -34,7 +34,7 @@ public class BooleanUtils
 	
 	public static Boolean toBoolean(String value, Boolean whenMissing)
 	{
-		switch(value)
+		switch(value.toLowerCase())
 		{
 			case "1":
 			case "true":
