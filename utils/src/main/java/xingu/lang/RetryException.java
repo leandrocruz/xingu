@@ -3,7 +3,6 @@ package xingu.lang;
 public class RetryException
     extends RuntimeException
 {
-
     public RetryException()
     {
         super();
@@ -23,5 +22,4 @@ public class RetryException
     {
         super(message, cause);
     }
-
 }
