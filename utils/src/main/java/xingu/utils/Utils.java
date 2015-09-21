@@ -22,6 +22,7 @@ public class Utils
 			{}
 			catch(Throwable t)
 			{
+				operation.onError(t);
 				throw t;
 			}
 		}
