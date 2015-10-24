@@ -32,5 +32,6 @@
 		<module>flexjson</module>		
 		<module>gson</module>
 		<module>jackson</module>
+		<module>boonjson</module>
 	</modules>
 </project>
