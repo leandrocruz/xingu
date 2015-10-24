@@ -1,10 +1,8 @@
 package codec.impl.boon;
 
 import org.apache.avalon.framework.activity.Initializable;
-import org.boon.json.JsonParserFactory;
-import org.boon.json.JsonSerializerFactory;
+import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
-import org.boon.json.implementation.ObjectMapperImpl;
 
 import xingu.codec.Codec;
 import xingu.lang.NotImplementedYet;
@@ -18,9 +16,7 @@ public class BoonJsonCodec
 	public void initialize()
 		throws Exception
 	{
-		JsonSerializerFactory serializerFactory = new JsonSerializerFactory();
-		JsonParserFactory     parserFactory     = new JsonParserFactory().lax();
-		mapper = new ObjectMapperImpl(parserFactory, serializerFactory);
+		mapper = JsonFactory.create();
 	}
 
 	@Override
@@ -43,5 +39,4 @@ public class BoonJsonCodec
 	{
 		return mapper.readValue(text, clazz);
 	}
-
 }
