@@ -1,14 +1,16 @@
 package xingu.http.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 import org.jboss.netty.handler.codec.http.DefaultCookie;
 import org.junit.Test;
 
 import xingu.http.client.impl.CookiesImpl;
+import xingu.http.client.impl.NameValueImpl;
 
 public class CookieUtilsTest
-{
+{	
 	@Test
 	public void testParse()
 		throws Exception
@@ -18,6 +20,22 @@ public class CookieUtilsTest
 		
 		assertEquals("1", cookies.byName("my_cookie").getValue());
 		assertEquals("2", cookies.byName("my_other_cookie").getValue());
+	}
+
+	@Test
+	public void testParseDuplicate()
+		throws Exception
+	{
+		HttpResponse res = mock(HttpResponse.class);
+		when(res.getHeaders()).thenReturn(new NameValue[]{
+				new NameValueImpl("Set-Cookie", ".ASPXAUTH=0; expires=Tue, 12-Oct-1999 03:00:00 GMT;"),
+				new NameValueImpl("Set-Cookie", ".ASPXAUTH=1; expires=Tue, 12-Oct-1999 03:00:00 GMT;"),
+				new NameValueImpl("Set-Cookie", ".ASPXAUTH=2; expires=Tue, 12-Oct-1999 03:00:00 GMT;")
+		});
+		
+		Cookies cookies = CookieUtils.getCookies(res);
+		assertEquals(1, cookies.size());
+		assertEquals("2", cookies.byName(".ASPXAUTH").getValue());
 	}
 
 	@Test

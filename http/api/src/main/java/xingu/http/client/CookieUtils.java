@@ -1,5 +1,7 @@
 package xingu.http.client;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,21 +24,34 @@ public class CookieUtils
 	
 	public static Cookies getCookies(HttpResponse res)
 	{
-		StringBuffer  sb      = new StringBuffer();
-		NameValue[]   headers = res.getHeaders();
 
+		/*
+		 * Sometimes, multiple set-cookie headers are sent for the same cookie.
+		 * We need to parse all 'set-cookie' headers, but store only the last
+		 */
+		Map<String, Cookie> cookieByName = new HashMap<>();
+
+		NameValue[] headers = res.getHeaders();
 		for(NameValue header : headers)
 		{
 			String name = header.getName();
 			if("set-cookie".equalsIgnoreCase(name))
 			{
 				String value = header.getValue();
-				sb.append(value).append(";");
+				Set<Cookie> cookies = decoder.decode(value);
+				for(Cookie cookie : cookies)
+				{
+					cookieByName.put(cookie.getName(), cookie);
+				}
 			}
 		}
 
-		String      buffer  = sb.toString();
-		Set<Cookie> decoded = decoder.decode(buffer);
+		Set<Cookie> decoded = new TreeSet<>();
+		for(String name : cookieByName.keySet())
+		{
+			decoded.add(cookieByName.get(name));
+		}
+		
 		return new CookiesImpl(decoded);
 	}
 
