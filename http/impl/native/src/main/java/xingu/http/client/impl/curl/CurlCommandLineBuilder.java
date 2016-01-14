@@ -69,7 +69,7 @@ public class CurlCommandLineBuilder
 		}
 
 		result.add("-m");
-		result.add("60");
+		result.add("240");
 		result.add("-i");
 		result.add("-k"); // ignore server certificate //TODO: use ignoreSSLCertificates()
 		result.add("-o"); // output to a file
