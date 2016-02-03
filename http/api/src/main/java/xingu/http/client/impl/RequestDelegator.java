@@ -277,4 +277,17 @@ public abstract class RequestDelegator
 	{
 		return req.getPayload();
 	}
+	
+	@Override
+	public HttpRequest soap(boolean soap)
+	{
+		req.soap(soap);
+		return this;
+	}
+
+	@Override
+	public boolean isSoap()
+	{
+		return req.isSoap();
+	}
 }

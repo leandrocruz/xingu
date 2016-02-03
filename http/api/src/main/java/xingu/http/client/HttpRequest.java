@@ -66,4 +66,7 @@ public interface HttpRequest
 	
 	HttpRequest payload(String payload);
 	String getPayload();
+
+	boolean isSoap();
+	HttpRequest soap(boolean isSoap);
 }

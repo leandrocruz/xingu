@@ -58,6 +58,7 @@ public class CurlCommandLineBuilder
 		result.add("curl");
 		
 		boolean isPost = req.isPost();
+		
 		if(isPost)
 		{
 			result.add("-X");
@@ -257,7 +258,15 @@ public class CurlCommandLineBuilder
 		String payload = req.getPayload();
 		if(StringUtils.isNotEmpty(payload))
 		{
-			result.add("--data-binary");
+			boolean isSoap = req.isSoap();
+			if(isSoap)
+			{
+				result.add("-d");
+			}
+			else
+			{
+				result.add("--data-binary");
+			}
 			result.add(payload);
 		}
 	}

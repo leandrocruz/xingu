@@ -58,6 +58,8 @@ public abstract class HttpRequestSupport
 
 	private List<ResponseInspector>	inspectors	= new ArrayList<>();
 
+	private boolean	soap;
+
 	public HttpRequestSupport(String uri, String method)
 	{
 		this.uri    = uri;
@@ -342,6 +344,19 @@ public abstract class HttpRequestSupport
 	public String getPayload()
 	{
 		return payload;
+	}
+	
+	@Override
+	public HttpRequest soap(boolean soap)
+	{
+		this.soap = soap;
+		return this;
+	}
+	
+	@Override
+	public boolean isSoap()
+	{
+		return soap;
 	}
 	
 	@Override
