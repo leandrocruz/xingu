@@ -58,7 +58,6 @@ public class CurlCommandLineBuilder
 		result.add("curl");
 		
 		boolean isPost = req.isPost();
-		
 		if(isPost)
 		{
 			result.add("-X");
