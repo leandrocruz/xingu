@@ -69,7 +69,7 @@ public class BridgeConnectorImpl
 	{
     	conf = conf.getChild("connection");
         acquirePortTimeout = TimeUtils.toMillis(conf.getAttribute("acquirePortTimeout","30s")); 
-        connectionTimeout = TimeUtils.toMillis(conf.getAttribute("connectionTimeout","10s"));
+        connectionTimeout = TimeUtils.toMillis(conf.getAttribute("connectionTimeout","30s"));
         useTcpNoDeplay = conf.getAttributeAsBoolean("useTcpNoDeplay", true);
 	}
 
