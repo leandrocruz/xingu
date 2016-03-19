@@ -1,6 +1,7 @@
 package xingu.http.client;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
@@ -22,6 +23,7 @@ public interface HttpRequest
 	HttpRequest field(String name, String value, String type);
 	HttpRequest field(String name, int value);
 	HttpRequest field(String name, long value);
+	HttpRequest fields(Map<String, String> map);
 	
 	//HttpRequest queryString(String name, String value);
 

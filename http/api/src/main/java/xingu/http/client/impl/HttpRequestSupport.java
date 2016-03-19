@@ -2,6 +2,7 @@ package xingu.http.client.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
@@ -123,6 +124,16 @@ public abstract class HttpRequestSupport
 			value = "";
 		}
 		fields.add(new NameValueImpl(name, value, type));
+		return this;
+	}
+
+	@Override
+	public HttpRequest fields(Map<String, String> map)
+	{
+		for(String key : map.keySet())
+		{
+			field(key, map.get(key));
+		}
 		return this;
 	}
 

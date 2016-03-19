@@ -1,6 +1,7 @@
 package xingu.http.client.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 
@@ -98,6 +99,13 @@ public abstract class RequestDelegator
 	public HttpRequest field(String name, long value)
 	{
 		req.field(name, value);
+		return this;
+	}
+
+	@Override
+	public HttpRequest fields(Map<String, String> map)
+	{
+		req.fields(map);
 		return this;
 	}
 
