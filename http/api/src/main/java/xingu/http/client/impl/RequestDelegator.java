@@ -272,6 +272,19 @@ public abstract class RequestDelegator
 		req.listener(listener);
 		return this;
 	}
+	
+	@Override
+	public HttpRequest withKeepAlive(String seconds)
+	{
+		req.withKeepAlive(seconds);
+		return this;
+	}
+
+	@Override
+	public String getKeepAlive()
+	{
+		return req.getKeepAlive();
+	}
 
 	@Override
 	public HttpRequest payload(String payload)

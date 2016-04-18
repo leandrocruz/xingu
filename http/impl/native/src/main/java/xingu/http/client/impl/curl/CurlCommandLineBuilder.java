@@ -67,6 +67,15 @@ public class CurlCommandLineBuilder
 		{
 			result.add("--get");
 		}
+		
+		String keepAlive = req.getKeepAlive();
+		
+		if(StringUtils.isNotEmpty(keepAlive))
+		{
+			int kaValue = Integer.parseInt(keepAlive);
+			result.add("--keepalive-time");
+			result.add(keepAlive);
+		}
 
 		result.add("-m");
 		result.add("240");

@@ -71,4 +71,7 @@ public interface HttpRequest
 
 	boolean isSoap();
 	HttpRequest soap(boolean isSoap);
+
+	String getKeepAlive();
+	HttpRequest withKeepAlive(String seconds);
 }

@@ -47,6 +47,10 @@ public abstract class HttpRequestSupport
 
 	protected boolean				ignoreSSLCertificates;
 
+	private boolean					soap;
+	
+	private String					keepAlive;
+	
 	protected HttpProgressListener	listener;
 
 	protected Cookies				cookies		= new CookiesImpl();
@@ -58,8 +62,6 @@ public abstract class HttpRequestSupport
 	protected List<NameValue>		headers		= new ArrayList<>();
 
 	private List<ResponseInspector>	inspectors	= new ArrayList<>();
-
-	private boolean	soap;
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -238,6 +240,19 @@ public abstract class HttpRequestSupport
 	{
 		return authUser;
 	}
+	
+	@Override
+	public HttpRequest withKeepAlive(String seconds)
+	{
+		this.keepAlive 	= seconds;
+		return this;
+	}
+
+	@Override
+	public String getKeepAlive()
+	{
+		return this.keepAlive;
+	}
 
 	@Override
 	public String getAuthenticationPassword()
@@ -375,4 +390,6 @@ public abstract class HttpRequestSupport
 	{
 		return method + " " + uri;
 	}
+	
+	
 }
