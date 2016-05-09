@@ -117,10 +117,13 @@ public class GCloudSpawner
 		if(meta.size() > 0)
 		{
 			cmd.add("--metadata");
+			StringBuilder metaDataBuffer = new StringBuilder();
 			for(NameValue<String> item : meta)
 			{
-				cmd.add(item.name + "=" + item.value);
+				metaDataBuffer.append(item.name + "=" + item.value);
+				metaDataBuffer.append(",");
 			}
+			cmd.add(metaDataBuffer.toString());
 		}
 
 		String result = execute(cmd);
