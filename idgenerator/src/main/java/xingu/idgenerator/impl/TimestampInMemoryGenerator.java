@@ -1,25 +1,17 @@
 package xingu.idgenerator.impl;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import xingu.container.Inject;
 import xingu.idgenerator.GeneratorException;
-import xingu.time.Time;
-import xingu.utils.DateFormats;
+import xingu.utils.RandomIdGenerator;
 
 public class TimestampInMemoryGenerator
 	extends GeneratorSupport<String>
 {
-	@Inject
-	private Time					time;
+	private Set<String>	set			= new HashSet<String>();
 
-	private Set<String>				set		= new HashSet<String>();
-	
-	private int suffixSize = 6;
+	private int			suffixSize	= 6;
 
 	public TimestampInMemoryGenerator()
 	{
@@ -41,9 +33,7 @@ public class TimestampInMemoryGenerator
 	protected synchronized String increment(String lastUsed)
 		throws GeneratorException
 	{
-		Date   now    = time.now().asDate();
-		String result = DateFormats.yyyyMMdd_HHmmss.format(now) + "-" + RandomStringUtils.randomAlphanumeric(suffixSize).toLowerCase();
-
+		String result = RandomIdGenerator.next(suffixSize);
 		if(set.contains(result))
 		{
 			return next();
