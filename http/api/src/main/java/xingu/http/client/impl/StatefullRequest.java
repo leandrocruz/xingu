@@ -54,4 +54,29 @@ public class StatefullRequest
 			throw new HttpException("Error handling exec()", t);
 		}
 	}
+
+	@Override
+	public HttpResponse execAndRetry(int attempts)
+		throws HttpException
+	{
+		return execAndRetry(attempts, 0);
+	}
+	
+	private HttpResponse execAndRetry(int attempts, int i)
+		throws HttpException
+	{
+		try
+		{
+			return exec();
+		}
+		catch(Exception ex)
+		{
+			System.err.println("Failed: " + i + " - " + ex.getMessage());
+			if(i > attempts)
+			{
+				throw ex;
+			}
+			return execAndRetry(attempts, ++i);
+		}
+	}
 }

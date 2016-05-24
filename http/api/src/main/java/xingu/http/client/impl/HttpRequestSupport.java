@@ -9,6 +9,7 @@ import org.jboss.netty.handler.codec.http.Cookie;
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpContext;
+import xingu.http.client.HttpException;
 import xingu.http.client.HttpProgressListener;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -112,6 +113,39 @@ public abstract class HttpRequestSupport
 	public HttpRequest field(String name, String value)
 	{
 		return field(name, value, null);
+	}
+	
+	@Override
+	public HttpResponse execAndRetry(int attempts)
+		throws HttpException
+	{
+		return execAndRetry(attempts, 0);
+	}
+	
+	private HttpResponse execAndRetry(int attempts, int i)
+		throws HttpException
+	{
+		try
+		{
+			return exec();
+		}
+		catch(Exception ex)
+		{
+			System.err.println(this.name + " failed, " + i + "/" + attempts + " - " + ex.getMessage());
+			try
+			{
+				Thread.sleep(5000);
+			}
+			catch(InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			if(i >= attempts)
+			{
+				throw ex;
+			}
+			return execAndRetry(attempts, ++i);
+		}
 	}
 
 	@Override

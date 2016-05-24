@@ -51,6 +51,9 @@ public interface HttpRequest
 
 	HttpResponse exec()
 		throws HttpException;
+	
+	HttpResponse execAndRetry(int attempts)
+		throws HttpException;
 
 	HttpRequest expects(int code);
 	HttpRequest expects(int code, String messageIfError);
