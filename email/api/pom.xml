@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>xingu</groupId>
 		<artifactId>email</artifactId>
-		<version>1.8-SNAPSHOT</version>
+		<version>1.8</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
