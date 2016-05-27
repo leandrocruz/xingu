@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.jboss.netty.handler.codec.http.Cookie;
+import org.mockito.internal.matchers.Any;
 
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
@@ -89,6 +90,7 @@ public class HttpMocker
 	public HttpMocker to(HttpResponse res)
 	{
 		when(req.exec()).thenReturn(res);
+		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;
 	}
 
@@ -97,6 +99,7 @@ public class HttpMocker
 	{
 		HttpResponse res = asResponse(file);
 		when(req.exec()).thenReturn(res);
+		when(req.execAndRetry(any(int.class))).thenReturn(res);
 	}
 
 	public HttpMocker to(File file)
@@ -104,6 +107,7 @@ public class HttpMocker
 	{
 		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), file);
 		when(req.exec()).thenReturn(res);
+		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;
 	}
 
@@ -119,6 +123,7 @@ public class HttpMocker
 		}
 
 		when(req.exec()).thenReturn(res, array);
+		when(req.execAndRetry(any(int.class))).thenReturn(res, array);
 		return this;
 
 	}
@@ -141,6 +146,7 @@ public class HttpMocker
 
 		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), f);
 		when(req.exec()).thenReturn(res);
+		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;
 	}
 
