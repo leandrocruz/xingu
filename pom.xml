@@ -1,11 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>kix</groupId>
-		<artifactId>kix-java</artifactId>
-		<version>1.0</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
 	<artifactId>xingu</artifactId>
@@ -15,7 +10,6 @@
 	<description>Xingu, a repository of Java components</description>
 	<url>https://bitbucket.org/leandrocruz/xingu</url>
 	<dependencies>
-		<!-- XinguTestCase depends on those -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -25,10 +19,14 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version> 
+			<version>1.9.0</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -40,7 +38,7 @@
 			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 	<modules>
 		<module>maven</module>
 		<module>maze</module>
@@ -53,13 +51,13 @@
 		<module>update</module>
 		<module>inhaka</module>
 		<module>container</module>
-		<module>taster</module>		
+		<module>taster</module>
 		<module>time</module>
 		<module>codec</module>
 		<module>settings</module>
-		<module>http</module>		
+		<module>http</module>
 		<module>servlet</module>
-		<module>exception</module>		
+		<module>exception</module>
 		<module>crypto</module>
 		<module>creator</module>
 		<module>runner</module>
@@ -74,7 +72,7 @@
 		<module>validator</module>
 		<module>email</module>
 		<module>netty</module>
-		<module>node</module>		
+		<module>node</module>
 		<module>l10n</module>
 		<module>process</module>
 		<module>tunnel</module>
@@ -90,13 +88,49 @@
 		-->
 	</modules>
 	<build>
-     	  <extensions>
-            <extension>
-	      <groupId>org.apache.maven.wagon</groupId>
-	      <artifactId>wagon-ssh-external</artifactId>
-	      <version>1.0-alpha-5</version>
-	    </extension>
-	  </extensions>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+			    <executions>
+			        <execution>
+				    <id>attach-sources</id>
+				    <goals>
+				        <goal>jar</goal>
+				    </goals>
+				</execution>
+			    </executions>
+			</plugin>
+		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>1.0-alpha-5</version>
+			</extension>
+		</extensions>
 	</build>
 </project>
-
