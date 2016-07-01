@@ -1,6 +1,8 @@
 package xingu.codec.simple;
 
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configuration;
@@ -10,6 +12,7 @@ import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.strategy.Strategy;
 import org.simpleframework.xml.strategy.TreeStrategy;
+import org.simpleframework.xml.transform.RegistryMatcher;
 
 import xingu.codec.Codec;
 import xingu.codec.impl.CodecSupport;
@@ -35,8 +38,11 @@ public class SimpleCodec
 	public void initialize()
 		throws Exception
 	{
-		Strategy strategy = suppressClassAttribute ? new SuppressClassAttributeStrategy() : new TreeStrategy(); 
-		serializer = new Persister(new AnnotationStrategy(strategy));
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S ZZZ");
+		RegistryMatcher matchers = new RegistryMatcher();
+		matchers.bind(java.util.Date.class, new DateTransformer(df));
+		Strategy strategy = suppressClassAttribute ? new SuppressClassAttributeStrategy() : new TreeStrategy();
+		serializer = new Persister(new AnnotationStrategy(strategy), matchers);
 	}
 
 	@Override
