@@ -3,6 +3,7 @@ package xingu.codec.simple;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configuration;
@@ -26,11 +27,18 @@ public class SimpleCodec
 
 	private boolean suppressClassAttribute;
 
+	private String format;
+
+	private String timeZone;
+
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
 		suppressClassAttribute = conf.getChild("classAttribute").getAttributeAsBoolean("suppress", true);
+		Configuration df = conf.getChild("dateFormat");
+		this.format      = df.getAttribute("format", "yyyy-MM-dd HH:mm:ss.S ZZZ");
+		this.timeZone    = df.getAttribute("timezone", "UTC");
 		super.configure(conf);
 	}
 
@@ -38,7 +46,8 @@ public class SimpleCodec
 	public void initialize()
 		throws Exception
 	{
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S ZZZ");
+		DateFormat df = new SimpleDateFormat(format);
+		df.setTimeZone(TimeZone.getTimeZone(timeZone));
 		RegistryMatcher matchers = new RegistryMatcher();
 		matchers.bind(java.util.Date.class, new DateTransformer(df));
 		Strategy strategy = suppressClassAttribute ? new SuppressClassAttributeStrategy() : new TreeStrategy();
