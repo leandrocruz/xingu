@@ -18,6 +18,7 @@ import xingu.cloud.spawner.SpawnRequest;
 import xingu.cloud.spawner.Spawner;
 import xingu.cloud.spawner.Surrogate;
 import xingu.cloud.spawner.impl.task.SpawnerTask;
+import xingu.lang.NotImplementedYet;
 import xingu.lang.thread.DaemonThreadFactory;
 import xingu.lang.thread.ThreadNamer;
 
@@ -26,13 +27,37 @@ public abstract class SpawnerSupport
 {
 	protected Map<String, Surrogate>	surrogateById	= new HashMap<>();
 
-	private Queue<SpawnerTask>			queue			= new ConcurrentLinkedQueue<>();
+	private Queue<SpawnerTask>			startQueue		= new ConcurrentLinkedQueue<>();
+	
+	private Queue<SpawnerTask>			stopQueue		= new ConcurrentLinkedQueue<>();
+	
+	private Object						queueHandle		= new Object();
 
 	protected DaemonThreadFactory		tf;
 
 	private boolean						shouldRun		= true;
 
 	protected Logger					logger			= LoggerFactory.getLogger(getClass());
+	
+	@Override
+	public String[] listTasks()
+	{
+		List<String> tasks = new ArrayList<String>();
+		
+		synchronized(queueHandle)
+		{
+			for(SpawnerTask s : startQueue)
+			{
+				tasks.add(s.toString());
+			}
+			for(SpawnerTask s : stopQueue)
+			{
+				tasks.add(s.toString());
+			}
+		}
+		
+		return (String[]) tasks.toArray();
+	}
 	
 	@Override
 	public void start()
@@ -64,21 +89,33 @@ public abstract class SpawnerSupport
 		tf.interruptAllThreads();
 	}
 
+	private SpawnerTask poll()
+	{
+		SpawnerTask task = startQueue.poll();
+		
+		if(task == null)
+		{
+			task = stopQueue.poll();
+		}
+		
+		return task;
+	}
+	
 	private void consumeQueue()
 	{
 		while(shouldRun)
 		{
-			SpawnerTask task = queue.poll();
+			SpawnerTask task = poll();
 			if(task == null)
 			{
 				try
 				{
-					synchronized(queue)
+					synchronized(queueHandle)
 					{
 						/*
 						 * Waiting for 30 secs because there is a chance that we miss the notify() signal
 						 */
-						queue.wait(30 * 1000);
+						queueHandle.wait(30 * 1000);
 					}
 				}
 				catch(InterruptedException e)
@@ -131,10 +168,21 @@ public abstract class SpawnerSupport
 
 	private void enqueue(SpawnerTask task)
 	{
-        synchronized(queue)
+        synchronized(queueHandle)
         {                           
-            queue.add(task);
-            queue.notify();
+            if(task instanceof Start)
+            {
+            	startQueue.add(task);
+            }
+            else if(task instanceof Stop)
+            {            	
+            	stopQueue.add(task);
+            }
+            else
+            {
+            	throw new NotImplementedYet("Could not enqueue task");
+            }
+            queueHandle.notify();
         }
 	}
 
@@ -222,6 +270,12 @@ public abstract class SpawnerSupport
 			logger.info("Starting {} Surrogates", surrogates.size());
 			startSurrogate(req, surrogates);
 		}
+		
+		@Override
+		public String toString()
+		{
+			return "Start-" + req.getIdPattern() + "-" + surrogates.size();
+		}
 	}
 	
 	class Stop
@@ -247,6 +301,12 @@ public abstract class SpawnerSupport
 				Channel channel = surrogate.getChannel();
 				release(channel);
 			}
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "Stop-" + surrogate.getId();
 		}
 	}
 }

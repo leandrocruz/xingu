@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.jboss.netty.channel.Channel;
 
+import xingu.cloud.spawner.impl.task.SpawnerTask;
+
 public interface Spawner
 {
+	String[] listTasks(); 
+	
 	List<Surrogate> list();
 	
 	Surrogate byChannel(Channel channel);
