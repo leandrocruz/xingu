@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.0</version> 
+			<version>1.9.0</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -40,7 +40,7 @@
 			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 	<modules>
 		<module>maven</module>
 		<module>maze</module>
@@ -53,13 +53,13 @@
 		<module>update</module>
 		<module>inhaka</module>
 		<module>container</module>
-		<module>taster</module>		
+		<module>taster</module>
 		<module>time</module>
 		<module>codec</module>
 		<module>settings</module>
-		<module>http</module>		
+		<module>http</module>
 		<module>servlet</module>
-		<module>exception</module>		
+		<module>exception</module>
 		<module>crypto</module>
 		<module>creator</module>
 		<module>runner</module>
@@ -74,7 +74,7 @@
 		<module>validator</module>
 		<module>email</module>
 		<module>netty</module>
-		<module>node</module>		
+		<module>node</module>
 		<module>l10n</module>
 		<module>process</module>
 		<module>tunnel</module>
@@ -98,5 +98,8 @@
 	    </extension>
 	  </extensions>
 	</build>
-</project>
+	<properties>
+		<aws.sdk>1.11.37</aws.sdk>
+	</properties>
 
+</project>
