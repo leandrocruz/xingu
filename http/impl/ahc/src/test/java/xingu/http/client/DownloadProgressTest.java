@@ -67,6 +67,7 @@ public class DownloadProgressTest
 	}
 	
 	@Test
+	@Ignore
 	public void testDownload()
 		throws Exception
 	{
