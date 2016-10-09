@@ -32,6 +32,8 @@ public class GCloudSpawner
 	extends SpawnerSupport
 	implements Spawner, Configurable, Initializable
 {
+	private final static String PARAM_SEPARATOR = "x-x-x";
+	
 	@Inject
 	private ProcessManager	pm;
 
@@ -118,10 +120,11 @@ public class GCloudSpawner
 		{
 			cmd.add("--metadata");
 			StringBuilder metaDataBuffer = new StringBuilder();
+			metaDataBuffer.append("^").append(PARAM_SEPARATOR).append("^");
 			for(NameValue<String> item : meta)
 			{
 				metaDataBuffer.append(item.name + "=" + item.value);
-				metaDataBuffer.append(",");
+				metaDataBuffer.append(PARAM_SEPARATOR);
 			}
 			cmd.add(metaDataBuffer.toString());
 		}
