@@ -21,12 +21,11 @@
 			<groupId>xingu</groupId>
 			<artifactId>xingu-utils</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
 			<artifactId>xingu-http-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 	</dependencies>
 </project>
-

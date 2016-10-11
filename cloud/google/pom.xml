@@ -16,17 +16,17 @@
 			<groupId>xingu</groupId>
 			<artifactId>codec-jackson</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
 			<artifactId>xingu-cloud-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>xingu</groupId>
 			<artifactId>xingu-process</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client-java6</artifactId>
@@ -37,7 +37,6 @@
 			<artifactId>xingu-http-impl-native</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
-		</dependency>	
+		</dependency>
 	</dependencies>
 </project>
-

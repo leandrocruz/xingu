@@ -133,4 +133,8 @@
 			</extension>
 		</extensions>
 	</build>
+	<properties>
+		<aws.sdk>1.11.5</aws.sdk>
+		<ahc>4.5.2</ahc>
+	</properties>
 </project>

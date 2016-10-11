@@ -24,12 +24,12 @@
 	<modules>
 		<module>api</module>
 		<!-- xml -->
-		<module>xoia</module>		
+		<module>xoia</module>
 		<module>xstream</module>
 		<module>skaringa</module>
 		<module>simple</module>
-		<!-- json -->		
-		<module>flexjson</module>		
+		<!-- json -->
+		<module>flexjson</module>
 		<module>gson</module>
 		<module>jackson</module>
 		<module>boonjson</module>

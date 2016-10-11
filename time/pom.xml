@@ -20,5 +20,5 @@
 			<artifactId>xingu-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 </project>

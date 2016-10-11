@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>xingu</groupId>
 		<artifactId>template</artifactId>
-		<version>1.4.25-SNAPSHOT</version>
+		<version>1.9-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>xingu</groupId>
@@ -20,5 +20,5 @@
 			<artifactId>groovy</artifactId>
 			<version>1.0-jsr-06</version>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 </project>

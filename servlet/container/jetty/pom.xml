@@ -20,7 +20,7 @@
 			<artifactId>jetty</artifactId>
 			<version>6.1.19</version>
 		</dependency>
-		<!-- 
+		<!--
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>

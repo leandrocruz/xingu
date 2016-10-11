@@ -11,7 +11,6 @@
 	<groupId>xingu</groupId>
 	<artifactId>xingu-tunnel-server</artifactId>
 	<packaging>jar</packaging>
-	<version>1.9-SNAPSHOT</version>
 	<name>Xingu TCP Tunnel Server</name>
 	<dependencies>
 		<dependency>
@@ -26,4 +25,3 @@
 		</dependency>
 	</dependencies>
 </project>
-
