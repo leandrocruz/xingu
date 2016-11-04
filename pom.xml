@@ -9,6 +9,12 @@
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>https://bitbucket.org/leandrocruz/xingu</url>
+	<repositories>
+		<repository>
+			<id>IBCorp</id>
+			<url>http://repo.ibcorp.com.br/maven</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
