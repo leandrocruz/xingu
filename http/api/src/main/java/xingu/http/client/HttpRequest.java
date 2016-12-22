@@ -44,14 +44,14 @@ public interface HttpRequest
 
 	List<Attachment> getAttachments();
 	HttpRequest withAttachment(Attachment attachment);	
-	
+
 	String getAuthenticationUser();
 	String getAuthenticationPassword();
 	HttpRequest withAuthentication(String user, String password);
 
 	HttpResponse exec()
 		throws HttpException;
-	
+
 	HttpResponse execAndRetry(int attempts)
 		throws HttpException;
 
@@ -67,8 +67,14 @@ public interface HttpRequest
 	HttpRequest ignoreSSLCertificates(boolean ignore);
 	boolean ignoreSSLCertificates();
 
+	HttpRequest sslAllowBeast(boolean allow);
+	boolean sslAllowBeast();
+
+	HttpRequest sslV3(boolean v3);
+	boolean sslV3();
+
 	HttpRequest listener(HttpProgressListener listener);
-	
+
 	HttpRequest payload(String payload);
 	String getPayload();
 

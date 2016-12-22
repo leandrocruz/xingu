@@ -72,7 +72,6 @@ public class CurlCommandLineBuilder
 		
 		if(StringUtils.isNotEmpty(keepAlive))
 		{
-			int kaValue = Integer.parseInt(keepAlive);
 			result.add("--keepalive-time");
 			result.add(keepAlive);
 		}
@@ -80,7 +79,9 @@ public class CurlCommandLineBuilder
 		result.add("-m");
 		result.add("240");
 		result.add("-i");
-		result.add("-k"); // ignore server certificate //TODO: use ignoreSSLCertificates()
+		
+		placeSecurityOptions(req, result);
+		
 		result.add("-o"); // output to a file
 		result.add(file.toString());
 
@@ -112,6 +113,28 @@ public class CurlCommandLineBuilder
 		result.add("--compressed");
 
 		return result;
+	}
+
+	private void placeSecurityOptions(HttpRequest req, List<String> result)
+	{
+		//TODO: use ignoreSSLCertificates() when performing the request
+		/*
+		if(req.ignoreSSLCertificates())
+		{
+			result.add("-k"); // ignore server certificate
+		}
+		*/
+
+		result.add("-k"); // ignore server certificate		
+		
+		if(req.sslAllowBeast())
+		{
+			result.add("--ssl-allow-beast");
+		}		
+		if(req.sslV3())
+		{
+			result.add("-3");
+		}
 	}
 
 	private void placeDataFields(HttpRequest req, List<String> result)
