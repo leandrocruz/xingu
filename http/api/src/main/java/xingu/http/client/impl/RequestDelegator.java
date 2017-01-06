@@ -334,7 +334,7 @@ public abstract class RequestDelegator
 	@Override
 	public HttpRequest sslV3(boolean v3)
 	{
-		this.sslV3(v3);
+		req.sslV3(v3);
 		return this;
 	}
 }
