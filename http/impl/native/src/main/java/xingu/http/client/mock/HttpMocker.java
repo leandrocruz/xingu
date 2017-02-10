@@ -83,7 +83,7 @@ public class HttpMocker
 		when(req.listener(any(HttpProgressListener.class))).thenReturn(req);
 		when(req.ignoreSSLCertificates(any(Boolean.class))).thenReturn(req);
 		when(req.withKeepAlive(any(String.class))).thenReturn(req);
-
+		when(req.payload(any(String.class))).thenReturn(req);
 		return req;
 	}
 
