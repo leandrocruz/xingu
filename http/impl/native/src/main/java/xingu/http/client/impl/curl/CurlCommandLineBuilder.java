@@ -1,6 +1,10 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,7 @@ import java.util.List;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -18,6 +23,7 @@ import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
+import xingu.http.client.impl.SimpleHttpRequest;
 import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpUtils;
 
@@ -145,31 +151,52 @@ public class CurlCommandLineBuilder
 
 		if(len > 0)
 		{
+			StringBuilder dump = new StringBuilder();
+			
 			//String charset = req.getCharset();
 			for(NameValue f : fields)
 			{
 				String name  = f.getName();
 				String value = f.getValue();
 				String type  = f.getType();
-				if(type != null && type.startsWith("enc"))
-				{
-					int idx = type.indexOf(":");
-					String encoding = type.substring(idx + 1);
-					if(!"no".equals(encoding))
-					{
-						if(encodeParameterNames)
-						{
-							name  = URLEncoder.encode(name, encoding);
-						}
-						value = URLEncoder.encode(value, encoding);
-					}
-					result.add("--data");
+				
+				if(type != null && type.startsWith("dump"))
+				{					
+					dump.append("--data-urlencode \"")
+						.append(name)
+						.append("=")
+						.append(value)
+						.append("\"")
+						.append("\n");
 				}
 				else
 				{
-					result.add("--data-urlencode");
-				}
-				result.add(name+"="+value);
+					if(type != null && type.startsWith("enc"))
+					{
+						int idx = type.indexOf(":");
+						String encoding = type.substring(idx + 1);
+						if(!"no".equals(encoding))
+						{
+							if(encodeParameterNames)
+							{
+								name  = URLEncoder.encode(name, encoding);
+							}
+							value = URLEncoder.encode(value, encoding);
+						}
+						result.add("--data");
+					}
+					else
+					{
+						result.add("--data-urlencode");
+					}
+					
+					result.add(name+"="+value);
+				}				
+			}
+			
+			if(dump.length() > 0)
+			{				
+				dumpParameters(dump.toString(), req, result);
 			}
 		}
 	}
@@ -177,6 +204,8 @@ public class CurlCommandLineBuilder
 	private void placeMultipartFields(HttpRequest req, List<String> result)
 		throws Exception
 	{
+		StringBuilder dump = new StringBuilder();
+		
 		List<Attachment> attachments = req.getAttachments();
 		int len = attachments == null ? 0 : attachments.size();
 		if(len > 0)
@@ -187,10 +216,15 @@ public class CurlCommandLineBuilder
 				String fileName = attachment.getFileName();
 				File   file     = attachment.getFile();
 				String mime     = attachment.getMime();
-				result.add("-F");
-				result.add(name + "=@" + file.getAbsolutePath() 
-						+ (fileName == null ? "" : ";filename=" + fileName)
-						+ (mime == null ? "" : ";type=" + mime));
+				
+				dump
+					.append("-F ")
+					.append("'")
+					.append(name + "=@" + file.getAbsolutePath()) 
+					.append(fileName == null ? "" : ";filename=" + fileName)
+					.append(mime == null ? "" : ";type=" + mime)
+					.append("'")
+					.append("\n");
 			}
 		}
 
@@ -203,10 +237,10 @@ public class CurlCommandLineBuilder
 		List<NameValue> fields = req.getFields();
 		int len2 = fields == null ? 0 : fields.size();
 		if(len2 > 0)
-		{
+		{			
 			for(NameValue f : fields)
 			{
-				result.add("-F");
+				dump.append("-F ");
 				String name  = f.getName();
 				String value = f.getValue();
 				String type  = f.getType();
@@ -218,18 +252,56 @@ public class CurlCommandLineBuilder
 					{
 						value = URLEncoder.encode(value, encoding);
 					}
-					result.add(name + "=" + value);
+					dump
+						.append("'")
+						.append(name + "=" + value)
+						.append("'");
 				}
 				else if(type != null)
 				{
-					result.add(name + "=" + value + ";type=" + type);
+					dump
+						.append("'")
+						.append(name + "=" + value + ";type=" + type)
+						.append("'");
 				}
 				else
 				{
-					result.add(name + "=" + value);
+					dump
+						.append("'")
+						.append(name + "=" + value)
+						.append("'");
 				}
+				dump.append("\n");
+			}
+			
+			if(dump.length() > 0)
+			{				
+				dumpParameters(dump.toString(), req, result);
 			}
 		}
+	}
+	
+	private void dumpParameters(String dump, HttpRequest req, List<String> result)
+		throws IOException
+	{
+		File outputFile = null;
+		
+		if(req.getContext() != null)
+		{
+			outputFile = File.createTempFile("dump_curl_", "_file.txt", req.getContext().getRootDirectory());
+		}
+		else
+		{
+			outputFile = File.createTempFile("dump_curl_", "_file.txt");
+		}		
+
+		OutputStream os = new FileOutputStream(outputFile);
+		
+		IOUtils.write(dump, os);
+		IOUtils.closeQuietly(os);
+		
+		result.add("-K");
+		result.add(outputFile.getPath());
 	}
 
 	private void placeCertificate(HttpRequest req, List<String> result)

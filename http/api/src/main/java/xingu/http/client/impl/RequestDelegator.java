@@ -35,6 +35,12 @@ public abstract class RequestDelegator
 		req.context(ctx);
 		return this;
 	}
+	
+	@Override
+	public HttpContext getContext()
+	{
+		return req.getContext();
+	}
 
 	@Override
 	public String getMethod()
