@@ -311,4 +311,30 @@ public abstract class RequestDelegator
 	{
 		return req.isSoap();
 	}
+	
+	@Override
+	public boolean sslAllowBeast()
+	{
+		return req.sslAllowBeast();
+	}
+	
+	@Override
+	public HttpRequest sslAllowBeast(boolean allow)
+	{
+		req.sslAllowBeast(allow);
+		return this;
+	}
+	
+	@Override
+	public boolean sslV3()
+	{
+		return req.sslV3();
+	}
+	
+	@Override
+	public HttpRequest sslV3(boolean v3)
+	{
+		req.sslV3(v3);
+		return this;
+	}
 }

@@ -22,47 +22,51 @@ import xingu.utils.StringUtils;
 public abstract class HttpRequestSupport
 	implements HttpRequest
 {
-	protected HttpContext			context;
+	protected HttpContext             context;
 
-	protected String				name;
+	protected String                  name;
 
-	protected String				method;
+	protected String                  method;
 
-	protected String				uri;
+	protected String                  uri;
 
-	protected String				ua;
+	protected String                  ua;
 
-	protected String				charset;
+	protected String                  charset;
 
-	protected String				certificate;
+	protected String                  certificate;
 
-	protected String				certificatePassword;
+	protected String                  certificatePassword;
 
-	protected String				authUser;
+	protected String                  authUser;
 
-	protected String				authPassword;
+	protected String                  authPassword;
 
-	protected String				payload;
+	protected String                  payload;
 
-	protected boolean				multipart;
+	protected boolean                 multipart;
 
-	protected boolean				ignoreSSLCertificates;
+	protected boolean                 ignoreSSLCertificates;
 
-	private boolean					soap;
-	
-	private String					keepAlive;
-	
-	protected HttpProgressListener	listener;
+	private   boolean                 soap;
 
-	protected Cookies				cookies		= new CookiesImpl();
+	private   String                  keepAlive;
 
-	protected List<NameValue>		fields		= new ArrayList<>();
+	protected HttpProgressListener    listener;
 
-	protected List<Attachment>		attachments	= new ArrayList<>();
+	protected Cookies                 cookies                = new CookiesImpl();
 
-	protected List<NameValue>		headers		= new ArrayList<>();
+	protected List<NameValue>         fields                 = new ArrayList<>();
 
-	private List<ResponseInspector>	inspectors	= new ArrayList<>();
+	protected List<Attachment>        attachments            = new ArrayList<>();
+
+	protected List<NameValue>         headers                = new ArrayList<>();
+
+	private   List<ResponseInspector> inspectors             = new ArrayList<>();
+
+	private   boolean                 sslAllowBeast;
+
+	private   boolean                 sslV3;
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -425,5 +429,29 @@ public abstract class HttpRequestSupport
 		return method + " " + uri;
 	}
 	
+	@Override
+	public boolean sslAllowBeast()
+	{
+		return this.sslAllowBeast;
+	}
 	
+	@Override
+	public HttpRequest sslAllowBeast(boolean allow)
+	{
+		this.sslAllowBeast = allow;
+		return this;
+	}
+	
+	@Override
+	public boolean sslV3()
+	{
+		return this.sslV3;
+	}
+	
+	@Override
+	public HttpRequest sslV3(boolean v3)
+	{
+		this.sslV3 = v3;
+		return this;
+	}
 }

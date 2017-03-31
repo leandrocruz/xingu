@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.jboss.netty.handler.codec.http.Cookie;
-import org.mockito.internal.matchers.Any;
 
 import xingu.http.client.Attachment;
 import xingu.http.client.Cookies;
@@ -83,7 +82,7 @@ public class HttpMocker
 		when(req.listener(any(HttpProgressListener.class))).thenReturn(req);
 		when(req.ignoreSSLCertificates(any(Boolean.class))).thenReturn(req);
 		when(req.withKeepAlive(any(String.class))).thenReturn(req);
-
+		when(req.payload(any(String.class))).thenReturn(req);
 		return req;
 	}
 
