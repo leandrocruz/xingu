@@ -273,11 +273,11 @@ public class CurlCommandLineBuilder
 				}
 				dump.append("\n");
 			}
-			
-			if(dump.length() > 0)
-			{				
-				dumpParameters(dump.toString(), req, result);
-			}
+		}
+		
+		if(dump.length() > 0)
+		{				
+			dumpParameters(dump.toString(), req, result);
 		}
 	}
 	
