@@ -189,7 +189,7 @@ public class CurlCommandLineBuilder
 				}				
 			}
 
-			dumpParametersToFile(dump, req, result);
+			dumpParametersToFileIfAny(dump, req, result);
 		}
 	}
 
@@ -267,21 +267,21 @@ public class CurlCommandLineBuilder
 			}
 		}
 		
-		dumpParametersToFile(dump, req, result);
+		dumpParametersToFileIfAny(dump, req, result);
 	}
 
-	private void dumpParametersToFile(StringBuilder dump, HttpRequest req, List<String> result)
+	private void dumpParametersToFileIfAny(StringBuilder dump, HttpRequest req, List<String> result)
 		throws Exception
 	{
 		if(dump.length() > 0)
 		{				
-			File outputFile = dumpTempFile(dump, req);
+			File outputFile = dumpParametersToFile(dump, req);
 			result.add("-K");
 			result.add(outputFile.getPath());
 		}
 	}
 	
-	private File dumpTempFile(StringBuilder dump, HttpRequest req)
+	private File dumpParametersToFile(StringBuilder dump, HttpRequest req)
 		throws Exception
 	{
 		File file = null;
