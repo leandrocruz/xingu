@@ -10,4 +10,4 @@ pipelines:
     - step:
         script:
           - python --version
-          - ./push-to-gcp-storage.sh
+          - ./build/download-gcp-sdk.sh
