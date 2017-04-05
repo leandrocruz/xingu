@@ -11,3 +11,5 @@ pipelines:
         script:
           - python --version
           - ./build/download-gcp-sdk.sh
+          - echo ${GOOGLE_CLIENT_SECRET} > client-secret.json
+          - ${HOME}/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file client-secret.json
