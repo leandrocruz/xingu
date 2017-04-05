@@ -1,10 +1,6 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +8,7 @@ import java.util.List;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -23,7 +19,6 @@ import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
-import xingu.http.client.impl.SimpleHttpRequest;
 import xingu.lang.NotImplementedYet;
 import xingu.netty.http.HttpUtils;
 
@@ -193,11 +188,8 @@ public class CurlCommandLineBuilder
 					result.add(name+"="+value);
 				}				
 			}
-			
-			if(dump.length() > 0)
-			{				
-				dumpParameters(dump.toString(), req, result);
-			}
+
+			dumpParametersToFile(dump, req, result);
 		}
 	}
 
@@ -275,33 +267,35 @@ public class CurlCommandLineBuilder
 			}
 		}
 		
+		dumpParametersToFile(dump, req, result);
+	}
+
+	private void dumpParametersToFile(StringBuilder dump, HttpRequest req, List<String> result)
+		throws Exception
+	{
 		if(dump.length() > 0)
 		{				
-			dumpParameters(dump.toString(), req, result);
+			File outputFile = dumpTempFile(dump, req);
+			result.add("-K");
+			result.add(outputFile.getPath());
 		}
 	}
 	
-	private void dumpParameters(String dump, HttpRequest req, List<String> result)
-		throws IOException
+	private File dumpTempFile(StringBuilder dump, HttpRequest req)
+		throws Exception
 	{
-		File outputFile = null;
-		
+		File file = null;
 		if(req.getContext() != null)
 		{
-			outputFile = File.createTempFile("dump_curl_", "_file.txt", req.getContext().getRootDirectory());
+			file = File.createTempFile("dump_curl_", "_file.txt", req.getContext().getRootDirectory());
 		}
 		else
 		{
-			outputFile = File.createTempFile("dump_curl_", "_file.txt");
+			file = File.createTempFile("dump_curl_", "_file.txt");
 		}		
 
-		OutputStream os = new FileOutputStream(outputFile);
-		
-		IOUtils.write(dump, os);
-		IOUtils.closeQuietly(os);
-		
-		result.add("-K");
-		result.add(outputFile.getPath());
+		FileUtils.write(file, dump);		
+		return file;
 	}
 
 	private void placeCertificate(HttpRequest req, List<String> result)
