@@ -312,7 +312,9 @@ public class CurlCommandLineBuilder
 					String type  = f.getType();
 					
 					if(type != null && type.startsWith("dump"))
-					{					
+					{
+						value = escapeText(value);
+						
 						dump.append("--data-urlencode \"")
 							.append(name)
 							.append("=")
@@ -366,11 +368,11 @@ public class CurlCommandLineBuilder
 					
 					dump
 						.append("-F ")
-						.append("'")
+						.append("\"")
 						.append(name + "=@" + file.getAbsolutePath()) 
 						.append(fileName == null ? "" : ";filename=" + fileName)
 						.append(mime == null ? "" : ";type=" + mime)
-						.append("'")
+						.append("\"")
 						.append("\n");
 				}
 			}
@@ -391,6 +393,9 @@ public class CurlCommandLineBuilder
 					String name  = f.getName();
 					String value = f.getValue();
 					String type  = f.getType();
+					
+					value = escapeText(value);
+					
 					if(type != null && type.startsWith("enc"))
 					{
 						int idx = type.indexOf(":");
@@ -400,29 +405,34 @@ public class CurlCommandLineBuilder
 							value = URLEncoder.encode(value, encoding);
 						}
 						dump
-							.append("'")
+							.append("\"")
 							.append(name + "=" + value)
-							.append("'");
+							.append("\"");
 					}
 					else if(type != null)
 					{
 						dump
-							.append("'")
+							.append("\"")
 							.append(name + "=" + value + ";type=" + type)
-							.append("'");
+							.append("\"");
 					}
 					else
 					{
 						dump
-							.append("'")
+							.append("\"")
 							.append(name + "=" + value)
-							.append("'");
+							.append("\"");
 					}
 					dump.append("\n");
 				}
 			}
 			
 			dumpParametersToFileIfAny(dump);
+		}
+		
+		private String escapeText(String text)
+		{			
+			return text.replace("\"", "\\\"");
 		}
 
 		private void dumpParametersToFileIfAny(StringBuilder dump)
