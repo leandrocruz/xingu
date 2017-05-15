@@ -10,6 +10,7 @@ public interface HttpRequest
 	String getUri();
 
 	HttpRequest context(HttpContext ctx);
+	HttpContext getContext();
 
 	String getMethod();
 	boolean isPost();

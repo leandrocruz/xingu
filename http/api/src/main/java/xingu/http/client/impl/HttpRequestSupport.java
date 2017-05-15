@@ -308,6 +308,12 @@ public abstract class HttpRequestSupport
 	{
 		return multipart;
 	}
+	
+	@Override
+	public HttpContext getContext()
+	{
+		return this.context;
+	}
 
 	@Override
 	public HttpRequest context(HttpContext ctx)
