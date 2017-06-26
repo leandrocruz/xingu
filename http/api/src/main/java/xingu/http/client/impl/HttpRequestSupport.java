@@ -7,6 +7,7 @@ import java.util.Map;
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Attachment;
+import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
@@ -373,7 +374,14 @@ public abstract class HttpRequestSupport
 	{
 		for(ResponseInspector inspector: inspectors)
 		{
-			inspector.throwErrorIf(res);
+			try
+			{
+				inspector.throwErrorIf(res);
+			}
+			catch(Exception ex)
+			{
+				throw new ExceptionWithResponse(ex, res);
+			}
 		}
 	}
 
