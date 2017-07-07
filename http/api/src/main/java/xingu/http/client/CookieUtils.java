@@ -1,6 +1,8 @@
 package xingu.http.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -90,6 +92,80 @@ public class CookieUtils
 			}
 			merged.add(onSecond);
 		}
+		return new CookiesImpl(merged);
+	}
+	
+	public static Cookies mergeCookies(Cookies first, HttpResponse res)
+	{
+		Map<String,  Cookie>        newCookies = new HashMap<>();
+		List<String> expiredCookies            = new ArrayList<>();
+
+		NameValue[] headers = res.getHeaders();
+		for(NameValue header : headers)
+		{
+			String name = header.getName();
+			if("set-cookie".equalsIgnoreCase(name))
+			{				
+				String value = header.getValue();
+				System.err.println(value);
+				
+				if(value.contains("Expires"))
+				{
+					expiredCookies.add(value.split("=")[0]);
+				}
+				else
+				{
+					Set<Cookie> cookies = decoder.decode(value);
+					for(Cookie cookie : cookies)
+					{
+						newCookies.put(cookie.getName(), cookie);
+					}
+				}
+			}
+		}
+
+		Set<Cookie> newSet = new TreeSet<>();
+		for(String name : newCookies.keySet())
+		{
+			newSet.add(newCookies.get(name));
+		}
+		
+		Cookies     result    = new CookiesImpl();
+		Set<Cookie> merged    = result.getBuffer();
+		Set<Cookie> firstSet  = first.getBuffer();
+
+		merged.addAll(firstSet);
+		
+		for(Cookie onSecond : newSet)
+		{
+			String name    = onSecond.getName();
+			Cookie onFirst = result.byName(name);
+			if(onFirst != null)
+			{
+				merged.remove(onFirst);
+			}
+			merged.add(onSecond);
+		}
+		
+		for(String s : expiredCookies)
+		{
+			Cookie target = null;
+			
+			for(Cookie c : merged)
+			{
+				if(c.getName().startsWith(s))
+				{
+					target = c;
+					break;
+				}
+			}
+			
+			if(target != null)
+			{
+				merged.remove(target);
+			}
+		}
+		
 		return new CookiesImpl(merged);
 	}
 }

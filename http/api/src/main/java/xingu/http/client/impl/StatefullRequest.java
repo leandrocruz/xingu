@@ -34,16 +34,7 @@ public class StatefullRequest
 	
 		HttpResponse res = req.exec();
 
-		Cookies newCookies = CookieUtils.getCookies(res);
-		if(cookies == null)
-		{
-			cookies = newCookies;
-		}
-		else
-		{
-			cookies = CookieUtils.mergeCookies(cookies, newCookies);
-		}
-		state.setCookies(cookies);
+		adjustStateCookies(res);
 
 		try
 		{
@@ -55,12 +46,53 @@ public class StatefullRequest
 		}
 	}
 
+	private void adjustStateCookies(HttpResponse res)
+	{
+		Cookies cookies    = state.getCookies();
+		Cookies newCookies = CookieUtils.getCookies(res);
+		if(cookies == null)
+		{
+			cookies            = newCookies;
+		}
+		else
+		{
+			cookies            = CookieUtils.mergeCookies(cookies, newCookies);
+		}
+		state.setCookies(cookies);		
+	}
+
 	@Override
 	public HttpResponse execAndRetry(int attempts)
 		throws HttpException
 	{
-		return execAndRetry(attempts, 0);
+		return execAndRetry(attempts, 1);
 	}
+	
+//	private HttpResponse execAndRetry(int attempts, int i)
+//		throws HttpException
+//	{
+//		try
+//		{
+//			return exec();
+//		}
+//		catch(Exception ex)
+//		{
+//			System.err.println("Failed: " + i + " - " + ex.getMessage());
+//			if(i > attempts)
+//			{
+//				throw ex;
+//			}
+//			return execAndRetry(attempts, ++i);
+//		}
+//	}
+	
+	
+//	@Override
+//	public HttpResponse execAndRetry(int attempts)
+//		throws HttpException
+//	{
+//		return execAndRetry(attempts, 0);
+//	}
 	
 	private HttpResponse execAndRetry(int attempts, int i)
 		throws HttpException
@@ -71,8 +103,23 @@ public class StatefullRequest
 		}
 		catch(Exception ex)
 		{
-			System.err.println("Failed: " + i + " - " + ex.getMessage());
-			if(i > attempts)
+			System.err.println(this.req.getUri() + " failed, " + i + "/" + attempts + " - " + ex.getMessage());
+			
+			if(ex.getCause() instanceof ExceptionWithResponse)
+			{
+				HttpResponse res = ((ExceptionWithResponse)ex.getCause()).getHttpResponse();				
+				//adjustStateCookies(res);
+			}
+			
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch(InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			if(i >= attempts)
 			{
 				throw ex;
 			}

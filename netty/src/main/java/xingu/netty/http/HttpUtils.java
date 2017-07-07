@@ -537,24 +537,44 @@ public class HttpUtils
 			}
 			return map;
 		}
+		else
+		{
+			List<InterfaceHttpData> items = HttpUtils.whenPostData(req);
+			List<Attribute> attributes = HttpUtils.attributesFrom(items);
+			for(Attribute attr : attributes)
+			{
+				map.add(attr.getName(), attr.getValue());
+			}
+			return map;
+		}
 
-		if(true)
-		{
-			throw new NotImplementedYet();
-		}
-		String  cType        = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
-		String  csName       = HttpUtils.charset(cType, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
-		Charset charset      = Charset.forName(csName);
-		String  data         = buffer.toString(charset);
-		boolean isUrlEncoded = HttpUtils.isUrlEncoded(cType);
-		if(isUrlEncoded)
-		{
-			data = URLDecoder.decode(data, csName);
-		}
-		return map;
+//		if(true)
+//		{
+//			throw new NotImplementedYet();
+//		}
+//		String  cType        = req.getHeader(HttpHeaders.Names.CONTENT_TYPE);
+//		String  csName       = HttpUtils.charset(cType, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+//		Charset charset      = Charset.forName(csName);
+//		String  data         = buffer.toString(charset);
+//		boolean isUrlEncoded = HttpUtils.isUrlEncoded(cType);
+//		if(isUrlEncoded)
+//		{
+//			data = URLDecoder.decode(data, csName);
+//		}
+//				
+//		return map;
 	}
 
 	public static List<InterfaceHttpData> whenMultipart(HttpRequest req)
+		throws Exception
+	{
+		HttpDataFactory         factory = new DefaultHttpDataFactory();
+		HttpPostRequestDecoder  decoder = new HttpPostRequestDecoder(factory, req);
+		List<InterfaceHttpData> items   = decoder.getBodyHttpDatas();
+		return items;
+	}
+	
+	public static List<InterfaceHttpData> whenPostData(HttpRequest req)
 		throws Exception
 	{
 		HttpDataFactory         factory = new DefaultHttpDataFactory();
