@@ -1,6 +1,7 @@
 package xingu.cloud.spawner.impl.google;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,12 +79,8 @@ public class GCloudSpawner
 		cmd.add(zone);
 		cmd.add("--quiet");
 
-		String result = execute(cmd);
-		parseRelease(result);
-	}
-	
-	private void parseRelease(String result)
-	{}
+		execute(cmd);
+	}	
 
 	@Override
 	protected void startSurrogate(SpawnRequest req, List<Surrogate> surrogates)
@@ -129,47 +126,60 @@ public class GCloudSpawner
 			cmd.add(metaDataBuffer.toString());
 		}
 
-		String result = execute(cmd);
+		execute(cmd);
 		//parseSpawn(result);
 	}
 
-	private List<Surrogate> parseSpawn(String in)
+//	private List<Surrogate> parseSpawn(String in)
+//		throws Exception
+//	{
+//		List<CreateJsonReply> result = mapper.readValue(in, new TypeReference<List<CreateJsonReply>>(){});
+//		List<Surrogate> surrogates = new ArrayList<>(result.size());
+//		for(CreateJsonReply reply : result)
+//		{
+//			Surrogate surrogate = toSurrogate(reply);
+//			surrogates.add(surrogate);
+//		}
+//		return surrogates;
+//	}
+
+//	private Surrogate toSurrogate(CreateJsonReply reply)
+//	{
+//		NetworkInterface iface0        = reply.getNetworkInterfaces().get(0);
+//		AccessConfig     accessConfig0 = iface0.getAccessConfigs().get(0);
+//		String address = accessConfig0.getNatIP();
+//		String id      = reply.getName();
+//		String zone    = reply.getZone();
+//		return new GCloudSurrogate(id, address, zone);
+//	}
+
+	private void execute(final List<String> cmd)
 		throws Exception
 	{
-		List<CreateJsonReply> result = mapper.readValue(in, new TypeReference<List<CreateJsonReply>>(){});
-		List<Surrogate> surrogates = new ArrayList<>(result.size());
-		for(CreateJsonReply reply : result)
-		{
-			Surrogate surrogate = toSurrogate(reply);
-			surrogates.add(surrogate);
-		}
-		return surrogates;
-	}
-
-	private Surrogate toSurrogate(CreateJsonReply reply)
-	{
-		NetworkInterface iface0        = reply.getNetworkInterfaces().get(0);
-		AccessConfig     accessConfig0 = iface0.getAccessConfigs().get(0);
-		String address = accessConfig0.getNatIP();
-		String id      = reply.getName();
-		String zone    = reply.getZone();
-		return new GCloudSurrogate(id, address, zone);
-	}
-
-	private String execute(List<String> cmd)
-		throws Exception
-	{
-		logger.info("Executing command: {}", StringUtils.join(cmd, " "));
-		File baseDir = org.apache.commons.io.FileUtils.getTempDirectory();
-		File output  = File.createTempFile("gcloud-output-", ".txt");
-		File error   = File.createTempFile("gcloud-error-", ".txt");
-		int  result  = pm.exec(cmd, baseDir, output, error);
-		if(result != 0)
-		{
-			String data = FileUtils.readFileToString(error);
-			throw new NotImplementedYet("Error executing gcloud: " + data);
-		}
-
-		return FileUtils.readFileToString(output);
+		Thread worker = tf.newThread(new Runnable(){
+			@Override
+			public void run()
+			{				
+				try
+				{
+					logger.info("Executing command: {}", StringUtils.join(cmd, " "));
+					File baseDir = org.apache.commons.io.FileUtils.getTempDirectory();
+					File output = File.createTempFile("gcloud-output-", ".txt");
+					File error   = File.createTempFile("gcloud-error-", ".txt");
+					int  result  = pm.exec(cmd, baseDir, output, error);
+					if(result != 0)
+					{
+						String data = FileUtils.readFileToString(error);
+						throw new NotImplementedYet("Error executing gcloud: " + data);
+					}
+				}
+				catch(Exception e)
+				{
+					logger.error("Error executing gcloud", e);
+				}
+			}
+		});
+		
+		worker.start();
 	}
 }
