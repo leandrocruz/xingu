@@ -2,8 +2,12 @@ image: maven:3.3.9
 pipelines:
   default:
     - step:
-      caches:
+        caches:
           - maven
         script:
           - mvn -version
           - mvn -B clean deploy
+definitions:
+  caches:
+    sbt: ~/.sbt
+    ivy: ~/.ivy2
