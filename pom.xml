@@ -148,6 +148,10 @@
 			<id>Oystr</id>
 			<url>s3://repo.oystr.com.br/maven/release</url>
 		</repository>
+		<repository>
+			<id>IB</id>
+			<url>http://repo.ibcorp.com.br/maven</url>
+		</repository>
 	</repositories>
 	<properties>
 		<aws.sdk>1.11.5</aws.sdk>
