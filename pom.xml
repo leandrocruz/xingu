@@ -9,12 +9,6 @@
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>https://bitbucket.org/leandrocruz/xingu</url>
-	<repositories>
-		<repository>
-			<id>IBCorp</id>
-			<url>http://repo.ibcorp.com.br/maven</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -133,10 +127,30 @@
 		</plugins>
 		<extensions>
 			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh-external</artifactId>
-				<version>1.0-alpha-5</version>
+				<groupId>org.kuali.maven.wagons</groupId>
+				<artifactId>maven-s3-wagon</artifactId>
+				<version>1.2.1</version>
 			</extension>
 		</extensions>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>Oystr</id>
+			<url>s3://repo.oystr.com.br/maven/release</url>
+		</repository>
+		<snapshotRepository>
+			<id>Oystr</id>
+			<url>s3://repo.oystr.com.br/maven/snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>Oystr</id>
+			<url>s3://repo.oystr.com.br/maven/release</url>
+		</repository>
+	</repositories>
+	<properties>
+		<aws.sdk>1.11.5</aws.sdk>
+		<ahc>4.5.2</ahc>
+	</properties>
 </project>
