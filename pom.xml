@@ -156,5 +156,6 @@
 	<properties>
 		<aws.sdk>1.11.5</aws.sdk>
 		<ahc>4.5.2</ahc>
+		<guava>21.0</guava>
 	</properties>
 </project>
