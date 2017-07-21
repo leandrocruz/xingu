@@ -55,7 +55,7 @@ public class TreeComparator
 	private boolean compareFiles(File f1, File f2)
 		throws IOException
 	{
-		System.out.println("Comparing "+f1+" and " + f2);
+		//System.out.println("Comparing "+f1+" and " + f2);
 		if(f1.isFile())
 		{
 			return compareMD5(f1, f2);
