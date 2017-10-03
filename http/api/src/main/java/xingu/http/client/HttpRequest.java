@@ -84,4 +84,7 @@ public interface HttpRequest
 
 	String getKeepAlive();
 	HttpRequest withKeepAlive(String seconds);
+	
+	HttpRequest loggingOn();
+	HttpRequest loggingOff();
 }

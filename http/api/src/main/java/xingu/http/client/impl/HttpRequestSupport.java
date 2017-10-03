@@ -7,7 +7,6 @@ import java.util.Map;
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Attachment;
-import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
@@ -68,6 +67,8 @@ public abstract class HttpRequestSupport
 	private   boolean                 sslAllowBeast;
 
 	private   boolean                 sslV3;
+
+	protected boolean 				  logging = true;
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -466,6 +467,20 @@ public abstract class HttpRequestSupport
 	public HttpRequest sslV3(boolean v3)
 	{
 		this.sslV3 = v3;
+		return this;
+	}
+	
+	@Override
+	public HttpRequest loggingOn()
+	{
+		this.logging = true;
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		this.logging = false;
 		return this;
 	}
 }

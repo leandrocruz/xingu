@@ -343,4 +343,19 @@ public abstract class RequestDelegator
 		req.sslV3(v3);
 		return this;
 	}
+	
+	@Override
+	public HttpRequest loggingOn()
+	{
+		req.loggingOn();
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		req.loggingOff();
+		return this;
+	}
+
 }
