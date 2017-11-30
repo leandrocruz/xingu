@@ -40,6 +40,9 @@ public class CookieUtils
 			if("set-cookie".equalsIgnoreCase(name))
 			{
 				String value = header.getValue();
+				
+				value = cleanValue(value);
+				
 				Set<Cookie> cookies = decoder.decode(value);
 				for(Cookie cookie : cookies)
 				{
@@ -55,6 +58,31 @@ public class CookieUtils
 		}
 		
 		return new CookiesImpl(decoded);
+	}
+	
+	private static String cleanValue(String v)
+	{
+		String l[] = v.split(";");
+		StringBuilder nw = new StringBuilder();
+		
+		for(String s : l)
+		{
+			int i = s.indexOf(":");
+			int j = s.indexOf("=");
+			
+			if((i != -1 && i < j) ||
+				(i != -1 && j == -1))
+			{
+				s = s.replaceFirst(": ", "=");
+				s = s.replaceFirst(":", "=");
+			}
+			
+			nw.append(s)
+			  .append(";")
+			  .append(" ");
+		}
+		
+		return nw.toString().substring(0, nw.length() - 2);
 	}
 
 	public static Cookie replaceCookie(HttpResponse resp, Cookie old)
