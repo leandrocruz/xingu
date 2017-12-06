@@ -7,6 +7,7 @@ import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import xingu.container.Inject;
 import xingu.http.client.HttpClient;
@@ -42,8 +43,8 @@ public class RemoteUpdateManager
 	{
 		String uri = remote + "/" + bundlesFile;
 		logger.info("Loading remote descriptors from {}", uri);
-
-		HttpRequest  req = http.get(uri);
+		String rnd = RandomStringUtils.randomNumeric(12);		
+		HttpRequest  req = http.get(uri).field("v", rnd);
 		HttpResponse res = req.exec();
 		InputStream  is  = res.getRawBody();
 		return parse(is);
