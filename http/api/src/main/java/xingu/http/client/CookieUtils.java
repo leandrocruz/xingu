@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.CookieDecoder;
 
@@ -25,37 +26,100 @@ public class CookieUtils
 	}
 	
 	public static Cookies getCookies(HttpResponse res)
-	{
+    {
+        /*
+         * Sometimes, multiple set-cookie headers are sent for the same cookie.
+         * We need to parse all 'set-cookie' headers, but store only the last
+         */
+        Map<String, Cookie> cookieByName = new HashMap<>();
 
-		/*
-		 * Sometimes, multiple set-cookie headers are sent for the same cookie.
-		 * We need to parse all 'set-cookie' headers, but store only the last
-		 */
-		Map<String, Cookie> cookieByName = new HashMap<>();
+        NameValue[] headers = res.getHeaders();
+        for(NameValue header : headers)
+        {
+            String name = header.getName();
+            if("set-cookie".equalsIgnoreCase(name))
+            {
+                String value = header.getValue();
+                
+                // Workaround for removing an invalid 
+                value = cleanValue(value);
+                
+                Set<Cookie> cookies = decoder.decode(value);
+                for(Cookie cookie : cookies)
+                {
+                    cookieByName.put(cookie.getName(), cookie);
+                }
+            }
+        }
 
-		NameValue[] headers = res.getHeaders();
-		for(NameValue header : headers)
-		{
-			String name = header.getName();
-			if("set-cookie".equalsIgnoreCase(name))
-			{
-				String value = header.getValue();
-				Set<Cookie> cookies = decoder.decode(value);
-				for(Cookie cookie : cookies)
-				{
-					cookieByName.put(cookie.getName(), cookie);
-				}
-			}
-		}
-
-		Set<Cookie> decoded = new TreeSet<>();
-		for(String name : cookieByName.keySet())
-		{
-			decoded.add(cookieByName.get(name));
-		}
-		
-		return new CookiesImpl(decoded);
-	}
+        Set<Cookie> decoded = new TreeSet<>();
+        for(String name : cookieByName.keySet())
+        {
+            decoded.add(cookieByName.get(name));
+        }
+        
+        return new CookiesImpl(decoded);
+    }
+    
+    private static String cleanValue(String v)
+    {
+    	String[] values = v.split(";");
+    	String   v2     = "";
+    	
+    	for(String value : values)
+    	{
+    		int i = value.indexOf(":");
+            int j = value.indexOf("=");
+            
+            if((i != -1 && i < j) ||
+                (i != -1 && j == -1))
+            {
+            	value = value.replaceFirst(": ", "=");
+            }
+            
+            v2 += value + "; ";
+    	}
+    	
+        if(StringUtils.isEmpty(v2))
+        {
+        	return v;
+        }
+        
+        return v2;
+    }
+	
+//	public static Cookies getCookies(HttpResponse res)
+//	{
+//
+//		/*
+//		 * Sometimes, multiple set-cookie headers are sent for the same cookie.
+//		 * We need to parse all 'set-cookie' headers, but store only the last
+//		 */
+//		Map<String, Cookie> cookieByName = new HashMap<>();
+//
+//		NameValue[] headers = res.getHeaders();
+//		for(NameValue header : headers)
+//		{
+//			String name = header.getName();
+//			if("set-cookie".equalsIgnoreCase(name))
+//			{
+//				String value = header.getValue();
+//				Set<Cookie> cookies = decoder.decode(value);
+//				for(Cookie cookie : cookies)
+//				{
+//					cookieByName.put(cookie.getName(), cookie);
+//				}
+//			}
+//		}
+//
+//		Set<Cookie> decoded = new TreeSet<>();
+//		for(String name : cookieByName.keySet())
+//		{
+//			decoded.add(cookieByName.get(name));
+//		}
+//		
+//		return new CookiesImpl(decoded);
+//	}
 
 	public static Cookie replaceCookie(HttpResponse resp, Cookie old)
 	{
