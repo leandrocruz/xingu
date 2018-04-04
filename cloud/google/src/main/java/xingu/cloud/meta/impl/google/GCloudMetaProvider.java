@@ -42,7 +42,7 @@ public class GCloudMetaProvider
 
 	private int[] readPorts(String in)
 	{
-		String[] ports = in.split(",");
+		String[] ports = in.split("\\|");
 		int size = ports.length;
 		int[] result = new int[size];
 		for(int i = 0; i < size; i++)
