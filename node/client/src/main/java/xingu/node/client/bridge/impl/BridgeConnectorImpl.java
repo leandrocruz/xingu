@@ -119,6 +119,7 @@ public class BridgeConnectorImpl
 		    	for (int i = 0; i < size; i++)
 				{
 					int     port    = ports[i];
+					logger.info("Running task on port: {}", port);
 					Channel channel = tryPort(host, port);
 					if(channel != null)
 					{
@@ -133,6 +134,7 @@ public class BridgeConnectorImpl
 			}
 		};
 		
+		logger.info("Preparing to submit task");
 		ExecutorService executor = executor();
 		return executor.submit(task);
 	}
@@ -160,6 +162,7 @@ public class BridgeConnectorImpl
 		ChannelFuture       future        = connectTo(bootstrap, address);
 		future.awaitUninterruptibly(connectionTimeout);
 		Channel channel = future.getChannel();
+		logger.info("Socket connected");
 		try
 		{
 			if(future.isSuccess() 
