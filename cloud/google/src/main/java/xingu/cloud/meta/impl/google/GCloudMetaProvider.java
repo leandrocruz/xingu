@@ -1,5 +1,8 @@
 package xingu.cloud.meta.impl.google;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import xingu.cloud.meta.MetaProvider;
 import xingu.container.Inject;
 import xingu.http.client.HttpClient;
@@ -11,6 +14,8 @@ public class GCloudMetaProvider
 {
 	@Inject("gcloud")
 	private HttpClient			http;
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1/instance";
 
@@ -19,6 +24,7 @@ public class GCloudMetaProvider
 		throws Exception
 	{
 		String body = get("/hostname");
+		logger.info("/hostname: {}", body);
 		String host = StringUtils.trim(body);
 		int    idx  = host.indexOf(".");
 		return host.substring(0, idx);
@@ -28,7 +34,8 @@ public class GCloudMetaProvider
 	public String getHost()
 		throws Exception
 	{
-		String body = get("/attributes/host");
+		String body = get("/attributes/server");
+		logger.info("/attributes/server: {}", body);
 		return StringUtils.trim(body);
 	}
 
@@ -37,6 +44,7 @@ public class GCloudMetaProvider
 		throws Exception
 	{
 		String body = get("/attributes/ports");
+		logger.info("/attributes/ports: {}", body);
 		return readPorts(body);
 	}
 
@@ -57,6 +65,10 @@ public class GCloudMetaProvider
 		throws Exception
 	{
 		HttpResponse res = http.get(BASE_URL + url).header("Metadata-Flavor", "Google").exec();
+		if(res.getCode() != 200)
+		{
+			throw new Exception("Call to '"+url+"' returned "+res.getCode());
+		}
 		return res.getBody();
 	}
 }
