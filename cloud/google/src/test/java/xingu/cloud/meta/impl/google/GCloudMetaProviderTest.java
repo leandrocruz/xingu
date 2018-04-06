@@ -1,6 +1,7 @@
 package xingu.cloud.meta.impl.google;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.io.File;
 
@@ -27,15 +28,18 @@ public class GCloudMetaProviderTest
 		throws Exception
 	{
 		binder.bind(MetaProvider.class).to(GCloudMetaProvider.class);
-		withMock("gcloud", HttpClient.class);
+		this.http = mock(HttpClient.class);
+		binder.bind(HttpClient.class, "gcloud").to(this.http);
+		File file = getFile("curl-get-instance-id.html");
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/hostname").to(file);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/attributes/server").to(/* bogus */ file);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/attributes/ports").to( /* bogus */ file);
 	}
 
 	@Test
 	public void testGetInstanceId()
 		throws Exception
 	{
-		File file = getFile("curl-get-instance-id.html");
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/hostname").to(file);
 		String instanceId = meta.getInstanceId();
 		assertEquals("oystr-1234-sample", instanceId);
 	}

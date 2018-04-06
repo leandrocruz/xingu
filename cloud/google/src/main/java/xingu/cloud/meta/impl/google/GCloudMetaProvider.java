@@ -1,5 +1,6 @@
 package xingu.cloud.meta.impl.google;
 
+import org.apache.avalon.framework.activity.Initializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,7 @@ import xingu.http.client.HttpResponse;
 import xingu.utils.StringUtils;
 
 public class GCloudMetaProvider
-	implements MetaProvider
+	implements MetaProvider, Initializable
 {
 	@Inject("gcloud")
 	private HttpClient			http;
@@ -19,13 +20,26 @@ public class GCloudMetaProvider
 
 	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1/instance";
 
+	private String hostname;
+
+	private String server;
+
+	private String ports;
+	
+	@Override
+	public void initialize()
+		throws Exception
+	{
+		this.hostname = envOr("OYSTR_HOSTNAME", "/hostname");
+		this.server   = envOr("OYSTR_SERVER", 	"/attributes/server");
+		this.ports    = envOr("OYSTR_PORTS", 	"/attributes/ports");
+	}
+
 	@Override
 	public String getInstanceId()
 		throws Exception
 	{
-		String body = get("/hostname");
-		logger.info("/hostname: {}", body);
-		String host = StringUtils.trim(body);
+		String host = StringUtils.trim(hostname);
 		int    idx  = host.indexOf(".");
 		return host.substring(0, idx);
 	}
@@ -34,33 +48,40 @@ public class GCloudMetaProvider
 	public String getHost()
 		throws Exception
 	{
-		String body = get("/attributes/server");
-		logger.info("/attributes/server: {}", body);
-		return StringUtils.trim(body);
+		return StringUtils.trim(server);
 	}
 
 	@Override
 	public int[] getPorts()
 		throws Exception
 	{
-		String body = get("/attributes/ports");
-		logger.info("/attributes/ports: {}", body);
-		return readPorts(body);
-	}
-
-	private int[] readPorts(String in)
-	{
-		String[] ports = in.split("\\|");
-		int size = ports.length;
+		String[] array = ports.split("\\|");
+		int size = array.length;
 		int[] result = new int[size];
 		for(int i = 0; i < size; i++)
 		{
-			String value = ports[i].trim();
+			String value = array[i].trim();
 			result[i] = StringUtils.toInt(value, 0);
 		}
 		return result;
 	}
-	
+
+	private String envOr(String env, String meta)
+		throws Exception
+	{
+		String result = System.getenv(env);
+		if(result == null)
+		{
+			result = get(meta);
+			logger.info("{} = '{}'", meta, result);
+		}
+		else
+		{
+			logger.info("{} = '{}'", env, result);
+		}
+		return result;
+	}
+
 	private String get(String url)
 		throws Exception
 	{
