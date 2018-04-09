@@ -117,6 +117,7 @@ public class BridgeConnectorImpl
 				{
 					BridgeConnectorImpl.this.acceptedChannel = channel;
 					onConnect.onSuccess(channel);
+					return;
 				}
 			}
 	    	onConnect.onFailure();
