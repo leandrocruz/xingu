@@ -7,7 +7,6 @@ import java.util.Map;
 import org.jboss.netty.handler.codec.http.Cookie;
 
 import xingu.http.client.Attachment;
-import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpContext;
 import xingu.http.client.HttpException;
@@ -44,6 +43,8 @@ public abstract class HttpRequestSupport
 	protected String                  authPassword;
 
 	protected String                  payload;
+	
+	protected String				  proxy;
 
 	protected boolean                 multipart;
 
@@ -256,6 +257,25 @@ public abstract class HttpRequestSupport
 	public HttpRequest multipart(boolean multipart)
 	{
 		this.multipart = multipart;
+		return this;
+	}
+	
+	@Override
+	public String getProxy()
+	{
+		return proxy;
+	}
+	
+	/**
+	 * Avoiding censorship.
+	 * 
+	 * @param  proxy - Expects: <protocol>://<address>:<port>
+	 * @return       - This request.
+	 */
+	@Override
+	public HttpRequest withProxy(String proxy)
+	{
+		this.proxy = proxy;
 		return this;
 	}
 

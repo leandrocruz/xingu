@@ -158,6 +158,7 @@ public class CurlCommandLineBuilder
 			placeUserAgent();
 			placeHeaders();
 			placePayload();
+			placeProxy();
 
 			boolean isMultipart = req.isMultipart();
 			if(isPost && isMultipart)
@@ -263,6 +264,17 @@ public class CurlCommandLineBuilder
 					result.add("--data-binary");
 				}
 				result.add(payload);
+			}
+		}
+		
+		private void placeProxy()
+		{
+			String proxy = req.getProxy();
+			
+			if(StringUtils.isNotEmpty(proxy))
+			{
+				result.add("--proxy");
+				result.add(proxy);
 			}
 		}
 

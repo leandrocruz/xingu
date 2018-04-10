@@ -34,6 +34,9 @@ public interface HttpRequest
 
 	HttpRequest multipart(boolean isMultipartFormData);
 	boolean isMultipart();
+	
+	String getProxy();
+	HttpRequest withProxy(String proxy);
 
 	String getCertificate();
 	HttpRequest withCertificate(String certificate);
