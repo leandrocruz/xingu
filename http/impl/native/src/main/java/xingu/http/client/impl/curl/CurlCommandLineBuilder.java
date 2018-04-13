@@ -63,8 +63,12 @@ public class CurlCommandLineBuilder
 	public HttpResponse responseFrom(HttpRequest req, File file)
 		throws Exception
 	{
-		String uri = req.getUri();
-		return CurlResponseParser.responseFrom(uri, file);
+		String  uri       = req.getUri();
+		
+		String  proxy     = req.getProxy();
+		boolean withProxy = StringUtils.isNotEmpty(proxy);
+		
+		return CurlResponseParser.responseFrom(uri, file, withProxy);
 	}
 
 	@Override
