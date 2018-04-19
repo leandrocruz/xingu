@@ -45,6 +45,79 @@ public class CurlResponseParser
 		InputStream is = new FileInputStream(file);
 		return responseFrom(uri, is);
 	}
+	
+	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
+		throws Exception
+	{
+		InputStream is = new FileInputStream(file);
+		return withProxy ? responseFromWhenProxied(uri, is) : responseFrom(uri, is);
+	}
+	
+	public static HttpResponse responseFromWhenProxied(String uri, InputStream is)
+		throws Exception
+	{
+		byte[]        data   = IOUtils.toByteArray(is);
+		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
+		IOUtils.closeQuietly(is);
+
+		/* Parsing State */
+		int    i    = 0;
+		int    code = -1;
+		String line = null;
+		
+		List<NameValue> headers = new ArrayList<NameValue>();
+		do
+		{
+			line = NettyUtils.readLine(buffer);
+			
+			if(i == 0)
+			{
+				NettyUtils.readLine(buffer);
+				i++;
+				continue;
+			}
+			
+			if(i == 1)
+			{
+				code = toResponseCode(line);
+			}
+			else
+			{
+				if(StringUtils.isEmpty(line))
+				{
+					if(code == 100)
+					{
+						/* HTTP CONTINUE */
+						i = 0;
+						
+						continue;
+					}
+				}
+				else
+				{
+					NameValue h = toHeader(line);
+					headers.add(h);
+				}
+			}
+			i++;
+		}
+		while(StringUtils.isNotEmpty(line) || code == 100);
+		
+		return parseResult(uri, buffer, code, headers);
+	}
+
+	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
+	{
+		HttpResponseImpl result = new HttpResponseImpl();
+		result.setCode(code);
+		result.setHeaders(headers.toArray(EMPTY));
+		result.setUri(uri);
+
+		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
+		result.setRawBody(raw);
+		return result;
+	}
+	
 	public static HttpResponse responseFrom(String uri, InputStream is)
 		throws Exception
 	{
@@ -87,13 +160,6 @@ public class CurlResponseParser
 		}
 		while(StringUtils.isNotEmpty(line) || code == 100);
 		
-		HttpResponseImpl result = new HttpResponseImpl();
-		result.setCode(code);
-		result.setHeaders(headers.toArray(EMPTY));
-		result.setUri(uri);
-
-		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
-		result.setRawBody(raw);
-		return result;
+		return parseResult(uri, buffer, code, headers);
 	}
 }
