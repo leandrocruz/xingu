@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+
+HTTP/1.1 100 Continue
+
+HTTP/1.1 302 Moved Temporarily
+Date: Mon, 07 May 2018 15:58:32 GMT
+Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2k-fips mod_jk/1.2.42
+Set-Cookie: JSESSIONID=4E7D212A528049E31D9F6FF59365D10C.tomcat51; Path=/projudi; Secure
+Location: https://projudi.tjba.jus.br/projudi/advogado/CentroAdvogado
+Content-Length: 0
+Connection: close
+

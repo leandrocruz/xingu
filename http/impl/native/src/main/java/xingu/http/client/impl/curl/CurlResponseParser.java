@@ -43,67 +43,25 @@ public class CurlResponseParser
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is);
+		return responseFrom(uri, is, false);
 	}
 	
 	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
-		return withProxy ? responseFromWhenProxied(uri, is) : responseFrom(uri, is);
+		return responseFrom(uri, is, withProxy);
 	}
-	
-	public static HttpResponse responseFromWhenProxied(String uri, InputStream is)
-		throws Exception
-	{
-		byte[]        data   = IOUtils.toByteArray(is);
-		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
-		IOUtils.closeQuietly(is);
 
-		/* Parsing State */
-		int    i    = 0;
-		int    code = -1;
-		String line = null;
+	private static void removeProxyHeaders(ChannelBuffer buffer)
+	{
+		String line = "";
 		
-		List<NameValue> headers = new ArrayList<NameValue>();
 		do
 		{
 			line = NettyUtils.readLine(buffer);
-			
-			if(i == 0)
-			{
-				NettyUtils.readLine(buffer);
-				i++;
-				continue;
-			}
-			
-			if(i == 1)
-			{
-				code = toResponseCode(line);
-			}
-			else
-			{
-				if(StringUtils.isEmpty(line))
-				{
-					if(code == 100)
-					{
-						/* HTTP CONTINUE */
-						i = 0;
-						
-						continue;
-					}
-				}
-				else
-				{
-					NameValue h = toHeader(line);
-					headers.add(h);
-				}
-			}
-			i++;
 		}
-		while(StringUtils.isNotEmpty(line) || code == 100);
-		
-		return parseResult(uri, buffer, code, headers);
+		while(StringUtils.isNotEmpty(line));
 	}
 
 	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
@@ -118,7 +76,7 @@ public class CurlResponseParser
 		return result;
 	}
 	
-	public static HttpResponse responseFrom(String uri, InputStream is)
+	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
 		throws Exception
 	{
 		byte[]        data   = IOUtils.toByteArray(is);
@@ -130,10 +88,16 @@ public class CurlResponseParser
 		int    code = -1;
 		String line = null;
 		
+		if(withProxy)
+		{
+			removeProxyHeaders(buffer);
+		}
+		
 		List<NameValue> headers = new ArrayList<NameValue>();
 		do
 		{
 			line = NettyUtils.readLine(buffer);
+			
 			if(i == 0)
 			{
 				code = toResponseCode(line);
