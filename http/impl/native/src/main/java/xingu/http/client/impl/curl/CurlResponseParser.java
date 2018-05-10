@@ -76,6 +76,12 @@ public class CurlResponseParser
 		return result;
 	}
 	
+	public static HttpResponse responseFrom(String uri, InputStream is)
+		throws Exception
+	{
+		return responseFrom(uri, is, false);
+	}
+	
 	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
 		throws Exception
 	{
