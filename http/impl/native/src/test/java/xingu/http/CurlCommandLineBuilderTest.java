@@ -43,6 +43,30 @@ public class CurlCommandLineBuilderTest
 		assertEquals("1000", 	response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
 		assertEquals("Jetty(8.1.2.v20120308)", response.getHeader("Server"));
 	}
+	
+	@Test
+	public void testHttp100ResponseWhenProxied()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getProxy()).thenReturn("testing");
+		
+		HttpResponse response = builder.responseFrom(req, getFile("response5.txt"));
+		assertEquals(302, response.getCode());
+		assertEquals("0", response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
+		assertEquals("Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2k-fips mod_jk/1.2.42", response.getHeader("Server"));
+	}
+	
+	@Test
+	public void testHttp200ResponseWhenNotProxied()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		
+		HttpResponse response = builder.responseFrom(req, getFile("response6.txt"));
+		assertEquals(200, response.getCode());
+		assertEquals("nginx", response.getHeader("Server"));
+	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testHttp100ResponseWithError()

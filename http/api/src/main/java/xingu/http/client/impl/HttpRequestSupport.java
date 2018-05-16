@@ -43,6 +43,8 @@ public abstract class HttpRequestSupport
 	protected String                  authPassword;
 
 	protected String                  payload;
+	
+	protected String				  proxy;
 
 	protected boolean                 multipart;
 
@@ -257,6 +259,25 @@ public abstract class HttpRequestSupport
 	public HttpRequest multipart(boolean multipart)
 	{
 		this.multipart = multipart;
+		return this;
+	}
+	
+	@Override
+	public String getProxy()
+	{
+		return proxy;
+	}
+	
+	/**
+	 * Avoiding censorship.
+	 * 
+	 * @param  proxy - Expects: <protocol>://<address>:<port>
+	 * @return       - This request.
+	 */
+	@Override
+	public HttpRequest withProxy(String proxy)
+	{
+		this.proxy = proxy;
 		return this;
 	}
 

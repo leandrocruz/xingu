@@ -43,9 +43,46 @@ public class CurlResponseParser
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is);
+		return responseFrom(uri, is, false);
 	}
+	
+	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
+		throws Exception
+	{
+		InputStream is = new FileInputStream(file);
+		return responseFrom(uri, is, withProxy);
+	}
+
+	private static void removeProxyHeaders(ChannelBuffer buffer)
+	{
+		String line = "";
+		
+		do
+		{
+			line = NettyUtils.readLine(buffer);
+		}
+		while(StringUtils.isNotEmpty(line));
+	}
+
+	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
+	{
+		HttpResponseImpl result = new HttpResponseImpl();
+		result.setCode(code);
+		result.setHeaders(headers.toArray(EMPTY));
+		result.setUri(uri);
+
+		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
+		result.setRawBody(raw);
+		return result;
+	}
+	
 	public static HttpResponse responseFrom(String uri, InputStream is)
+		throws Exception
+	{
+		return responseFrom(uri, is, false);
+	}
+	
+	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
 		throws Exception
 	{
 		byte[]        data   = IOUtils.toByteArray(is);
@@ -57,10 +94,16 @@ public class CurlResponseParser
 		int    code = -1;
 		String line = null;
 		
+		if(withProxy)
+		{
+			removeProxyHeaders(buffer);
+		}
+		
 		List<NameValue> headers = new ArrayList<NameValue>();
 		do
 		{
 			line = NettyUtils.readLine(buffer);
+			
 			if(i == 0)
 			{
 				code = toResponseCode(line);
@@ -87,13 +130,6 @@ public class CurlResponseParser
 		}
 		while(StringUtils.isNotEmpty(line) || code == 100);
 		
-		HttpResponseImpl result = new HttpResponseImpl();
-		result.setCode(code);
-		result.setHeaders(headers.toArray(EMPTY));
-		result.setUri(uri);
-
-		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
-		result.setRawBody(raw);
-		return result;
+		return parseResult(uri, buffer, code, headers);
 	}
 }

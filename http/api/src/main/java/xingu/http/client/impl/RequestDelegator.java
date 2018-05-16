@@ -141,6 +141,25 @@ public abstract class RequestDelegator
 		req.multipart(isMultipartFormData);
 		return this;
 	}
+	
+	@Override
+	public String getProxy()
+	{
+		return req.getProxy();
+	}
+	
+	/**
+	 * Avoiding censorship.
+	 * 
+	 * @param  proxy - Expects: <protocol>://<address>:<port>
+	 * @return       - This request.
+	 */
+	@Override
+	public HttpRequest withProxy(String proxy)
+	{
+		req.withProxy(proxy);
+		return this;
+	}
 
 	@Override
 	public boolean isMultipart()
