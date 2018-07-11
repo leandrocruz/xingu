@@ -362,7 +362,7 @@ public class CurlCommandLineBuilder
 					}				
 				}
 
-				dumpParametersToFileIfAny(dump);
+				dumpParametersToFileIfAny(dump, req.getCharset());
 			}
 		}
 
@@ -443,7 +443,7 @@ public class CurlCommandLineBuilder
 				}
 			}
 			
-			dumpParametersToFileIfAny(dump);
+			dumpParametersToFileIfAny(dump, req.getCharset());
 		}
 		
 		private String escapeText(String text)
@@ -451,18 +451,18 @@ public class CurlCommandLineBuilder
 			return text.replace("\"", "\\\"");
 		}
 
-		private void dumpParametersToFileIfAny(StringBuilder dump)
+		private void dumpParametersToFileIfAny(StringBuilder dump, String charset)
 			throws Exception
 		{
 			if(dump.length() > 0)
 			{				
-				File outputFile = dumpParametersToFile(dump);
+				File outputFile = dumpParametersToFile(dump, charset);
 				result.add("-K");
 				result.add(outputFile.getPath());
 			}
 		}
 		
-		private File dumpParametersToFile(StringBuilder dump)
+		private File dumpParametersToFile(StringBuilder dump, String charset)
 			throws Exception
 		{
 			File file = null;
@@ -475,7 +475,7 @@ public class CurlCommandLineBuilder
 				file = File.createTempFile("dump_curl_", "_file.txt");
 			}		
 
-			FileUtils.write(file, dump);		
+			FileUtils.write(file, dump, charset);		
 			return file;
 		}
 	}
