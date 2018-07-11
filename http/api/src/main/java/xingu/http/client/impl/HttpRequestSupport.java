@@ -69,6 +69,8 @@ public abstract class HttpRequestSupport
 	private   boolean                 sslAllowBeast;
 
 	private   boolean                 sslV3;
+	
+	private   boolean                 withoutPayload;
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -486,6 +488,19 @@ public abstract class HttpRequestSupport
 	public HttpRequest sslV3(boolean v3)
 	{
 		this.sslV3 = v3;
+		return this;
+	}
+	
+	@Override
+	public boolean hasPayload()
+	{
+		return !this.withoutPayload;
+	}
+	
+	@Override
+	public HttpRequest withoutPayload()
+	{
+		this.withoutPayload = true;
 		return this;
 	}
 }

@@ -16,7 +16,7 @@ import xingu.http.client.ResponseInspector;
 public abstract class RequestDelegator
 	implements HttpRequest
 {
-	protected HttpRequest req;
+	protected HttpRequest req;;
 	
 	public RequestDelegator(HttpRequest req)
 	{
@@ -360,6 +360,19 @@ public abstract class RequestDelegator
 	public HttpRequest sslV3(boolean v3)
 	{
 		req.sslV3(v3);
+		return this;
+	}
+	
+	@Override
+	public boolean hasPayload()
+	{
+		return !req.hasPayload();
+	}
+	
+	@Override
+	public HttpRequest withoutPayload()
+	{
+		req.withoutPayload();
 		return this;
 	}
 }

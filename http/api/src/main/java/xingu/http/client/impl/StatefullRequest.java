@@ -68,32 +68,6 @@ public class StatefullRequest
 		return execAndRetry(attempts, 1);
 	}
 	
-//	private HttpResponse execAndRetry(int attempts, int i)
-//		throws HttpException
-//	{
-//		try
-//		{
-//			return exec();
-//		}
-//		catch(Exception ex)
-//		{
-//			System.err.println("Failed: " + i + " - " + ex.getMessage());
-//			if(i > attempts)
-//			{
-//				throw ex;
-//			}
-//			return execAndRetry(attempts, ++i);
-//		}
-//	}
-	
-	
-//	@Override
-//	public HttpResponse execAndRetry(int attempts)
-//		throws HttpException
-//	{
-//		return execAndRetry(attempts, 0);
-//	}
-	
 	private HttpResponse execAndRetry(int attempts, int i)
 		throws HttpException
 	{
@@ -107,8 +81,7 @@ public class StatefullRequest
 			
 			if(ex.getCause() instanceof ExceptionWithResponse)
 			{
-				HttpResponse res = ((ExceptionWithResponse)ex.getCause()).getHttpResponse();				
-				//adjustStateCookies(res);
+				HttpResponse res = ((ExceptionWithResponse)ex.getCause()).getHttpResponse();
 			}
 			
 			try

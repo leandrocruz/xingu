@@ -161,17 +161,25 @@ public class CurlCommandLineBuilder
 			placeCookies();
 			placeUserAgent();
 			placeHeaders();
-			placePayload();
 			placeProxy();
 
-			boolean isMultipart = req.isMultipart();
-			if(isPost && isMultipart)
+			if(req.hasPayload())
 			{
-				placeMultipartFields();
+				placePayload();
+				
+				boolean isMultipart = req.isMultipart();
+				if(isPost && isMultipart)
+				{
+					placeMultipartFields();
+				}
+				else
+				{
+					placeDataFields();
+				}
 			}
 			else
 			{
-				placeDataFields();
+				placeEmptyBody();
 			}
 
 			String uri = req.getUri();
@@ -180,6 +188,12 @@ public class CurlCommandLineBuilder
 			return result;
 		}
 		
+		private void placeEmptyBody()
+		{
+			result.add("--data-urlencode");		
+			result.add("=");
+		}
+
 		private void placeSecurityOptions()
 		{
 			//TODO: use ignoreSSLCertificates() when performing the request

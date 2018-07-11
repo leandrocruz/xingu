@@ -87,4 +87,7 @@ public interface HttpRequest
 
 	String getKeepAlive();
 	HttpRequest withKeepAlive(String seconds);
+	
+	boolean hasPayload();
+	HttpRequest withoutPayload();
 }
