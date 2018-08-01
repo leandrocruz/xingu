@@ -90,4 +90,7 @@ public interface HttpRequest
 	
 	boolean hasPayload();
 	HttpRequest withoutPayload();
+	
+	HttpRequest loggingOn();
+	HttpRequest loggingOff();
 }

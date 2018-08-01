@@ -6,5 +6,7 @@ public interface OnConnect
 {
 	void onSuccess(Channel channel);
 	
-	void onError(Channel channel);
+	void onError(Throwable t);
+
+	void onFailure();
 }

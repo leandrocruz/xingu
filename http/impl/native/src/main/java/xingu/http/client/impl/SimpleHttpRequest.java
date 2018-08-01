@@ -43,7 +43,9 @@ public class SimpleHttpRequest
 			File         file = getOutputFile(context);
 			List<String> cmd  = builder.buildLine(this, file);
 			String join = builder.join(cmd);
-			logger.info("Executing command: {}", join);
+			
+			if(logging)
+				logger.info("Executing command: {}", join);
 
 			result = execCmd(logger, cmd, 3);
 			if(result == 0)

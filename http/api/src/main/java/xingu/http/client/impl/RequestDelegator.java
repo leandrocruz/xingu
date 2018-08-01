@@ -375,4 +375,18 @@ public abstract class RequestDelegator
 		req.withoutPayload();
 		return this;
 	}
+	
+	@Override
+	public HttpRequest loggingOn()
+	{
+		req.loggingOn();
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		req.loggingOff();
+		return this;
+	}
 }

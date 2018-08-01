@@ -72,6 +72,8 @@ public abstract class HttpRequestSupport
 	
 	private   boolean                 withoutPayload;
 
+	protected boolean 				  logging = true;
+
 	public HttpRequestSupport(String uri, String method)
 	{
 		this.uri    = uri;
@@ -501,6 +503,20 @@ public abstract class HttpRequestSupport
 	public HttpRequest withoutPayload()
 	{
 		this.withoutPayload = true;
+		return this;
+	}
+	
+	@Override
+	public HttpRequest loggingOn()
+	{
+		this.logging = true;
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		this.logging = false;
 		return this;
 	}
 }

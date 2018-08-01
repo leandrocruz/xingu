@@ -77,7 +77,10 @@ public abstract class ContainerSupport
         T impl = null;
         try
         {
+        	log.debug("Loading '{}' from class loader: '{}'", roleName, cl.getClassLoader());
             clazz = (Class<T>) ObjectUtils.loadClass(roleName, cl.getClassLoader());
+            
+            log.debug("Loading '{}' from class loader: '{}'", implName, cl.getClassLoader());
             impl = (T) ObjectUtils.getInstance(implName, cl.getClassLoader());    
         }
         catch(Exception e)

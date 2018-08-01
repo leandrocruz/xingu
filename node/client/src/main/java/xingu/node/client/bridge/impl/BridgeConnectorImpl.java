@@ -4,11 +4,9 @@ import static org.jboss.netty.channel.Channels.pipeline;
 
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -105,36 +103,42 @@ public class BridgeConnectorImpl
 		return acceptedChannel;
 	}
 
-	@Override
-	public Future<Channel> connect(final String host, final int[] ports, final OnConnect onConnect)
+	private void doConnect(final String host, final int[] ports, final OnConnect onConnect)
 	{
-		Callable<Channel> task = new Callable<Channel>(){
-
-			@Override
-			public Channel call()
-				throws Exception
+		try
+		{
+			foundPort = 0;
+	    	int size = ports.length;
+	    	for (int i = 0; i < size; i++)
 			{
-				foundPort = 0;
-		    	int size = ports.length;
-		    	for (int i = 0; i < size; i++)
+				int     port    = ports[i];
+				Channel channel = tryPort(host, port);
+				if(channel != null)
 				{
-					int     port    = ports[i];
-					Channel channel = tryPort(host, port);
-					if(channel != null)
-					{
-						BridgeConnectorImpl.this.acceptedChannel = channel;
-						onConnect.onSuccess(channel);
-						return channel;						
-					}
+					BridgeConnectorImpl.this.acceptedChannel = channel;
+					onConnect.onSuccess(channel);
+					return;
 				}
-		    	logger.info("No port available from '{}'", ports);
-		    	onConnect.onError(null);
-		    	return null;
 			}
-		};
-		
+	    	onConnect.onFailure();
+		}
+		catch(Exception e)
+		{
+			onConnect.onError(e);
+		}
+	}
+	
+	@Override
+	public void connect(final String host, final int[] ports, final OnConnect onConnect)
+	{
 		ExecutorService executor = executor();
-		return executor.submit(task);
+		executor.submit(new Runnable() {
+			@Override
+			public void run()
+			{
+				doConnect(host, ports, onConnect);
+			}
+		});
 	}
 
 	protected ExecutorService executor()
@@ -160,6 +164,7 @@ public class BridgeConnectorImpl
 		ChannelFuture       future        = connectTo(bootstrap, address);
 		future.awaitUninterruptibly(connectionTimeout);
 		Channel channel = future.getChannel();
+		logger.info("Socket connected");
 		try
 		{
 			if(future.isSuccess() 
