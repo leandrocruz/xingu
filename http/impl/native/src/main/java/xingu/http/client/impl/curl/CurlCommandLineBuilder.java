@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
@@ -166,6 +168,7 @@ public class CurlCommandLineBuilder
 			if(req.hasPayload())
 			{
 				placePayload();
+				placePayloadAsJson();
 				
 				boolean isMultipart = req.isMultipart();
 				if(isPost && isMultipart)
@@ -252,18 +255,52 @@ public class CurlCommandLineBuilder
 			int len = fields == null ? 0 : fields.size();
 			if(len > 0)
 			{
+				String contentType = HttpHeaders.Names.CONTENT_TYPE;
+				setContentTypeAsJson(contentType);
+				
 				for(NameValue f : fields)
 				{
 					result.add("-H");
 					String name  = f.getName();
 					String value = f.getValue();
 					result.add(name + ": " + value);
-					if(name.startsWith(HttpHeaders.Names.CONTENT_TYPE))
+					if(name.startsWith(contentType))
 					{
 						String charset = HttpUtils.charset(value, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
 						req.setCharset(charset);
 					}
 				}
+			}
+		}
+
+		private void setContentTypeAsJson(String contentType)
+		{
+			Supplier<Stream<NameValue>> supplier = () -> req
+				.getHeaders()
+				.parallelStream()
+				.filter(h -> h
+						.getName()
+						.equalsIgnoreCase(contentType)
+				);
+			
+			Stream<NameValue> filter   = supplier.get();
+			boolean 		  contains = false;
+			
+			if(filter.count() > 0)
+			{
+				filter   = supplier.get();
+				contains = filter
+					.findFirst()
+					.get()
+					.getValue()
+					.toLowerCase()
+					.contains("application/json");
+			}
+			
+			if(StringUtils.isNotEmpty(req.getPayloadAsJson()) && !contains)
+			{
+				String value = "application/json";
+				req.header(contentType, value);
 			}
 		}
 
@@ -282,6 +319,31 @@ public class CurlCommandLineBuilder
 					result.add("--data-binary");
 				}
 				result.add(payload);
+			}
+		}
+		
+		private void placePayloadAsJson()
+			throws Exception
+		{
+			String        payload = req.getPayloadAsJson();
+			StringBuilder dump    = new StringBuilder();
+			
+			if(StringUtils.isNotEmpty(payload))
+			{
+				boolean isSoap = req.isSoap();
+				if(isSoap)
+				{
+					result.add("-d");
+				}
+				else
+				{
+					result.add("--data-binary");
+				}
+				
+				dump.append(payload);
+				
+				File outputFile = dumpPayloadToJsonFile(dump, req.getCharset());
+				result.add("@" + outputFile.getPath());
 			}
 		}
 		
@@ -487,6 +549,23 @@ public class CurlCommandLineBuilder
 			else
 			{
 				file = File.createTempFile("dump_curl_", "_file.txt");
+			}		
+
+			FileUtils.write(file, dump, charset);		
+			return file;
+		}
+		
+		private File dumpPayloadToJsonFile(StringBuilder dump, String charset)
+			throws Exception
+		{
+			File file = null;
+			if(req.getContext() != null)
+			{
+				file = File.createTempFile("dump_payload_", "_file.json", req.getContext().getRootDirectory());
+			}
+			else
+			{
+				file = File.createTempFile("dump_payload_", "_file.json");
 			}		
 
 			FileUtils.write(file, dump, charset);		

@@ -325,6 +325,19 @@ public abstract class RequestDelegator
 	}
 	
 	@Override
+	public HttpRequest payloadAsJson(String payload)
+	{
+		req.payloadAsJson(payload);
+		return this;
+	}
+
+	@Override
+	public String getPayloadAsJson()
+	{
+		return req.getPayloadAsJson();
+	}
+	
+	@Override
 	public HttpRequest soap(boolean soap)
 	{
 		req.soap(soap);

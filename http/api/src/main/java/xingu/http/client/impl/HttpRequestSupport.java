@@ -44,6 +44,8 @@ public abstract class HttpRequestSupport
 
 	protected String                  payload;
 	
+	protected String                  payloadAsJson;
+	
 	protected String				  proxy;
 
 	protected boolean                 multipart;
@@ -444,6 +446,19 @@ public abstract class HttpRequestSupport
 	public String getPayload()
 	{
 		return payload;
+	}
+	
+	@Override
+	public HttpRequest payloadAsJson(String payload)
+	{
+		this.payloadAsJson = payload;
+		return this;
+	}
+	
+	@Override
+	public String getPayloadAsJson()
+	{
+		return payloadAsJson;
 	}
 	
 	@Override
