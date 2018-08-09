@@ -81,6 +81,9 @@ public interface HttpRequest
 
 	HttpRequest payload(String payload);
 	String getPayload();
+	
+	HttpRequest payloadAsJson(String payload);
+	String getPayloadAsJson();
 
 	boolean isSoap();
 	HttpRequest soap(boolean isSoap);
