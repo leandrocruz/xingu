@@ -20,7 +20,7 @@ public class GCloudMetaProvider
 
 	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1/instance";
 
-	private String hostname;
+	private String instanceId;
 
 	private String server;
 
@@ -30,18 +30,16 @@ public class GCloudMetaProvider
 	public void initialize()
 		throws Exception
 	{
-		this.hostname = envOr("OYSTR_HOSTNAME", "/hostname");
-		this.server   = envOr("OYSTR_SERVER", 	"/attributes/server");
-		this.ports    = envOr("OYSTR_PORTS", 	"/attributes/ports");
+		this.instanceId = envOr("OYSTR_INSTANCE_ID" , "/attributes/instanceId");
+		this.server   	= envOr("OYSTR_SERVER"	 	, "/attributes/server");
+		this.ports    	= envOr("OYSTR_PORTS"		, "/attributes/ports");
 	}
 
 	@Override
 	public String getInstanceId()
 		throws Exception
 	{
-		String host = StringUtils.trim(hostname);
-		int    idx  = host.indexOf(".");
-		return host.substring(0, idx);
+		return StringUtils.trim(instanceId);
 	}
 
 	@Override

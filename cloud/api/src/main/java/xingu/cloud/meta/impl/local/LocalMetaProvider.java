@@ -2,66 +2,51 @@ package xingu.cloud.meta.impl.local;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import xingu.cloud.meta.MetaProvider;
-import xingu.lang.NotImplementedYet;
 
 public class LocalMetaProvider
 	implements MetaProvider
 {
 	private File root = new File("/tmp/oystr/meta");
-		
+
+	private String extractValueAndUpdateFile(String dftl, File file)
+		throws Exception
+	{
+		String str = readFileToStringOr(file, dftl);
+		List<String> values = Arrays.asList(str.split("\n"));
+		int index = values.size() - 1;
+		List<String> remaining = values.subList(0, index);
+		String value = values.get(index);
+		FileUtils.write(file, StringUtils.join(remaining, "\n") + "\n");
+		return StringUtils.trim(value);		
+	}
+	
 	@Override
 	public String getInstanceId()
 		throws Exception
 	{
-		File file = new File(root, "instance-ids");
-		if(!file.exists())
-		{
-			return "local";
-		}
-			
-		String   id    = StringUtils.trim(FileUtils.readFileToString(file));
-		String[] parts = id.split(",");
-		int      len   = parts.length;
-		if(len <= 0)
-		{
-		    throw new NotImplementedYet();
-		}
-		
-		id = parts[0];
-		if(len > 1)
-		{
-		    //we have more ids
-		String[] remaining = new String[len - 1];
-		System.arraycopy(parts, 1, remaining, 0, len - 1);
-		FileUtils.write(file, StringUtils.join(remaining, ","));
-		}
-		else
-		{
-		    FileUtils.write(file, "");
-		}
-		return id;
+		return extractValueAndUpdateFile("local", new File(root, "instance-ids"));
 	}
 
 	@Override
 	public String getHost()
 		throws Exception
 	{
-		return readFileToStringOr(new File(root, "host"), "localhost");
+		return extractValueAndUpdateFile("localhost", new File(root, "host"));
 	}
 
 	@Override
 	public int[] getPorts()
 		throws Exception
 	{
-		String result = readFileToStringOr(new File(root, "port"), "9556");
-		result = StringUtils.trim(result);
-		int port = Integer.parseInt(result);
-		return new int[]{port};
+		String port = extractValueAndUpdateFile("9556", new File(root, "port"));
+		return new int[]{Integer.parseInt(port)};
 	}
 
 	private String readFileToStringOr(File file, String deftl)

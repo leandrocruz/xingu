@@ -31,7 +31,7 @@ public class GCloudMetaProviderTest
 		this.http = mock(HttpClient.class);
 		binder.bind(HttpClient.class, "gcloud").to(this.http);
 		File file = getFile("curl-get-instance-id.html");
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/hostname").to(file);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/attributes/instanceId").to(file);
 		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/attributes/server").to(/* bogus */ file);
 		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/attributes/ports").to( /* bogus */ file);
 	}
