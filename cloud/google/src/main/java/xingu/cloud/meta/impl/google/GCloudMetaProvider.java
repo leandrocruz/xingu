@@ -18,50 +18,65 @@ public class GCloudMetaProvider
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1/instance";
+	public static final String	BASE_URL = "http://metadata.google.internal/computeMetadata/v1";
 
 	private String instanceId;
 
 	private String server;
 
 	private String ports;
+
+	private String project;
+
+	private String zone;
 	
 	@Override
 	public void initialize()
 		throws Exception
 	{
-		this.instanceId = envOr("OYSTR_INSTANCE_ID" , "/attributes/instanceId");
-		this.server   	= envOr("OYSTR_SERVER"	 	, "/attributes/server");
-		this.ports    	= envOr("OYSTR_PORTS"		, "/attributes/ports");
+		this.project	= envOr("OYSTR_PROJECT"		, "/project/project-id");
+		this.zone		= envOr("OYSTR_ZONE"		, "/instance/zone");
+		this.instanceId = envOr("OYSTR_INSTANCE_ID" , "/instance/name");
+		this.server   	= envOr("OYSTR_SERVER"	 	, "/instance/attributes/server");
+		this.ports    	= envOr("OYSTR_PORTS"		, "/instance/attributes/ports");
+	}
+
+	@Override
+	public String getProject()
+	{
+		return project;
+	}
+
+	@Override
+	public String getZone()
+	{
+		/* See:
+		 * - https://cloud.google.com/compute/docs/storing-retrieving-metadata
+		 * 
+		 * "projects/[NUMERIC_PROJECT_ID]/zones/[ZONE]"
+		 */
+		return zone.substring(zone.lastIndexOf("/") + 1);
 	}
 
 	@Override
 	public String getInstanceId()
 		throws Exception
 	{
-		return StringUtils.trim(instanceId);
+		return instanceId;
 	}
 
 	@Override
 	public String getHost()
 		throws Exception
 	{
-		return StringUtils.trim(server);
+		return server;
 	}
 
 	@Override
 	public int[] getPorts()
 		throws Exception
 	{
-		String[] array = ports.split("\\|");
-		int size = array.length;
-		int[] result = new int[size];
-		for(int i = 0; i < size; i++)
-		{
-			String value = array[i].trim();
-			result[i] = StringUtils.toInt(value, 0);
-		}
-		return result;
+		return getPorts(this.ports);
 	}
 
 	private String envOr(String env, String meta)
@@ -77,7 +92,7 @@ public class GCloudMetaProvider
 		{
 			logger.info("{} = '{}'", env, result);
 		}
-		return result;
+		return StringUtils.trim(result);
 	}
 
 	private String get(String url)

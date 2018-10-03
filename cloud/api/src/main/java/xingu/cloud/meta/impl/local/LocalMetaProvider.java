@@ -15,6 +15,18 @@ public class LocalMetaProvider
 {
 	private File root = new File("/tmp/oystr/meta");
 
+	@Override
+	public String getProject()
+	{
+		return "oystr-cloud-test";
+	}
+
+	@Override
+	public String getZone()
+	{
+		return "southamerica-east1-a";
+	}
+
 	private String extractValueAndUpdateFile(String dftl, File file)
 		throws Exception
 	{
@@ -45,8 +57,8 @@ public class LocalMetaProvider
 	public int[] getPorts()
 		throws Exception
 	{
-		String port = extractValueAndUpdateFile("9556", new File(root, "port"));
-		return new int[]{Integer.parseInt(port)};
+		String port = extractValueAndUpdateFile("9556|9557|9558", new File(root, "port"));
+		return getPorts(port);
 	}
 
 	private String readFileToStringOr(File file, String deftl)
@@ -55,7 +67,8 @@ public class LocalMetaProvider
 		if(file.exists())
 		{
 			String result = FileUtils.readFileToString(file);
-			return StringUtils.trim(result);			
+			String trimmed = StringUtils.trimToNull(result);
+			return trimmed == null ? deftl : trimmed;
 		}
 		else
 		{

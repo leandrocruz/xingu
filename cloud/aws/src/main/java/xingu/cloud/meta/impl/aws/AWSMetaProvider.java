@@ -43,4 +43,16 @@ public class AWSMetaProvider
 	{
 		throw new NotImplementedYet();
 	}
+
+	@Override
+	public String getProject()
+	{
+		throw new NotImplementedYet();
+	}
+
+	@Override
+	public String getZone()
+	{
+		throw new NotImplementedYet();
+	}
 }
