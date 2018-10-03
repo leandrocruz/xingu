@@ -119,6 +119,10 @@ public class BridgeConnectorImpl
 					onConnect.onSuccess(channel);
 					return;
 				}
+				else
+				{
+					onConnect.portFailed(host, port);
+				}
 			}
 	    	onConnect.onFailure();
 		}

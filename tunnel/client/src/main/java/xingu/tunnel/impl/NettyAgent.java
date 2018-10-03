@@ -49,6 +49,11 @@ public class NettyAgent
 			public void onFailure()
 			{
 			}
+
+			@Override
+			public void portFailed(String host, int port)
+			{
+			}
 		});
 		
 	}

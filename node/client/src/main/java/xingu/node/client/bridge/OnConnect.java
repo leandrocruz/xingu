@@ -9,4 +9,6 @@ public interface OnConnect
 	void onError(Throwable t);
 
 	void onFailure();
+
+	void portFailed(String host, int port);
 }
