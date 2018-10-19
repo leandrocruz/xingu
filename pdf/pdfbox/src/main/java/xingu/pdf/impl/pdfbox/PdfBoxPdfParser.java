@@ -6,7 +6,7 @@ import java.io.StringWriter;
 
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import xingu.lang.NotImplementedYet;
 import xingu.pdf.Pdf;
@@ -22,9 +22,7 @@ public class PdfBoxPdfParser
 	public Pdf parse(InputStream is)
 		throws Exception
 	{
-        PDFParser parser = new PDFParser(is);
-        parser.parse();
-        PDDocument doc = parser.getPDDocument();
+        PDDocument doc = PDDocument.load(is);
         if(doc.isEncrypted())
         {
             throw new NotImplementedYet("Document is encrypted");
@@ -55,7 +53,6 @@ public class PdfBoxPdfParser
 	private String textForPage(PDDocument doc, PDFTextStripper stripper, int page)
 		throws IOException
 	{
-		stripper.resetEngine();
 		stripper.setStartPage(page);
 		stripper.setEndPage(page);
 		StringWriter writer = new StringWriter();
