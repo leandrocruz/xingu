@@ -144,8 +144,14 @@ public class CurlCommandLineBuilder
 				result.add(keepAlive);
 			}
 
+			String timeout = req.getTimeout();
+			if(StringUtils.isEmpty(timeout))
+			{
+				timeout = "240";
+			}
+			
 			result.add("-m");
-			result.add("240");
+			result.add(timeout);
 			result.add("-i");
 			
 			placeSecurityOptions();

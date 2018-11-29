@@ -388,4 +388,17 @@ public abstract class RequestDelegator
 		req.withoutPayload();
 		return this;
 	}
+	
+	@Override
+	public String getTimeout()
+	{
+		return req.getTimeout();
+	}
+	
+	@Override
+	public HttpRequest withTimeout(String seconds)
+	{
+		req.withTimeout(seconds);
+		return this;
+	}
 }

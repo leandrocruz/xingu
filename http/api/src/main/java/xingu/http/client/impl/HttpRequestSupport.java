@@ -73,6 +73,8 @@ public abstract class HttpRequestSupport
 	private   boolean                 sslV3;
 	
 	private   boolean                 withoutPayload;
+	
+	private	  String				  timeout;
 
 	public HttpRequestSupport(String uri, String method)
 	{
@@ -516,6 +518,19 @@ public abstract class HttpRequestSupport
 	public HttpRequest withoutPayload()
 	{
 		this.withoutPayload = true;
+		return this;
+	}
+	
+	@Override
+	public String getTimeout()
+	{
+		return this.timeout;
+	}
+	
+	@Override
+	public HttpRequest withTimeout(String timeout)
+	{
+		this.timeout = timeout;
 		return this;
 	}
 }
