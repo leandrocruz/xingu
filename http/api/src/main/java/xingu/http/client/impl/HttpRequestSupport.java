@@ -73,6 +73,8 @@ public abstract class HttpRequestSupport
 	private   boolean                 sslV3;
 	
 	private   boolean                 withoutPayload;
+	
+	private	  String				  timeout;
 
 	protected boolean 				  logging = true;
 
@@ -520,7 +522,7 @@ public abstract class HttpRequestSupport
 		this.withoutPayload = true;
 		return this;
 	}
-	
+
 	@Override
 	public HttpRequest loggingOn()
 	{
@@ -532,6 +534,19 @@ public abstract class HttpRequestSupport
 	public HttpRequest loggingOff()
 	{
 		this.logging = false;
+		return this;
+	}
+
+	@Override
+	public String getTimeout()
+	{
+		return this.timeout;
+	}
+
+	@Override
+	public HttpRequest withTimeout(String timeout)
+	{
+		this.timeout = timeout;
 		return this;
 	}
 }

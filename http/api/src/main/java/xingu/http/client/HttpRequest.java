@@ -96,4 +96,7 @@ public interface HttpRequest
 	
 	HttpRequest loggingOn();
 	HttpRequest loggingOff();
+
+	String getTimeout();
+	HttpRequest withTimeout(String seconds);
 }
