@@ -93,6 +93,9 @@ public interface HttpRequest
 	
 	boolean hasPayload();
 	HttpRequest withoutPayload();
+	
+	HttpRequest loggingOn();
+	HttpRequest loggingOff();
 
 	String getTimeout();
 	HttpRequest withTimeout(String seconds);

@@ -76,6 +76,8 @@ public abstract class HttpRequestSupport
 	
 	private	  String				  timeout;
 
+	protected boolean 				  logging = true;
+
 	public HttpRequestSupport(String uri, String method)
 	{
 		this.uri    = uri;
@@ -520,13 +522,27 @@ public abstract class HttpRequestSupport
 		this.withoutPayload = true;
 		return this;
 	}
-	
+
+	@Override
+	public HttpRequest loggingOn()
+	{
+		this.logging = true;
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		this.logging = false;
+		return this;
+	}
+
 	@Override
 	public String getTimeout()
 	{
 		return this.timeout;
 	}
-	
+
 	@Override
 	public HttpRequest withTimeout(String timeout)
 	{

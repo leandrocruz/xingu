@@ -40,9 +40,19 @@ public class NettyAgent
 			}
 
 			@Override
-			public void onError(Channel channel)
+			public void onError(Throwable t)
 			{
-				throw new NotImplementedYet();
+				throw new NotImplementedYet(t);
+			}
+
+			@Override
+			public void onFailure()
+			{
+			}
+
+			@Override
+			public void portFailed(String host, int port)
+			{
 			}
 		});
 		

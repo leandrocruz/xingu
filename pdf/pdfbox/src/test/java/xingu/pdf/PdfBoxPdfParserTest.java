@@ -31,7 +31,7 @@ public class PdfBoxPdfParserTest
 		InputStream is = getClass().getClassLoader().getResourceAsStream("boleto.pdf");
 		Pdf pdf = parser.parse(is);
 		assertEquals(1, pdf.getPageCount());
-		assertEquals(49, pdf.getLines().size());
-		assertEquals("Autenticação Mecânica", pdf.getLine(48).text());
+		assertEquals(47, pdf.getLines().size());
+		assertEquals("Autenticação Mecânica", pdf.getLine(46).text());
 	}
 }

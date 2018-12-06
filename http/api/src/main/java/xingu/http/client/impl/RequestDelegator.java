@@ -17,7 +17,7 @@ public abstract class RequestDelegator
 	implements HttpRequest
 {
 	protected HttpRequest req;;
-	
+
 	public RequestDelegator(HttpRequest req)
 	{
 		this.req = req;
@@ -35,7 +35,7 @@ public abstract class RequestDelegator
 		req.context(ctx);
 		return this;
 	}
-	
+
 	@Override
 	public HttpContext getContext()
 	{
@@ -141,13 +141,13 @@ public abstract class RequestDelegator
 		req.multipart(isMultipartFormData);
 		return this;
 	}
-	
+
 	@Override
 	public String getProxy()
 	{
 		return req.getProxy();
 	}
-	
+
 	/**
 	 * Avoiding censorship.
 	 * 
@@ -297,7 +297,7 @@ public abstract class RequestDelegator
 		req.listener(listener);
 		return this;
 	}
-	
+
 	@Override
 	public HttpRequest withKeepAlive(String seconds)
 	{
@@ -323,7 +323,7 @@ public abstract class RequestDelegator
 	{
 		return req.getPayload();
 	}
-	
+
 	@Override
 	public HttpRequest payloadAsJson(String payload)
 	{
@@ -336,7 +336,7 @@ public abstract class RequestDelegator
 	{
 		return req.getPayloadAsJson();
 	}
-	
+
 	@Override
 	public HttpRequest soap(boolean soap)
 	{
@@ -349,52 +349,66 @@ public abstract class RequestDelegator
 	{
 		return req.isSoap();
 	}
-	
+
 	@Override
 	public boolean sslAllowBeast()
 	{
 		return req.sslAllowBeast();
 	}
-	
+
 	@Override
 	public HttpRequest sslAllowBeast(boolean allow)
 	{
 		req.sslAllowBeast(allow);
 		return this;
 	}
-	
+
 	@Override
 	public boolean sslV3()
 	{
 		return req.sslV3();
 	}
-	
+
 	@Override
 	public HttpRequest sslV3(boolean v3)
 	{
 		req.sslV3(v3);
 		return this;
 	}
-	
+
 	@Override
 	public boolean hasPayload()
 	{
 		return !req.hasPayload();
 	}
-	
+
 	@Override
 	public HttpRequest withoutPayload()
 	{
 		req.withoutPayload();
 		return this;
 	}
-	
+
+	@Override
+	public HttpRequest loggingOn()
+	{
+		req.loggingOn();
+		return this;
+	}
+
+	@Override
+	public HttpRequest loggingOff()
+	{
+		req.loggingOff();
+		return this;
+	}
+
 	@Override
 	public String getTimeout()
 	{
 		return req.getTimeout();
 	}
-	
+
 	@Override
 	public HttpRequest withTimeout(String seconds)
 	{

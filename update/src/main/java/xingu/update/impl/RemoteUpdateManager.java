@@ -43,8 +43,8 @@ public class RemoteUpdateManager
 	{
 		String uri = remote + "/" + bundlesFile;
 		logger.info("Loading remote descriptors from {}", uri);
-		String rnd = RandomStringUtils.randomNumeric(12);		
-		HttpRequest  req = http.get(uri).field("v", rnd);
+		String rnd = RandomStringUtils.randomNumeric(12);
+		HttpRequest  req = http.get(uri).field("rnd", rnd);
 		HttpResponse res = req.exec();
 		InputStream  is  = res.getRawBody();
 		return parse(is);
@@ -57,9 +57,10 @@ public class RemoteUpdateManager
 		String       file = desc.getFile();
 		String       id   = desc.getId();
 		String       uri  = this.remote + "/" + id + "/" + file;
-
+		String 		 rnd  = RandomStringUtils.randomNumeric(12);
+		
 		logger.info("Downloading '{}'", uri);
-		HttpResponse res = http.get(uri).listener(listener).exec();
+		HttpResponse res = http.get(uri).field("rnd", rnd).listener(listener).exec();
 		logger.info("Download done '{}'", uri);
 		
 		return res.getRawBody();

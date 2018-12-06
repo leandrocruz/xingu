@@ -40,6 +40,12 @@ public class Pulga
 
 	private boolean				configured;
 
+	public Pulga(InputStream is, NamedClassLoader cl)
+		throws Exception
+	{
+		this(null, is, cl);
+	}
+
 	public Pulga(Container parent, InputStream is)
 		throws Exception
 	{

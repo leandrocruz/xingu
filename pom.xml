@@ -103,6 +103,14 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
@@ -157,5 +165,6 @@
 		<aws.sdk>1.11.5</aws.sdk>
 		<ahc>4.5.2</ahc>
 		<guava>21.0</guava>
+		<jackson>2.9.3</jackson>
 	</properties>
 </project>

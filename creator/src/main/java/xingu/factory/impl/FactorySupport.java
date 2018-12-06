@@ -35,7 +35,7 @@ public abstract class FactorySupport
         throws ConfigurationException
     {
         String defaultCreatorClassName = conf.getAttribute("creator", SimpleCreator.class.getName());
-        creator = (Creator) ObjectUtils.getInstance(defaultCreatorClassName);
+        creator = (Creator) ObjectUtils.getInstance(defaultCreatorClassName, this.getClass().getClassLoader());
     }
 
     /*

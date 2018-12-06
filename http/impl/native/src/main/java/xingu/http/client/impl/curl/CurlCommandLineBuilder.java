@@ -34,16 +34,21 @@ public class CurlCommandLineBuilder
 	
 	private boolean encodeParameterNames;
 	
+	private String curlBinary;
+	
 	@Override
 	public String name()
 	{
-		return "curl";
+		return curlBinary;
 	}
 
 	@Override
 	public void configure(Configuration conf)
 		throws ConfigurationException
 	{
+		curlBinary = conf.getAttribute("curl-binary", "curl");
+		//curlBinary = conf.getChild("binary").getAttribute("command", "curl");
+				
 		encodeParameterNames = conf.getChild("params").getAttributeAsBoolean("encodeParameterNames", false);
 		Configuration[] params = conf.getChild("params").getChildren("param");
 		for(Configuration param : params)
@@ -125,7 +130,9 @@ public class CurlCommandLineBuilder
 		public List<String> build()
 			throws Exception
 		{
-			result.add("curl");
+			//result.add("curl");
+			result.add(curlBinary);
+			
 			boolean isPost = req.isPost();
 			if(isPost)
 			{
