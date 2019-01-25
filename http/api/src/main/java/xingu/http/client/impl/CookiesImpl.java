@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.DefaultCookie;
 
+import xingu.http.client.CookieFilter;
 import xingu.http.client.Cookies;
 
 public class CookiesImpl
@@ -166,4 +168,15 @@ public class CookiesImpl
 		return Objects.hash(buffer);
 	}
 
+	@Override
+	public Cookies filter(CookieFilter filter)
+	{
+		Set<Cookie> filtered = this
+				.buffer
+				.stream()
+				.filter(cookie -> filter.filter(cookie))
+				.collect(Collectors.toSet());
+
+		return new CookiesImpl(filtered);
+	}
 }

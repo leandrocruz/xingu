@@ -7,6 +7,8 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 public interface Cookies
 {
+	Cookies filter(CookieFilter filter);
+	
 	Cookie byName(String name);
 	
 	Cookie replace(String name, String content);
