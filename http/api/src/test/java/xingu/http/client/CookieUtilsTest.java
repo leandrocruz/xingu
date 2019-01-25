@@ -120,4 +120,46 @@ public class CookieUtilsTest
 		assertEquals("a", merged.byName("my_cookie").getValue());
 		assertEquals("c", merged.byName("my_other_cookie").getValue());
 	}
+
+	@Test
+	public void testSameNameSameDomains()
+		throws Exception
+	{
+		Cookies cookie = CookieUtils.toCookies("my=a; Domain=a.com");
+		Cookies other  = CookieUtils.toCookies("my=b; Domain=a.com");
+		Cookies merged = CookieUtils.mergeCookies(cookie, other);
+		assertEquals(1, merged.size());
+		assertEquals("b", merged.byName("my").getValue());
+	}
+	
+	@Test
+	public void testSameNameForDifferentDomains()
+		throws Exception
+	{
+		Cookies aCookie = CookieUtils.toCookies("my_cookie=a; Domain=a.com");
+		assertEquals(1, aCookie.size());
+		assertEquals("a", aCookie.byName("my_cookie").getValue());
+		assertEquals("a.com", aCookie.byName("my_cookie").getDomain());
+	
+		Cookies bCookie = CookieUtils.toCookies("my_cookie=b; Domain=b.com");
+		assertEquals(1, bCookie.size());
+		assertEquals("b", bCookie.byName("my_cookie").getValue());
+		assertEquals("b.com", bCookie.byName("my_cookie").getDomain());
+	
+		Cookies merged = CookieUtils.mergeCookies(aCookie, bCookie);
+		assertEquals(2, merged.size());
+		
+		Cookies filtered = merged.filter(new CookieFilter());
+		assertEquals(2, filtered.size());
+		
+		filtered = merged.filter(new CookieFilter().domain("a.com"));
+		assertEquals(1, filtered.size());
+		assertEquals("a", filtered.byName("my_cookie").getValue());
+		assertEquals("a.com", filtered.byName("my_cookie").getDomain());
+
+		filtered = merged.filter(new CookieFilter().domain("b.com"));
+		assertEquals(1, filtered.size());
+		assertEquals("b", filtered.byName("my_cookie").getValue());
+		assertEquals("b.com", filtered.byName("my_cookie").getDomain());
+	}
 }

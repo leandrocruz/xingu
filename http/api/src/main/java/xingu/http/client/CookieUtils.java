@@ -148,9 +148,10 @@ public class CookieUtils
 		
 		for(Cookie onSecond : secondSet)
 		{
-			String name    = onSecond.getName();
-			Cookie onFirst = result.byName(name);
-			if(onFirst != null)
+			String name     = onSecond.getName();
+			Cookie onFirst  = result.byName(name);
+			boolean replace = replaceCookie(onFirst, onSecond);
+			if(replace)
 			{
 				merged.remove(onFirst);
 			}
@@ -159,6 +160,17 @@ public class CookieUtils
 		return new CookiesImpl(merged);
 	}
 	
+	private static boolean replaceCookie(Cookie onFirst, Cookie onSecond)
+	{
+		if(onFirst != null)
+		{
+			String d1 = onFirst.getDomain();
+			String d2 = onSecond.getDomain();
+			return d1 == d2 /* works for null */ || d1.equalsIgnoreCase(d2);
+		}
+		return false;
+	}
+
 	public static Cookies mergeCookies(Cookies first, HttpResponse res)
 	{
 		Map<String,  Cookie>        newCookies = new HashMap<>();
