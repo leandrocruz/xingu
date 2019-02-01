@@ -165,7 +165,6 @@ public class CookieUtilsTest
 	}
 
 	@Test
-	@Ignore
 	public void testSameNameForDifferentDomainsWithNull()
 		throws Exception
 	{
@@ -186,13 +185,8 @@ public class CookieUtilsTest
 		assertEquals(2, filtered.size());
 		
 		filtered = merged.filter(new CookieFilter().domain("a.com"));
-		assertEquals(1, filtered.size());
-		assertEquals("a", filtered.byName("my_cookie").getValue());
-		assertEquals("a.com", filtered.byName("my_cookie").getDomain());
-
+		assertEquals(2, filtered.size());
 		filtered = merged.filter(new CookieFilter().domain("b.com"));
 		assertEquals(1, filtered.size());
-		assertEquals("b", filtered.byName("my_cookie").getValue());
-		assertEquals(null, filtered.byName("my_cookie").getDomain());
 	}
 }
