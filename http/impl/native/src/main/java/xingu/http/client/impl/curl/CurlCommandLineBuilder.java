@@ -1,6 +1,7 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.jboss.netty.handler.codec.http.HttpHeaders;
 
 import xingu.http.client.Attachment;
 import xingu.http.client.CommandLineBuilder;
+import xingu.http.client.CookieFilter;
 import xingu.http.client.Cookies;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
@@ -372,8 +374,10 @@ public class CurlCommandLineBuilder
 		}
 
 		private void placeCookies()
+			throws URISyntaxException
 		{
-			Cookies cookies = req.getCookies();
+			CookieFilter filter = CookieFilter.from(this.req.getUri());
+			Cookies cookies = req.getCookies() == null ? null : req.getCookies().filter(filter);
 			int len = cookies == null ? 0 : cookies.size();
 			if(len > 0)
 			{

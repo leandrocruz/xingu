@@ -1,5 +1,7 @@
 package xingu.http.client;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -7,10 +9,20 @@ import org.jboss.netty.handler.codec.http.Cookie;
 
 public class CookieFilter
 {
-	private Optional<String> path = Optional.empty();
-	private Optional<String> domain = Optional.empty();
+	private Optional<String>  path 	 = Optional.empty();
+	private Optional<String>  domain = Optional.empty();
 	private Optional<Boolean> secure = Optional.empty();
-		
+	
+	public static CookieFilter from(String uri)
+		throws URISyntaxException
+	{
+		URI parser = new URI(uri);
+		return new CookieFilter()
+			.secure("https".equals(parser.getScheme()))
+			.domain(parser.getHost())
+			.path(parser.getPath());
+	}
+
 	public CookieFilter path(String path)
 	{
 		this.path = Optional.of(path);
@@ -49,7 +61,7 @@ public class CookieFilter
 	
 	private boolean protocolAllowed(boolean value)
 	{
-		return this.secure.map(required -> value && required).orElse(true);
+		return this.secure.map(required -> value == required).orElse(true);
 	}
 
 	private boolean domainAllowed(String value)

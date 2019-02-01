@@ -1,10 +1,10 @@
 package xingu.http.client;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.jboss.netty.handler.codec.http.DefaultCookie;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import xingu.http.client.impl.CookiesImpl;

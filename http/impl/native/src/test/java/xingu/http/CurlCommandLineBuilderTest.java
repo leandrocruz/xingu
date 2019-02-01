@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jsoup.nodes.Document;
@@ -103,5 +105,18 @@ public class CurlCommandLineBuilderTest
 		assertEquals(302, response.getCode());
 		assertEquals("ID=ce20a24454b3e7b0:FF=0:TM=1392923056:LM=1392923056:S=XJzMcL5FMR_wGaFN", c1.getValue());
 		assertEquals("67=gbVYO3CBYtd5fAHBUEPbz6FkA8vQ7MqymZaWefWUgAK0gfW0PGnZc7ByFguhcOI798Kh-y6eZVNaqYJVZ2ytjGl7Kbsvx21ndYBds0qUkS-NsBeBRuBMh3mcvR55N18S", c2.getValue());
+	}
+
+	@Test
+	public void testCookieFilter()
+		throws Exception
+	{
+		Cookies cookies = CookieUtils.toCookies("a=1; b=2; domain=mimimi.com; c=3; domain=google.com");
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getUri()).thenReturn("http://www.google.com");
+		when(req.getCookies()).thenReturn(cookies);
+		List<String> cmd = builder.buildLine(req, getFile("response1.txt"));
+		String header = cmd.get(cmd.indexOf("--cookie") + 1);
+		assertEquals("a=1; c=3", header);
 	}
 }
