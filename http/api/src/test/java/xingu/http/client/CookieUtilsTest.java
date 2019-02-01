@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.jboss.netty.handler.codec.http.DefaultCookie;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import xingu.http.client.impl.CookiesImpl;
@@ -161,5 +162,37 @@ public class CookieUtilsTest
 		assertEquals(1, filtered.size());
 		assertEquals("b", filtered.byName("my_cookie").getValue());
 		assertEquals("b.com", filtered.byName("my_cookie").getDomain());
+	}
+
+	@Test
+	@Ignore
+	public void testSameNameForDifferentDomainsWithNull()
+		throws Exception
+	{
+		Cookies aCookie = CookieUtils.toCookies("my_cookie=a; Domain=a.com");
+		assertEquals(1, aCookie.size());
+		assertEquals("a", aCookie.byName("my_cookie").getValue());
+		assertEquals("a.com", aCookie.byName("my_cookie").getDomain());
+	
+		Cookies bCookie = CookieUtils.toCookies("my_cookie=b");
+		assertEquals(1, bCookie.size());
+		assertEquals("b", bCookie.byName("my_cookie").getValue());
+		assertEquals(null, bCookie.byName("my_cookie").getDomain());
+	
+		Cookies merged = CookieUtils.mergeCookies(aCookie, bCookie);
+		assertEquals(2, merged.size());
+		
+		Cookies filtered = merged.filter(new CookieFilter());
+		assertEquals(2, filtered.size());
+		
+		filtered = merged.filter(new CookieFilter().domain("a.com"));
+		assertEquals(1, filtered.size());
+		assertEquals("a", filtered.byName("my_cookie").getValue());
+		assertEquals("a.com", filtered.byName("my_cookie").getDomain());
+
+		filtered = merged.filter(new CookieFilter().domain("b.com"));
+		assertEquals(1, filtered.size());
+		assertEquals("b", filtered.byName("my_cookie").getValue());
+		assertEquals(null, filtered.byName("my_cookie").getDomain());
 	}
 }

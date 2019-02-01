@@ -166,7 +166,7 @@ public class CookieUtils
 		{
 			String d1 = onFirst.getDomain();
 			String d2 = onSecond.getDomain();
-			return d1 == d2 /* works for null */ || d1.equalsIgnoreCase(d2);
+			return StringUtils.equalsIgnoreCase(d1, d2);
 		}
 		return false;
 	}
