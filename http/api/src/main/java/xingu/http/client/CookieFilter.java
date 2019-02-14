@@ -61,7 +61,7 @@ public class CookieFilter
 	
 	private boolean protocolAllowed(boolean value)
 	{
-		return this.secure.map(required -> value == required).orElse(true);
+		return !value ? true : this.secure.map(required -> value == required).orElse(true);
 	}
 
 	private boolean domainAllowed(String value)
