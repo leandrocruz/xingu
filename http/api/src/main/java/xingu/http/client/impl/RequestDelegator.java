@@ -141,6 +141,13 @@ public abstract class RequestDelegator
 		req.multipart(isMultipartFormData);
 		return this;
 	}
+	
+	@Override
+	public HttpRequest dataBinaryMultipart(boolean dataBinaryMultipart)
+	{
+		req.dataBinaryMultipart(dataBinaryMultipart);
+		return this;
+	}
 
 	@Override
 	public String getProxy()
@@ -166,7 +173,13 @@ public abstract class RequestDelegator
 	{
 		return req.isMultipart();
 	}
-
+	
+	@Override
+	public boolean isDataBinaryMultipart()
+	{
+		return req.isDataBinaryMultipart();
+	}
+	
 	@Override
 	public String getCertificate()
 	{

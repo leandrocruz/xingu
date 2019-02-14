@@ -1,6 +1,8 @@
 package xingu.http.client.impl.curl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
@@ -117,11 +121,15 @@ public class CurlCommandLineBuilder
 
 	class Builder
 	{
+		private final String NEW_LINE = "\r\n";
+
 		private HttpRequest req;
 		
 		private File file;
 
 		private List<String> result = new ArrayList<String>();
+
+		private String boundary;
 		
 		public Builder(HttpRequest req, File file)
 		{
@@ -186,10 +194,17 @@ public class CurlCommandLineBuilder
 				placePayloadAsJson();
 				
 				boolean isMultipart = req.isMultipart();
-				if(isPost && isMultipart)
+				boolean isDataBinaryMultipart = req.isDataBinaryMultipart();
+				if(isPost && isDataBinaryMultipart)
+				{
+					this.boundary = generateBoundary();
+					placeDataBinaryMultipartFields();
+				}
+				else if(isPost && isMultipart)
 				{
 					placeMultipartFields();
 				}
+					
 				else
 				{
 					placeDataFields();
@@ -214,15 +229,8 @@ public class CurlCommandLineBuilder
 
 		private void placeSecurityOptions()
 		{
-			//TODO: use ignoreSSLCertificates() when performing the request
-			/*
-			if(req.ignoreSSLCertificates())
-			{
-				result.add("-k"); // ignore server certificate
-			}
-			*/
-
-			result.add("-k"); // ignore server certificate		
+			result.add("-k");
+			
 			if(req.sslAllowBeast())
 			{
 				result.add("--ssl-allow-beast");
@@ -458,6 +466,98 @@ public class CurlCommandLineBuilder
 				dumpParametersToFileIfAny(dump, req.getCharset());
 			}
 		}
+		
+		private void placeDataBinaryMultipartFields()
+			throws Exception
+		{
+			StringBuilder dump = new StringBuilder();
+			
+			result.add("-H");
+			result.add("Content-Type: multipart/form-data; boundary=" + boundary);			
+			result.add("--data-binary");
+						
+			List<Attachment> attachments = req.getAttachments();
+			int len = attachments == null ? 0 : attachments.size();
+			if(len > 0)
+			{
+				for(Attachment attachment : attachments)
+				{
+					String name     = attachment.getName();
+					String fileName = attachment.getFileName();
+					File   file     = attachment.getFile();
+					String mime     = attachment.getMime();
+					
+					InputStream fileInputStream = new FileInputStream(file);
+					String content = IOUtils.toString(fileInputStream);
+					IOUtils.closeQuietly(fileInputStream);
+					
+					dump
+						.append("--")
+						.append(this.boundary)
+						.append(this.NEW_LINE)
+						.append("Content-Disposition: form-data; name=\""	+ name + "\"")
+						.append(fileName == null 	? "" : ";filename=\"" 	+ fileName + "\"")
+						.append(mime == null 		? "" : ";Content-Type=" + mime)
+						.append(this.NEW_LINE)
+						.append(this.NEW_LINE)
+						.append(content)
+						.append(this.NEW_LINE);
+				}
+			}
+
+			/*
+			 * See:
+			 * - http://www.ietf.org/rfc/rfc2388.txt
+			 * - http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
+			 * - http://curl.haxx.se/docs/manpage.html#-F
+			 */
+			List<NameValue> fields = req.getFields();
+			int len2 = fields == null ? 0 : fields.size();
+			if(len2 > 0)
+			{			
+				for(NameValue f : fields)
+				{
+					String name  = f.getName();
+					String value = f.getValue();
+					String type  = f.getType();
+					
+					if(type != null && type.startsWith("enc"))
+					{
+						int idx = type.indexOf(":");
+						String encoding = type.substring(idx + 1);
+						if(!"no".equals(encoding))
+						{
+							value = URLEncoder.encode(value, encoding);
+						}
+					}
+					
+					dump
+						.append("--")
+						.append(this.boundary)
+						.append(this.NEW_LINE)
+						.append("Content-Disposition: form-data; charset=Windows-1252; name=\"" + name + "\"")
+						.append(this.NEW_LINE)
+						.append(this.NEW_LINE)
+						.append(value)
+						.append(this.NEW_LINE);
+					}
+			}
+			
+			dump
+				.append(boundary)
+				.append("--")
+				.append(this.NEW_LINE);
+			
+			String buffer = dump.toString();
+//			
+//			if(StringUtils.isNotEmpty(req.getCharset()))
+//			{
+//				byte[] ptext = dump.toString().getBytes(); 
+//				buffer = new String(ptext, req.getCharset()); 
+//			}
+			
+			result.add(buffer);
+		}
 
 		private void placeMultipartFields()
 			throws Exception
@@ -540,7 +640,7 @@ public class CurlCommandLineBuilder
 		}
 		
 		private String escapeText(String text)
-		{			
+		{
 			return text.replace("\"", "\\\"");
 		}
 
@@ -588,5 +688,10 @@ public class CurlCommandLineBuilder
 			FileUtils.write(file, dump, charset);		
 			return file;
 		}
+	}
+	
+	private String generateBoundary()
+	{
+		return "----WebKitFormBoundary" + RandomStringUtils.randomAlphanumeric(16);
 	}
 }

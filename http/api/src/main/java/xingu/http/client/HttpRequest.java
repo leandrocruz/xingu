@@ -35,6 +35,9 @@ public interface HttpRequest
 	HttpRequest multipart(boolean isMultipartFormData);
 	boolean isMultipart();
 	
+	HttpRequest dataBinaryMultipart(boolean isdataBinaryMultipart);
+	boolean isDataBinaryMultipart();
+	
 	String getProxy();
 	HttpRequest withProxy(String proxy);
 

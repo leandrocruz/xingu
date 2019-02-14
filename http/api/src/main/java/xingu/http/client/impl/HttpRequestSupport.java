@@ -78,6 +78,8 @@ public abstract class HttpRequestSupport
 
 	protected boolean 				  logging = true;
 
+	private boolean dataBinaryMultipart;
+
 	public HttpRequestSupport(String uri, String method)
 	{
 		this.uri    = uri;
@@ -268,6 +270,12 @@ public abstract class HttpRequestSupport
 		return this;
 	}
 	
+	public HttpRequest dataBinaryMultipart(boolean dataBinaryMultipart)
+	{
+		this.dataBinaryMultipart = dataBinaryMultipart;
+		return this;
+	}
+	
 	@Override
 	public String getProxy()
 	{
@@ -336,6 +344,11 @@ public abstract class HttpRequestSupport
 	public boolean isMultipart()
 	{
 		return multipart;
+	}
+	
+	public boolean isDataBinaryMultipart()
+	{
+		return dataBinaryMultipart;
 	}
 	
 	@Override
