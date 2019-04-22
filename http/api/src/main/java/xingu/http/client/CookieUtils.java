@@ -136,6 +136,17 @@ public class CookieUtils
 	{
 		return cookie.getName() + "=" + cookie.getValue();
 	}
+	
+	public static String toString(Cookies cookies)
+	{
+		String s = "";
+		for(String x : cookies.names())			
+		{
+			Cookie c = cookies.byName(x);
+			s += c.getName() + "=" + c.getValue() + "; ";
+		}
+		return s;
+	}
 
 	public static Cookies mergeCookies(Cookies first, Cookies second)
 	{

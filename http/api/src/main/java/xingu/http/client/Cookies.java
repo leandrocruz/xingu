@@ -23,4 +23,6 @@ public interface Cookies
 	int size();
 
 	void add(Cookie cookie);
+
+	void remove(String name);
 }

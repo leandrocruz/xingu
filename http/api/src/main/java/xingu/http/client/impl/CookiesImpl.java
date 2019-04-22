@@ -112,6 +112,24 @@ public class CookiesImpl
 			buffer.add(replacement);
 		}
 	}
+	
+	@Override
+	public void remove(String name)
+	{
+		Cookie toRemove = null;
+		for(Cookie c : buffer)
+		{
+			if(c.getName().startsWith(name))
+			{
+				toRemove = c;
+				break;
+			}
+		}
+		if(toRemove != null)
+		{
+			buffer.remove(toRemove);
+		}
+	}
 
 	@Override
 	public int size()
