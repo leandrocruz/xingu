@@ -143,16 +143,37 @@ public class CurlCommandLineBuilder
 			//result.add("curl");
 			result.add(curlBinary);
 			
-			boolean isPost = req.isPost();
-			if(isPost)
+			boolean isPost = false;			
+			
+			String method  = req.getMethod();
+			
+			switch (method)
 			{
-				result.add("-X");
-				result.add("POST");
+				case "PUT":
+					result.add("-X");
+					result.add("PUT");
+					break;
+					
+				case "POST":
+					result.add("-X");
+					result.add("POST");
+					isPost = true;
+					break;
+					
+				default:
+					result.add("--get");
+					break;
 			}
-			else
-			{
-				result.add("--get");
-			}
+			
+//			if(isPost)
+//			{
+//				result.add("-X");
+//				result.add("POST");
+//			}
+//			else
+//			{
+//				result.add("--get");
+//			}
 			
 			String keepAlive = req.getKeepAlive();
 			if(StringUtils.isNotEmpty(keepAlive))
