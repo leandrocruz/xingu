@@ -22,6 +22,13 @@ public class LocalHttpClient
 	{
 		return null;
 	}
+	
+	@Override
+	public HttpRequest put(String uri)
+		throws HttpException
+	{
+		return null;
+	}
 
 	@Override
 	public Cookies getCookies(String uri)

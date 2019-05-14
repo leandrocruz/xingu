@@ -7,6 +7,9 @@ public interface HttpClient
 
 	HttpRequest post(String uri)
 		throws HttpException;
+	
+	HttpRequest put(String uri)
+		throws HttpException;
 
 	Cookies getCookies(String uri)
 		throws HttpException;

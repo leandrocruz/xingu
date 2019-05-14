@@ -2,6 +2,7 @@ package xingu.http.client.impl;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import xingu.http.client.HttpClient;
@@ -26,6 +27,14 @@ public class ApacheHttpClient
 		throws HttpException
 	{
 		HttpUriRequest req = new HttpPost(uri);
+		return new ApacheRequest(req);
+	}
+	
+	@Override
+	public HttpRequest put(String uri)
+		throws HttpException
+	{
+		HttpUriRequest req = new HttpPut(uri);
 		return new ApacheRequest(req);
 	}
 }

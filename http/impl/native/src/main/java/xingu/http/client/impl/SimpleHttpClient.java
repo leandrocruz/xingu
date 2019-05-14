@@ -28,6 +28,13 @@ public class SimpleHttpClient
 	{
 		return factory.create(SimpleHttpRequest.class, uri, "POST");
 	}
+	
+	@Override
+	public HttpRequest put(String uri)
+		throws HttpException
+	{
+		return factory.create(SimpleHttpRequest.class, uri, "PUT");
+	}
 
 	@Override
 	public Cookies getCookies(String uri)
