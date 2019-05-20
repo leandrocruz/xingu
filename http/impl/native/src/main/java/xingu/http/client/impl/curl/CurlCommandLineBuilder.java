@@ -165,16 +165,6 @@ public class CurlCommandLineBuilder
 					break;
 			}
 			
-//			if(isPost)
-//			{
-//				result.add("-X");
-//				result.add("POST");
-//			}
-//			else
-//			{
-//				result.add("--get");
-//			}
-			
 			String keepAlive = req.getKeepAlive();
 			if(StringUtils.isNotEmpty(keepAlive))
 			{

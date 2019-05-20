@@ -115,6 +115,7 @@ public class CurlCommandLineBuilderTest
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getUri()).thenReturn("http://www.google.com");
 		when(req.getCookies()).thenReturn(cookies);
+		when(req.getMethod()).thenReturn("GET");
 		List<String> cmd = builder.buildLine(req, getFile("response1.txt"));
 		String header = cmd.get(cmd.indexOf("--cookie") + 1);
 		assertEquals("a=1; c=3", header);
