@@ -239,7 +239,7 @@ public class CurlCommandLineBuilder
 		private void placeUpload()
 		{
 			result.add("--upload-file");
-			result.add("@" + req.getFileToUpload().getPath());
+			result.add(req.getFileToUpload().getPath());
 		}
 
 		private void placeEmptyBody()
