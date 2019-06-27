@@ -1,5 +1,6 @@
 package xingu.http.client;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,10 @@ public interface HttpRequest
 	
 	HttpRequest dataBinaryMultipart(boolean isdataBinaryMultipart);
 	boolean isDataBinaryMultipart();
+	
+	HttpRequest upload(File file);
+	File getFileToUpload();
+	boolean hasUpload();
 	
 	String getProxy();
 	HttpRequest withProxy(String proxy);

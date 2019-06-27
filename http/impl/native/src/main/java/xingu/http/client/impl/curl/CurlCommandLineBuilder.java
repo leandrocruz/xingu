@@ -198,8 +198,12 @@ public class CurlCommandLineBuilder
 			placeUserAgent();
 			placeHeaders();
 			placeProxy();
-
-			if(req.hasPayload())
+			
+			if(req.hasUpload())
+			{
+				placeUpload();
+			}
+			else if(req.hasPayload())
 			{
 				placePayload();
 				placePayloadAsJson();
@@ -232,6 +236,12 @@ public class CurlCommandLineBuilder
 			return result;
 		}
 		
+		private void placeUpload()
+		{
+			result.add("--upload-file");
+			result.add("@" + req.getFileToUpload().getPath());
+		}
+
 		private void placeEmptyBody()
 		{
 			result.add("--data-urlencode");		

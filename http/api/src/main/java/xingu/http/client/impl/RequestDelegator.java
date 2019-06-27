@@ -1,5 +1,6 @@
 package xingu.http.client.impl;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -427,5 +428,24 @@ public abstract class RequestDelegator
 	{
 		req.withTimeout(seconds);
 		return this;
+	}
+	
+	@Override
+	public HttpRequest upload(File file)
+	{
+		req.upload(file);
+		return this;
+	}
+	
+	@Override
+	public boolean hasUpload()
+	{
+		return req.hasPayload();
+	}
+	
+	@Override
+	public File getFileToUpload()
+	{
+		return req.getFileToUpload();
 	}
 }

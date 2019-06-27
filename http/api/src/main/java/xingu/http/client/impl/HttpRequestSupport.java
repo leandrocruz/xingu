@@ -1,5 +1,6 @@
 package xingu.http.client.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +50,16 @@ public abstract class HttpRequestSupport
 	protected String				  proxy;
 
 	protected boolean                 multipart;
+	
+	protected boolean                 upload;
 
 	protected boolean                 ignoreSSLCertificates;
 
 	private   boolean                 soap;
 
 	private   String                  keepAlive;
+	
+	private   File 					  fileToUpload;
 
 	protected HttpProgressListener    listener;
 
@@ -561,5 +566,24 @@ public abstract class HttpRequestSupport
 	{
 		this.timeout = timeout;
 		return this;
+	}
+	
+	@Override
+	public HttpRequest upload(File file)
+	{
+		this.fileToUpload = file;
+		return this;
+	}
+	
+	@Override
+	public File getFileToUpload()
+	{
+		return this.fileToUpload;
+	}
+	
+	@Override
+	public boolean hasUpload()
+	{
+		return fileToUpload != null;
 	}
 }
