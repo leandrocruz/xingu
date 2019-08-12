@@ -541,12 +541,7 @@ public class CurlCommandLineBuilder
 			 */
 			
 			String charset = this.req.getCharset();
-			
-			if(StringUtils.isEmpty(charset))
-			{
-				// legacy systems needs this charset 
-				charset = "Windows-1252";
-			}
+			boolean charsetDeclaration = !StringUtils.isEmpty(charset);
 			
 			List<NameValue> fields = req.getFields();
 			int len2 = fields == null ? 0 : fields.size();
@@ -572,7 +567,9 @@ public class CurlCommandLineBuilder
 						.append("--")
 						.append(this.boundary)
 						.append(this.NEW_LINE)
-						.append("Content-Disposition: form-data; charset=" + this.req.getCharset() + "; name=\"" + name + "\"")
+						.append("Content-Disposition: form-data; ")
+						.append(charsetDeclaration ? "charset=" + charset + "; " : "")
+						.append("name=\"" + name + "\"")
 						.append(this.NEW_LINE)
 						.append(this.NEW_LINE)
 						.append(value)
