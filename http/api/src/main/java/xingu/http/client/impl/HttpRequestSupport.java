@@ -85,6 +85,8 @@ public abstract class HttpRequestSupport
 
 	private boolean dataBinaryMultipart;
 
+	private String retry;
+
 	public HttpRequestSupport(String uri, String method)
 	{
 		this.uri    = uri;
@@ -585,5 +587,18 @@ public abstract class HttpRequestSupport
 	public boolean hasUpload()
 	{
 		return fileToUpload != null;
+	}
+	
+	@Override
+	public String getRetry()
+	{
+		return this.retry;
+	}
+	
+	@Override
+	public HttpRequest withRetry(String seconds)
+	{
+		this.retry = seconds;
+		return this;
 	}
 }

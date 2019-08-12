@@ -448,4 +448,16 @@ public abstract class RequestDelegator
 	{
 		return req.getFileToUpload();
 	}
+	
+	@Override
+	public String getRetry()
+	{
+		return req.getRetry();
+	}
+	
+	@Override
+	public HttpRequest withRetry(String seconds)
+	{
+		return req.withRetry(seconds);
+	}
 }

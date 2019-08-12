@@ -178,6 +178,13 @@ public class CurlCommandLineBuilder
 				timeout = "240";
 			}
 			
+			String retry = req.getRetry();
+			if(!StringUtils.isEmpty(retry))
+			{
+				result.add("--retry");
+				result.add(retry);
+			}
+			
 			result.add("-m");
 			result.add(timeout);
 			result.add("-i");
@@ -532,6 +539,15 @@ public class CurlCommandLineBuilder
 			 * - http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
 			 * - http://curl.haxx.se/docs/manpage.html#-F
 			 */
+			
+			String charset = this.req.getCharset();
+			
+			if(StringUtils.isEmpty(charset))
+			{
+				// legacy systems needs this charset 
+				charset = "Windows-1252";
+			}
+			
 			List<NameValue> fields = req.getFields();
 			int len2 = fields == null ? 0 : fields.size();
 			if(len2 > 0)
@@ -556,7 +572,7 @@ public class CurlCommandLineBuilder
 						.append("--")
 						.append(this.boundary)
 						.append(this.NEW_LINE)
-						.append("Content-Disposition: form-data; charset=Windows-1252; name=\"" + name + "\"")
+						.append("Content-Disposition: form-data; charset=" + this.req.getCharset() + "; name=\"" + name + "\"")
 						.append(this.NEW_LINE)
 						.append(this.NEW_LINE)
 						.append(value)

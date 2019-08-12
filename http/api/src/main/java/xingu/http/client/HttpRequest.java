@@ -107,4 +107,7 @@ public interface HttpRequest
 
 	String getTimeout();
 	HttpRequest withTimeout(String seconds);
+
+	String getRetry();
+	HttpRequest withRetry(String seconds);
 }
