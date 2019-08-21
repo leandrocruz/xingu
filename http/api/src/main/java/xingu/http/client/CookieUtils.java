@@ -177,7 +177,10 @@ public class CookieUtils
 		{
 			String d1 = onFirst.getDomain();
 			String d2 = onSecond.getDomain();
-			return StringUtils.equalsIgnoreCase(d1, d2);
+			String p1 = onFirst.getPath();
+			String p2 = onSecond.getPath();
+			return StringUtils.equalsIgnoreCase(d1, d2) && 
+					StringUtils.equalsIgnoreCase(p1, p2) ;
 		}
 		return false;
 	}
