@@ -13,9 +13,9 @@ import xingu.process.ProcessManager;
 public class ProcessManagerImpl
 	implements ProcessManager, Configurable
 {
-	private boolean	redirect;
+	private boolean	redirect = true;
 	
-	private boolean	append;
+	private boolean	append = true;
 
 	private File	stdOut;
 
