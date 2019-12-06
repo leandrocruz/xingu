@@ -596,29 +596,8 @@ public class CurlCommandLineBuilder
 		private void placeMultipartFields()
 			throws Exception
 		{
-			StringBuilder dump = new StringBuilder();
+			StringBuilder dump = new StringBuilder();		
 			
-			List<Attachment> attachments = req.getAttachments();
-			int len = attachments == null ? 0 : attachments.size();
-			if(len > 0)
-			{
-				for(Attachment attachment : attachments)
-				{
-					String name     = attachment.getName();
-					String fileName = attachment.getFileName();
-					File   file     = attachment.getFile();
-					String mime     = attachment.getMime();
-					
-					dump
-						.append("-F ")
-						.append("\"")
-						.append(name + "=@" + file.getAbsolutePath()) 
-						.append(fileName == null ? "" : ";filename=" + fileName)
-						.append(mime == null ? "" : ";type=" + mime)
-						.append("\"")
-						.append("\n");
-				}
-			}
 
 			/*
 			 * See:
@@ -667,6 +646,28 @@ public class CurlCommandLineBuilder
 							.append("\"");
 					}
 					dump.append("\n");
+				}
+			}
+			
+			List<Attachment> attachments = req.getAttachments();
+			int len = attachments == null ? 0 : attachments.size();
+			if(len > 0)
+			{
+				for(Attachment attachment : attachments)
+				{
+					String name     = attachment.getName();
+					String fileName = attachment.getFileName();
+					File   file     = attachment.getFile();
+					String mime     = attachment.getMime();
+					
+					dump
+						.append("-F ")
+						.append("\"")
+						.append(name + "=@" + file.getAbsolutePath()) 
+						.append(fileName == null ? "" : ";filename=" + fileName)
+						.append(mime == null ? "" : ";type=" + mime)
+						.append("\"")
+						.append("\n");
 				}
 			}
 			
