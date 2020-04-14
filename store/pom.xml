@@ -18,7 +18,7 @@
 	</dependencies>
 	<modules>
 		<module>api</module>
-		<module>prevayler</module>
+		<!-- module>prevayler</module -->
 		<module>mybatis</module>
 		<!--
 		<module>ibatis</module>
