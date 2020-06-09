@@ -47,7 +47,7 @@ public class SimpleHttpRequest
 			if(logging)
 				logger.info("Executing command: {}", join);
 
-			result = execCmd(logger, cmd, 3);
+			result = execCmd(logger, cmd, 5);
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
@@ -87,7 +87,7 @@ public class SimpleHttpRequest
 		 * 28 - Operation timeout
 		 */
 		if(retryCount > 0
-				&& (6 == result || 7 == result || 28 == result))
+				&& (/*6 == result || 7 == result || 28 == result ||*/ 56 == result || 35 == result))
 		{
 			logger.info("retrying: " + result);
 			return execCmd(logger, cmd, retryCount - 1);

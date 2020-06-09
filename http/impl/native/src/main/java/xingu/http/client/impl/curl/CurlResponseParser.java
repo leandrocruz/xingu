@@ -50,7 +50,15 @@ public class CurlResponseParser
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is, withProxy);
+		try
+		{
+			return responseFrom(uri, is, withProxy);
+		}
+		catch(Exception ex)
+		{
+			is = new FileInputStream(file);
+			return responseFrom(uri, is, false);
+		}
 	}
 
 	private static void removeProxyHeaders(ChannelBuffer buffer)
@@ -94,7 +102,9 @@ public class CurlResponseParser
 		int    code = -1;
 		String line = null;
 		
-		if(withProxy)
+		boolean hasProxyHeaders = true;
+		
+		if(withProxy && hasProxyHeaders)
 		{
 			removeProxyHeaders(buffer);
 		}
