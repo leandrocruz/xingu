@@ -44,14 +44,20 @@ public class HttpResponseImpl
 	public Document getDocument()
 		throws IOException
 	{
-		return getDocument("ISO-8859-1");
+		return getDocument(HttpUtils.DEFAULT_HTTP_CHARSET_NAME, true);
 	}
-
+	
 	@Override
 	public Document getDocument(String charset)
 		throws IOException
 	{
-		if(doc != null)
+		return getDocument(charset, false);
+	}
+	
+	public Document getDocument(String charset, boolean cached)
+		throws IOException
+	{
+		if(cached && doc != null)
 		{
 			return doc;
 		}

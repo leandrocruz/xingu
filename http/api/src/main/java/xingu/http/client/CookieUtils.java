@@ -65,9 +65,14 @@ public class CookieUtils
     {
     	String[] values = v.split(";");
     	String   v2     = "";
-    	
+    	 	
     	for(String value : values)
     	{
+    		value = value.replaceAll("SameSite=(None|Strict|Lax)", "");
+    		
+    		if(value.isEmpty())
+    			continue;
+    		
     		int i = value.indexOf(":");
             int j = value.indexOf("=");
             
