@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -39,37 +40,22 @@ public class CurlResponseParser
 		return new NameValueImpl(name, value);
 	}
 
+	@SuppressWarnings("resource")
+	// Note: suppressed because it's being closed in responseFrom.
+	// Note: there's a reason for this that Jonas doesn't remember.
 	public static HttpResponse responseFrom(String uri, File file)
-		throws Exception
-	{
-		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is, false);
-	}
-	
-	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
 		try
 		{
-			return responseFrom(uri, is, withProxy);
+			return responseFrom(uri, is);
 		}
 		catch(Exception ex)
 		{
 			is = new FileInputStream(file);
-			return responseFrom(uri, is, false);
+			return responseFrom(uri, is);
 		}
-	}
-
-	private static void removeProxyHeaders(ChannelBuffer buffer)
-	{
-		String line = "";
-		
-		do
-		{
-			line = NettyUtils.readLine(buffer);
-		}
-		while(StringUtils.isNotEmpty(line));
 	}
 
 	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
@@ -87,59 +73,35 @@ public class CurlResponseParser
 	public static HttpResponse responseFrom(String uri, InputStream is)
 		throws Exception
 	{
-		return responseFrom(uri, is, false);
-	}
-	
-	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
-		throws Exception
-	{
-		byte[]        data   = IOUtils.toByteArray(is);
-		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
-		IOUtils.closeQuietly(is);
-
 		/* Parsing State */
 		int    i    = 0;
 		int    code = -1;
 		String line = null;
 		
-		boolean hasProxyHeaders = true;
-		
-		if(withProxy && hasProxyHeaders)
-		{
-			removeProxyHeaders(buffer);
-		}
-		
 		List<NameValue> headers = new ArrayList<NameValue>();
+		
+		String lines = IOUtils.toString(is, Charsets.UTF_8);
+		String clean = lines.replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
+		IOUtils.closeQuietly(is);
+		ChannelBuffer buff = ChannelBuffers.copiedBuffer(clean, Charsets.UTF_8);
+		
 		do
 		{
-			line = NettyUtils.readLine(buffer);
+			line = NettyUtils.readLine(buff);
 			
 			if(i == 0)
 			{
 				code = toResponseCode(line);
 			}
-			else
+			else if(!StringUtils.isEmpty(line))
 			{
-				if(StringUtils.isEmpty(line))
-				{
-					if(code == 100)
-					{
-						/* HTTP CONTINUE */
-						i = 0;
-						
-						continue;
-					}
-				}
-				else
-				{
-					NameValue h = toHeader(line);
-					headers.add(h);
-				}
+				NameValue h = toHeader(line);
+				headers.add(h);
 			}
 			i++;
 		}
-		while(StringUtils.isNotEmpty(line) || code == 100);
+		while(StringUtils.isNotEmpty(line));
 		
-		return parseResult(uri, buffer, code, headers);
+		return parseResult(uri, buff, code, headers);
 	}
 }
