@@ -80,10 +80,10 @@ public class CurlResponseParser
 		
 		List<NameValue> headers = new ArrayList<NameValue>();
 		
-		String lines = IOUtils.toString(is, Charsets.UTF_8);
+		String lines = IOUtils.toString(is);
 		String clean = lines.replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
 		IOUtils.closeQuietly(is);
-		ChannelBuffer buff = ChannelBuffers.copiedBuffer(clean, Charsets.UTF_8);
+		ChannelBuffer buff = ChannelBuffers.wrappedBuffer(clean.getBytes());
 		
 		do
 		{

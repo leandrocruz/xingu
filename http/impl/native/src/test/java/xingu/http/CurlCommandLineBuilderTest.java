@@ -92,6 +92,16 @@ public class CurlCommandLineBuilderTest
 	}
 
 	@Test
+	public void testHttp200ResponseWithIso88591()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		HttpResponse response = builder.responseFrom(req, getFile("response8.txt"));
+		assertEquals(200, response.getCode());
+		assertEquals("TJGO", response.getHeader("Server"));
+	}
+	
+	@Test
 	public void testHttp200Response()
 		throws Exception
 	{

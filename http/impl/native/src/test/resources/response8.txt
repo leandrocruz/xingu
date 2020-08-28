@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Date: Fri, 28 Aug 2020 20:09:44 GMT
+Server: TJGO
+Content-Type: application/json; charset=iso-8859-1
+Vary: Accept-Encoding,User-Agent
+Content-Encoding: gzip
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Transfer-Encoding: chunked
+
+[{"desc1":23,"id":"-50000"},{"desc1":"1","id":"-60000"},{"desc1":"Impugnação Apresentada","id":"86"},{"desc1":"Incidente de Falsidade","id":"143"},{"desc1":"Juntada de Petição","id":"260"},{"desc1":"Nulidades Argüida","id":"93"},{"desc1":"Perícia Requerida","id":"76"},{"desc1":"Recurso Interposto","id":"98"},{"desc1":"Redistribuição Requerida","id":"190"},{"desc1":"Renúncia Requerida","id":"145"}]
