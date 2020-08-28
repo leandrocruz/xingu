@@ -1,6 +1,7 @@
 package xingu.http;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,13 +71,24 @@ public class CurlCommandLineBuilderTest
 		assertEquals("nginx", response.getHeader("Server"));
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testHttp100ResponseWithError()
+	@Test
+	public void testHttp100ResponseWithEmptyBody()
 		throws Exception
 	{
 		HttpRequest req = mock(HttpRequest.class);
-		builder.responseFrom(req, getFile("response2.txt"));
-		throw new Exception("Should have thrown exception");
+		HttpResponse response = builder.responseFrom(req, getFile("response2.txt"));
+		assertEquals(100, response.getCode());
+		assertEquals("", response.getBody());
+	}
+	
+	@Test
+	public void testHttp200ResponseWithBadHttpSyntax()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		HttpResponse response = builder.responseFrom(req, getFile("response7.txt"));
+		assertEquals(200, response.getCode());
+		assertEquals("", response.getBody());
 	}
 
 	@Test
