@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -79,15 +78,15 @@ public class CurlResponseParser
 		String line = null;
 		
 		List<NameValue> headers = new ArrayList<NameValue>();
-		
+
 		String lines = IOUtils.toString(is);
-		String clean = lines.replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
 		IOUtils.closeQuietly(is);
-		ChannelBuffer buff = ChannelBuffers.wrappedBuffer(clean.getBytes());
+		String clean = lines.replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
+		ChannelBuffer buffer = ChannelBuffers.copiedBuffer(toByteArray(clean.toCharArray()));
 		
 		do
 		{
-			line = NettyUtils.readLine(buff);
+			line = NettyUtils.readLine(buffer);
 			
 			if(i == 0)
 			{
@@ -102,6 +101,21 @@ public class CurlResponseParser
 		}
 		while(StringUtils.isNotEmpty(line));
 		
-		return parseResult(uri, buff, code, headers);
+		return parseResult(uri, buffer, code, headers);
+	}
+	
+	private static byte[] toByteArray(char[] chars)
+	{
+        byte[] array = new byte[chars.length];
+        for(int i = 0; i < chars.length; i++)
+        {
+        	// char to byte steps:
+        	// 1- convert a char to it's integer representation;
+        	// 2- bitwise operate integer value to it's unsigned value; (Reference for 0xFF: https://stackoverflow.com/questions/11380062/what-does-value-0xff-do-in-java)
+        	// 3- cast the result to byte.
+        	array[i] = (byte) (0xFF & (int) chars[i]);
+        }
+        
+        return array;
 	}
 }

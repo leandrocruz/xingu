@@ -7,4 +7,4 @@ Content-Encoding: gzip
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 Transfer-Encoding: chunked
 
-[{"desc1":23,"id":"-50000"},{"desc1":"1","id":"-60000"},{"desc1":"Impugnação Apresentada","id":"86"},{"desc1":"Incidente de Falsidade","id":"143"},{"desc1":"Juntada de Petição","id":"260"},{"desc1":"Nulidades Argüida","id":"93"},{"desc1":"Perícia Requerida","id":"76"},{"desc1":"Recurso Interposto","id":"98"},{"desc1":"Redistribuição Requerida","id":"190"},{"desc1":"Renúncia Requerida","id":"145"}]
+[{"desc1":23,"id":"-50000"},{"desc1":"1","id":"-60000"},{"desc1":"ImpugnaÃ§Ã£o Apresentada","id":"86"},{"desc1":"Incidente de Falsidade","id":"143"},{"desc1":"Juntada de PetiÃ§Ã£o","id":"260"},{"desc1":"Nulidades ArgÃ¼ida","id":"93"},{"desc1":"PerÃ­cia Requerida","id":"76"},{"desc1":"Recurso Interposto","id":"98"},{"desc1":"RedistribuiÃ§Ã£o Requerida","id":"190"},{"desc1":"RenÃºncia Requerida","id":"145"}]

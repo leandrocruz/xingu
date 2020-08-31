@@ -2,6 +2,7 @@ package xingu.http;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -99,6 +100,7 @@ public class CurlCommandLineBuilderTest
 		HttpResponse response = builder.responseFrom(req, getFile("response8.txt"));
 		assertEquals(200, response.getCode());
 		assertEquals("TJGO", response.getHeader("Server"));
+		assertTrue(response.getBody().contains("Juntada de Petição"));
 	}
 	
 	@Test
@@ -110,8 +112,11 @@ public class CurlCommandLineBuilderTest
 		HttpResponse response = builder.responseFrom(req, getFile("response3.txt"));
 		Document     doc      = response.getDocument();
 		Element      el       = doc.getElementById("busca-padrao");
+		Element      title    = doc.select("title").first();
 		assertEquals(200, response.getCode());
 		assertEquals("buscarbuscarbuscar", el.text());
+		assertEquals("globo.com - Absolutamente tudo sobre notícias, esportes e entretenimento", title.ownText());
+		assertTrue(response.getBody().contains("Educação"));
 	}
 
 	@Test
