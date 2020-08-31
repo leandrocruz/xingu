@@ -6,10 +6,6 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import xingu.lang.NotImplementedYet;
-import xingu.netty.IoModel;
-import xingu.utils.CharUtils;
-
 import org.apache.commons.io.IOUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -25,20 +21,20 @@ import org.jboss.netty.channel.socket.oio.OioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.http.HttpChunk;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
+import xingu.lang.NotImplementedYet;
+import xingu.netty.IoModel;
+
 public class NettyUtils
 {
 	public static String readLine(ChannelBuffer buffer, int max)
 	{
 		StringBuilder sb = new StringBuilder(64);
-		int len = 0;
-		while(len < max)
+		while(buffer.readable())
 		{
-			len++;
 			byte nextByte = buffer.readByte();
 			if(nextByte == CharUtils.CR)
 			{
-				nextByte = buffer.readByte();
-				len++;
+				nextByte = buffer.readable() ? buffer.readByte() : nextByte;
 				if(nextByte == CharUtils.LF)
 				{
 					return sb.toString();
