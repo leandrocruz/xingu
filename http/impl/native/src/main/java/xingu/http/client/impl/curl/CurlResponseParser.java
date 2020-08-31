@@ -72,50 +72,42 @@ public class CurlResponseParser
 	public static HttpResponse responseFrom(String uri, InputStream is)
 		throws Exception
 	{
+		byte[]        data   = IOUtils.toByteArray(is);
+		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
+		IOUtils.closeQuietly(is);
+		
 		/* Parsing State */
 		int    i    = 0;
 		int    code = -1;
 		String line = null;
 		
 		List<NameValue> headers = new ArrayList<NameValue>();
-
-		String lines = IOUtils.toString(is);
-		IOUtils.closeQuietly(is);
-		String clean = lines.replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
-		ChannelBuffer buffer = ChannelBuffers.copiedBuffer(toByteArray(clean.toCharArray()));
+		StringBuilder   sb      = new StringBuilder();
 		
 		do
 		{
 			line = NettyUtils.readLine(buffer);
-			
+			sb.append(line).append("\n");
+		}
+		while(StringUtils.isNotEmpty(line));
+		
+		String   clean = sb.toString().replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
+		String[] lines = clean.split("\n");
+		
+		for(String s : lines)
+		{
 			if(i == 0)
 			{
-				code = toResponseCode(line);
+				code = toResponseCode(s);
 			}
-			else if(!StringUtils.isEmpty(line))
+			else if(!StringUtils.isEmpty(s))
 			{
-				NameValue h = toHeader(line);
+				NameValue h = toHeader(s);
 				headers.add(h);
 			}
 			i++;
 		}
-		while(StringUtils.isNotEmpty(line));
-		
+
 		return parseResult(uri, buffer, code, headers);
-	}
-	
-	private static byte[] toByteArray(char[] chars)
-	{
-        byte[] array = new byte[chars.length];
-        for(int i = 0; i < chars.length; i++)
-        {
-        	// char to byte steps:
-        	// 1- convert a char to it's integer representation;
-        	// 2- bitwise operate integer value to it's unsigned value; (Reference for 0xFF: https://stackoverflow.com/questions/11380062/what-does-value-0xff-do-in-java)
-        	// 3- cast the result to byte.
-        	array[i] = (byte) (0xFF & (int) chars[i]);
-        }
-        
-        return array;
 	}
 }
