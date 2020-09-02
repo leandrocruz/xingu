@@ -42,19 +42,26 @@ public class CurlResponseParser
 	@SuppressWarnings("resource")
 	// Note: suppressed because it's being closed in responseFrom.
 	// Note: there's a reason for this that Jonas doesn't remember.
-	public static HttpResponse responseFrom(String uri, File file)
+	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
 		try
 		{
-			return responseFrom(uri, is);
+			return responseFrom(uri, is, withProxy);
 		}
 		catch(Exception ex)
 		{
 			is = new FileInputStream(file);
-			return responseFrom(uri, is);
+			return responseFrom(uri, is, false);
 		}
+	}
+	
+	public static HttpResponse responseFrom(String uri, File file)
+		throws Exception
+	{
+		InputStream is = new FileInputStream(file);
+		return responseFrom(uri, is, false);
 	}
 
 	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
@@ -69,45 +76,65 @@ public class CurlResponseParser
 		return result;
 	}
 	
-	public static HttpResponse responseFrom(String uri, InputStream is)
+	private static void removeProxyHeaders(ChannelBuffer buffer)
+	{
+		String line = "";
+		
+		do
+		{
+			line = NettyUtils.readLine(buffer);
+		}
+		while(StringUtils.isNotEmpty(line));
+	}
+	
+	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
 		throws Exception
 	{
 		byte[]        data   = IOUtils.toByteArray(is);
 		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
 		IOUtils.closeQuietly(is);
-		
+
 		/* Parsing State */
-		int    i    = 0;
 		int    code = -1;
 		String line = null;
+		boolean emptyWith100 = false;		
+		
+		if(withProxy)
+		{
+			removeProxyHeaders(buffer);
+		}
 		
 		List<NameValue> headers = new ArrayList<NameValue>();
-		StringBuilder   sb      = new StringBuilder();
-		
 		do
 		{
 			line = NettyUtils.readLine(buffer);
-			sb.append(line).append("\n");
-		}
-		while(StringUtils.isNotEmpty(line));
-		
-		String   clean = sb.toString().replaceAll("(HTTP\\/\\d\\.\\d \\d+ [^$]+)(?=HTTP\\/)", "");
-		String[] lines = clean.split("\n");
-		
-		for(String s : lines)
-		{
-			if(i == 0)
+			
+			if(line.matches("HTTP/\\d\\.\\d \\d+ .*"))
 			{
-				code = toResponseCode(s);
+				code = toResponseCode(line);
 			}
-			else if(!StringUtils.isEmpty(s))
+			else
 			{
-				NameValue h = toHeader(s);
-				headers.add(h);
+				if(StringUtils.isEmpty(line))
+				{
+					if(code == 100 && !emptyWith100)
+					{
+						/* HTTP CONTINUE */
+						emptyWith100 = true;
+						continue;
+					}
+					
+					break;
+				}
+				else
+				{
+					NameValue h = toHeader(line);
+					headers.add(h);
+				}
 			}
-			i++;
 		}
-
+		while(StringUtils.isNotEmpty(line) || code == 100);
+		
 		return parseResult(uri, buffer, code, headers);
 	}
 }

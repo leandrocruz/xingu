@@ -77,30 +77,35 @@ public class CurlCommandLineBuilderTest
 		throws Exception
 	{
 		HttpRequest req = mock(HttpRequest.class);
+		
 		HttpResponse response = builder.responseFrom(req, getFile("response2.txt"));
 		assertEquals(100, response.getCode());
 		assertEquals("", response.getBody());
 	}
-	
-	@Test
-	public void testHttp200ResponseWithBadHttpSyntax()
-		throws Exception
-	{
-		HttpRequest req = mock(HttpRequest.class);
-		HttpResponse response = builder.responseFrom(req, getFile("response7.txt"));
-		assertEquals(200, response.getCode());
-		assertEquals("", response.getBody());
-	}
 
 	@Test
-	public void testHttp200ResponseWithIso88591()
+	public void testHttp200ResponseIso88591AsUtf8()
 		throws Exception
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		HttpResponse response = builder.responseFrom(req, getFile("response8.txt"));
 		assertEquals(200, response.getCode());
 		assertEquals("TJGO", response.getHeader("Server"));
-		assertTrue(response.getBody().contains("Juntada de Petição"));
+		assertTrue(response.getBody("UTF-8").contains("Juntada de Petição"));
+	}
+	
+	@Test
+	public void testHttpUTF8ResponseWithIso88591()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getUri()).thenReturn("console4.oystr.com.br");
+		HttpResponse response = builder.responseFrom(req, getFile("response9.txt"));
+		Document utf8 = response.getDocument("UTF-8");
+		Document iso = response.getDocument("ISO-8859-1");
+		
+		assertTrue(utf8.select("#app button > i.download.icon").first().parent().ownText().equalsIgnoreCase("Baixar relatório"));
+		assertTrue(!iso.select("#app button > i.download.icon").first().parent().ownText().equalsIgnoreCase("Baixar relatório"));
 	}
 	
 	@Test
@@ -112,11 +117,8 @@ public class CurlCommandLineBuilderTest
 		HttpResponse response = builder.responseFrom(req, getFile("response3.txt"));
 		Document     doc      = response.getDocument();
 		Element      el       = doc.getElementById("busca-padrao");
-		Element      title    = doc.select("title").first();
 		assertEquals(200, response.getCode());
 		assertEquals("buscarbuscarbuscar", el.text());
-		assertEquals("globo.com - Absolutamente tudo sobre notícias, esportes e entretenimento", title.ownText());
-		assertTrue(response.getBody().contains("Educação"));
 	}
 
 	@Test
