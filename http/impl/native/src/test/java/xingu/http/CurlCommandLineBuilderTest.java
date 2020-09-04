@@ -120,6 +120,20 @@ public class CurlCommandLineBuilderTest
 		assertEquals(200, response.getCode());
 		assertEquals("buscarbuscarbuscar", el.text());
 	}
+	
+	@Test
+	public void testHttpBBJURResponse()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+//		when(req.getProxy()).thenReturn("testing");
+		HttpResponse response = builder.responseFrom(req, getFile("response7.txt"));
+
+		assertEquals(200, response.getCode());
+		assertEquals("resource=2.1", response.getHeader("Content-API-Version"));
+		assertEquals("application/json; charset=UTF-8", response.getHeader("Content-Type"));
+		assertTrue(response.getBody().contains("https://juridico.bb.com.br/paj/juridico"));
+	}
 
 	@Test
 	public void testHttpCookies()

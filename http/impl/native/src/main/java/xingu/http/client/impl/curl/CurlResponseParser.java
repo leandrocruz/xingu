@@ -112,6 +112,11 @@ public class CurlResponseParser
 			if(line.matches("HTTP/\\d\\.\\d \\d+ .*"))
 			{
 				code = toResponseCode(line);
+				
+				if(code == 100)
+				{
+					emptyWith100 = false;
+				}
 			}
 			else
 			{

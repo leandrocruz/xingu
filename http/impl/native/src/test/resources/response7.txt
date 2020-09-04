@@ -1,6 +1,22 @@
 HTTP/1.1 100 Continue
 
-HTTP/1.1 200 OK
-Content-Length: 1000
-Server: Jetty(8.1.2.v20120308)
+HTTP/1.1 100 Continue
 
+HTTP/1.1 200 OK
+Date: Fri, 04 Sep 2020 21:00:19 GMT
+X-Powered-By: Servlet/3.0
+X-Frame-Options: SAMEORIGIN
+Cache-Control: no-cache, no-store, must-revalidate
+Content-API-Version: resource=2.1
+Content-Length: 182
+Expires: 0
+Pragma: no-cache
+Content-Type: application/json; charset=UTF-8
+Content-Language: en-US
+Set-Cookie: ssoacr=ssoweb2.intranet.bb.com.br; Path=/; Domain=.bb.com.br; Secure
+Set-Cookie: authErr=""; Expires=Thu, 01-Dec-94 16:00:00 GMT; Path=/; Domain=.bb.com.br; Secure
+Set-Cookie: BBSSOToken=hQ15ubhz-oDzriMDsh0ZeDIzeME.*AAJTSQACMDIAAlNLABx3WHJNL21tNGVyeGhLeWE1L0p3OUh0SDdJcjg9AAJTMQACMDM.*; Path=/; Domain=.bb.com.br; Secure; HttpOnly
+Keep-Alive: timeout=10, max=100
+Connection: Keep-Alive
+
+{"tokenId":"hQ15ubhz-oDzriMDsh0ZeDIzeME.*AAJTSQACMDIAAlNLABx3WHJNL21tNGVyeGhLeWE1L0p3OUh0SDdJcjg9AAJTMQACMDM.*","successUrl":"https://juridico.bb.com.br/paj/juridico","realm":"/paj"}
