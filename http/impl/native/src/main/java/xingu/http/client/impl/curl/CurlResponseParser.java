@@ -41,7 +41,6 @@ public class CurlResponseParser
 
 	@SuppressWarnings("resource")
 	// Note: suppressed because it's being closed in responseFrom.
-	// Note: there's a reason for this that Jonas doesn't remember.
 	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
 		throws Exception
 	{
@@ -52,6 +51,7 @@ public class CurlResponseParser
 		}
 		catch(Exception ex)
 		{
+			// this is a fail-safe to retry parsing without proxy headers
 			is = new FileInputStream(file);
 			return responseFrom(uri, is, false);
 		}
@@ -85,6 +85,12 @@ public class CurlResponseParser
 			line = NettyUtils.readLine(buffer);
 		}
 		while(StringUtils.isNotEmpty(line));
+	}
+	
+	public static HttpResponse responseFrom(String uri, InputStream is) 
+		throws Exception
+	{
+		return responseFrom(uri, is, false);
 	}
 	
 	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
