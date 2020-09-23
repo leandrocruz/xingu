@@ -47,7 +47,7 @@ public class SimpleHttpRequest
 			if(logging)
 				logger.info("Executing command: {}", join);
 
-			result = execCmd(logger, cmd, 5);
+			result = execCmd(logger, cmd, 7);
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
