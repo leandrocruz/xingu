@@ -1,7 +1,6 @@
 package xingu.http;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -106,6 +105,18 @@ public class CurlCommandLineBuilderTest
 		
 		assertTrue(utf8.select("#app button > i.download.icon").first().parent().ownText().equalsIgnoreCase("Baixar relatório"));
 		assertTrue(!iso.select("#app button > i.download.icon").first().parent().ownText().equalsIgnoreCase("Baixar relatório"));
+	}
+	
+	@Test
+	public void testHttp2Stuff()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getUri()).thenReturn("console4.oystr.com.br");
+		HttpResponse response = builder.responseFrom(req, getFile("response10.txt"));
+		response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text();
+		
+		assertTrue(response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text().equalsIgnoreCase("Close Session"));
 	}
 	
 	@Test
