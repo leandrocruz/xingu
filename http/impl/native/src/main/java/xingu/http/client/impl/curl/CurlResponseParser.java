@@ -115,7 +115,7 @@ public class CurlResponseParser
 		{
 			line = NettyUtils.readLine(buffer);
 			
-			if(line.matches("HTTP/\\d\\.\\d \\d+ .*"))
+			if(line.matches("HTTP/\\d(\\.\\d)? \\d+.*"))
 			{
 				code = toResponseCode(line);
 				
