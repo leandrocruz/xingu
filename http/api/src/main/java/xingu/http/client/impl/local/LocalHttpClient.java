@@ -31,6 +31,27 @@ public class LocalHttpClient
 	}
 
 	@Override
+	public HttpRequest delete(String uri)
+		throws HttpException
+	{
+		return null;
+	}
+
+	@Override
+	public HttpRequest options(String uri)
+		throws HttpException
+	{
+		return null;
+	}
+
+	@Override
+	public HttpRequest head(String uri)
+		throws HttpException
+	{
+		return null;
+	}
+	
+	@Override
 	public Cookies getCookies(String uri)
 		throws HttpException
 	{

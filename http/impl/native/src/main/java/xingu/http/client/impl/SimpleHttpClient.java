@@ -6,7 +6,6 @@ import xingu.http.client.Cookies;
 import xingu.http.client.HttpClient;
 import xingu.http.client.HttpException;
 import xingu.http.client.HttpRequest;
-import xingu.http.client.impl.SimpleHttpRequest;
 import xingu.lang.NotImplementedYet;
 
 public class SimpleHttpClient
@@ -34,6 +33,27 @@ public class SimpleHttpClient
 		throws HttpException
 	{
 		return factory.create(SimpleHttpRequest.class, uri, "PUT");
+	}
+	
+	@Override
+	public HttpRequest delete(String uri)
+		throws HttpException
+	{
+		return factory.create(SimpleHttpRequest.class, uri, "DELETE");
+	}
+
+	@Override
+	public HttpRequest options(String uri)
+		throws HttpException
+	{
+		return factory.create(SimpleHttpRequest.class, uri, "OPTIONS");
+	}
+
+	@Override
+	public HttpRequest head(String uri)
+		throws HttpException
+	{
+		return factory.create(SimpleHttpRequest.class, uri, "HEAD");
 	}
 
 	@Override

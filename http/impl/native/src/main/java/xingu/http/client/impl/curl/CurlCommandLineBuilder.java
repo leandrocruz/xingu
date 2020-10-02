@@ -149,6 +149,20 @@ public class CurlCommandLineBuilder
 			
 			switch (method)
 			{
+				case "":
+					result.add("-I");
+					break;
+					
+				case "OPTIONS":
+					result.add("-X");
+					result.add("OPTIONS");
+					break;
+					
+				case "DELETE":
+					result.add("-X");
+					result.add("DELETE");
+					break;
+					
 				case "PUT":
 					result.add("-X");
 					result.add("PUT");
