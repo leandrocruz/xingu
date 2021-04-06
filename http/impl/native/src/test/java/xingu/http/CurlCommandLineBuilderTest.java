@@ -60,6 +60,19 @@ public class CurlCommandLineBuilderTest
 		assertEquals("Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2k-fips mod_jk/1.2.42", response.getHeader("Server"));
 	}
 	
+//	@Test
+//	public void testHttpSingleProxyHeaders()
+//		throws Exception
+//	{
+//		HttpRequest req = mock(HttpRequest.class);
+//		when(req.getProxy()).thenReturn("testing");
+//		
+//		HttpResponse response = builder.responseFrom(req, getFile("response12.txt"));
+//		assertEquals(302, response.getCode());
+//		assertEquals("0", response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
+//		assertEquals("Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2k-fips mod_jk/1.2.42", response.getHeader("Server"));
+//	}
+	
 	@Test
 	public void testHttp200ResponseWhenNotProxied()
 		throws Exception
@@ -118,6 +131,17 @@ public class CurlCommandLineBuilderTest
 		
 		assertTrue(response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text().equalsIgnoreCase("Close Session"));
 	}
+	
+//	@Test
+//	public void testMoreThanOneSetOfProxyHeaders()
+//		throws Exception
+//	{
+//		HttpRequest req = mock(HttpRequest.class);
+//		when(req.getUri()).thenReturn("console4.oystr.com.br");
+//		when(req.getProxy()).thenReturn("testing");
+//		HttpResponse response = builder.responseFrom(req, getFile("response11.txt"));		
+//		assertTrue(response.getCode() == 302);
+//	}
 	
 	@Test
 	public void testHttp200Response()

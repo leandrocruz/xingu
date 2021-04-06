@@ -389,6 +389,19 @@ public abstract class RequestDelegator
 		req.sslV3(v3);
 		return this;
 	}
+	
+	@Override
+	public boolean forceHTTPV1_1()
+	{
+		return req.forceHTTPV1_1();
+	}
+
+	@Override
+	public HttpRequest forceHTTPV1_1(boolean httpv1_1)
+	{
+		req.forceHTTPV1_1(httpv1_1);
+		return this;
+	}
 
 	@Override
 	public boolean hasPayload()

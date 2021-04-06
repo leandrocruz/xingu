@@ -1,0 +1,21 @@
+HTTP/1.1 200 OK
+x-luminati-ip: r226e76093cb28652d539cc8b26a2e458
+x-luminati-timeline: init:0,auth:7,dns_resolve:2,p2p_init:65,a2a_reuse:1,p2p_conn:201
+x-luminati-tun-timeline: init:0,connect:25
+
+HTTP/1.1 200 OK
+x-luminati-ip: rda4f6ea51721c80696083aa0ad9adb96
+x-luminati-timeline: init:0,auth:1,dns_resolve:0,p2p_init:1,a2a_reuse:0,p2p_conn:398
+x-luminati-tun-timeline: init:0,dns:1
+
+HTTP/1.1 302 Found
+Date: Tue, 02 Mar 2021 13:58:47 GMT
+Server: Apache/2.4.6 (CentOS)
+X-Powered-By: PHP/7.3.22
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Location: ../../externo_controlador.php?acao=entrar_cert
+Content-Length: 0
+Content-Type: text/html; charset=ISO-8859-1
+

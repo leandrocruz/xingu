@@ -273,6 +273,11 @@ public class CurlCommandLineBuilder
 		{
 			result.add("-k");
 			
+			if(req.forceHTTPV1_1())
+			{
+				result.add("--http1.1");
+			}	
+			
 			if(req.sslAllowBeast())
 			{
 				result.add("--ssl-allow-beast");

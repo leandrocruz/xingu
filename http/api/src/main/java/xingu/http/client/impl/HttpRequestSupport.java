@@ -79,6 +79,8 @@ public abstract class HttpRequestSupport
 	
 	private   boolean                 withoutPayload;
 	
+	private   boolean                 httpV1_1;
+	
 	private	  String				  timeout;
 
 	protected boolean 				  logging = true;
@@ -514,6 +516,19 @@ public abstract class HttpRequestSupport
 	public HttpRequest sslAllowBeast(boolean allow)
 	{
 		this.sslAllowBeast = allow;
+		return this;
+	}
+	
+	@Override
+	public boolean forceHTTPV1_1()
+	{
+		return this.httpV1_1;
+	}
+	
+	@Override
+	public HttpRequest forceHTTPV1_1(boolean httpV1_1)
+	{
+		this.httpV1_1 = httpV1_1;
 		return this;
 	}
 	

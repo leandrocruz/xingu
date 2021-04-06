@@ -110,4 +110,7 @@ public interface HttpRequest
 
 	String getRetry();
 	HttpRequest withRetry(String seconds);
+
+	boolean forceHTTPV1_1();
+	HttpRequest forceHTTPV1_1(boolean b);
 }
