@@ -4,6 +4,7 @@ target
 .project
 dependency-reduced-pom.xml
 velocity.log
+.idea
 *.iml
 *~
 *.iml
