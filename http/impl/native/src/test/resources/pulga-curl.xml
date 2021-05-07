@@ -4,9 +4,15 @@
 	<component	role="xingu.http.client.HttpClient"
 				class="xingu.http.client.impl.SimpleHttpClient" />
 
-	<component	role="xingu.http.client.impl.CommandLineBuilder"
-				class="xingu.http.client.impl.curl.CurlCommandLineBuilder" />
-				
+	<component	role="xingu.http.client.CommandLineBuilder"
+				class="xingu.http.client.impl.curl.CurlCommandLineBuilder">
+        <parserConfiguration>
+            <ignoreProxyHeaders>
+                <domain url="http://esaj.tjrn.jus.br" />
+            </ignoreProxyHeaders>
+        </parserConfiguration>
+    </component>
+
 	<component	role="xingu.process.ProcessManager"
 				class="xingu.process.impl.SimpleProcessManager" />	
 </pulga>

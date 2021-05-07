@@ -5,8 +5,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.avalon.framework.configuration.Configuration;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jsoup.nodes.Document;
@@ -14,6 +16,7 @@ import org.jsoup.nodes.Element;
 import org.junit.Test;
 
 import xingu.container.Binder;
+import xingu.container.ConfigurationLoader;
 import xingu.container.Inject;
 import xingu.container.XinguTestCase;
 import xingu.http.client.CommandLineBuilder;
@@ -33,8 +36,29 @@ public class CurlCommandLineBuilderTest
 	protected void rebind(Binder binder)
 		throws Exception
 	{
-		binder.bind(CommandLineBuilder.class).to(CurlCommandLineBuilder.class);
+        Configuration conf = ConfigurationLoader.load(getFile("pulga-curl.xml"));
+        Configuration component = Arrays
+            .stream(conf.getChildren())
+            .filter(c -> c.getAttribute("role", "").equalsIgnoreCase(CommandLineBuilder.class.getCanonicalName()))
+            .findFirst()
+            .orElse(conf);
+
+		binder.bind(CommandLineBuilder.class).to(CurlCommandLineBuilder.class).with(component);
 	}
+
+	@Test
+    public void testProxyWithoutDuplicatedHeaders()
+        throws Exception
+    {
+        HttpRequest  req      = mock(HttpRequest.class);
+        when(req.getProxy()).thenReturn("testing");
+        when(req.getUri()).thenReturn("http://esaj.tjrn.jus.br");
+
+        HttpResponse response = builder.responseFrom(req, getFile("response13.txt"));
+        assertEquals(200, 		response.getCode());
+        assertEquals("3480", 	response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
+        assertEquals("-1001", 	response.getHeader(HttpHeaders.Names.EXPIRES));
+    }
 
 	@Test
 	public void testHttp100Response()

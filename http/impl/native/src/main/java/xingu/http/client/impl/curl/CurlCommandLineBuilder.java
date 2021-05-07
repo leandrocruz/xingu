@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.avalon.framework.configuration.Configurable;
@@ -41,6 +43,8 @@ public class CurlCommandLineBuilder
 	private boolean encodeParameterNames;
 	
 	private String curlBinary;
+
+	private List<String> nonStandardDomains;
 	
 	@Override
 	public String name()
@@ -53,8 +57,8 @@ public class CurlCommandLineBuilder
 		throws ConfigurationException
 	{
 		curlBinary = conf.getAttribute("curl-binary", "curl");
-		//curlBinary = conf.getChild("binary").getAttribute("command", "curl");
-				
+        configureNonStandardDomains(conf);
+
 		encodeParameterNames = conf.getChild("params").getAttributeAsBoolean("encodeParameterNames", false);
 		Configuration[] params = conf.getChild("params").getChildren("param");
 		for(Configuration param : params)
@@ -63,6 +67,15 @@ public class CurlCommandLineBuilder
 			this.params.add(value);
 		}
 	}
+
+	private void configureNonStandardDomains(Configuration conf)
+    {
+        Configuration[] proxies = conf.getChild("parserConfiguration").getChild("ignoreProxyHeaders").getChildren("domain");
+        nonStandardDomains = Arrays
+            .stream(proxies)
+            .map(c -> c.getAttribute("url", null))
+            .collect(Collectors.toList());
+    }
 
 	@Override
 	public List<String> buildLine(HttpRequest req, File file) 
@@ -77,11 +90,16 @@ public class CurlCommandLineBuilder
 		throws Exception
 	{
 		String  uri       = req.getUri();
+		// Looking for uris starting with the listed domains (already including the protocol portion).
+		long matches = nonStandardDomains
+            .stream()
+            .filter(d -> StringUtils.isNotEmpty(uri) && uri.toLowerCase().startsWith(d.toLowerCase()))
+            .count();
 		
 		String  proxy     = req.getProxy();
 		boolean withProxy = StringUtils.isNotEmpty(proxy);
 		
-		return CurlResponseParser.responseFrom(uri, file, withProxy);
+		return CurlResponseParser.responseFrom(uri, file, withProxy, matches > 0);
 	}
 
 	@Override

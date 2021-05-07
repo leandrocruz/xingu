@@ -41,19 +41,19 @@ public class CurlResponseParser
 
 	@SuppressWarnings("resource")
 	// Note: suppressed because it's being closed in responseFrom.
-	public static HttpResponse responseFrom(String uri, File file, boolean withProxy)
+	public static HttpResponse responseFrom(String uri, File file, boolean withProxy, boolean isNonStandardDomain)
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
 		try
 		{
-			return responseFrom(uri, is, withProxy);
+			return responseFrom(uri, is, withProxy, isNonStandardDomain);
 		}
 		catch(Exception ex)
 		{
 			// this is a fail-safe to retry parsing without proxy headers
 			is = new FileInputStream(file);
-			return responseFrom(uri, is, false);
+			return responseFrom(uri, is, false, isNonStandardDomain);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class CurlResponseParser
 		throws Exception
 	{
 		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is, false);
+		return responseFrom(uri, is, false, false);
 	}
 
 	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
@@ -90,10 +90,10 @@ public class CurlResponseParser
 	public static HttpResponse responseFrom(String uri, InputStream is) 
 		throws Exception
 	{
-		return responseFrom(uri, is, false);
+		return responseFrom(uri, is, false, false);
 	}
 	
-	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy)
+	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy, boolean isNonStandardDomain)
 		throws Exception
 	{
 		byte[]        data   = IOUtils.toByteArray(is);
@@ -105,7 +105,7 @@ public class CurlResponseParser
 		String line = null;
 		boolean emptyWith100 = false;		
 		
-		if(withProxy)
+		if(withProxy && !isNonStandardDomain)
 		{
 			removeProxyHeaders(buffer);
 		}
