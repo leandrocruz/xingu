@@ -16,6 +16,7 @@ import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseImpl;
 import xingu.http.client.impl.NameValueImpl;
+import xingu.lang.NotImplementedYet;
 import xingu.utils.NettyUtils;
 import xingu.utils.NumberUtils;
 
@@ -145,6 +146,11 @@ public class CurlResponseParser
 			}
 		}
 		while(StringUtils.isNotEmpty(line) || code == 100);
+		
+		if(code == -1)
+		{
+			throw new NotImplementedYet("Could not parse headers, (-1)");
+		}
 		
 		return parseResult(uri, buffer, code, headers);
 	}

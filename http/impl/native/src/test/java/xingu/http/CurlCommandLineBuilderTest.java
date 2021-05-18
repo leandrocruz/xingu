@@ -107,6 +107,16 @@ public class CurlCommandLineBuilderTest
 		assertEquals(200, response.getCode());
 		assertEquals("nginx", response.getHeader("Server"));
 	}
+	
+	@Test
+	public void testHttpMisleadingProxyHeaders()
+		throws Exception
+	{
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getProxy()).thenReturn("this is a proxy");
+		HttpResponse response = builder.responseFrom(req, getFile("response20.txt"));
+		assertEquals(200, response.getCode());
+	}
 
 	@Test
 	public void testHttp100ResponseWithEmptyBody()

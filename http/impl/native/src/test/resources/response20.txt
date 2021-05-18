@@ -1,0 +1,761 @@
+HTTP/1.1 200 OK
+Set-Cookie: JSESSIONID=B2AA2965978A8DE118833CC1AC7440BF.casLayoutPerfil1; Path=/esaj
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 3480
+Pragma: no-cache
+Server: Apache/2.2.16
+Expires: -1001
+Content-Type: text/html;charset=ISO-8859-1
+Date: Fri, 14 May 2021 19:23:47 GMT
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+	<script language="javascript" type="text/JavaScript" src="http://esaj.tjrn.jus.br/sajcas/verificarLogin.js?script=1621020228055"></script>
+	
+	<script language="javascript">
+		if(window.sajcas && window.sajcas.usuarioLogadoNoCasServer) {
+			var urlRetornoSistema = '';
+			if(urlRetornoSistema === '') {
+				urlRetornoSistema = window.location.href;
+			}
+	
+			if(urlRetornoSistema.lastIndexOf('?') != -1) {
+				urlRetornoSistema += '&';
+			} else {
+				urlRetornoSistema += '?';
+			}
+			urlRetornoSistema+= 'gateway=true';
+			window.location.href = urlRetornoSistema;
+		}
+	</script>
+
+
+<html>
+	
+	
+		
+		
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/js/jquery-1.3.2.js"></script>
+			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/js/spwConcatenado-4.3.3-2.js"></script>
+			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/jsp/intermediaria.js"></script>
+			<!-- saj-select.css utilizado pelo acesso r�pido do CPO-->
+			<link href="http://esaj.tjrn.jus.br/esaj/tema/padrao/css/saj-select.css" rel="stylesheet" type="text/css" />
+		
+
+<title>e-SAJ</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+
+<link href="http://esaj.tjrn.jus.br/esaj/tema/padrao/css/esajComum.css" rel="stylesheet" type="text/css" />
+<link href="http://esaj.tjrn.jus.br/esaj/tema/padrao/css/esajLayout.css" rel="stylesheet" type="text/css" />
+<link href="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/css/esajLayoutRN.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+<!--
+/* botao default means o mais claro, que seria o "bot�o principal" */
+.spwBotaoDefault, .spwBotaoDefault-o { 
+	background-image: url(http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/fundoBotaoDefault.gif);
+}
+/* o botao secundario, menos provavel de ser clicado, mais escuro */
+.spwBotao, .spwBotao-o { 
+	background-image: url(http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/fundoBotao.gif);
+}
+-->
+</style>
+
+
+<script language="javascript" type="text/JavaScript" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/js/menu.js"></script>
+
+<link rel="shortcut icon" href="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/favicon.ico" type="image/x-icon" />
+
+
+	
+	
+
+
+  
+
+</head>
+
+		<body style="font-size: 75%">
+		    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="esajTabelaCabecalhoCliente" summary=" ">
+	<tr>
+		<td><a href="http://www.tjrn.jus.br"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/cabecalhoLogo.jpg" width="241" height="57" alt="Tribunal de Justi�a do RN" /></a></td>
+		<td align="right" valign="top"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/cabecalhoImagem.jpg" alt=" " width="402" height="57" /></td>
+	</tr>
+</table>
+	
+	
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+<!-- cabecalho e-Saj -->
+<table width="100%" cellspacing="0" cellpadding="0" summary=" " class="esajTabelaCabecalho">
+	<tr>
+		<td class="esajCelulaCabecalhoLogo">
+<a href="http://esaj.tjrn.jus.br/esaj/index.jsp"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/esaj.gif" title="Voltar para p�gina inicial do e-SAJ" alt="Voltar para p�gina inicial do e-SAJ" width="152" height="94" border="0" /><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/portal.gif" width="168" height="94" alt="Portal de Servi&ccedil;os" /></a></td>
+		<td class="esajCelulaCabecalhoMenu">
+		    <table width="100%" cellspacing="0" cellpadding="0" border="0" summary=" ">
+				<tr>
+					<td align="right">
+
+
+
+
+
+
+
+
+
+
+<img height="24" width="47" alt=" " src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/inicioMenuSup.jpg"/><a href="http://esaj.tjrn.jus.br/caixapostal"><img height="24" width="83" border="0" alt="Caixa postal" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/caixaPostal.gif"/></a><img height="24" width="4" alt=" " src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/menuSeparador.jpg"/><a href="http://esaj.tjrn.jus.br/esaj/cadastro.do"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/cadastro.gif" alt="Cadastro" width="81" height="24" border="0" /></a><img height="24" width="4" alt=" " src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/menuSeparador.jpg"/><a target="blank" href="http://esaj.tjrn.jus.br/WebHelp"><img height="24" width="61" border="0" alt="Ajuda do e-Saj" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/ajuda.gif"/></a></td>
+				</tr>
+				<tr>
+					<td class="esajCelulaIdentificacao">
+						
+						
+						
+							
+
+
+
+<span id="identificacao"></span>
+
+
+
+
+	
+	
+		<script language="javascript" type="text/JavaScript" src="http://esaj.tjrn.jus.br/sajcas/conteudoIdentificacao?script=1621020228057"></script>
+	
+
+
+						
+						
+					</td>
+				</tr>
+				<tr>
+					<td class="esajCelulaCabecalhoCaminho">
+
+
+
+
+
+
+
+  
+
+
+
+
+
+Bem-vindo
+</td>
+				</tr>
+		    </table>
+	    </td>
+	</tr>
+</table>
+<!-- CONTEUDO -->
+<table width="100%" cellpadding="0" cellspacing="0" class="esajTabelaConteudoHome" summary=" ">
+	<tr>
+		
+		<!-- coluna menu -->
+		<td class="esajCelulaMenu"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/menu.gif" width="231" height="30" alt="Menu de servi&ccedil;os" />
+		   
+
+    
+	
+	
+
+<!-- MENU -->
+<ul id="esajMenuArea">
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Consultas Processuais</a>
+<ul>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cpo/pg/open.do">Consulta de Processos do 1�Grau</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cposg/">Consulta de Processos do 2�Grau</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cje/index.do">Consulta do Juizado Especial de Natal</a></li>
+</ul>
+  </li>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Peticionamento Eletr�nico de 1� Grau</a>
+<ul>
+  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoInicial.do">Peticionamento Inicial de 1� Grau</a></li>
+  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoIntermediaria.do">Peticionamento Intermedi�rio de 1� Grau</a></li>
+  <li class="esajMenuItem"><a href="/petpg/abrirConsultaPeticoes.do">Consulta de Peti��es de 1� Grau</a></li>
+</ul>
+  </li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprud�ncia</a></li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Confer�ncia de Documento Digital do 1�Grau</a></li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/push/">Push</a></li>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Intima��es e Cita��es On-line</a>
+<ul>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosRecebidos.do">Consulta de Intima��es Recebidas</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosNaoRecebidos.do">Recebimento de Intima��es Eletr�nicas</a></li>
+</ul>
+  </li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/cposg/pcpoOrgaosJulgadores.jsp">Consulta da Pauta de Julgamento</a></li>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Certid�es</a>
+<ul>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirCadastro.do">Cadastro de Pedido de Certid�o</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirConferencia.do">Confer�ncia de Certid�o</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirDownload.do">Download de Certid�o</a></li>
+</ul>
+  </li>
+</ul>
+
+	    </td>
+			
+		<!-- coluna titulo e itens -->
+		<td valign="top">
+			<div class="esajConteudoHome" id="esajConteudoHome">
+		      <h1 class="esajTituloPagina">Bem-vindo&nbsp</h1>
+
+      
+	
+	
+
+
+  
+ 
+
+
+				<p>O portal e-SAJ � uma solu��o que visa facilitar a troca de informa��es e agilizar o tr�mite processual por meio de diversos servi�os WEB voltados para os advogados, cidad�os e serventu�rios da justi�a. <br></p>
+				
+
+
+
+
+
+
+
+				
+				
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+  
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=190100"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico190100.gif" alt="Consultas Processuais" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=190100">Consultas Processuais</a>
+	
+	
+	
+					   
+    <br />        
+	Acesso a informa��es de tramita��o dos processos de Primeiro e Segundo Grau.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+  
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico820100.gif" alt="Peticionamento Eletr�nico de 1� Grau" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100">Peticionamento Eletr�nico de 1� Grau</a>
+	
+	
+	  <img width="16" height="17" align="absmiddle" title="Necessita cadastro de advogado" alt="Necessita cadastro de advogado" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/capOAB.gif"/>
+	
+	
+	  <img width="16" height="17" align="absmiddle" title="Necessita certificado digital" alt="Necessita certificado digital" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/certDigital.gif"/>
+	
+					   
+    <br />        
+	Protocolo e consulta de peti��es iniciais e intermedi�rias de Primeiro Grau.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					        	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="clear:both">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/cjosg/"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico780000.gif" alt="Consultas de Jurisprud�ncia" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprud�ncia</a>
+	
+	
+	
+					   
+    <br />        
+	Consulta �s informa��es das jurisprud�ncias de Segundo Grau, com acesso a �ntegra do documento de ac�rd�o.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico920101.gif" alt="Confer�ncia de Documento Digital do 1�Grau" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Confer�ncia de Documento Digital do 1�Grau</a>
+	
+	
+	
+					   
+    <br />        
+	Confer�ncia de documentos impressos com os originais em formato eletr�nico.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					        	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="clear:both">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/push/"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico750000.gif" alt="Push" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/push/">Push</a>
+	
+	  <img width="16" height="17" align="absmiddle" title="Necessita cadastro no portal" alt="Necessita cadastro no portal" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/capPessoa.gif"/>
+	
+	
+	
+					   
+    <br />        
+	O Push permite ao advogado receber por e-mail as informa��es referentes � movimenta��o processual.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+  
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico640000.gif" alt="Intima��es e Cita��es On-line" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000">Intima��es e Cita��es On-line</a>
+	
+	
+	
+	  <img width="16" height="17" align="absmiddle" title="Necessita certificado digital" alt="Necessita certificado digital" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/certDigital.gif"/>
+	
+					   
+    <br />        
+	Sistema de recebimento e consulta de intima��es e cita��es on-line
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					        	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="clear:both">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/cposg/pcpoOrgaosJulgadores.jsp"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico747000.gif" alt="Consulta da Pauta de Julgamento" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/cposg/pcpoOrgaosJulgadores.jsp">Consulta da Pauta de Julgamento</a>
+	
+	
+	
+					   
+    <br />        
+	Consulta �s pautas de julgamento do segundo grau para cada �rg�o julgador.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+							
+					      	
+					      	
+					      	
+					      	<!-- Monta a tabela com o item de servico -->
+					      	<table class="esajTabelaServico" summary=" " style="">
+					        	<tr>
+					           		
+
+
+
+
+
+
+
+  
+
+
+<td class="esajCelulaIconeServico" valign="top">
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico810000.gif" alt="Certid�es" width="38" height="38" border="0"/></a>
+</td>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000">Certid�es</a>
+	
+	
+	
+					   
+    <br />        
+	Cadastro de pedidos de certid�es, download do documento solicitado e confer�ncia das certid�es emitidas.
+</td>
+					        	</tr>
+					     	</table>
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+						
+				   
+								
+					
+				
+		    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+			</div>
+        </td>
+<!-- ACESSO RAPIDO -->
+ 	   
+
+
+
+
+		
+		<!-- fim conteudo -->
+		</tr>
+</table>
+
+<!-- RODAPE -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="esajTabelaRodape" summary=" ">
+	<tr>
+		<td class="esajCelulaRodapeEsquerdo"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td align="center"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/saj.gif" alt="SAJ" width="29" height="29" /></td>
+					<td><a href="http://www.softplan.com.br/saj">Sistema de Automa��o da Justi�a </a></td>
+				</tr>
+			</table></td>
+		<td class="esajCelulaRodapeCentro">desenvolvido pela Softplan em parceria com a Secretaria de Tecnologia da Informa��o do TJRN</td>
+		<td class="esajCelulaRodapeDireito">&nbsp;</td>
+	</tr>
+</table>
+	
+	
+
+
+  
+
+
+		</body>
+	
+	
+</html>
+
