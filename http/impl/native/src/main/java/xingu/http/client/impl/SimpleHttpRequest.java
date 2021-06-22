@@ -87,7 +87,7 @@ public class SimpleHttpRequest
 		 * 28 - Operation timeout
 		 */
 		if(retryCount > 0
-				&& (/*6 == result || 7 == result || 28 == result ||*/ 56 == result || 35 == result))
+				&& (/*6 == result || 7 == result || 28 == result ||*/ 56 == result || 35 == result || 16 == result))
 		{
 			logger.info("retrying: " + result);
 			return execCmd(logger, cmd, retryCount - 1);
