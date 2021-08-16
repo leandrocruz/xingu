@@ -5,7 +5,7 @@
 	<groupId>xingu</groupId>
 	<artifactId>xingu</artifactId>
 	<packaging>pom</packaging>
-	<version>2.3.6</version>
+	<version>${revision}</version>
 	<name>Xingu Component Library</name>
 	<description>Xingu, a repository of Java components</description>
 	<url>https://bitbucket.org/leandrocruz/xingu</url>
@@ -162,6 +162,7 @@
 		</repository>
 	</repositories>
 	<properties>
+		<revision>2.3.7</revision>
 		<aws.sdk>1.11.5</aws.sdk>
 		<ahc>4.5.2</ahc>
 		<guava>21.0</guava>

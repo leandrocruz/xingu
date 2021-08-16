@@ -21,7 +21,12 @@ import xingu.utils.classloader.NamedClassLoader;
 public abstract class ContainerSupport
     implements Container
 {
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    public ContainerSupport(Logger log)
+    {
+        this.log = log;
+    }
+
+    protected Logger log;
     
     public void startLifecycle(Object component, Configuration conf)
         throws Exception

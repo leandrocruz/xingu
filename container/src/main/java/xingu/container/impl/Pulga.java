@@ -9,6 +9,8 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.IOUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xingu.container.Binder;
 import xingu.container.Binding;
 import xingu.container.ConfigurationLoader;
@@ -52,9 +54,16 @@ public class Pulga
 		this(parent, is, new ClassLoaderAdapter("context", Thread.currentThread().getContextClassLoader()));
 	}
 
-	public Pulga(Container parent, InputStream is, NamedClassLoader cl)
+    public Pulga(Container parent, InputStream is, NamedClassLoader cl)
+        throws Exception
+    {
+        this(parent, is, cl, LoggerFactory.getLogger(Pulga.class));
+    }
+
+	public Pulga(Container parent, InputStream is, NamedClassLoader cl, Logger log)
 		throws Exception
 	{
+	    super(log);
     	stack     = new Stack<Object>();
         binder    = new SimpleBinder();
         binder.bind(Injector.class).to(new FieldInjector(this));
