@@ -8,3 +8,4 @@ velocity.log
 *.iml
 *~
 *.iml
+.flattened-pom.xml
