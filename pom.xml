@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>3.12.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -186,7 +186,7 @@
 		</repository>
 	</repositories>
 	<properties>
-		<revision>2.3.7</revision>
+		<revision>2.3.8</revision>
 		<aws.sdk>1.11.5</aws.sdk>
 		<ahc>4.5.2</ahc>
 		<guava>21.0</guava>
