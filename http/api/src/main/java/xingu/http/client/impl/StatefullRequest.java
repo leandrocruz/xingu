@@ -1,12 +1,6 @@
 package xingu.http.client.impl;
 
-import xingu.http.client.CookieUtils;
-import xingu.http.client.Cookies;
-import xingu.http.client.HttpContext;
-import xingu.http.client.HttpException;
-import xingu.http.client.HttpRequest;
-import xingu.http.client.HttpResponse;
-import xingu.http.client.HttpStateHandler;
+import xingu.http.client.*;
 
 public class StatefullRequest
 	extends RequestDelegator
@@ -21,6 +15,13 @@ public class StatefullRequest
 
 	@Override
 	public HttpResponse exec()
+		throws HttpException
+	{
+		return this.exec(RetryPolicies.dftl());
+	}
+
+	@Override
+	public HttpResponse exec(RetryPolicy policy)
 		throws HttpException
 	{
 		Cookies cookies = state.getCookies();

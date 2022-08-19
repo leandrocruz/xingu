@@ -25,11 +25,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.jboss.netty.handler.codec.http.Cookie;
 
-import xingu.http.client.Attachment;
-import xingu.http.client.CookieUtils;
-import xingu.http.client.HttpException;
-import xingu.http.client.HttpResponse;
-import xingu.http.client.NameValue;
+import xingu.http.client.*;
 
 public class ApacheRequest
 	extends HttpRequestSupport
@@ -46,6 +42,14 @@ public class ApacheRequest
 	public HttpResponse exec()
 		throws HttpException
 	{
+		return this.exec(RetryPolicies.dftl());
+	}
+
+	@Override
+	public HttpResponse exec(RetryPolicy policy)
+		throws HttpException
+	{
+
 		for(NameValue nv : headers)
 		{
 			req.addHeader(nv.getName(), nv.getValue());
