@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xingu.container.Inject;
-import xingu.http.client.CommandLineBuilder;
-import xingu.http.client.HttpContext;
-import xingu.http.client.HttpException;
-import xingu.http.client.HttpResponse;
+import xingu.http.client.*;
 import xingu.process.ProcessManager;
 import xingu.utils.io.FileNamer;
 import xingu.utils.io.FileUtils;
@@ -35,6 +32,13 @@ public class SimpleHttpRequest
 	public HttpResponse exec()
 		throws HttpException
 	{
+		return exec(RetryPolicies.dftl());
+	}
+
+	@Override
+	public HttpResponse exec(RetryPolicy policy)
+		throws HttpException
+	{
 		Logger logger = getLogger();
 		String impl   = builder.name();
 		int    result = 0 ;
@@ -47,7 +51,7 @@ public class SimpleHttpRequest
 			if(logging)
 				logger.info("Executing command: {}", join);
 
-			result = execCmd(logger, cmd, 7);
+			result = applyPolicy(logger, cmd, policy);
 			if(result == 0)
 			{
 				HttpResponse res  = builder.responseFrom(this, file);
@@ -72,27 +76,15 @@ public class SimpleHttpRequest
 		return LoggerFactory.getLogger(getClass());
 	}
 	
-	public int execCmd(Logger logger, List<String> cmd, int retryCount)
+	public int applyPolicy(Logger logger, List<String> cmd, RetryPolicy policy)
 		throws Exception
 	{
 		int result = pm.exec(cmd);
-		if(result == 0)
-		{
-			return 0;
-		}
-
-		/* 
-		 * 6  - Couldn't resolve host. 
-		 * 7  - Failed to connect to host 
-		 * 28 - Operation timeout
-		 */
-		if(retryCount > 0
-				&& (/*6 == result || 7 == result || 28 == result ||*/ 56 == result || 35 == result || 16 == result))
+		if(policy.retry(result))
 		{
 			logger.info("retrying: " + result);
-			return execCmd(logger, cmd, retryCount - 1);
+			return applyPolicy(logger, cmd, policy.update(result));
 		}
-
 		return result;
 	}
 

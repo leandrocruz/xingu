@@ -64,6 +64,10 @@ public interface HttpRequest
 	HttpResponse exec()
 		throws HttpException;
 
+	HttpResponse exec(RetryPolicy policy)
+		throws HttpException;
+
+	@Deprecated
 	HttpResponse execAndRetry(int attempts)
 		throws HttpException;
 
