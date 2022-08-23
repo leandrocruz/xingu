@@ -104,7 +104,7 @@ public class HttpMocker
 	public HttpMocker to(File file)
 		throws Exception
 	{
-		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), file);
+		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), file, null);
 		when(req.exec()).thenReturn(res);
 		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;
@@ -131,7 +131,7 @@ public class HttpMocker
 		throws Exception
 	{
 		File f = getFile(file);
-		return CurlResponseParser.responseFrom(req.getUri(), f);
+		return CurlResponseParser.responseFrom(req.getUri(), f, null);
 	}
 	
 	public HttpMocker to(String file)
@@ -143,7 +143,7 @@ public class HttpMocker
 			return this;
 		}
 
-		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), f);
+		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), f, null);
 		when(req.exec()).thenReturn(res);
 		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;

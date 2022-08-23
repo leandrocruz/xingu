@@ -1,74 +1,76 @@
 package xingu.http.client.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.netty.http.HttpUtils;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.List;
+
 public class HttpResponseImpl
 	implements HttpResponse
 {
+	private static final NameValue[] EMPTY = new NameValue[]{};
+
 	private String		uri;
 
 	private int			code;
 
-	private NameValue[]	headers;
+	private List<NameValue> headers;
 
-	private InputStream	raw;
-
-	private Document	doc;
+	private File body;
 
 	@Override
+	@Deprecated
 	public String getBody()
-		throws IOException
+		throws Exception
 	{
 		return getBody(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
 	}
 
 	@Override
+	@Deprecated
 	public String getBody(String charset)
-		throws IOException
+		throws Exception
 	{
 		InputStream rawBody = getRawBody();
 		return IOUtils.toString(rawBody, Charset.forName(charset));
 	}
 
 	@Override
-	public Document getDocument()
-		throws IOException
+	public boolean isDocument()
 	{
-		return getDocument(HttpUtils.DEFAULT_HTTP_CHARSET_NAME, true);
+		String contentType = getHeader("Content-Type");
+		return contentType != null && contentType.toLowerCase().startsWith("text/html");
+	}
+
+	@Override
+	public Document getDocument()
+		throws Exception
+	{
+		return getDocument(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
 	}
 	
 	@Override
 	public Document getDocument(String charset)
-		throws IOException
+		throws Exception
 	{
-		return getDocument(charset, false);
-	}
-	
-	public Document getDocument(String charset, boolean cached)
-		throws IOException
-	{
-		if(cached && doc != null)
-		{
-			return doc;
-		}
-		
+		if(!isDocument())
+			throw new Exception("Not a document '" + getHeader("Content-Type") + "'");
+
 		InputStream is = null;
 		try
 		{
 			is         = getRawBody();
 			String url = getUri();
-			doc = Jsoup.parse(is, charset, url);
-			return doc;
+			return Jsoup.parse(is, charset, url);
 		}
 		finally
 		{
@@ -90,23 +92,51 @@ public class HttpResponseImpl
 		return null;
 	}
 
-	/* @formatter:off */
-	@Override public int getCode(){return code;}
-	public void setCode(int code){this.code = code;}
-	public void setUri(String uri){this.uri = uri;}
-	public String getUri(){return uri;}
-	@Override public NameValue[] getHeaders(){return headers;}
-	public void setHeaders(NameValue[] headers){this.headers = headers;}
-	public void setRawBody(InputStream is){this.raw = is;}
-	/* @formatter:on */
-
 	@Override public InputStream getRawBody()
-		throws IOException
+		throws Exception
 	{
-		if(raw.available() == 0)
-		{
-			raw.reset();
-		}
-		return raw;
+		return new BufferedInputStream(new FileInputStream(body));
+	}
+
+	@Override public int getCode()
+	{
+		return code;
+	}
+
+	public void setCode(int code)
+	{
+		this.code = code;
+	}
+
+	public void setUri(String uri)
+	{
+		this.uri = uri;
+	}
+
+	public String getUri()
+	{
+		return uri;
+	}
+
+	@Override public NameValue[] getHeaders()
+	{
+		return headers.toArray(EMPTY);
+	}
+
+	public void setHeaders(List<NameValue> headers)
+	{
+		this.headers = headers;
+	}
+
+	public void setBody(File file)
+	{
+		this.body = file;
+	}
+
+	@Override
+	public File bodyAsFile()
+		throws Exception
+	{
+		return body;
 	}
 }

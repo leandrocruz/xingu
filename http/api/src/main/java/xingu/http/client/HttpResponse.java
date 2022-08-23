@@ -1,5 +1,6 @@
 package xingu.http.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,22 +10,29 @@ public interface HttpResponse
 {
 	int getCode();
 
-	String getBody(String charset)
-		throws IOException;
-	
-	String getBody() // ISO-8859-1
-		throws IOException; 
-	
 	InputStream getRawBody()
-		throws IOException;
+		throws Exception;
 	
 	NameValue[] getHeaders();
 
 	String getHeader(String name);
 
+	boolean isDocument();
+
 	Document getDocument()
-		throws IOException;
+		throws Exception;
 	
 	Document getDocument(String charset)
-		throws IOException;
+		throws Exception;
+
+	File bodyAsFile()
+		throws Exception;
+
+	@Deprecated
+	String getBody(String charset)
+		throws Exception;
+
+	@Deprecated
+	String getBody() // ISO-8859-1
+		throws Exception;
 }

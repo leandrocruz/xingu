@@ -10,10 +10,10 @@ public interface CommandLineBuilder
 {
 	String name();
 
-	List<String> buildLine(HttpRequest request, File file)
+	List<String> buildLine(HttpRequest request, File file, File headers)
 		throws Exception;
 
-	HttpResponse responseFrom(HttpRequest req, File file)
+	HttpResponse responseFrom(HttpRequest req, File file, File headers)
 		throws Exception;
 
 	String join(List<String> cmd);

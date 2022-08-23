@@ -1,29 +1,21 @@
 package xingu.http.client.impl.curl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBufferInputStream;
-import org.jboss.netty.buffer.ChannelBuffers;
-
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.HttpResponseImpl;
 import xingu.http.client.impl.NameValueImpl;
-import xingu.lang.NotImplementedYet;
-import xingu.utils.NettyUtils;
 import xingu.utils.NumberUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CurlResponseParser
 {
-	private static final NameValue[] EMPTY = new NameValue[]{};
-
 	private static int toResponseCode(String line)
 	{
 		String[] parts = StringUtils.split(line, " ");
@@ -40,118 +32,26 @@ public class CurlResponseParser
 		return new NameValueImpl(name, value);
 	}
 
-	@SuppressWarnings("resource")
-	// Note: suppressed because it's being closed in responseFrom.
-	public static HttpResponse responseFrom(String uri, File file, boolean withProxy, boolean isNonStandardDomain)
+	public static HttpResponse responseFrom(String uri, File bodyFile, File headersFile)
 		throws Exception
 	{
-		InputStream is = new FileInputStream(file);
+		BufferedReader reader = null;
 		try
 		{
-			return responseFrom(uri, is, withProxy, isNonStandardDomain);
-		}
-		catch(Exception ex)
-		{
-			// this is a fail-safe to retry parsing without proxy headers
-			is = new FileInputStream(file);
-			return responseFrom(uri, is, false, isNonStandardDomain);
-		}
-	}
-	
-	public static HttpResponse responseFrom(String uri, File file)
-		throws Exception
-	{
-		InputStream is = new FileInputStream(file);
-		return responseFrom(uri, is, false, false);
-	}
+			reader = new BufferedReader(new FileReader(headersFile));
+			int code = toResponseCode(reader.readLine());
+			List<NameValue> headers = reader.lines().skip(1).filter(StringUtils::isNotBlank).map(CurlResponseParser::toHeader).collect(Collectors.toList());
 
-	private static HttpResponse parseResult(String uri, ChannelBuffer buffer, int code, List<NameValue> headers)
-	{
-		HttpResponseImpl result = new HttpResponseImpl();
-		result.setCode(code);
-		result.setHeaders(headers.toArray(EMPTY));
-		result.setUri(uri);
-
-		ChannelBufferInputStream raw = new ChannelBufferInputStream(buffer);
-		result.setRawBody(raw);
-		return result;
-	}
-	
-	private static void removeProxyHeaders(ChannelBuffer buffer)
-	{
-		String line = "";
-		
-		do
-		{
-			line = NettyUtils.readLine(buffer);
+			HttpResponseImpl result = new HttpResponseImpl();
+			result.setCode(code);
+			result.setUri(uri);
+			result.setHeaders(headers);
+			result.setBody(bodyFile);
+			return result;
 		}
-		while(StringUtils.isNotEmpty(line));
-	}
-	
-	public static HttpResponse responseFrom(String uri, InputStream is) 
-		throws Exception
-	{
-		return responseFrom(uri, is, false, false);
-	}
-	
-	public static HttpResponse responseFrom(String uri, InputStream is, boolean withProxy, boolean isNonStandardDomain)
-		throws Exception
-	{
-		byte[]        data   = IOUtils.toByteArray(is);
-		ChannelBuffer buffer = ChannelBuffers.wrappedBuffer(data);
-		IOUtils.closeQuietly(is);
-
-		/* Parsing State */
-		int    code = -1;
-		String line = null;
-		boolean emptyWith100 = false;		
-		
-		if(withProxy && !isNonStandardDomain)
+		finally
 		{
-			removeProxyHeaders(buffer);
+			IOUtils.closeQuietly(reader);
 		}
-		
-		List<NameValue> headers = new ArrayList<NameValue>();
-		do
-		{
-			line = NettyUtils.readLine(buffer);
-			
-			if(line.matches("HTTP/\\d(\\.\\d)? \\d+.*"))
-			{
-				code = toResponseCode(line);
-				
-				if(code == 100)
-				{
-					emptyWith100 = false;
-				}
-			}
-			else
-			{
-				if(StringUtils.isEmpty(line))
-				{
-					if(code == 100 && !emptyWith100)
-					{
-						/* HTTP CONTINUE */
-						emptyWith100 = true;
-						continue;
-					}
-					
-					break;
-				}
-				else
-				{
-					NameValue h = toHeader(line);
-					headers.add(h);
-				}
-			}
-		}
-		while(StringUtils.isNotEmpty(line) || code == 100);
-		
-		if(code == -1)
-		{
-			throw new NotImplementedYet("Could not parse headers, (-1)");
-		}
-		
-		return parseResult(uri, buffer, code, headers);
 	}
 }

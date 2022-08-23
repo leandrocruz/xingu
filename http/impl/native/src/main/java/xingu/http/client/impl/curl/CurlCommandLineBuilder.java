@@ -16,6 +16,7 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,28 +79,17 @@ public class CurlCommandLineBuilder
     }
 
 	@Override
-	public List<String> buildLine(HttpRequest req, File file) 
+	public List<String> buildLine(HttpRequest req, File file, File headers)
 		throws Exception
 	{
-		return new Builder(req, file).build();
+		return new Builder(req, file, headers).build();
 	}
 
-
 	@Override
-	public HttpResponse responseFrom(HttpRequest req, File file)
+	public HttpResponse responseFrom(HttpRequest req, File file, File headers)
 		throws Exception
 	{
-		String  uri       = req.getUri();
-		// Looking for uris starting with the listed domains (already including the protocol portion).
-		long matches = nonStandardDomains
-            .stream()
-            .filter(d -> StringUtils.isNotEmpty(uri) && uri.toLowerCase().startsWith(d.toLowerCase()))
-            .count();
-		
-		String  proxy     = req.getProxy();
-		boolean withProxy = StringUtils.isNotEmpty(proxy);
-		
-		return CurlResponseParser.responseFrom(uri, file, withProxy, matches > 0);
+		return CurlResponseParser.responseFrom(req.getUri(), file, headers);
 	}
 
 	@Override
@@ -145,14 +135,17 @@ public class CurlCommandLineBuilder
 		
 		private File file;
 
+		private File headersFile;
+
 		private List<String> result = new ArrayList<String>();
 
 		private String boundary;
 		
-		public Builder(HttpRequest req, File file)
+		public Builder(HttpRequest req, File file, File headers)
 		{
 			this.req = req;
 			this.file = file;
+			this.headersFile = headers;
 		}
 
 		public List<String> build()
@@ -211,7 +204,7 @@ public class CurlCommandLineBuilder
 			}
 			
 			String retry = req.getRetry();
-			if(!StringUtils.isEmpty(retry))
+			if(StringUtils.isNotEmpty(retry))
 			{
 				result.add("--retry");
 				result.add(retry);
@@ -219,10 +212,12 @@ public class CurlCommandLineBuilder
 			
 			result.add("-m");
 			result.add(timeout);
-			result.add("-i");
-			
+
 			placeSecurityOptions();
-			
+
+			result.add("-D");
+			result.add(headersFile.toString());
+
 			result.add("-o"); // output to a file
 			result.add(file.toString());
 

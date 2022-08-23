@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +46,10 @@ public class SimpleHttpRequest
 		try
 		{
 			File         file = getOutputFile(context);
-			List<String> cmd  = builder.buildLine(this, file);
-			String join = builder.join(cmd);
+			String      name  = FilenameUtils.getBaseName(file.getName());
+			File      headers = new File(file.getParentFile(), name + ".headers");
+			List<String> cmd  = builder.buildLine(this, file, headers);
+			String join       = builder.join(cmd);
 			
 			if(logging)
 				logger.info("Executing command: {}", join);
@@ -54,7 +57,7 @@ public class SimpleHttpRequest
 			result = applyPolicy(logger, cmd, policy);
 			if(result == 0)
 			{
-				HttpResponse res  = builder.responseFrom(this, file);
+				HttpResponse res  = builder.responseFrom(this, file, headers);
 				check(res);
 				return res;
 			}
