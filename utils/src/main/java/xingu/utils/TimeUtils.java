@@ -1,13 +1,17 @@
 package xingu.utils;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import xingu.lang.NotImplementedYet;
 
 public class TimeUtils
 {
+	private static DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+
 	public enum Unit {
 		DAY, WEEK, MONTH, YEAR
 	}
@@ -94,7 +98,7 @@ public class TimeUtils
 		double value  = ((double) millis) / factor;
 		if(round)
 		{
-			return new DecimalFormat("0.00").format(value) + unit;
+			return new DecimalFormat("0.00", symbols).format(value) + unit;
 		}
 		return value + unit;
 	}
