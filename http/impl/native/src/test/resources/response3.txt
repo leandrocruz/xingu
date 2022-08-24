@@ -1,20 +1,3 @@
-HTTP/1.1 200 OK
-Content-Type: text/html
-Vary: Accept-Encoding
-Expires: Thu, 20 Feb 2014 18:58:57 GMT
-Cache-Control: max-age=60
-Transfer-Encoding: chunked
-Date: Thu, 20 Feb 2014 18:58:33 GMT
-X-Varnish: 2819733464 2819725692
-Age: 37
-Connection: keep-alive
-X-Bip: 2819733464 70 213
-Via: 1.1 CachOS
-
-
-
-
-
 <!DOCTYPE html>
 
 <!--[if IE]><![endif]--><html><head><meta charset="utf-8" /><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /><title>globo.com - Absolutamente tudo sobre notícias, esportes e entretenimento</title><meta name="google-site-verification" content="BKmmuVQac1JM6sKlj3IoXQvffyIRJvJfbicMouA2a88" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" /><meta property="og:title" content="globo.com - Absolutamente tudo sobre notícias, esportes e entretenimento"/><meta property="og:type" content="website"/><meta property="og:url" content="http://www.globo.com/"/><meta property="og:image" content="http://s.glbimg.com/en/ho/static/globocom2012/img/fb_marca.png"/><meta property="og:site_name" content="globo.com"/><meta property="og:description" content="Só na globo.com você encontra tudo sobre o conteúdo e marcas das Organizações Globo. O melhor acervo de vídeos online sobre entretenimento, esportes e jornalismo do Brasil."/><meta property="fb:page_id" content="224969370851736" /><meta name="description" content="Só na globo.com você encontra tudo sobre o conteúdo e marcas das Organizações Globo. O melhor acervo de vídeos online sobre entretenimento, esportes e jornalismo do Brasil."/><meta name="keywords" content="Notícias, Entretenimento, Esporte, Tecnologia, Portal, Conteúdo, Rede Globo, TV Globo, Vídeos, Televisão"/><meta name="application-name" content="Globo.com"/><meta name="msapplication-TileColor" content="#0669DE"/><meta name="msapplication-TileImage" content="http://s.glbimg.com/en/ho/static/globocom2012/img/globo-win-tile.png"/><link rel="canonical" href="http://www.globo.com/" /><link rel="shortcut icon" href="http://s.glbimg.com/en/ho/static/globocom2012/img/favicon.png" type="image/ico" /><link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://s.glbimg.com/en/ho/static/touchphone/img/apple-touch-icon-iphone.png" /><link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://s.glbimg.com/en/ho/static/touchphone/img/apple-touch-icon-ipad.png" /><link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://s.glbimg.com/en/ho/static/touchphone/img/apple-touch-icon-iphone-retina.png" /><link rel="stylesheet" href="http://s.glbimg.com/en/ho/static/CACHE/css/0ca42035a042.css" type="text/css" media="screen" /><link type="text/css" rel="stylesheet" media="screen" href="http://s.glbimg.com/en/ho/o/home/desktop/ajustes31.css" /><!--[if lt IE 10]><script type="text/javascript" src="http://s.glbimg.com/en/ho/static/CACHE/js/d783f8b1c48f.js"></script><![endif]--><script type="text/javascript" src="http://s.glbimg.com/en/ho/static/CACHE/js/a89283299795.js"></script></head><!--[if lt IE 7 ]><body class="ie ie6"><![endif]--><!--[if IE 7 ]><body class="ie ie7"><![endif]--><!--[if IE 8 ]><body class="ie ie8"><![endif]--><!--[if IE 9 ]><body class="ie ie9gt ie9"><![endif]--><!--[if gt IE 9 ]><body class="ie ie9gt ie10gt"><![endif]--><!--[if !IE]><!--><body><!--<![endif]--><script type="text/javascript">

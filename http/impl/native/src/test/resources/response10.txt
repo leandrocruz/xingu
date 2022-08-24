@@ -1,21 +1,3 @@
-HTTP/2 200 
-cache-control: no-cache
-pragma: no-cache
-content-type: text/html; charset=utf-8
-expires: -1
-server: Microsoft-IIS/8.5
-x-aspnet-version: 2.0.50727
-x-powered-by: ASP.NET
-x-oneagent-js-injection: true
-x-ruxit-js-agent: true
-vary: Accept-Encoding
-content-encoding: gzip
-date: Wed, 30 Sep 2020 18:54:33 GMT
-content-length: 7395
-set-cookie: SIR-Idioma=pt; path=/
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 <head id="ctl00_Head1"><link href="App_Themes/Tema1/Estilo1.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Tema1/StylesInicio.css" type="text/css" rel="stylesheet" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>

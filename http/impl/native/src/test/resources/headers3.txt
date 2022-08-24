@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+Vary: Accept-Encoding
+Expires: Thu, 20 Feb 2014 18:58:57 GMT
+Cache-Control: max-age=60
+Transfer-Encoding: chunked
+Date: Thu, 20 Feb 2014 18:58:33 GMT
+X-Varnish: 2819733464 2819725692
+Age: 37
+Connection: keep-alive
+X-Bip: 2819733464 70 213
+Via: 1.1 CachOS

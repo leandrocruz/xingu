@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Date: Fri, 28 Aug 2020 20:09:44 GMT
+Server: TJGO
+Content-Type: application/json; charset=iso-8859-1
+Vary: Accept-Encoding,User-Agent
+Content-Encoding: gzip
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Transfer-Encoding: chunked

@@ -54,7 +54,7 @@ public class CurlCommandLineBuilderTest
         when(req.getProxy()).thenReturn("testing");
         when(req.getUri()).thenReturn("http://esaj.tjrn.jus.br");
 
-        HttpResponse response = builder.responseFrom(req, getFile("response13.txt"));
+        HttpResponse response = builder.responseFrom(req, getFile("response13.txt"), getFile("headers13.txt"));
         assertEquals(200, 		response.getCode());
         assertEquals("3480", 	response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
         assertEquals("-1001", 	response.getHeader(HttpHeaders.Names.EXPIRES));
@@ -65,7 +65,7 @@ public class CurlCommandLineBuilderTest
 		throws Exception
 	{
 		HttpRequest  req      = mock(HttpRequest.class);
-		HttpResponse response = builder.responseFrom(req, getFile("response1.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("empty.txt"), getFile("headers1.txt"));
 		assertEquals(200, 		response.getCode());
 		assertEquals("1000", 	response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
 		assertEquals("Jetty(8.1.2.v20120308)", response.getHeader("Server"));
@@ -78,7 +78,7 @@ public class CurlCommandLineBuilderTest
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getProxy()).thenReturn("testing");
 		
-		HttpResponse response = builder.responseFrom(req, getFile("response5.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("empty.txt"), getFile("headers5.txt"));
 		assertEquals(302, response.getCode());
 		assertEquals("0", response.getHeader(HttpHeaders.Names.CONTENT_LENGTH));
 		assertEquals("Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2k-fips mod_jk/1.2.42", response.getHeader("Server"));
@@ -103,7 +103,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		
-		HttpResponse response = builder.responseFrom(req, getFile("response6.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response6.txt"), getFile("headers6.txt"));
 		assertEquals(200, response.getCode());
 		assertEquals("nginx", response.getHeader("Server"));
 	}
@@ -114,7 +114,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getProxy()).thenReturn("this is a proxy");
-		HttpResponse response = builder.responseFrom(req, getFile("response20.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response20.txt"), getFile("headers20.txt"));
 		assertEquals(200, response.getCode());
 	}
 
@@ -124,7 +124,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		
-		HttpResponse response = builder.responseFrom(req, getFile("response2.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("empty.txt"), getFile("headers2.txt"));
 		assertEquals(100, response.getCode());
 		assertEquals("", response.getBody());
 	}
@@ -134,7 +134,7 @@ public class CurlCommandLineBuilderTest
 		throws Exception
 	{
 		HttpRequest req = mock(HttpRequest.class);
-		HttpResponse response = builder.responseFrom(req, getFile("response8.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response8.txt"), getFile("headers8.txt"));
 		assertEquals(200, response.getCode());
 		assertEquals("TJGO", response.getHeader("Server"));
 		assertTrue(response.getBody("UTF-8").contains("Juntada de Petição"));
@@ -146,7 +146,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getUri()).thenReturn("console4.oystr.com.br");
-		HttpResponse response = builder.responseFrom(req, getFile("response9.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response9.txt"), getFile("headers9.txt"));
 		Document utf8 = response.getDocument("UTF-8");
 		Document iso = response.getDocument("ISO-8859-1");
 		
@@ -160,7 +160,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getUri()).thenReturn("console4.oystr.com.br");
-		HttpResponse response = builder.responseFrom(req, getFile("response10.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response10.txt"), getFile("headers10.txt"));
 		response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text();
 		
 		assertTrue(response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text().equalsIgnoreCase("Close Session"));
@@ -183,7 +183,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getUri()).thenReturn("www.globo.com");
-		HttpResponse response = builder.responseFrom(req, getFile("response3.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response3.txt"), getFile("headers3.txt"));
 		Document     doc      = response.getDocument();
 		Element      el       = doc.getElementById("busca-padrao");
 		assertEquals(200, response.getCode());
@@ -196,7 +196,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 //		when(req.getProxy()).thenReturn("testing");
-		HttpResponse response = builder.responseFrom(req, getFile("response7.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response7.txt"), getFile("headers7.txt"));
 
 		assertEquals(200, response.getCode());
 		assertEquals("resource=2.1", response.getHeader("Content-API-Version"));
@@ -210,7 +210,7 @@ public class CurlCommandLineBuilderTest
 	{
 		HttpRequest req = mock(HttpRequest.class);
 		when(req.getUri()).thenReturn("www.google.com");
-		HttpResponse response = builder.responseFrom(req, getFile("response4.txt"));
+		HttpResponse response = builder.responseFrom(req, getFile("response4.txt"), getFile("headers4.txt"));
 		Cookies      cookies  = CookieUtils.getCookies(response);
 		Cookie       c1       = cookies.byName("PREF");
 		Cookie       c2       = cookies.byName("NID");
@@ -228,7 +228,7 @@ public class CurlCommandLineBuilderTest
 		when(req.getUri()).thenReturn("http://www.google.com");
 		when(req.getCookies()).thenReturn(cookies);
 		when(req.getMethod()).thenReturn("GET");
-		List<String> cmd = builder.buildLine(req, getFile("response1.txt"));
+		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
 		String header = cmd.get(cmd.indexOf("--cookie") + 1);
 		assertEquals("a=1; c=3", header);
 	}

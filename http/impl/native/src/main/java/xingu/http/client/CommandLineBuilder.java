@@ -13,7 +13,7 @@ public interface CommandLineBuilder
 	List<String> buildLine(HttpRequest request, File file, File headers)
 		throws Exception;
 
-	HttpResponse responseFrom(HttpRequest req, File file, File headers)
+	HttpResponse responseFrom(HttpRequest req, File body, File headers)
 		throws Exception;
 
 	String join(List<String> cmd);

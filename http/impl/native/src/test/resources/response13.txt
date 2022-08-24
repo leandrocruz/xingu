@@ -1,22 +1,3 @@
-HTTP/1.1 200 OK
-Set-Cookie: JSESSIONID=72E86AC3457960AEDBB386E774226C5F.casLayoutPerfil1; Path=/esaj
-Pragma: no-cache
-Server: Apache/2.2.16
-Expires: -1001
-Vary: Accept-Encoding
-Content-Type: text/html;charset=ISO-8859-1
-Content-Length: 3480
-Date: Fri, 30 Apr 2021 19:06:33 GMT
-Content-Encoding: gzip
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
@@ -60,7 +41,7 @@ Content-Encoding: gzip
 			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/js/jquery-1.3.2.js"></script>
 			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/js/spwConcatenado-4.3.3-2.js"></script>
 			<script src="http://esaj.tjrn.jus.br/esaj/tema/padrao/jsp/intermediaria.js"></script>
-			<!-- saj-select.css utilizado pelo acesso rápido do CPO-->
+			<!-- saj-select.css utilizado pelo acesso rï¿½pido do CPO-->
 			<link href="http://esaj.tjrn.jus.br/esaj/tema/padrao/css/saj-select.css" rel="stylesheet" type="text/css" />
 		
 
@@ -95,7 +76,7 @@ Content-Encoding: gzip
 
 <style type="text/css">
 <!--
-/* botao default means o mais claro, que seria o "botão principal" */
+/* botao default means o mais claro, que seria o "botï¿½o principal" */
 .spwBotaoDefault, .spwBotaoDefault-o { 
 	background-image: url(http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/fundoBotaoDefault.gif);
 }
@@ -145,7 +126,7 @@ Content-Encoding: gzip
 	
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="esajTabelaCabecalhoCliente" summary=" ">
 	<tr>
-		<td><a href="http://www.tjrn.jus.br"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/cabecalhoLogo.jpg" width="241" height="57" alt="Tribunal de Justiça do RN" /></a></td>
+		<td><a href="http://www.tjrn.jus.br"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/cabecalhoLogo.jpg" width="241" height="57" alt="Tribunal de Justiï¿½a do RN" /></a></td>
 		<td align="right" valign="top"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/layout/cabecalhoImagem.jpg" alt=" " width="402" height="57" /></td>
 	</tr>
 </table>
@@ -174,7 +155,7 @@ Content-Encoding: gzip
 <table width="100%" cellspacing="0" cellpadding="0" summary=" " class="esajTabelaCabecalho">
 	<tr>
 		<td class="esajCelulaCabecalhoLogo">
-<a href="http://esaj.tjrn.jus.br/esaj/index.jsp"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/esaj.gif" title="Voltar para página inicial do e-SAJ" alt="Voltar para página inicial do e-SAJ" width="152" height="94" border="0" /><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/portal.gif" width="168" height="94" alt="Portal de Servi&ccedil;os" /></a></td>
+<a href="http://esaj.tjrn.jus.br/esaj/index.jsp"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/esaj.gif" title="Voltar para pï¿½gina inicial do e-SAJ" alt="Voltar para pï¿½gina inicial do e-SAJ" width="152" height="94" border="0" /><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/portal.gif" width="168" height="94" alt="Portal de Servi&ccedil;os" /></a></td>
 		<td class="esajCelulaCabecalhoMenu">
 		    <table width="100%" cellspacing="0" cellpadding="0" border="0" summary=" ">
 				<tr>
@@ -253,33 +234,33 @@ Bem-vindo
 <ul id="esajMenuArea">
 	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Consultas Processuais</a>
 <ul>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cpo/pg/open.do">Consulta de Processos do 1ºGrau</a></li>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cposg/">Consulta de Processos do 2ºGrau</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cpo/pg/open.do">Consulta de Processos do 1ï¿½Grau</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cposg/">Consulta de Processos do 2ï¿½Grau</a></li>
   <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/cje/index.do">Consulta do Juizado Especial de Natal</a></li>
 </ul>
   </li>
-	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Peticionamento Eletrônico de 1º Grau</a>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Peticionamento Eletrï¿½nico de 1ï¿½ Grau</a>
 <ul>
-  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoInicial.do">Peticionamento Inicial de 1º Grau</a></li>
-  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoIntermediaria.do">Peticionamento Intermediário de 1º Grau</a></li>
-  <li class="esajMenuItem"><a href="/petpg/abrirConsultaPeticoes.do">Consulta de Petições de 1º Grau</a></li>
+  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoInicial.do">Peticionamento Inicial de 1ï¿½ Grau</a></li>
+  <li class="esajMenuItem"><a href="/petpg/abrirNovaPeticaoIntermediaria.do">Peticionamento Intermediï¿½rio de 1ï¿½ Grau</a></li>
+  <li class="esajMenuItem"><a href="/petpg/abrirConsultaPeticoes.do">Consulta de Petiï¿½ï¿½es de 1ï¿½ Grau</a></li>
 </ul>
   </li>
-  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprudência</a></li>
-  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Conferência de Documento Digital do 1ºGrau</a></li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprudï¿½ncia</a></li>
+  <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Conferï¿½ncia de Documento Digital do 1ï¿½Grau</a></li>
   <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/push/">Push</a></li>
-	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Intimações e Citações On-line</a>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Intimaï¿½ï¿½es e Citaï¿½ï¿½es On-line</a>
 <ul>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosRecebidos.do">Consulta de Intimações Recebidas</a></li>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosNaoRecebidos.do">Recebimento de Intimações Eletrônicas</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosRecebidos.do">Consulta de Intimaï¿½ï¿½es Recebidas</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/intimacoesweb/abrirConsultaAtosNaoRecebidos.do">Recebimento de Intimaï¿½ï¿½es Eletrï¿½nicas</a></li>
 </ul>
   </li>
   <li class="esajMenuFechado"><a href="http://esaj.tjrn.jus.br/cposg/pcpoOrgaosJulgadores.jsp">Consulta da Pauta de Julgamento</a></li>
-	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Certidões</a>
+	<li class="esajMenuFechado"><a href="#" onclick="return esajMenu(this)">Certidï¿½es</a>
 <ul>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirCadastro.do">Cadastro de Pedido de Certidão</a></li>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirConferencia.do">Conferência de Certidão</a></li>
-  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirDownload.do">Download de Certidão</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirCadastro.do">Cadastro de Pedido de Certidï¿½o</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirConferencia.do">Conferï¿½ncia de Certidï¿½o</a></li>
+  <li class="esajMenuItem"><a href="http://esaj.tjrn.jus.br/sco/abrirDownload.do">Download de Certidï¿½o</a></li>
 </ul>
   </li>
 </ul>
@@ -300,7 +281,7 @@ Bem-vindo
  
 
 
-				<p>O portal e-SAJ é uma solução que visa facilitar a troca de informações e agilizar o trâmite processual por meio de diversos serviços WEB voltados para os advogados, cidadãos e serventuários da justiça. <br></p>
+				<p>O portal e-SAJ ï¿½ uma soluï¿½ï¿½o que visa facilitar a troca de informaï¿½ï¿½es e agilizar o trï¿½mite processual por meio de diversos serviï¿½os WEB voltados para os advogados, cidadï¿½os e serventuï¿½rios da justiï¿½a. <br></p>
 				
 
 
@@ -341,7 +322,7 @@ Bem-vindo
 	
 					   
     <br />        
-	Acesso a informações de tramitação dos processos de Primeiro e Segundo Grau.
+	Acesso a informaï¿½ï¿½es de tramitaï¿½ï¿½o dos processos de Primeiro e Segundo Grau.
 </td>
 					        	</tr>
 					     	</table>
@@ -385,9 +366,9 @@ Bem-vindo
 
 
 <td class="esajCelulaIconeServico" valign="top">
-	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico820100.gif" alt="Peticionamento Eletrônico de 1º Grau" width="38" height="38" border="0"/></a>
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico820100.gif" alt="Peticionamento Eletrï¿½nico de 1ï¿½ Grau" width="38" height="38" border="0"/></a>
 </td>
-<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100">Peticionamento Eletrônico de 1º Grau</a>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=820100">Peticionamento Eletrï¿½nico de 1ï¿½ Grau</a>
 	
 	
 	  <img width="16" height="17" align="absmiddle" title="Necessita cadastro de advogado" alt="Necessita cadastro de advogado" src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/capOAB.gif"/>
@@ -397,7 +378,7 @@ Bem-vindo
 	
 					   
     <br />        
-	Protocolo e consulta de petições iniciais e intermediárias de Primeiro Grau.
+	Protocolo e consulta de petiï¿½ï¿½es iniciais e intermediï¿½rias de Primeiro Grau.
 </td>
 					        	</tr>
 					     	</table>
@@ -429,15 +410,15 @@ Bem-vindo
 
 
 <td class="esajCelulaIconeServico" valign="top">
-	<a href="http://esaj.tjrn.jus.br/cjosg/"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico780000.gif" alt="Consultas de Jurisprudência" width="38" height="38" border="0"/></a>
+	<a href="http://esaj.tjrn.jus.br/cjosg/"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico780000.gif" alt="Consultas de Jurisprudï¿½ncia" width="38" height="38" border="0"/></a>
 </td>
-<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprudência</a>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/cjosg/">Consultas de Jurisprudï¿½ncia</a>
 	
 	
 	
 					   
     <br />        
-	Consulta às informações das jurisprudências de Segundo Grau, com acesso a íntegra do documento de acórdão.
+	Consulta ï¿½s informaï¿½ï¿½es das jurisprudï¿½ncias de Segundo Grau, com acesso a ï¿½ntegra do documento de acï¿½rdï¿½o.
 </td>
 					        	</tr>
 					     	</table>
@@ -467,15 +448,15 @@ Bem-vindo
 
 
 <td class="esajCelulaIconeServico" valign="top">
-	<a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico920101.gif" alt="Conferência de Documento Digital do 1ºGrau" width="38" height="38" border="0"/></a>
+	<a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico920101.gif" alt="Conferï¿½ncia de Documento Digital do 1ï¿½Grau" width="38" height="38" border="0"/></a>
 </td>
-<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Conferência de Documento Digital do 1ºGrau</a>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/pastadigital/pg/abrirConferenciaDocumento.do">Conferï¿½ncia de Documento Digital do 1ï¿½Grau</a>
 	
 	
 	
 					   
     <br />        
-	Conferência de documentos impressos com os originais em formato eletrônico.
+	Conferï¿½ncia de documentos impressos com os originais em formato eletrï¿½nico.
 </td>
 					        	</tr>
 					     	</table>
@@ -517,7 +498,7 @@ Bem-vindo
 	
 					   
     <br />        
-	O Push permite ao advogado receber por e-mail as informações referentes à movimentação processual.
+	O Push permite ao advogado receber por e-mail as informaï¿½ï¿½es referentes ï¿½ movimentaï¿½ï¿½o processual.
 </td>
 					        	</tr>
 					     	</table>
@@ -549,9 +530,9 @@ Bem-vindo
 
 
 <td class="esajCelulaIconeServico" valign="top">
-	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico640000.gif" alt="Intimações e Citações On-line" width="38" height="38" border="0"/></a>
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico640000.gif" alt="Intimaï¿½ï¿½es e Citaï¿½ï¿½es On-line" width="38" height="38" border="0"/></a>
 </td>
-<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000">Intimações e Citações On-line</a>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=640000">Intimaï¿½ï¿½es e Citaï¿½ï¿½es On-line</a>
 	
 	
 	
@@ -559,7 +540,7 @@ Bem-vindo
 	
 					   
     <br />        
-	Sistema de recebimento e consulta de intimações e citações on-line
+	Sistema de recebimento e consulta de intimaï¿½ï¿½es e citaï¿½ï¿½es on-line
 </td>
 					        	</tr>
 					     	</table>
@@ -595,7 +576,7 @@ Bem-vindo
 	
 					   
     <br />        
-	Consulta às pautas de julgamento do segundo grau para cada órgão julgador.
+	Consulta ï¿½s pautas de julgamento do segundo grau para cada ï¿½rgï¿½o julgador.
 </td>
 					        	</tr>
 					     	</table>
@@ -623,15 +604,15 @@ Bem-vindo
 
 
 <td class="esajCelulaIconeServico" valign="top">
-	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico810000.gif" alt="Certidões" width="38" height="38" border="0"/></a>
+	<a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/clientes/RN/imagens/servico/icoServico810000.gif" alt="Certidï¿½es" width="38" height="38" border="0"/></a>
 </td>
-<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000">Certidões</a>
+<td class="esajCelulaDescricaoServicos"><a href="http://esaj.tjrn.jus.br/esaj/portal.do?servico=810000">Certidï¿½es</a>
 	
 	
 	
 					   
     <br />        
-	Cadastro de pedidos de certidões, download do documento solicitado e conferência das certidões emitidas.
+	Cadastro de pedidos de certidï¿½es, download do documento solicitado e conferï¿½ncia das certidï¿½es emitidas.
 </td>
 					        	</tr>
 					     	</table>
@@ -740,10 +721,10 @@ Bem-vindo
 		<td class="esajCelulaRodapeEsquerdo"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td align="center"><img src="http://esaj.tjrn.jus.br/esaj/tema/padrao/imagens/layout/saj.gif" alt="SAJ" width="29" height="29" /></td>
-					<td><a href="http://www.softplan.com.br/saj">Sistema de Automação da Justiça </a></td>
+					<td><a href="http://www.softplan.com.br/saj">Sistema de Automaï¿½ï¿½o da Justiï¿½a </a></td>
 				</tr>
 			</table></td>
-		<td class="esajCelulaRodapeCentro">desenvolvido pela Softplan em parceria com a Secretaria de Tecnologia da Informação do TJRN</td>
+		<td class="esajCelulaRodapeCentro">desenvolvido pela Softplan em parceria com a Secretaria de Tecnologia da Informaï¿½ï¿½o do TJRN</td>
 		<td class="esajCelulaRodapeDireito">&nbsp;</td>
 	</tr>
 </table>

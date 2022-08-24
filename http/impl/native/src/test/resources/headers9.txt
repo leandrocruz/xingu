@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Vary: Accept-Encoding
+Expires: Thu, 20 Dez 2020 18:58:57 GMT
+Cache-Control: max-age=60
+Date: Thu, 02 Sep 2020 18:58:33 GMT
+Age: 37
+Connection: keep-alive
