@@ -7,10 +7,7 @@ import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.netty.http.HttpUtils;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class HttpResponseImpl
 	@Override
 	@Deprecated
 	public String getBody()
-		throws Exception
+		throws IOException
 	{
 		return getBody(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
 	}
@@ -38,7 +35,7 @@ public class HttpResponseImpl
 	@Override
 	@Deprecated
 	public String getBody(String charset)
-		throws Exception
+		throws IOException
 	{
 		InputStream rawBody = getRawBody();
 		return IOUtils.toString(rawBody, Charset.forName(charset));
@@ -53,17 +50,17 @@ public class HttpResponseImpl
 
 	@Override
 	public Document getDocument()
-		throws Exception
+		throws IOException
 	{
 		return getDocument(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
 	}
 	
 	@Override
 	public Document getDocument(String charset)
-		throws Exception
+		throws IOException
 	{
 		if(!isDocument())
-			throw new Exception("Not a document '" + getHeader("Content-Type") + "'");
+			throw new IOException("Not a document '" + getHeader("Content-Type") + "'");
 
 		InputStream is = null;
 		try
@@ -93,7 +90,7 @@ public class HttpResponseImpl
 	}
 
 	@Override public InputStream getRawBody()
-		throws Exception
+		throws IOException
 	{
 		return new BufferedInputStream(new FileInputStream(body));
 	}
@@ -135,7 +132,7 @@ public class HttpResponseImpl
 
 	@Override
 	public File bodyAsFile()
-		throws Exception
+		throws IOException
 	{
 		return body;
 	}

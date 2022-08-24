@@ -11,7 +11,7 @@ public interface HttpResponse
 	int getCode();
 
 	InputStream getRawBody()
-		throws Exception;
+		throws IOException;
 	
 	NameValue[] getHeaders();
 
@@ -20,19 +20,19 @@ public interface HttpResponse
 	boolean isDocument();
 
 	Document getDocument()
-		throws Exception;
+		throws IOException;
 	
 	Document getDocument(String charset)
-		throws Exception;
+		throws IOException;
 
 	File bodyAsFile()
-		throws Exception;
+		throws IOException;
 
 	@Deprecated
 	String getBody(String charset)
-		throws Exception;
+		throws IOException;
 
 	@Deprecated
 	String getBody() // ISO-8859-1
-		throws Exception;
+		throws IOException;
 }
