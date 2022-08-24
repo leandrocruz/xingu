@@ -28,11 +28,9 @@ public interface HttpResponse
 	File bodyAsFile()
 		throws IOException;
 
-	@Deprecated
 	String getBody(String charset)
 		throws IOException;
 
-	@Deprecated
 	String getBody() // ISO-8859-1
 		throws IOException;
 }

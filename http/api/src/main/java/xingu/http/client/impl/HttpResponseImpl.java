@@ -25,7 +25,6 @@ public class HttpResponseImpl
 	private File body;
 
 	@Override
-	@Deprecated
 	public String getBody()
 		throws IOException
 	{
@@ -33,7 +32,6 @@ public class HttpResponseImpl
 	}
 
 	@Override
-	@Deprecated
 	public String getBody(String charset)
 		throws IOException
 	{
