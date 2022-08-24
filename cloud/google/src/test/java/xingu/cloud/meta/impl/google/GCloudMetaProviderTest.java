@@ -30,12 +30,13 @@ public class GCloudMetaProviderTest
 		binder.bind(MetaProvider.class).to(GCloudMetaProvider.class);
 		this.http = mock(HttpClient.class);
 		binder.bind(HttpClient.class, "gcloud").to(this.http);
-		File file = getFile("curl-get-instance-id.html");
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/name").to(file);
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/attributes/server")	.to(/* bogus */ file);
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/attributes/ports")	.to(/* bogus */ file);
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/zone")				.to(/* bogus */ file);
-		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/project/project-id")			.to(/* bogus */ file);
+		File body    = getFile("curl-get-instance-id.body");
+		File headers = getFile("curl-get-instance-id.headers");
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/name").to(body, headers);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/attributes/server")	.to(/* bogus */ body, headers);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/attributes/ports")	.to(/* bogus */ body, headers);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/instance/zone")				.to(/* bogus */ body, headers);
+		new HttpMocker(http).get(GCloudMetaProvider.BASE_URL + "/project/project-id")			.to(/* bogus */ body, headers);
 	}
 
 	@Test

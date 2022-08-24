@@ -93,18 +93,18 @@ public class HttpMocker
 		return this;
 	}
 
-	public void toBody(File file)
+	public void toBody(File body)
 		throws Exception
 	{
-		HttpResponse res = asResponse(file);
+		HttpResponse res = asResponse(body);
 		when(req.exec()).thenReturn(res);
 		when(req.execAndRetry(any(int.class))).thenReturn(res);
 	}
 
-	public HttpMocker to(File file)
+	public HttpMocker to(File body, File headers)
 		throws Exception
 	{
-		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), file, null);
+		HttpResponse res = CurlResponseParser.responseFrom(req.getUri(), body, headers);
 		when(req.exec()).thenReturn(res);
 		when(req.execAndRetry(any(int.class))).thenReturn(res);
 		return this;
@@ -149,10 +149,10 @@ public class HttpMocker
 		return this;
 	}
 
-	public static HttpResponse asResponse(File file)
+	public static HttpResponse asResponse(File body)
 		throws Exception
 	{
-		InputStream is = new FileInputStream(file);
+		InputStream is = new FileInputStream(body);
 		HttpResponse res = mock(HttpResponse.class);
 		when(res.getRawBody()).thenReturn(is);
 		return res;

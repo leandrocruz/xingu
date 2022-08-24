@@ -52,7 +52,7 @@ public class RemoteUpdateManager
 	
 	@Override
 	protected InputStream toInputStream(BundleDescriptor desc, HttpProgressListener listener)
-		throws IOException
+		throws Exception
 	{
 		String       file = desc.getFile();
 		String       id   = desc.getId();
