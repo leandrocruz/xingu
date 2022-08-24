@@ -28,18 +28,16 @@ public class CurlResponseParser
 		int    idx   = line.indexOf(":");
 		String name  = line.substring(0, idx);
 		String value = line.substring(idx + 1);
-		name         = StringUtils.trimToEmpty(name);
-		value        = StringUtils.trimToEmpty(value);
-		return new NameValueImpl(name, value);
+		return new NameValueImpl(StringUtils.trimToEmpty(name), StringUtils.trimToEmpty(value));
 	}
 
-	public static HttpResponse responseFrom(String uri, File bodyFile, File headersFile)
+	private static HttpResponseImpl parseHeaders(File file)
 		throws Exception
 	{
 		BufferedReader reader = null;
 		try
 		{
-			reader = new BufferedReader(new FileReader(headersFile));
+			reader = new BufferedReader(new FileReader(file));
 			List<String>    lines 	 = reader.lines().filter(StringUtils::isNotBlank).collect(Collectors.toList());
 			List<Integer>   statuses = lines.stream().filter(l ->  l.startsWith("HTTP")).map(CurlResponseParser::toResponseCode).collect(Collectors.toList());
 			List<NameValue> headers  = lines.stream().filter(l -> !l.startsWith("HTTP")).map(CurlResponseParser::toHeader).collect(Collectors.toList());
@@ -50,14 +48,25 @@ public class CurlResponseParser
 
 			HttpResponseImpl result = new HttpResponseImpl();
 			result.setCode(code);
-			result.setUri(uri);
 			result.setHeaders(headers);
-			result.setBody(bodyFile);
 			return result;
 		}
 		finally
 		{
 			IOUtils.closeQuietly(reader);
 		}
+	}
+
+	public static HttpResponse responseFrom(String uri, File body, File headers)
+		throws Exception
+	{
+		if(headers == null)
+			throw new IllegalArgumentException("Missing headers for '"+uri+"'. Please check '"+body+"'");
+
+		HttpResponseImpl result = parseHeaders(headers);
+		result.setUri(uri);
+		result.setBody(body);
+
+		return result;
 	}
 }
