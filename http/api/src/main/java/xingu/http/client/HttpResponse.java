@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.jsoup.nodes.Document;
+import xingu.netty.http.HttpUtils;
 
 public interface HttpResponse
 {
@@ -19,18 +20,36 @@ public interface HttpResponse
 
 	boolean isDocument();
 
-	Document getDocument()
-		throws IOException;
+	default Document getDocument()
+		throws IOException
+	{
+		return getDocument(false);
+	}
 	
-	Document getDocument(String charset)
+	default Document getDocument(String charset)
+		throws IOException
+	{
+		return getDocument(false, charset);
+	}
+
+	default Document getDocument(boolean lenient)
+		throws IOException
+	{
+		return getDocument(lenient, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+	}
+
+	Document getDocument(boolean lenient, String charset)
 		throws IOException;
 
 	File bodyAsFile()
 		throws IOException;
 
-	String getBody(String charset)
-		throws IOException;
+	default String getBody()
+		throws IOException
+	{
+		return getBody(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
+	}
 
-	String getBody() // ISO-8859-1
+	String getBody(String charset)
 		throws IOException;
 }

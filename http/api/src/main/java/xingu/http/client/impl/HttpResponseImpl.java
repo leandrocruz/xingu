@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
-import xingu.netty.http.HttpUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -25,13 +24,6 @@ public class HttpResponseImpl
 	private File body;
 
 	@Override
-	public String getBody()
-		throws IOException
-	{
-		return getBody(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
-	}
-
-	@Override
 	public String getBody(String charset)
 		throws IOException
 	{
@@ -43,33 +35,30 @@ public class HttpResponseImpl
 	public boolean isDocument()
 	{
 		String contentType = getHeader("Content-Type");
-		return contentType != null && contentType.toLowerCase().startsWith("text/html");
+		return contentType != null && (contentType.toLowerCase().startsWith("text/html") || contentType.toLowerCase().startsWith("text/xml"));
 	}
 
 	@Override
-	public Document getDocument()
+	public Document getDocument(boolean lenient, String charset)
 		throws IOException
 	{
-		return getDocument(HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
-	}
-	
-	@Override
-	public Document getDocument(String charset)
-		throws IOException
-	{
-		if(!isDocument())
-			throw new IOException("Not a document '" + getHeader("Content-Type") + "'");
-
-		InputStream is = null;
-		try
+		if(lenient || isDocument())
 		{
-			is         = getRawBody();
-			String url = getUri();
-			return Jsoup.parse(is, charset, url);
+			InputStream is = null;
+			try
+			{
+				is         = getRawBody();
+				String url = getUri();
+				return Jsoup.parse(is, charset, url);
+			}
+			finally
+			{
+				IOUtils.closeQuietly(is);
+			}
 		}
-		finally
+		else
 		{
-			IOUtils.closeQuietly(is);
+			throw new IOException("Not a document '" + getHeader("Content-Type") + "'");
 		}
 	}
 
