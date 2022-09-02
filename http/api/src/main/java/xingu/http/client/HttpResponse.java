@@ -23,13 +23,13 @@ public interface HttpResponse
 	default Document getDocument()
 		throws IOException
 	{
-		return getDocument(false);
+		return getDocument(true);
 	}
 	
 	default Document getDocument(String charset)
 		throws IOException
 	{
-		return getDocument(false, charset);
+		return getDocument(true, charset);
 	}
 
 	default Document getDocument(boolean lenient)
