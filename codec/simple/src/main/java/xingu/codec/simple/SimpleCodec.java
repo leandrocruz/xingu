@@ -1,5 +1,6 @@
 package xingu.codec.simple;
 
+import java.io.File;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,5 +76,12 @@ public class SimpleCodec
 		StringWriter writer = new StringWriter();
 		serializer.write(object, writer);
 		return writer.toString();
+	}
+
+	@Override
+	public void encodeTo(Object object, File file)
+		throws Exception
+	{
+		serializer.write(object, file);
 	}
 }

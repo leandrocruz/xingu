@@ -1,5 +1,6 @@
 package xingu.codec;
 
+import java.io.File;
 import java.util.List;
 
 import xingu.lang.NotImplementedYet;
@@ -20,4 +21,10 @@ public interface Codec
 
 	String encode(Object object)
 		throws Exception;
+
+	default void encodeTo(Object object, File file)
+		throws Exception
+	{
+		throw new NotImplementedYet();
+	}
 }
