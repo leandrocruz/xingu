@@ -66,8 +66,13 @@ public class SimpleHttpRequest
 		{
 			throw new HttpException(e);
 		}
-
-		throw new HttpException(impl + " error: " + result);
+		
+		String message = "Erro na chamada HTTP, verifique o contexto (" + impl + " " + result + ")";		
+		if(throwOnMap.containsKey(result))
+		{
+			message = throwOnMap.get(result);
+		}
+		throw new HttpException(message);
 	}
 
 	private Logger getLogger()

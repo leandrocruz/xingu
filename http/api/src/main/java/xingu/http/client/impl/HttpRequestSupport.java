@@ -2,6 +2,7 @@ package xingu.http.client.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,6 @@ public abstract class HttpRequestSupport
 
 	protected String                  ua;
 
-	protected String                  charset;
-
 	protected String                  certificate;
 
 	protected String                  certificatePassword;
@@ -46,6 +45,8 @@ public abstract class HttpRequestSupport
 	protected String                  payload;
 	
 	protected String                  payloadAsJson;
+
+	protected String                  payloadCharset;
 	
 	protected String				  proxy;
 
@@ -71,7 +72,9 @@ public abstract class HttpRequestSupport
 
 	protected List<NameValue>         headers                = new ArrayList<>();
 
-	private   List<ResponseInspector> inspectors             = new ArrayList<>();
+	private   List<ResponseInspector> inspectors             = new ArrayList<>();	
+
+	protected   Map<Integer, String>  throwOnMap             = new HashMap<>();
 
 	private   boolean                 sslAllowBeast;
 
@@ -436,18 +439,6 @@ public abstract class HttpRequestSupport
 	}
 
 	@Override
-	public void setCharset(String charset)
-	{
-		this.charset = charset;
-	}
-
-	@Override
-	public String getCharset()
-	{
-		return charset != null ? charset : HttpUtils.DEFAULT_HTTP_CHARSET_NAME;
-	}
-
-	@Override
 	public HttpRequest name(String name)
 	{
 		this.name = name;
@@ -459,6 +450,13 @@ public abstract class HttpRequestSupport
 	{
 		this.listener = listener;
 		return this;
+	}
+	
+	@Override
+	public HttpRequest payload(String payload, String charset)
+	{
+		this.payloadCharset = charset;
+		return payload(payload);
 	}
 
 	@Override
@@ -479,6 +477,19 @@ public abstract class HttpRequestSupport
 	{
 		this.payloadAsJson = payload;
 		return this;
+	}
+	
+	@Override
+	public HttpRequest payloadAsJson(String payload, String charset)
+	{
+		this.payloadCharset = charset;
+		return payloadAsJson(payload);
+	}
+	
+	@Override
+	public String getPayloadCharset() 
+	{
+		return this.payloadCharset;
 	}
 	
 	@Override
@@ -614,6 +625,13 @@ public abstract class HttpRequestSupport
 	public HttpRequest withRetry(String seconds)
 	{
 		this.retry = seconds;
+		return this;
+	}
+		
+	@Override
+	public HttpRequest throwErrorOn(int returnCode, String payload) 
+	{
+		this.throwOnMap.put(returnCode, payload);
 		return this;
 	}
 }

@@ -274,18 +274,6 @@ public abstract class RequestDelegator
 	}
 
 	@Override
-	public void setCharset(String charset)
-	{
-		req.setCharset(charset);
-	}
-
-	@Override
-	public String getCharset()
-	{
-		return req.getCharset();
-	}
-
-	@Override
 	public HttpRequest name(String name)
 	{
 		req.name(name);
@@ -331,6 +319,13 @@ public abstract class RequestDelegator
 		req.payload(payload);
 		return this;
 	}
+	
+	@Override
+	public HttpRequest payload(String payload, String charset)
+	{
+		req.payload(payload, charset);
+		return this;
+	}
 
 	@Override
 	public String getPayload()
@@ -343,6 +338,20 @@ public abstract class RequestDelegator
 	{
 		req.payloadAsJson(payload);
 		return this;
+	}
+	
+	@Override
+	public HttpRequest payloadAsJson(String payload, String charset)
+	{
+		req.payloadAsJson(payload, charset);
+		return this;
+		
+	}
+	
+	@Override
+	public String getPayloadCharset() 
+	{
+		return req.getPayloadCharset();
 	}
 
 	@Override
@@ -472,5 +481,11 @@ public abstract class RequestDelegator
 	public HttpRequest withRetry(String seconds)
 	{
 		return req.withRetry(seconds);
+	}	
+	
+	@Override
+	public HttpRequest throwErrorOn(int returnCode, String payload) 
+	{
+		return req.throwErrorOn(returnCode, payload);
 	}
 }
