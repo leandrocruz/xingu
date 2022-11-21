@@ -484,8 +484,8 @@ public abstract class RequestDelegator
 	}	
 	
 	@Override
-	public HttpRequest throwErrorOn(int returnCode, String payload) 
+	public HttpRequest throwErrorOn(int returnCode, String errorMessage) 
 	{
-		return req.throwErrorOn(returnCode, payload);
+		return req.throwErrorOn(returnCode, errorMessage);
 	}
 }

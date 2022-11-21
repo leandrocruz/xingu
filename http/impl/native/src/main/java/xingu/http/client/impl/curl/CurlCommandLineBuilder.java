@@ -436,10 +436,17 @@ public class CurlCommandLineBuilder
 				}
 				
 				dump.append(payload);
-				
-				payloadDumpFile = dumpPayloadToJsonFile(dump, this.headerCharset);
+				String payloadCharset = findPayloadCharset();				
+				payloadDumpFile = dumpPayloadToJsonFile(dump, payloadCharset);
 				result.add("@" + payloadDumpFile.getPath());
 			}
+		}
+		
+		private String findPayloadCharset()
+		{		
+			return StringUtils.isNotEmpty(this.req.getPayloadCharset()) 
+				? this.req.getPayloadCharset()
+			    : this.getHeaderCharset();
 		}
 		
 		private void placeProxy()
@@ -748,13 +755,7 @@ public class CurlCommandLineBuilder
 			else
 			{
 				file = File.createTempFile("dump_payload_", fileSufix);
-			}		
-			
-			if(StringUtils.isNotEmpty(this.req.getPayloadCharset()))
-			{
-				charset = this.req.getPayloadCharset();
 			}
-
 			FileUtils.write(file, dump, charset);
 			return file;
 		}

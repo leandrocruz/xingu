@@ -629,9 +629,9 @@ public abstract class HttpRequestSupport
 	}
 		
 	@Override
-	public HttpRequest throwErrorOn(int returnCode, String payload) 
+	public HttpRequest throwErrorOn(int returnCode, String errorMessage) 
 	{
-		this.throwOnMap.put(returnCode, payload);
+		this.throwOnMap.put(returnCode, errorMessage);
 		return this;
 	}
 }

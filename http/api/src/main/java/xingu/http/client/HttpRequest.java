@@ -119,5 +119,5 @@ public interface HttpRequest
 	boolean forceHTTPV1_1();
 	HttpRequest forceHTTPV1_1(boolean b);
 	
-	HttpRequest throwErrorOn(int returnCode, String payload);
+	HttpRequest throwErrorOn(int returnCode, String errorMessage);
 }
