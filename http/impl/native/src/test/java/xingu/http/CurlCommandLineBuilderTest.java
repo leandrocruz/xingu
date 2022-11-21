@@ -31,12 +31,14 @@ import xingu.container.XinguTestCase;
 import xingu.http.client.CommandLineBuilder;
 import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpContext;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
 import xingu.http.client.NameValue;
 import xingu.http.client.impl.NameValueImpl;
 import xingu.http.client.impl.curl.CurlCommandLineBuilder;
 import xingu.http.client.impl.curl.CurlCommandLineBuilder.Builder;
+import xingu.utils.io.FileUtils;
 
 public class CurlCommandLineBuilderTest
 	extends XinguTestCase
@@ -241,7 +243,12 @@ public class CurlCommandLineBuilderTest
 		List<NameValue> headers = new ArrayList<NameValue>();
 		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application"));
 		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testDifferentCharsetsForHeaderAndBody");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
 		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
 		when(req.getUri()).thenReturn("http://www.google.com");
 		when(req.getMethod()).thenReturn("POST");
 		when(req.hasPayload()).thenReturn(true);
@@ -250,17 +257,15 @@ public class CurlCommandLineBuilderTest
 		when(req.getHeaders()).thenReturn(headers);
 		
 		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
-		Builder cmdLineBuilder = ((CurlCommandLineBuilder)builder).getBuilder();
 		
-		File f = cmdLineBuilder.getPayloadDumpFile();
+		File f = tempDir.listFiles()[0];
 		InputStream is = new FileInputStream(f);
 		String content = IOUtils.toString(is, req.getPayloadCharset());
 		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
 		
 		// just to ensure that nobody will change the mock
 		assertEquals("UTF-8", req.getPayloadCharset());
-		assertEquals("ÁéÓão", obj.get("value").getAsString());
-		assertEquals("ISO-8859-1", cmdLineBuilder.getHeaderCharset());		
+		assertEquals("ÁéÓão", obj.get("value").getAsString());	
 	}
 	
 	@Test
@@ -270,7 +275,12 @@ public class CurlCommandLineBuilderTest
 		List<NameValue> headers = new ArrayList<NameValue>();
 		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application"));
 		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testSameCharsetForHeaderAndBody");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
 		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
 		when(req.getUri()).thenReturn("http://www.google.com");
 		when(req.getMethod()).thenReturn("POST");
 		when(req.hasPayload()).thenReturn(true);
@@ -278,16 +288,45 @@ public class CurlCommandLineBuilderTest
 		when(req.getHeaders()).thenReturn(headers);
 		
 		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
-		Builder cmdLineBuilder = ((CurlCommandLineBuilder)builder).getBuilder();
-		
-		File f = cmdLineBuilder.getPayloadDumpFile();
+				
+		File f = tempDir.listFiles()[0];
 		InputStream is = new FileInputStream(f);
-		String content = IOUtils.toString(is,  cmdLineBuilder.getHeaderCharset());
+		String content = IOUtils.toString(is,  "ISO-8859-1");
 		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
 		
 		// just to ensure that nobody will change the mock
 		assertEquals(null, req.getPayloadCharset());
 		assertEquals("ÁéÓão", obj.get("value").getAsString());
-		assertEquals("ISO-8859-1", cmdLineBuilder.getHeaderCharset());		
+	}
+	
+	@Test
+	public void testPayloadCharsetViaHeader()
+		throws Exception
+	{
+		List<NameValue> headers = new ArrayList<NameValue>();
+		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application; charset=utf-8"));
+		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testPayloadCharsetViaHeader");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
+		when(req.getUri()).thenReturn("http://www.google.com");
+		when(req.getMethod()).thenReturn("POST");
+		when(req.hasPayload()).thenReturn(true);
+		when(req.getPayloadAsJson()).thenReturn("{\"value\": \"ÁéÓão\", \"onclick\": \"CreateNewDoc()\"}");
+		when(req.getHeaders()).thenReturn(headers);
+		
+		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
+				
+		File f = tempDir.listFiles()[0];
+		InputStream is = new FileInputStream(f);
+		String content = IOUtils.toString(is,  "UTF-8");
+		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
+		
+		// just to ensure that nobody will change the mock
+		assertEquals(null, req.getPayloadCharset());
+		assertEquals("ÁéÓão", obj.get("value").getAsString());
 	}
 }

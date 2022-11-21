@@ -46,8 +46,6 @@ public class CurlCommandLineBuilder
 	private String curlBinary;
 
 	private List<String> nonStandardDomains;
-
-	private Builder builder;
 	
 	@Override
 	public String name()
@@ -84,8 +82,7 @@ public class CurlCommandLineBuilder
 	public List<String> buildLine(HttpRequest req, File file, File headers)
 		throws Exception
 	{
-		builder = new Builder(req, file, headers);
-		return builder.build();
+		return new Builder(req, file, headers).build();
 	}
 
 	@Override
@@ -130,11 +127,6 @@ public class CurlCommandLineBuilder
 		return false;
 	}
 	
-	public Builder getBuilder()
-	{
-		return builder;
-	}
-
 	public class Builder
 	{
 		private final String NEW_LINE = "\r\n";
@@ -446,7 +438,7 @@ public class CurlCommandLineBuilder
 		{		
 			return StringUtils.isNotEmpty(this.req.getPayloadCharset()) 
 				? this.req.getPayloadCharset()
-			    : this.getHeaderCharset();
+			    : this.headerCharset;
 		}
 		
 		private void placeProxy()
@@ -758,16 +750,6 @@ public class CurlCommandLineBuilder
 			}
 			FileUtils.write(file, dump, charset);
 			return file;
-		}
-		
-		public String getHeaderCharset()
-		{
-			return this.headerCharset;
-		}
-		
-		public File getPayloadDumpFile()
-		{
-			return this.payloadDumpFile;
 		}
 	}
 	
