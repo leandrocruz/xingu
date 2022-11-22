@@ -135,9 +135,7 @@ public class CurlCommandLineBuilder
 		
 		private File file;
 
-		private File headersFile;		
-
-		private File payloadDumpFile;
+		private File headersFile;
 
 		private List<String> result = new ArrayList<String>();
 		
@@ -429,7 +427,7 @@ public class CurlCommandLineBuilder
 				
 				dump.append(payload);
 				String payloadCharset = findPayloadCharset();				
-				payloadDumpFile = dumpPayloadToJsonFile(dump, payloadCharset);
+				File payloadDumpFile = dumpPayloadToJsonFile(dump, payloadCharset);
 				result.add("@" + payloadDumpFile.getPath());
 			}
 		}
@@ -492,7 +490,6 @@ public class CurlCommandLineBuilder
 			{
 				StringBuilder dump = new StringBuilder();
 				
-				//String charset = req.getCharset();
 				for(NameValue f : fields)
 				{
 					String name  = f.getName();
@@ -718,7 +715,7 @@ public class CurlCommandLineBuilder
 		{
 			if(dump.length() > 0)
 			{				
-				payloadDumpFile = dumpParametersToFile(dump, charset);
+				File payloadDumpFile = dumpParametersToFile(dump, charset);
 				result.add("-K");
 				result.add(payloadDumpFile.getPath());
 			}
