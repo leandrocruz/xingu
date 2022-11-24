@@ -126,8 +126,8 @@ public class CurlCommandLineBuilder
 		}
 		return false;
 	}
-
-	class Builder
+	
+	public class Builder
 	{
 		private final String NEW_LINE = "\r\n";
 
@@ -138,6 +138,8 @@ public class CurlCommandLineBuilder
 		private File headersFile;
 
 		private List<String> result = new ArrayList<String>();
+		
+		private String headerCharset = HttpUtils.DEFAULT_HTTP_CHARSET_NAME;
 
 		private String boundary;
 		
@@ -349,8 +351,8 @@ public class CurlCommandLineBuilder
 					result.add(name + ": " + value);
 					if(name.startsWith(contentType))
 					{
-						String charset = HttpUtils.charset(value, HttpUtils.DEFAULT_HTTP_CHARSET_NAME);
-						req.setCharset(charset);
+						String headerCharset = HttpUtils.charset(value, this.headerCharset);
+						this.headerCharset = headerCharset;
 					}
 				}
 			}
@@ -424,10 +426,17 @@ public class CurlCommandLineBuilder
 				}
 				
 				dump.append(payload);
-				
-				File outputFile = dumpPayloadToJsonFile(dump, req.getCharset());
-				result.add("@" + outputFile.getPath());
+				String payloadCharset = findPayloadCharset();				
+				File payloadDumpFile = dumpPayloadToJsonFile(dump, payloadCharset);
+				result.add("@" + payloadDumpFile.getPath());
 			}
+		}
+		
+		private String findPayloadCharset()
+		{		
+			return StringUtils.isNotEmpty(this.req.getPayloadCharset()) 
+				? this.req.getPayloadCharset()
+			    : this.headerCharset;
 		}
 		
 		private void placeProxy()
@@ -481,7 +490,6 @@ public class CurlCommandLineBuilder
 			{
 				StringBuilder dump = new StringBuilder();
 				
-				//String charset = req.getCharset();
 				for(NameValue f : fields)
 				{
 					String name  = f.getName();
@@ -523,7 +531,7 @@ public class CurlCommandLineBuilder
 					}				
 				}
 
-				dumpParametersToFileIfAny(dump, req.getCharset());
+				dumpParametersToFileIfAny(dump, this.headerCharset);
 			}
 		}
 		
@@ -572,8 +580,7 @@ public class CurlCommandLineBuilder
 			 * - http://curl.haxx.se/docs/manpage.html#-F
 			 */
 			
-			String charset = this.req.getCharset();
-			boolean charsetDeclaration = !StringUtils.isEmpty(charset);
+			boolean charsetDeclaration = !StringUtils.isEmpty(headerCharset);
 			
 			List<NameValue> fields = req.getFields();
 			int len2 = fields == null ? 0 : fields.size();
@@ -600,7 +607,7 @@ public class CurlCommandLineBuilder
 						.append(this.boundary)
 						.append(this.NEW_LINE)
 						.append("Content-Disposition: form-data; ")
-						.append(charsetDeclaration ? "charset=" + charset + "; " : "")
+						.append(charsetDeclaration ? "charset=" + headerCharset + "; " : "")
 						.append("name=\"" + name + "\"")
 						.append(this.NEW_LINE)
 						.append(this.NEW_LINE)
@@ -614,14 +621,7 @@ public class CurlCommandLineBuilder
 				.append("--")
 				.append(this.NEW_LINE);
 			
-			String buffer = dump.toString();
-//			
-//			if(StringUtils.isNotEmpty(req.getCharset()))
-//			{
-//				byte[] ptext = dump.toString().getBytes(); 
-//				buffer = new String(ptext, req.getCharset()); 
-//			}
-			
+			String buffer = dump.toString();			
 			result.add(buffer);
 		}
 
@@ -630,7 +630,6 @@ public class CurlCommandLineBuilder
 		{
 			StringBuilder dump = new StringBuilder();		
 			
-
 			/*
 			 * See:
 			 * - http://www.ietf.org/rfc/rfc2388.txt
@@ -703,7 +702,7 @@ public class CurlCommandLineBuilder
 				}
 			}
 			
-			dumpParametersToFileIfAny(dump, req.getCharset());
+			dumpParametersToFileIfAny(dump, this.headerCharset);
 		}
 		
 		private String escapeText(String text)
@@ -716,43 +715,37 @@ public class CurlCommandLineBuilder
 		{
 			if(dump.length() > 0)
 			{				
-				File outputFile = dumpParametersToFile(dump, charset);
+				File payloadDumpFile = dumpParametersToFile(dump, charset);
 				result.add("-K");
-				result.add(outputFile.getPath());
+				result.add(payloadDumpFile.getPath());
 			}
 		}
 		
 		private File dumpParametersToFile(StringBuilder dump, String charset)
 			throws Exception
 		{
-			File file = null;
-			if(req.getContext() != null)
-			{
-				file = File.createTempFile("dump_curl_", "_file.txt", req.getContext().getRootDirectory());
-			}
-			else
-			{
-				file = File.createTempFile("dump_curl_", "_file.txt");
-			}		
-
-			FileUtils.write(file, dump, charset);		
-			return file;
+			return writeFile("_file.txt", dump, charset);
 		}
 		
 		private File dumpPayloadToJsonFile(StringBuilder dump, String charset)
 			throws Exception
 		{
+			return writeFile("_file.json", dump, charset);
+		}
+		
+		private File writeFile(String fileSufix, StringBuilder dump, String charset)
+			throws Exception
+		{
 			File file = null;
 			if(req.getContext() != null)
 			{
-				file = File.createTempFile("dump_payload_", "_file.json", req.getContext().getRootDirectory());
+				file = File.createTempFile("dump_payload_", fileSufix, req.getContext().getRootDirectory());
 			}
 			else
 			{
-				file = File.createTempFile("dump_payload_", "_file.json");
-			}		
-
-			FileUtils.write(file, dump, charset);		
+				file = File.createTempFile("dump_payload_", fileSufix);
+			}
+			FileUtils.write(file, dump, charset);
 			return file;
 		}
 	}

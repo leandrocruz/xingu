@@ -5,15 +5,24 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.commons.io.IOUtils;
 import org.jboss.netty.handler.codec.http.Cookie;
 import org.jboss.netty.handler.codec.http.HttpHeaders;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import xingu.container.Binder;
 import xingu.container.ConfigurationLoader;
@@ -22,9 +31,14 @@ import xingu.container.XinguTestCase;
 import xingu.http.client.CommandLineBuilder;
 import xingu.http.client.CookieUtils;
 import xingu.http.client.Cookies;
+import xingu.http.client.HttpContext;
 import xingu.http.client.HttpRequest;
 import xingu.http.client.HttpResponse;
+import xingu.http.client.NameValue;
+import xingu.http.client.impl.NameValueImpl;
 import xingu.http.client.impl.curl.CurlCommandLineBuilder;
+import xingu.http.client.impl.curl.CurlCommandLineBuilder.Builder;
+import xingu.utils.io.FileUtils;
 
 public class CurlCommandLineBuilderTest
 	extends XinguTestCase
@@ -165,18 +179,7 @@ public class CurlCommandLineBuilderTest
 		
 		assertTrue(response.getDocument().select("a[id=ctl00_btnCerrarSesion]").text().equalsIgnoreCase("Close Session"));
 	}
-	
-//	@Test
-//	public void testMoreThanOneSetOfProxyHeaders()
-//		throws Exception
-//	{
-//		HttpRequest req = mock(HttpRequest.class);
-//		when(req.getUri()).thenReturn("console4.oystr.com.br");
-//		when(req.getProxy()).thenReturn("testing");
-//		HttpResponse response = builder.responseFrom(req, getFile("response11.txt"));		
-//		assertTrue(response.getCode() == 302);
-//	}
-	
+
 	@Test
 	public void testHttp200Response()
 		throws Exception
@@ -231,5 +234,99 @@ public class CurlCommandLineBuilderTest
 		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
 		String header = cmd.get(cmd.indexOf("--cookie") + 1);
 		assertEquals("a=1; c=3", header);
+	}
+	
+	@Test
+	public void testDifferentCharsetsForHeaderAndBody()
+		throws Exception
+	{
+		List<NameValue> headers = new ArrayList<NameValue>();
+		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application"));
+		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testDifferentCharsetsForHeaderAndBody");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
+		when(req.getUri()).thenReturn("http://www.google.com");
+		when(req.getMethod()).thenReturn("POST");
+		when(req.hasPayload()).thenReturn(true);
+		when(req.getPayloadAsJson()).thenReturn("{\"value\": \"ÁéÓão\", \"onclick\": \"CreateNewDoc()\"}");
+		when(req.getPayloadCharset()).thenReturn("UTF-8");
+		when(req.getHeaders()).thenReturn(headers);
+		
+		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
+		
+		File f = tempDir.listFiles()[0];
+		InputStream is = new FileInputStream(f);
+		String content = IOUtils.toString(is, req.getPayloadCharset());
+		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
+		
+		// just to ensure that nobody will change the mock
+		assertEquals("UTF-8", req.getPayloadCharset());
+		assertEquals("ÁéÓão", obj.get("value").getAsString());	
+	}
+	
+	@Test
+	public void testSameCharsetForHeaderAndBody()
+		throws Exception
+	{
+		List<NameValue> headers = new ArrayList<NameValue>();
+		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application"));
+		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testSameCharsetForHeaderAndBody");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
+		when(req.getUri()).thenReturn("http://www.google.com");
+		when(req.getMethod()).thenReturn("POST");
+		when(req.hasPayload()).thenReturn(true);
+		when(req.getPayloadAsJson()).thenReturn("{\"value\": \"ÁéÓão\", \"onclick\": \"CreateNewDoc()\"}");
+		when(req.getHeaders()).thenReturn(headers);
+		
+		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
+				
+		File f = tempDir.listFiles()[0];
+		InputStream is = new FileInputStream(f);
+		String content = IOUtils.toString(is,  "ISO-8859-1");
+		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
+		
+		// just to ensure that nobody will change the mock
+		assertEquals(null, req.getPayloadCharset());
+		assertEquals("ÁéÓão", obj.get("value").getAsString());
+	}
+	
+	@Test
+	public void testPayloadCharsetViaHeader()
+		throws Exception
+	{
+		List<NameValue> headers = new ArrayList<NameValue>();
+		headers.add(new NameValueImpl(HttpHeaders.Names.CONTENT_TYPE, "json/application; charset=utf-8"));
+		
+		HttpContext ctx = mock(HttpContext.class);
+		File tempDir = FileUtils.createTempDir("xingu_test_testPayloadCharsetViaHeader");
+		when(ctx.getRootDirectory()).thenReturn(tempDir);
+		
+		HttpRequest req = mock(HttpRequest.class);
+		when(req.getContext()).thenReturn(ctx);
+		when(req.getUri()).thenReturn("http://www.google.com");
+		when(req.getMethod()).thenReturn("POST");
+		when(req.hasPayload()).thenReturn(true);
+		when(req.getPayloadAsJson()).thenReturn("{\"value\": \"ÁéÓão\", \"onclick\": \"CreateNewDoc()\"}");
+		when(req.getHeaders()).thenReturn(headers);
+		
+		List<String> cmd = builder.buildLine(req, getFile("empty.txt"), getFile("headers1.txt"));
+				
+		File f = tempDir.listFiles()[0];
+		InputStream is = new FileInputStream(f);
+		String content = IOUtils.toString(is,  "UTF-8");
+		JsonObject obj = JsonParser.parseString(content).getAsJsonObject();
+		
+		// just to ensure that nobody will change the mock
+		assertEquals(null, req.getPayloadCharset());
+		assertEquals("ÁéÓão", obj.get("value").getAsString());
 	}
 }

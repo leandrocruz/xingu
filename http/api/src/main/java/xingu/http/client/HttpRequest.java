@@ -75,9 +75,6 @@ public interface HttpRequest
 	HttpRequest expects(int code, String messageIfError);
 	HttpRequest expects(ResponseInspector inspector);
 
-	void setCharset(String charset);
-	String getCharset();
-
 	HttpRequest name(String name);
 
 	HttpRequest ignoreSSLCertificates(boolean ignore);
@@ -92,10 +89,14 @@ public interface HttpRequest
 	HttpRequest listener(HttpProgressListener listener);
 
 	HttpRequest payload(String payload);
+	HttpRequest payload(String payload, String charset);
 	String getPayload();
 	
 	HttpRequest payloadAsJson(String payload);
+	HttpRequest payloadAsJson(String payload, String charset);
 	String getPayloadAsJson();
+	
+	String getPayloadCharset();
 
 	boolean isSoap();
 	HttpRequest soap(boolean isSoap);
@@ -117,4 +118,6 @@ public interface HttpRequest
 
 	boolean forceHTTPV1_1();
 	HttpRequest forceHTTPV1_1(boolean b);
+	
+	HttpRequest throwErrorOn(int returnCode, String errorMessage);
 }
